@@ -1,0 +1,120 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087f60">
+  <meta name="description" content="Build the SSH commands that install and flash the Microduck Braccio App Lab app on an Arduino UNO Q.">
+  <link rel="stylesheet" href="./style.css">
+  <title>Microduck Braccio / flash</title>
+  <style>
+    select { font: inherit; }
+    main p, main li, main label, main span { overflow-wrap: anywhere; min-width: 0; }
+    .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 14px; margin: 14px 0; }
+    .fields label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+    .fields input, .fields select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: #fff; min-width: 0; width: 100%; }
+    .commands { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 14px; }
+    .commands li { min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+    .command-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .command-head b { font-size: 14px; }
+    .where { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; }
+    .copy { margin-left: auto; padding: 5px 12px; font-size: 13px; }
+    pre { font-size: 13px; background: #f7faf8; border: 1px solid var(--line); border-radius: 8px; padding: 10px; overflow-x: auto; margin: 8px 0; white-space: pre; }
+    .commands .small-note { margin: 0; }
+    .error { color: var(--red); font-size: 14px; }
+    code { font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">MD</span><span>Microduck <b>Braccio</b></span></a>
+    <nav>
+      <a href="./">Overview</a><a href="./flash.html" aria-current="page">Flash</a><a href="./control.html">Control</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+    </nav>
+  </header>
+  <main>
+    <div class="title-row">
+      <div><p class="eyebrow">ARDUINO UNO Q / APP LAB / SSH</p><h1>Flash the board</h1></div>
+      <span class="release-tag">Not run on hardware</span>
+    </div>
+
+    <section class="status" aria-labelledby="status-heading">
+      <h2 id="status-heading">Status: not run on hardware</h2>
+      <p>These commands have never been run on a UNO Q, and the sketch has not been built. They follow the steps the
+        sketchbot uses for its arm agent on the same board. This page only writes commands for you to run in your own
+        terminal. It opens no connection, has no password or key field, and sends nothing anywhere. Nothing is
+        flashed from the browser.</p>
+    </section>
+
+    <section aria-labelledby="preflight-heading">
+      <div class="section-heading"><span class="step">01</span><h2 id="preflight-heading">Before the first flash</h2></div>
+      <ol class="checklist" id="preflight">
+        <li><label><input type="checkbox" id="servo-off"> The servo supply is physically disconnected. The first start of the app flashes the microcontroller.</label></li>
+        <li><label><input type="checkbox"> The robot is on a stand or lying down, feet clear of the bench.</label></li>
+        <li><label><input type="checkbox"> No motion is planned before calibration. Zeros and directions in the table are starting values.</label></li>
+        <li><label><input type="checkbox"> <span>I know the board starts relaxed: no pulse leaves it before an enable line (<code>E</code>).</span></label></li>
+      </ol>
+      <p class="small-note" style="margin-left:0">The first box is an operator confirmation, not an electrical test. The commands appear once it is ticked.</p>
+    </section>
+
+    <section aria-labelledby="commands-heading">
+      <div class="section-heading"><span class="step">02</span><h2 id="commands-heading">Commands</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/flash.md" rel="noopener noreferrer">The same steps by hand</a></div>
+      <p id="base-note"></p>
+      <p id="base-detail" class="small-note" style="margin-left:0"></p>
+      <p id="unoq-link" hidden><a href="./flash.html">Show the steps for the Arduino UNO Q</a></p>
+      <form id="flash-form">
+        <div class="fields">
+          <label>UNO Q address<input id="host" type="text" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" placeholder="unoq.local or 192.168.1.42"></label>
+          <label>SSH user<input id="user" type="text" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" value="arduino"></label>
+          <label>Checkout directory, under the home directory<input id="repo-dir" type="text" autocapitalize="none" spellcheck="false" autocomplete="off" value="botbuilder"></label>
+          <label>App Lab apps directory, under the home directory<input id="apps-dir" type="text" autocapitalize="none" spellcheck="false" autocomplete="off" value="ArduinoApps"></label>
+          <label>What to do<select id="mode"><option value="install">First install</option><option value="update">Update and flash again</option></select></label>
+          <label>Where the commands run<select id="where"><option value="session">In one SSH session on the board</option><option value="computer">Each from my computer, over SSH</option></select></label>
+        </div>
+        <p id="form-error" class="error" role="alert" hidden></p>
+        <ol class="commands" id="commands" aria-live="polite"></ol>
+        <p class="small-note" style="margin-left:0">Every typed value is checked and then single-quoted, so it cannot add a command. One command per block.
+          The board needs Wi-Fi, SSH access, git and the App Lab command line (<code>arduino-app-cli</code>) already set up; this page does none of that.</p>
+      </form>
+    </section>
+
+    <section aria-labelledby="check-heading">
+      <div class="section-heading"><span class="step">03</span><h2 id="check-heading">After the flash</h2></div>
+      <p>The status command is the line <code>S</code> on the agent's port 8766. A freshly flashed board answers with its
+        mode, the age of the last command, the watchdog time and the six commanded joint angles at the stand pose:</p>
+      <pre tabindex="0" id="expected">STAT mode=RELAX age_ms=1234 wd=500 q=0.0,45.0,-45.0,0.0,45.0,-45.0</pre>
+      <ul class="plain">
+        <li><code>mode=RELAX</code>: no pulses. It stays that way until an <code>E</code> line.</li>
+        <li><code>age_ms</code> is the time since the last joint command; on a fresh board, the time since boot.</li>
+        <li><code>wd=500</code>: the watchdog holds the pose if joint commands stop for 500 ms.</li>
+        <li>No answer: read the app log, and check that nothing else holds port 8766.</li>
+      </ul>
+      <p>Next: reconnect the servo supply only for calibration, one joint at a time, robot held off the bench. Then the
+        <a href="./control.html">control page</a>.</p>
+    </section>
+
+    <section aria-labelledby="others-heading">
+      <div class="section-heading"><span class="step">04</span><h2 id="others-heading">Other controllers</h2></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Controller</th><th>Flash steps</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Arduino UNO Q</td><td>written, not run on hardware</td><td style="white-space:normal">App Lab app in <code>app_lab/microduck_agent</code>, commands above.</td></tr>
+          <tr><td>AI Thinker ESP32-CAM</td><td>not written</td><td style="white-space:normal">No firmware for it here. The sketchbot flashes its camera board by hand from the Arduino IDE over the serial port, not from its site and not over SSH.</td></tr>
+          <tr><td>Raspberry Pi</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
+          <tr><td>LEGO hubs</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
+          <tr><td>M5Stack</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small-note" style="margin-left:0">A link may carry the selection, for example <code>flash.html?base=unoq</code>. For a controller without
+        steps this page says so and shows no command.</p>
+    </section>
+  </main>
+  <footer>
+    <p>Code under the MIT licence. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
+      No analytics, no cookies, no network requests from this page.</p>
+  </footer>
+  <script type="module" src="./flash.js"></script>
+</body>
+</html>
