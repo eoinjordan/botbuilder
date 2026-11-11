@@ -46,25 +46,42 @@ no ankles.
 For comparison, Pollen Robotics' Microduck has five joints per leg (hip yaw,
 roll, pitch, knee, ankle) and four in the neck and head, weighs about 800 g
 and stands about 25 cm tall. This one has three per leg, weighs about 500 g
-by the model and stands 260 mm.
+by the model and stands 262 mm.
 
 ## What the digital assembly test found
 
 Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
 [reports/assembly.json](reports/assembly.json).
 
-- **Interference.** Each hip roll servo, centred in its torso cradle, runs
-  into the deck: 1055 mm3 of overlap. The case end reaches 2 mm into the 4 mm
-  plate and the mounting ear goes through the rest. Nothing else overlaps:
-  the neck that the UNO Q ran into is gone with the head.
+- **Interference.** None at the neutral pose. As first drawn each hip roll
+  servo ran 2 mm into the deck and its ear went through it (1055 mm3); the
+  cradles now hang 2.5 mm lower and the deck corner is cut away for the ear,
+  which leaves 0.5 mm under the deck and 0.75 mm beside the assumed ear. The
+  neck that the UNO Q ran into is gone with the head.
 - **Camera mount.** The ESP32-CAM stands between two posts with 0.5 mm each
   side, 1.1 mm ahead of the UNO Q. The lens looks the way the toes point,
-  10 degrees below level, 223 mm above the floor at the stand pose. A cone
+  10 degrees below level, 226 mm above the floor at the stand pose. A cone
   of 40 degrees half angle in front of it is clear at the neutral and stand
   poses; a thigh swung more than 21 degrees forward comes into it.
-- **Cable ties.** On every cradle one of the two ties is in line with the
-  output shaft (slot pair 10.9 mm from the cradle centre, shaft 10.75 mm on
-  the assumed SR431). Only the tie at the far end can pass over the case.
+- **Other controllers.** The deck has torso variants for a Raspberry Pi Zero
+  2 W, a full-size Raspberry Pi and the LEGO 51515 hub. As blocks of their
+  mass they clear the print and the camera, and the robot still balances at
+  a stand pose in each case: the heavier the controller, the further back
+  the thighs go (38, 42 and 50 degrees; 63 with an EV3 brick of an assumed
+  300 g, which has no torso of its own). The static stand margin stays near
+  37 mm. Geometry and static balance only; none was simulated. Raspberry Pi
+  is a trademark of Raspberry Pi Ltd.
+- **Turning head, an option.** A second torso carries a 9 g servo under a tab
+  at the deck front; it turns the camera 75 degrees each way between printed
+  stops, and tilt is set by hand on one screw. It meets nothing, costs the
+  legs no travel inside their limits and leaves the stand margin at 36.7 mm or
+  more at either stop. It is geometry only, not in the simulation or the
+  joint commands. The owner's M5Stack 360 servos are continuous rotation:
+  [docs/head.md](docs/head.md) says what that means.
+- **Cable ties.** Each cradle has four slot pairs. The two away from the
+  shaft end give two tie paths over the case clear of the shaft and horn on
+  all six cradles (assumed shaft position and horn size). As first drawn
+  there were two pairs and one of them was in line with the shaft.
 - **Fits.** Every case sits between its rails with 0.5 mm a side, fully on
   its plate; all tie slots are open; all six horn screw holes are on their
   shaft axes with a free path for a screwdriver. The board has 0.52 mm to
@@ -79,9 +96,9 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   from a joint axis; none cost any joint range. At the stand pose, static
   balance carries about 400 g of decoration on the rear of the deck before
   the margin is gone; 100 g there leaves 23 mm of the 37 mm.
-- **Mass.** 504 g: servos 302 g (published), printed parts 137 g (PLA at 60
+- **Mass.** 502 g: servos 302 g (published), printed parts 136 g (PLA at 60
   percent of solid, assumed), board 30 g and shield 25 g (assumed), camera
-  10 g (published). 595 g if printed solid.
+  10 g (published). 593 g if printed solid.
 - **Balance.** With the legs straight down the centre of mass is 6.6 mm
   behind the heels: it falls backward. With the thighs swung 42 degrees back
   and the knees turned to keep the soles level it is 37 mm inside the support
@@ -211,6 +228,12 @@ local design directory after its generator has run. None has been printed.
   camera board.
 - The pin holes and studs: no printed one has been tried with a real pin,
   beam or brick. Their nominal dimensions are from secondary sources.
+- The other controllers: the masses of the Raspberry Pi boards, the hub's
+  battery and the EV3 brick are estimates, and the full-size Pi's hole
+  pattern and the EV3's size are not from their makers' pages.
+- The turning head: the servo body, shaft position and horn height are
+  assumed from SG90 data sheets, the adapter hole pattern is a guess to be
+  measured, and no firmware drives it.
 - The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
   outline are the makers' figures. Lens, button, connector and pin positions,
   board thickness and the other masses are assumed or scaled from pictures.

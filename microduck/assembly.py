@@ -14,7 +14,7 @@ from manifold3d import Manifold
 from scipy.spatial import ConvexHull
 
 from . import model
-from .model import (BLANK_HOLE_RADIUS, JOINTS, PLATE, SLOT_SIZE, SLOT_X_FRACTION, SLOT_Y_OFFSET,
+from .model import (BLANK_HOLE_RADIUS, JOINTS, PLATE, SLOT_SIZE, SLOT_X_FRACTIONS, SLOT_Y_OFFSET,
                     Robot, apply, box, cylinder_z, frame, servo_shape, trans, trimesh_from_manifold)
 
 SERVO_HALF_TRAVEL = 90.0
@@ -186,8 +186,8 @@ def cradle_checks(robot: Robot) -> list:
 
         seat = apply(box([-l / 2, -w / 2, -0.2], [l / 2, w / 2, 0.0]), c.servo_to_link)
         slots_open = 0
-        for sx, sy in itertools.product((-1, 1), (-1, 1)):
-            cx, cy = sx * l * SLOT_X_FRACTION, sy * (w / 2 + SLOT_Y_OFFSET)
+        for fx, sy in itertools.product(SLOT_X_FRACTIONS, (-1, 1)):
+            cx, cy = fx * l, sy * (w / 2 + SLOT_Y_OFFSET)
             probe = box([cx - SLOT_SIZE[0] / 2 + 0.3, cy - SLOT_SIZE[1] / 2 + 0.3, 0.5],
                         [cx + SLOT_SIZE[0] / 2 - 0.3, cy + SLOT_SIZE[1] / 2 - 0.3, PLATE - 0.5])
             if (apply(probe, c.cradle_to_link) ^ printed).volume() < 1e-3:
@@ -195,8 +195,8 @@ def cradle_checks(robot: Robot) -> list:
         # A tie over the case top at each slot pair: does it cross the output
         # boss or the horn hub?
         ties = []
-        for sx in (-1, 1):
-            cx = sx * l * SLOT_X_FRACTION
+        for fx in SLOT_X_FRACTIONS:
+            cx = fx * l
             band = box([cx - SLOT_SIZE[0] / 2, -w / 2, h], [cx + SLOT_SIZE[0] / 2, w / 2, h + 1.5])
             blocked = (band ^ (shape.body + shape.horn)).volume()
             ties.append({"at_x_mm": _r(cx), "shaft_x_mm": _r(shape.shaft_x), "overlap_mm3": _r(blocked, 1),
@@ -206,7 +206,7 @@ def cradle_checks(robot: Robot) -> list:
             "rail_clearance_each_side_mm": _r(_largest_clear(side_clear)),
             "rail_clearance_designed_mm": model.RAIL_GAP_EACH_SIDE,
             "seat_support_fraction": _r((seat ^ printed).volume() / (l * w * 0.2)),
-            "tie_slots_open": slots_open, "tie_slots_expected": 4,
+            "tie_slots_open": slots_open, "tie_slots_expected": 2 * len(SLOT_X_FRACTIONS),
             "ties": ties,
             "case_interference_mm3": _r((case ^ printed).volume(), 1),
             "body_interference_mm3": _r((body ^ printed).volume(), 1),
@@ -228,7 +228,7 @@ def horn_checks(robot: Robot, placed) -> list:
     frames = robot.fk()
     out = []
     for name, link in robot.links.items():
-        if link.joint is None:
+        if link.joint not in JOINTS:
             continue
         to_world = frames[name] @ _axis_frame([0, 0, 0], link.shaft)
         printed = next(s for s in link.solids if s.kind == "print")
@@ -299,6 +299,30 @@ def board_checks(robot: Robot) -> dict:
         "forward_shift_to_clear_mm": shift,
         "front_overhang_after_shift_mm": None if shift is None else _r(max(0.0, bb[1][0] + shift - deck_front)),
     }
+
+
+def roll_seat_checks(robot: Robot) -> dict:
+    """The hip roll servo under the deck: gap between the case end and the
+    deck, gap around the upper mounting ear, and the deck left around the cut."""
+    torso = _solid(robot, "torso_print")[1].manifold
+    cradle = next(c for c in robot.cradles if c.servo == "left_roll_servo")
+    shape = servo_shape("SR431", robot.hardware)
+    body = _solid(robot, "left_roll_servo")[1].manifold
+    case = apply(shape.case, cradle.servo_to_link)
+    deck = torso ^ box([-60, -80, 0.0], [60, 80, PLATE])
+    ears = body - apply(shape.case + cylinder_z(30.0, shape.height, shape.height + 5.0), cradle.servo_to_link)
+    upper = ears ^ box([-100, -100, -8.0], [100, 100, 50.0])
+    # Deck section across the robot at the cut, and ahead of the cradle plate.
+    def width_at(x):
+        slab = deck ^ box([x - 0.05, -80, 0.0], [x + 0.05, 80, PLATE])
+        return slab.volume() / (0.1 * PLATE)
+    return {"case_end_below_deck_mm": _r(case.min_gap(deck, 20.0)) if (case ^ deck).volume() < 1e-6 else _r(-(case ^ deck).volume(), 1),
+            "case_overlap_with_deck_mm3": _r((case ^ deck).volume(), 1),
+            "upper_ear_gap_to_deck_mm": _r(upper.min_gap(deck, 20.0)) if (upper ^ deck).volume() < 1e-6 else 0.0,
+            "upper_ear_overlap_with_deck_mm3": _r((upper ^ deck).volume(), 1),
+            "overlap_with_torso_mm3": _r((body ^ torso).volume(), 1),
+            "deck_width_behind_the_cut_mm": _r(width_at(20.0)), "deck_width_at_the_cut_mm": _r(width_at(34.0)),
+            "cradle_z_mm": model.TORSO_CRADLE_Z}
 
 
 # --- camera mount -----------------------------------------------------------
@@ -394,6 +418,96 @@ def camera_preset_summary(robot: Robot) -> dict:
                 "neutral_margin_mm": stand["margin_mm"], "stand_thigh_swing_deg": bal["stand_pose"]["thigh_swing_deg"],
                 "stand_margin_mm": bal["stand_pose"]["margin_mm"]})
     return out
+
+
+# --- other controllers on the deck -------------------------------------------
+
+def controller_summary(robot: Robot, limits: dict) -> dict:
+    """A controller other than the UNO Q, as one block on its torso variant:
+    does it sit clear of the print and the camera, and what does its mass do
+    to the centre of mass and to balance on two feet."""
+    threshold = robot.assumptions["interference_threshold_mm3"]
+    name = robot.assumptions["controller"]
+    spec = robot.hardware["controllers"][name]
+    torso = _solid(robot, "torso_print")[1].manifold
+    block = _solid(robot, "controller")[1].manifold
+    camera = _solid(robot, "camera_board")[1].manifold
+    bb = _bbox(block)
+    neutral = interferences(robot.placed(), threshold)
+    bal = balance(robot, limits)
+    total, com = centre_of_mass(robot)
+    stand = bal["stand_pose"]
+    # Hip pitch torque to hold the stand pose, from the mass above the hips.
+    frames = robot.fk(stand["q_deg"])
+    above = [n for n in robot.links if n in ("torso", "left_hip", "right_hip")]
+    masses = {n: link_mass(robot.links[n]) for n in above}
+    m_above = sum(m[0] for m in masses.values())
+    c_above = sum(masses[n][0] * model.point(frames[n], masses[n][1]) for n in above) / m_above
+    arm = c_above[0] - frames["left_thigh"][0, 3]
+    torque = abs(arm) * m_above * 9.80665 * 1e-6 / 2
+    limit = robot.hardware["servos"]["SR431"]["published"]["torque_kgcm_4v8"] * 9.80665 / 100.0
+    return {"controller": name, "name": spec["name"], "torso_file": spec["torso"].format(camera=robot.camera["preset"]),
+            "has_its_own_torso": name in model.CONTROLLER_TORSOS,
+            "block_mm": _r(bb), "mass_g": spec["assumed"]["mass_g"]["value"],
+            "overlap_with_print_mm3": _r((block ^ torso).volume(), 1),
+            "overlap_with_camera_board_mm3": _r((block ^ camera).volume(), 1),
+            "gap_to_camera_board_mm": _r(block.min_gap(camera, 80.0)),
+            "overhang_past_the_deck_mm": _r(max(0.0, bb[1][1] - 59.0)),
+            "neutral_interferences": [(f["a"], f["b"], f["volume_mm3"]) for f in neutral],
+            "total_g": _r(total, 1), "com_neutral_mm": _r(com),
+            "neutral_margin_mm": bal["neutral_two_feet"]["margin_mm"],
+            "stand_thigh_swing_deg": stand["thigh_swing_deg"], "stand_margin_mm": stand["margin_mm"],
+            "stands_statically": bool(stand["inside"]),
+            "one_foot_margin_at_stand_mm": bal["one_foot_left"]["at_stand_pose"]["margin_mm"],
+            "hip_pitch_hold_torque_nm_each": _r(torque, 3), "hip_pitch_torque_limit_nm": _r(limit, 3),
+            "hip_pitch_torque_fraction": _r(torque / limit, 3)}
+
+
+# --- turning head ------------------------------------------------------------
+
+def head_checks(robot: Robot, stand_q: dict) -> dict:
+    """The optional turning head: where the pan stops, how far the hand-set
+    tilt goes, what it meets, whether the legs still clear it, the cone in
+    front of the lens, and mass and balance with the head at its extremes."""
+    cfg = robot.assumptions
+    threshold = cfg["interference_threshold_mm3"]
+    tilt = float(cfg["camera"]["tilt_deg"])
+    rest = {"head_tilt": tilt}
+    neutral = interferences(robot.placed(rest), threshold)
+    ignore = {frozenset((f["a"], f["b"])) for f in neutral}
+    pan = sweep_joint(robot, "head_pan", 1.0, threshold, ignore, rest)
+    nod = sweep_joint(robot, "head_tilt", 1.0, threshold, ignore, {})
+    lo, hi = pan["collision_free_deg"]
+    legs = {j: sweep_joint(robot, j, cfg["sweep_step_deg"], threshold, ignore, rest)["collision_free_deg"]
+            for j in ("left_hip_roll", "left_hip_pitch", "left_knee")}
+    cone_local = model.view_cone(robot.camera["pose"], robot.camera["cone_half_angle_deg"])
+    poses = []
+    for angle in (lo, 0.0, hi):
+        q = {**stand_q, "head_pan": angle, "head_tilt": tilt}
+        frames = robot.fk(q)
+        cone = apply(cone_local, frames["head_tilt"])
+        placed = robot.placed(q)
+        hits = [{"solid": s.name, "volume_mm3": _r((cone ^ m).volume(), 1)} for link, s, m in placed
+                if link not in ("head_tilt", "head_pan") and not m.is_empty() and (cone ^ m).volume() > 0.5]
+        total, com = centre_of_mass(robot, q)
+        poses.append({"pan_deg": _r(angle), "new_interferences": [f for f in interferences(placed, threshold)
+                                                                  if frozenset((f["a"], f["b"])) not in ignore],
+                      "in_the_cone": hits, "com_mm": _r(com), "stand_margin_mm": support(robot, q, ("left", "right"))["margin_mm"],
+                      "lens_mm": _r(model.point(frames["head_tilt"], robot.camera["pose"]["lens"]))})
+    total, com = centre_of_mass(robot, rest)
+    rows = [{"solid": s.name, "link": link, "mass_g": _r(s.mass_g, 1)} for link, s in robot.solids()
+            if link in ("head_pan", "head_tilt") or s.name == "pan_servo"]
+    return {"camera_preset": robot.camera["preset"], "tilt_set_to_deg": tilt,
+            "neutral_interferences": neutral,
+            "pan_travel_to_the_stops_deg": pan["collision_free_deg"],
+            "pan_stopped_by": {"negative": pan["negative"]["blocked_by"], "positive": pan["positive"]["blocked_by"]},
+            "tilt_free_deg": nod["collision_free_deg"],
+            "tilt_stopped_by": {"negative": nod["negative"]["blocked_by"], "positive": nod["positive"]["blocked_by"]},
+            "leg_sweeps_collision_free_deg": legs,
+            "at_the_stand_pose": poses,
+            "total_g": _r(total, 1), "com_neutral_mm": _r(com),
+            "neutral_margin_mm": support(robot, rest, ("left", "right"))["margin_mm"],
+            "head_parts": rows, "head_mass_g": _r(sum(r["mass_g"] for r in rows), 1)}
 
 
 # --- attachment features compatible with LEGO elements -----------------------
@@ -733,6 +847,7 @@ def analyse(robot: Robot, progress=lambda text: None) -> dict:
         "cradles": cradle_checks(robot),
         "horns": horn_checks(robot, placed),
         "board": board_checks(robot),
+        "roll_seat": roll_seat_checks(robot),
         "mass": mass_report(robot),
     }
     progress("balance")

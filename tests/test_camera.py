@@ -72,7 +72,7 @@ def test_view_cone_is_clear_where_the_report_says(selected):
 def test_no_interference_involves_the_camera_or_the_controller(selected):
     names = {n for f in selected["neutral_interferences"] for n in (f["a"], f["b"])}
     assert not names & {"camera_board", "unoq", "braccio_shield"}
-    assert len(selected["neutral_interferences"]) == 2
+    assert selected["neutral_interferences"] == []
 
 
 def test_camera_mass_is_in_the_total(selected):

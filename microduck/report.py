@@ -85,19 +85,14 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
         [render.render(stand, "left", (520, 620)), render.render(stand, "iso", (620, 620))],
         ["stand pose, left view", "stand pose"]), "stand-pose.png")
 
-    # Close-ups of the interferences at the neutral pose.
-    close = {"interference_roll_servo_deck": ("torso_print", "left_roll_servo"),
-             }
-    for key, (a, b) in close.items():
-        hit = next((f for f in rep["neutral_interferences"] if {f["a"], f["b"]} == {a, b}), None)
-        if hit is None:
-            continue
-        frame_box = _pad(hit["box_min_mm"], hit["box_max_mm"], 28.0)
-        extra = [("braccio_shield", "torso_print")] if b == "unoq" else []
-        picture = render.render(_items(placed, {a, b, "braccio_shield"} if b == "unoq" else {a, b}), "iso", (760, 560),
-                                overlays=_overlaps(placed, [(a, b)] + extra), bounds=frame_box,
-                                title=f"{a} and {b}: {hit['volume_mm3']} mm3 overlap (red)")
-        images[key] = _save(picture, key.replace("_", "-") + ".png")
+    # The hip roll servo where its case end and upper ear meet the deck.
+    seat = rep["roll_seat"]
+    pair = {"torso_print", "left_roll_servo"}
+    views = [render.render(_items(placed, pair), v, (560, 520), overlays=_overlaps(placed, [("torso_print", "left_roll_servo")]),
+                           bounds=_pad([-6, 34, -30], [48, 80, 12], 4.0)) for v in ("iso", "left", "top")]
+    images["roll_servo_seat"] = _save(_side_by_side(
+        views, [f"left hip roll servo: overlap with the deck {seat['overlap_with_torso_mm3']} mm3 (red if any)", "left", "top"]),
+        "roll-servo-seat.png")
 
     # The camera in its mount, with the controller stack behind it.
     names = {"torso_print", "camera_board", "unoq", "braccio_shield"}
@@ -133,8 +128,8 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
         cradle = model.load_part("fit_" + name)
         blank = apply(model.load_part("fit_horn"), to_cradle @ model.trans(shape.shaft_x, 0, shape.face_z))
         ties, blocked = [], []
-        for sx in (-1, 1):
-            cx = sx * shape.length * model.SLOT_X_FRACTION
+        for fx in model.SLOT_X_FRACTIONS:
+            cx = fx * shape.length
             half = shape.width / 2
             top = model.PLATE + shape.height
             band = (box([cx - 2.2, -half - 6.1, -1.2], [cx + 2.2, half + 6.1, top + 1.2])
@@ -146,7 +141,7 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
         parts += [(*_mesh(t), (40, 150, 70)) for t in ties] + [(*_mesh(t), RED) for t in blocked]
         views = [render.render(parts, v, (560, 460)) for v in ("iso", "left")]
         images[f"assumption_cradle_{name}"] = _save(_side_by_side(
-            views, [f"{name} in its cradle: horn, drill blank, ties (red tie crosses the output shaft)", "side"]),
+            views, [f"{name} in its cradle: horn, drill blank, tie paths (a red one crosses the output shaft)", "side"]),
             f"assumption-cradle-{name}.png")
 
     images["balance"] = _save(_balance_plot(rep["balance"]), "balance.png")
@@ -188,14 +183,11 @@ def findings(rep: dict) -> list:
         else:
             out.append({"id": f"{f['a']}-{f['b']}", "level": "interference",
                         "text": f"{f['a']} and {f['b']} overlap by {f['volume_mm3']} mm3 at the neutral pose."})
-    blocked = [c for c in rep["cradles"] if not all(t["clear"] for t in c["ties"])]
-    if blocked:
-        c = blocked[0]
-        t = next(t for t in c["ties"] if not t["clear"])
-        out.append({"id": "tie-over-shaft", "level": "fit",
-                    "text": f"On all {len(blocked)} cradles one of the two cable ties crosses the output shaft: the slot pair at "
-                            f"{abs(t['at_x_mm'])} mm from the cradle centre is in line with the shaft at {t['shaft_x_mm']} mm "
-                            f"(SR431; depends on the assumed shaft position). Only the tie at the far end can go over the case."})
+    fewest = min(sum(t["clear"] for t in c["ties"]) for c in rep["cradles"])
+    out.append({"id": "ties", "level": "ok" if fewest >= 2 else "fit",
+                "text": f"Each cradle has {len(rep['cradles'][0]['ties'])} tie slot pairs; on every cradle at least {fewest} "
+                        "of the tie paths cross the case clear of the output shaft and horn (the pairs at the shaft end do not, "
+                        "and are for a servo lying the other way round). This depends on the assumed shaft position and horn size."})
     if all(c["rail_clearance_each_side_mm"] > 0 for c in rep["cradles"]):
         out.append({"id": "rails", "level": "ok",
                     "text": "Every servo case fits between its rails with "
@@ -314,9 +306,7 @@ def markdown(report: dict) -> str:
                       [(f["a"], f["b"], f["volume_mm3"], f["depth_mm"], f["box_min_mm"], f["box_max_mm"]) for f in rep["neutral_interferences"]]), ""]
     else:
         md += ["None.", ""]
-    for key in ("interference_roll_servo_deck",):
-        if key in img:
-            md += [f"![{key}]({img[key]})", ""]
+    md += [f"![hip roll servo under the deck]({img['roll_servo_seat']})", ""]
 
     md += ["## Joint sweeps", "",
            "One joint at a time from the neutral pose, others at zero, until a part that moves with the joint meets one that",
@@ -331,8 +321,8 @@ def markdown(report: dict) -> str:
 
     md += ["## Servos in their cradles", "",
            _table(["servo", "model", "rail clearance each side (mm)", "seated on plate", "tie slots open", "ties clear of shaft", "overlap with its printed part (mm3)"],
-                  [(c["servo"], c["model"], c["rail_clearance_each_side_mm"], c["seat_support_fraction"], f"{c['tie_slots_open']}/4",
-                    f"{sum(t['clear'] for t in c['ties'])}/2", c["body_interference_mm3"]) for c in rep["cradles"]]), "",
+                  [(c["servo"], c["model"], c["rail_clearance_each_side_mm"], c["seat_support_fraction"], f"{c['tie_slots_open']}/{c['tie_slots_expected']}",
+                    f"{sum(t['clear'] for t in c['ties'])}/{len(c['ties'])}", c["body_interference_mm3"]) for c in rep["cradles"]]), "",
            "## Horn blanks", "",
            _table(["joint", "hole on shaft axis", "blank solid under the horn", "driver path clear", "driver comes from"],
                   [(h["joint"], h["hole_on_shaft_axis"], h["blank_fill_fraction"], h["driver_path_clear"], h["driver_from"]) for h in rep["horns"]]), "",
@@ -394,6 +384,52 @@ def markdown(report: dict) -> str:
                     p["stand_margin_mm"]) for k, p in report["camera_presets"].items()]), "",
            "The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are",
            "and what is assumed about them is in `config/hardware.json` and the design README.", ""]
+
+    base = rep
+    md += ["## Other controllers on the deck", "",
+           "The biped's deck with another controller in place of the UNO Q and Braccio shield, each as one block of the stated",
+           "mass on its torso variant, camera mount unchanged. Assembly and static balance only: none was simulated, and what",
+           "would drive the six servos from each is not part of this. Outlines and masses, with what is published and what is",
+           "assumed, are in `config/hardware.json` under `controllers`.", "",
+           _table(["controller", "torso file", "block mass (g)", "overlap with the print (mm3)", "gap to the camera board (mm)",
+                   "interference at neutral", "total mass (g)", "centre of mass at neutral (mm)", "legs straight: margin (mm)",
+                   "stand pose: thighs back (deg)", "stand margin (mm)", "hip pitch holding torque / limit"],
+                  [("unoq with Braccio shield", model.PART_FILES["torso"], 55.0, 0.0, base["camera"]["gaps"]["stack_envelope"]["to_camera_board_mm"],
+                    len(base["neutral_interferences"]), base["mass"]["total_g"], base["mass"]["com_neutral_mm"],
+                    base["balance"]["neutral_two_feet"]["margin_mm"], base["balance"]["stand_pose"]["thigh_swing_deg"],
+                    base["balance"]["stand_pose"]["margin_mm"], "see the simulation")]
+                  + [(k, c["torso_file"] + ("" if c["has_its_own_torso"] else " (not made for it)"), c["mass_g"], c["overlap_with_print_mm3"],
+                      c["gap_to_camera_board_mm"], len(c["neutral_interferences"]), c["total_g"], c["com_neutral_mm"],
+                      c["neutral_margin_mm"], c["stand_thigh_swing_deg"], c["stand_margin_mm"], c["hip_pitch_torque_fraction"])
+                     for k, c in report["controllers"].items()]), "",
+           "The hip pitch torque is the static moment of everything above the hips about the hip pitch axis at the stand pose,",
+           "shared by two servos, against the SR431's published 4.8 V torque.", ""]
+
+    th = report["turning_head"]
+    md += ["## Turning head (option)", "",
+           "An optional head in place of the fixed mount: a 9 g SG90-class servo hangs by its ears in a tab at the deck front and",
+           "turns a platform; the camera cradle tilts on one M3 screw and is set by hand. Printed from `01_torso_unoq_pan_head.stl`,",
+           "`head_pan_platform.stl` and `head_tilt_cradle_<camera>.stl`. It is not part of the robot description or the simulation:",
+           "the URDF, the MJCF and the joint commands are for the fixed mount. Servo body, shaft position and horn height are",
+           "assumed (see the design README); nothing has been fitted.", "",
+           f"![turning head]({img['turning_head']})", "",
+           _table(["check", "value"], [
+               ("camera preset", th["camera_preset"]),
+               ("pan travel between the printed stops (deg)", th["pan_travel_to_the_stops_deg"]),
+               ("stopped by", ", ".join(f"{b['moving']} / {b['fixed']}" for b in th["pan_stopped_by"]["positive"]) or "nothing"),
+               ("tilt set to (deg below level)", th["tilt_set_to_deg"]),
+               ("tilt free range about level (deg, positive is down)", th["tilt_free_deg"]),
+               ("tilt stopped by", ", ".join(f"{b['moving']} / {b['fixed']}" for b in th["tilt_stopped_by"]["positive"] + th["tilt_stopped_by"]["negative"]) or "nothing"),
+               ("interference at the neutral pose", len(th["neutral_interferences"])),
+               ("left hip roll, hip pitch, knee free range with the head on (deg)", list(th["leg_sweeps_collision_free_deg"].values())),
+               ("mass of the head with its servo and camera (g)", th["head_mass_g"]),
+               ("total mass (g)", th["total_g"]),
+               ("centre of mass at neutral (mm)", th["com_neutral_mm"]),
+               ("margin with legs straight (mm)", th["neutral_margin_mm"]),
+           ]), "",
+           _table(["at the stand pose, pan (deg)", "new interference", "parts in the clear cone", "centre of mass (mm)", "stand margin (mm)", "lens (mm)"],
+                  [(p["pan_deg"], len(p["new_interferences"]), ", ".join(h["solid"] for h in p["in_the_cone"]) or "none",
+                    p["com_mm"], p["stand_margin_mm"], p["lens_mm"]) for p in th["at_the_stand_pose"]]), ""]
 
     lg = rep["lego_compatible"]
 
@@ -474,8 +510,26 @@ def run(progress=print) -> dict:
         progress(f"camera preset {name}")
         other = dict(config, camera=dict(config["camera"], preset=name))
         presets[name] = assembly.camera_preset_summary(build_robot(selected, hardware, other))
+    controllers = {}
+    for name in [k for k in hardware["controllers"] if not k.startswith("_")]:
+        progress(f"controller {name}")
+        other = build_robot(selected, hardware, dict(config, controller=name))
+        controllers[name] = assembly.controller_summary(other, reports[selected]["joint_limits_deg"])
+    progress("turning head")
+    turning = build_robot(selected, hardware, dict(config, head="pan"))
+    head = assembly.head_checks(turning, reports[selected]["balance"]["stand_pose"]["q_deg"])
     progress("rendering")
     images = render_images(robots, reports, selected)
+    names = {"torso_print", "pan_servo", "pan_horn", "head_platform_print", "head_cradle_print", "camera_board", "unoq", "braccio_shield"}
+    shots = []
+    for angle in (0.0, head["pan_travel_to_the_stops_deg"][1]):
+        posed = turning.placed({"head_pan": angle, "head_tilt": head["tilt_set_to_deg"]})
+        shots.append(render.render(_items(posed, names), "iso", (560, 520), bounds=_pad([20, -45, -20], [80, 45, 95], 4.0)))
+    posed = turning.placed({"head_tilt": head["tilt_set_to_deg"]})
+    shots.append(render.render(_items(posed, names), "left", (560, 520), bounds=_pad([20, -45, -20], [80, 45, 95], 4.0)))
+    shots.append(render.render(_items(posed), "iso", (700, 520)))
+    images["turning_head"] = _save(_side_by_side(shots, ["turning head, pan 0", f"at the stop, {head['pan_travel_to_the_stops_deg'][1]} deg",
+                                                         "left", "whole robot"]), "turning-head.png")
     assumed = []
     for group in ("servos",):
         for name, spec in hardware[group].items():
@@ -503,6 +557,8 @@ def run(progress=print) -> dict:
                     camera["name"]: camera["source"]},
         "findings": findings(reports[selected]),
         "camera_presets": presets,
+        "turning_head": head,
+        "controllers": controllers,
         "images": images,
         "variants": reports,
     }
