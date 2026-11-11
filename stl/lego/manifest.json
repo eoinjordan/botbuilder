@@ -4,9 +4,10 @@
  "generator": "microduck-lego/build.py",
  "folders": {
   "ev3-pixy2": "Crank walker for the EV3 brick, two EV3 large motors and a Pixy2",
-  "pi-zero-2w-51515": "Crank walker for a Raspberry Pi Zero 2 W with the Build HAT, two 51515 medium angular motors and a Camera Module 2"
+  "pi-zero-2w-51515": "Crank walker for a Raspberry Pi Zero 2 W with the Build HAT, two 51515 medium angular motors and a Camera Module 2",
+  "wheeled": "Extra parts that turn either walker chassis into a two-wheel robot with a third support"
  },
- "total_bytes": 5121160,
+ "total_bytes": 8066048,
  "files": [
   {
    "file": "ev3-pixy2/chassis.stl",
@@ -263,6 +264,577 @@
    "bytes": 29284,
    "sha256": "ae987cc38094c4a5a67e22035473a1bdae93293257fac879f2114a9e6ddcb0a5",
    "design_commit": "874f61dafe6b5e77e094e7fed61bea7a249e4ff2"
+  },
+  {
+   "file": "wheeled/post_d43.stl",
+   "purpose": "support post for the 43.2 mm wheel class: two pins up into the shelf holes, socket for a tip",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 996,
+   "volume_cm3": 5.52,
+   "bounding_box_mm": [
+    16.0,
+    24.0,
+    35.6
+   ],
+   "watertight": true,
+   "bytes": 49884,
+   "sha256": "d40e759734114c5b7f2f64924778b38c0a9b3e2fb7d1bd89c8a3eb1687e0e048",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/post_d56.stl",
+   "purpose": "support post for the 56 mm wheel class: two pins up into the shelf holes, socket for a tip",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 996,
+   "volume_cm3": 6.441,
+   "bounding_box_mm": [
+    16.0,
+    24.0,
+    42.0
+   ],
+   "watertight": true,
+   "bytes": 49884,
+   "sha256": "cfdf6ee5f9a1e617c1fc0f8d81fa57925b4211d1a49f89b188aeb837c5d516d9",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/post_d65.stl",
+   "purpose": "support post for the 65 mm wheel class: two pins up into the shelf holes, socket for a tip",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 996,
+   "volume_cm3": 7.089,
+   "bounding_box_mm": [
+    16.0,
+    24.0,
+    46.5
+   ],
+   "watertight": true,
+   "bytes": 49884,
+   "sha256": "fe1adade79301938f610392837e797f2729def93a7d6cc65d3eb74f1bdc7396d",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/tip_skid.stl",
+   "purpose": "drag skid tip for the support post",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 1810,
+   "volume_cm3": 4.277,
+   "bounding_box_mm": [
+    25.29,
+    25.29,
+    29.99
+   ],
+   "watertight": true,
+   "bytes": 90584,
+   "sha256": "ed850f4af88a131a04389fe60e7bba4d7ec3048f061d98212b13e49172919dbf",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/tip_ball_16p5.stl",
+   "purpose": "snap-in cup tip for a LEGO 16.5 mm ball (part 54821)",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 4050,
+   "volume_cm3": 5.314,
+   "bounding_box_mm": [
+    21.7,
+    21.7,
+    24.21
+   ],
+   "watertight": true,
+   "bytes": 202584,
+   "sha256": "d16057414c8aebb6a7c7f2d014fac32a1f0c5a03a02ce1ab74bbf4cbbb497855",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/tip_ball_12p7.stl",
+   "purpose": "snap-in cup tip for a 12.7 mm steel ball",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 4050,
+   "volume_cm3": 4.466,
+   "bounding_box_mm": [
+    17.9,
+    17.9,
+    25.54
+   ],
+   "watertight": true,
+   "bytes": 202584,
+   "sha256": "0792a4382611dbd3190cba4f90fadcef1c722868394525528fabcc2b9bb5220c",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/tip_idler_fork.stl",
+   "purpose": "fork tip carrying the printed idler on a Technic axle",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 648,
+   "volume_cm3": 2.128,
+   "bounding_box_mm": [
+    12.0,
+    15.0,
+    25.49
+   ],
+   "watertight": true,
+   "bytes": 32484,
+   "sha256": "0313e169f630f1403076e684679b101c7920d8cdaada3713debe65f4cec1ff1c",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/idler_hub.stl",
+   "purpose": "hub of the 19 mm idler, free on a Technic axle",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 2080,
+   "volume_cm3": 1.12,
+   "bounding_box_mm": [
+    16.0,
+    16.0,
+    8.0
+   ],
+   "watertight": true,
+   "bytes": 104084,
+   "sha256": "c826fd4b731cb4816e4695f3fecdc1e9f6c00c9bc482c8dfed31b656c4260792",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/idler_tyre_tpu.stl",
+   "purpose": "tyre of the idler",
+   "print_quantity": 1,
+   "material": "TPU 95A",
+   "triangles": 1024,
+   "volume_cm3": 0.233,
+   "bounding_box_mm": [
+    19.0,
+    19.0,
+    3.2
+   ],
+   "watertight": true,
+   "bytes": 51284,
+   "sha256": "3e12692010a9eb7e519b57156c63550b1c510b365af8a40b9d8562bb4f551797",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/wheel_solid_cross_d43.stl",
+   "purpose": "one-piece wheel, Technic cross-axle bore; one 38 x 3 mm O-ring, rolls on 44.8 mm",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 1968,
+   "volume_cm3": 10.924,
+   "bounding_box_mm": [
+    42.76,
+    42.76,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 98484,
+   "sha256": "e8ba7b908571c8bc4c084ba8fc36521e2cde6553f6139ffd38bd4ddfeab87025",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen; the default printed wheel"
+  },
+  {
+   "file": "wheeled/wheel_band_cross_d43.stl",
+   "purpose": "one-piece wheel, Technic cross-axle bore; groove 7 mm wide for a rubber band up to 6 mm wide",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 1968,
+   "volume_cm3": 9.625,
+   "bounding_box_mm": [
+    42.2,
+    42.2,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 98484,
+   "sha256": "01187b19bbb3b54f8e5dd5bef57b7dca368a7aa9fb64fcf9b1588207e5874c8e",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/hub_tpu_cross_d43.stl",
+   "purpose": "rigid hub for the TPU tyre, Technic cross-axle bore",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 2128,
+   "volume_cm3": 8.014,
+   "bounding_box_mm": [
+    37.2,
+    37.2,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 106484,
+   "sha256": "873ee21443b412bf7806fd45a18df8f5718ba2c67f0299ecdd548b4a9e7090c9",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/wheel_solid_cross_d56.stl",
+   "purpose": "one-piece wheel, Technic cross-axle bore; one 50 x 3 mm O-ring, rolls on 57.0 mm",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 1968,
+   "volume_cm3": 15.517,
+   "bounding_box_mm": [
+    55.0,
+    55.0,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 98484,
+   "sha256": "8874a7a10aa124388fe990fbb192450a802a102f4a190f0236e05667e31c6cad",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen; the default printed wheel"
+  },
+  {
+   "file": "wheeled/wheel_band_cross_d56.stl",
+   "purpose": "one-piece wheel, Technic cross-axle bore; groove 7 mm wide for a rubber band up to 6 mm wide",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 1968,
+   "volume_cm3": 13.956,
+   "bounding_box_mm": [
+    55.0,
+    55.0,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 98484,
+   "sha256": "43bd05799c796dc9eaa4421c8cbd89e0b2c884aa769a56812c2b0de3b8e54a00",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/hub_tpu_cross_d56.stl",
+   "purpose": "rigid hub for the TPU tyre, Technic cross-axle bore",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 2128,
+   "volume_cm3": 11.984,
+   "bounding_box_mm": [
+    50.0,
+    50.0,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 106484,
+   "sha256": "3f109778141fb906f65fbed3f40dab2fc41119cd4213e44e4dec82596d95b15a",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/wheel_solid_tt_d65.stl",
+   "purpose": "one-piece wheel, TT double-flat shaft bore with retaining screw; two 58 x 3 mm O-rings, rolls on 65.2 mm",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 3336,
+   "volume_cm3": 22.082,
+   "bounding_box_mm": [
+    63.16,
+    63.16,
+    18.0
+   ],
+   "watertight": true,
+   "bytes": 166884,
+   "sha256": "8004e6014f04007aaa22ebcd71587432d8bf982504cc5a819fc9b0e2503e8f01",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen; the default printed wheel"
+  },
+  {
+   "file": "wheeled/wheel_band_tt_d65.stl",
+   "purpose": "one-piece wheel, TT double-flat shaft bore with retaining screw; groove 7 mm wide for a rubber band up to 6 mm wide",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 2568,
+   "volume_cm3": 21.276,
+   "bounding_box_mm": [
+    64.0,
+    64.0,
+    18.0
+   ],
+   "watertight": true,
+   "bytes": 128484,
+   "sha256": "76149436501867ee981866061d44feef996735dcce3e1aedc05fc20f4e55cb6d",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/hub_tpu_tt_d65.stl",
+   "purpose": "rigid hub for the TPU tyre, TT double-flat shaft bore with retaining screw",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 2728,
+   "volume_cm3": 18.491,
+   "bounding_box_mm": [
+    59.0,
+    59.0,
+    18.0
+   ],
+   "watertight": true,
+   "bytes": 136484,
+   "sha256": "5764f28ddaa775fb8a5e67f811a16f6087a01ead0d5b68321d72c17a3afd5b69",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/wheel_solid_horn_d56.stl",
+   "purpose": "one-piece wheel, plain face to screw to a servo horn; one 50 x 3 mm O-ring, rolls on 57.0 mm",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 2176,
+   "volume_cm3": 17.848,
+   "bounding_box_mm": [
+    55.0,
+    55.0,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 108884,
+   "sha256": "8d69273202e6e6a600a41fc7ac537e0f254bbd8309de5639da8e56bbe9f429e3",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen; the default printed wheel"
+  },
+  {
+   "file": "wheeled/wheel_band_horn_d56.stl",
+   "purpose": "one-piece wheel, plain face to screw to a servo horn; groove 7 mm wide for a rubber band up to 6 mm wide",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 2176,
+   "volume_cm3": 16.288,
+   "bounding_box_mm": [
+    55.0,
+    55.0,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 108884,
+   "sha256": "22592fc1c3a52a1a3dd8ad29fe801db771aa3904757e54f801238b54e6e96e22",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/hub_tpu_horn_d56.stl",
+   "purpose": "rigid hub for the TPU tyre, plain face to screw to a servo horn",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 2336,
+   "volume_cm3": 14.316,
+   "bounding_box_mm": [
+    50.0,
+    50.0,
+    14.0
+   ],
+   "watertight": true,
+   "bytes": 116884,
+   "sha256": "6cc5b273fab6b5f76dad5e3960048559defb43baed967a63575b55bd1ceb3884",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/tyre_tpu_d43.stl",
+   "purpose": "tyre, 43.2 mm outside, 4 mm thick, 2 percent stretch, keyed",
+   "print_quantity": 2,
+   "material": "TPU 95A",
+   "triangles": 1216,
+   "volume_cm3": 4.305,
+   "bounding_box_mm": [
+    43.2,
+    43.2,
+    9.2
+   ],
+   "watertight": true,
+   "bytes": 60884,
+   "sha256": "25ae60c0a5359e57ecba1424fdb2e1546c1e413cf61d991753b74f8445d66b42",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/tyre_tpu_d56.stl",
+   "purpose": "tyre, 56 mm outside, 4 mm thick, 2 percent stretch, keyed",
+   "print_quantity": 2,
+   "material": "TPU 95A",
+   "triangles": 1216,
+   "volume_cm3": 6.088,
+   "bounding_box_mm": [
+    56.0,
+    56.0,
+    9.2
+   ],
+   "watertight": true,
+   "bytes": 60884,
+   "sha256": "406eec3286d711c6b16d3c274ff221cb88efa58f1d1140207d15f33120014c48",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/tyre_tpu_d65.stl",
+   "purpose": "tyre, 65 mm outside, 4 mm thick, 2 percent stretch, keyed",
+   "print_quantity": 2,
+   "material": "TPU 95A",
+   "triangles": 1216,
+   "volume_cm3": 10.615,
+   "bounding_box_mm": [
+    65.0,
+    65.0,
+    13.2
+   ],
+   "watertight": true,
+   "bytes": 60884,
+   "sha256": "0aaef9de066a4e39b9066f9b4f71f1403333bc6a15ddd7fa4201b02e123e9165",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/tt_cradle_print_2.stl",
+   "purpose": "cradle for a yellow TT gear motor on the outside of a side panel; hole pattern assumed",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 1832,
+   "volume_cm3": 12.447,
+   "bounding_box_mm": [
+    60.0,
+    24.0,
+    9.5
+   ],
+   "watertight": true,
+   "bytes": 91684,
+   "sha256": "7d2a1914f0be8aebd1941011e57d2d2a2c8df9e7d895351564996384ce5b2b3c",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/servo_cradle_print_2.stl",
+   "purpose": "cradle for a 9 g 360-degree servo on the outside of a side panel; window size assumed",
+   "print_quantity": 2,
+   "material": "PLA or PETG",
+   "triangles": 1584,
+   "volume_cm3": 12.876,
+   "bounding_box_mm": [
+    48.0,
+    24.0,
+    16.5
+   ],
+   "watertight": true,
+   "bytes": 79284,
+   "sha256": "1dc092f49fd53f6a3eecc187ce02f0fec6203e66a8b339fe50d8cd9e7156f8c9",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/driver_plate.stl",
+   "purpose": "generic slotted plate for a small motor driver board",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 2154,
+   "volume_cm3": 7.875,
+   "bounding_box_mm": [
+    64.0,
+    40.0,
+    7.8
+   ],
+   "watertight": true,
+   "bytes": 107784,
+   "sha256": "48e6a744112ddff076cba1eb995918ae150a4e88f2af07f44cabc4c49f3f278b",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc",
+   "note": "if this option is chosen"
+  },
+  {
+   "file": "wheeled/fit_bore_cross.stl",
+   "purpose": "fit test: cross-axle wheel bore",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 432,
+   "volume_cm3": 1.107,
+   "bounding_box_mm": [
+    16.0,
+    16.0,
+    6.0
+   ],
+   "watertight": true,
+   "bytes": 21684,
+   "sha256": "504a6c8e3c689ff7205c978400c68239652ea8221ada10e9899d5f1a51fd784c",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc"
+  },
+  {
+   "file": "wheeled/fit_bore_tt.stl",
+   "purpose": "fit test: TT double-flat shaft pocket and screw hole",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 1032,
+   "volume_cm3": 2.177,
+   "bounding_box_mm": [
+    16.0,
+    16.0,
+    12.0
+   ],
+   "watertight": true,
+   "bytes": 51684,
+   "sha256": "a9b9008b0f431077f2ee2804fbd1b0d1b175587980dd0f12fedad2ef7f947062",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc"
+  },
+  {
+   "file": "wheeled/fit_bore_horn.stl",
+   "purpose": "fit test: horn face centre hole",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 640,
+   "volume_cm3": 1.224,
+   "bounding_box_mm": [
+    24.0,
+    24.0,
+    3.0
+   ],
+   "watertight": true,
+   "bytes": 32084,
+   "sha256": "42eae9def31d55e6b7868c4164392f029757df7d069ab0e6518a7736982baf71",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc"
+  },
+  {
+   "file": "wheeled/fit_tt_cradle.stl",
+   "purpose": "fit test: TT motor hole pattern, 2 mm slice of the cradle",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 1832,
+   "volume_cm3": 2.62,
+   "bounding_box_mm": [
+    60.0,
+    24.0,
+    2.0
+   ],
+   "watertight": true,
+   "bytes": 91684,
+   "sha256": "8922c6d8147ed5fb37b79bd05beabef40dab1616b0a65652adb59f0a7a285ecf",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc"
+  },
+  {
+   "file": "wheeled/fit_servo_cradle.stl",
+   "purpose": "fit test: servo window and ear holes, 2 mm slice of the cradle",
+   "print_quantity": 1,
+   "material": "PLA or PETG",
+   "triangles": 1592,
+   "volume_cm3": 1.555,
+   "bounding_box_mm": [
+    48.0,
+    24.0,
+    2.0
+   ],
+   "watertight": true,
+   "bytes": 79684,
+   "sha256": "c3e68d990a640ed0ba184ecc1869012a2541183db3317c0ede7efa1ac556eb3e",
+   "design_commit": "33a06e9a1202016c8441742c500053d8e43d9fbc"
   }
  ]
 }

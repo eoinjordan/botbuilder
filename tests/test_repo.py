@@ -57,7 +57,7 @@ def test_mesh_files_are_tracked_only_under_stl():
 
 
 def test_repository_stays_small():
-    # Printable files under stl/ have their own budget; stl/lego adds 5.1 MB.
+    # Printable files under stl/ have their own budget; stl/lego adds 8.1 MB.
     rest = [path for path in tracked() if not under_stl(path)]
     assert sum(path.stat().st_size for path in rest) < 5_000_000
     for path in rest:

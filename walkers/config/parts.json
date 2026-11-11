@@ -4,26 +4,236 @@
   "ev3-pixy2": {
    "what": "Crank walker for the EV3 brick, two EV3 large motors and a Pixy2",
    "files": {
-    "chassis.stl": {"purpose": "deck with strap slots for the brick, two side panels with the axle row, forward shelf for the head", "quantity": 1},
-    "camera_head.stl": {"purpose": "head with a perforated face for the Pixy2 LEGO edition brackets; print this or camera_head_pantilt, not both", "quantity": 1},
-    "camera_head_pantilt.stl": {"purpose": "head with a slotted top platform for the base plate of the Pixy2 pan-tilt kit; alternative to camera_head", "quantity": 0, "note": "platform size is assumed: measure the kit's base plate first"},
-    "left_leg.stl": {"purpose": "left leg and foot, fingers at +/-70 mm", "quantity": 1},
-    "right_leg.stl": {"purpose": "right leg and foot, fingers at +/-27 mm", "quantity": 1},
-    "crank_print_4.stl": {"purpose": "crank, 12 mm radius, cross-axle bore and pin bore", "quantity": 4},
-    "gear_16t_print_6.stl": {"purpose": "16-tooth module 1 spur gear, 5 mm thick, cross-axle bore", "quantity": 6},
-    "fit_coupon.stl": {"purpose": "fit test: cross-axle hole, 4.95 mm pin hole, 5.35 mm bearing hole; print first", "quantity": 1}
+    "chassis.stl": {
+     "purpose": "deck with strap slots for the brick, two side panels with the axle row, forward shelf for the head",
+     "quantity": 1
+    },
+    "camera_head.stl": {
+     "purpose": "head with a perforated face for the Pixy2 LEGO edition brackets; print this or camera_head_pantilt, not both",
+     "quantity": 1
+    },
+    "camera_head_pantilt.stl": {
+     "purpose": "head with a slotted top platform for the base plate of the Pixy2 pan-tilt kit; alternative to camera_head",
+     "quantity": 0,
+     "note": "platform size is assumed: measure the kit's base plate first"
+    },
+    "left_leg.stl": {
+     "purpose": "left leg and foot, fingers at +/-70 mm",
+     "quantity": 1
+    },
+    "right_leg.stl": {
+     "purpose": "right leg and foot, fingers at +/-27 mm",
+     "quantity": 1
+    },
+    "crank_print_4.stl": {
+     "purpose": "crank, 12 mm radius, cross-axle bore and pin bore",
+     "quantity": 4
+    },
+    "gear_16t_print_6.stl": {
+     "purpose": "16-tooth module 1 spur gear, 5 mm thick, cross-axle bore",
+     "quantity": 6
+    },
+    "fit_coupon.stl": {
+     "purpose": "fit test: cross-axle hole, 4.95 mm pin hole, 5.35 mm bearing hole; print first",
+     "quantity": 1
+    }
    }
   },
   "pi-zero-2w-51515": {
    "what": "Crank walker for a Raspberry Pi Zero 2 W with the Build HAT, two 51515 medium angular motors and a Camera Module 2",
    "files": {
-    "chassis.stl": {"purpose": "deck with four M2.5 bosses on 58 x 23 mm centres, two side panels with the axle row, forward shelf for the head", "quantity": 1},
-    "camera_head.stl": {"purpose": "head with a 21 x 12.5 mm M2 pattern for the Camera Module 2", "quantity": 1},
-    "left_leg.stl": {"purpose": "left leg and foot, fingers at +/-70 mm", "quantity": 1},
-    "right_leg.stl": {"purpose": "right leg and foot, fingers at +/-27 mm", "quantity": 1},
-    "crank_print_4.stl": {"purpose": "crank, 12 mm radius, cross-axle bore and pin bore", "quantity": 4},
-    "gear_16t_print_6.stl": {"purpose": "16-tooth module 1 spur gear, 5 mm thick, cross-axle bore", "quantity": 6},
-    "fit_coupon.stl": {"purpose": "fit test: cross-axle hole, 4.95 mm pin hole, 5.35 mm bearing hole; print first", "quantity": 1}
+    "chassis.stl": {
+     "purpose": "deck with four M2.5 bosses on 58 x 23 mm centres, two side panels with the axle row, forward shelf for the head",
+     "quantity": 1
+    },
+    "camera_head.stl": {
+     "purpose": "head with a 21 x 12.5 mm M2 pattern for the Camera Module 2",
+     "quantity": 1
+    },
+    "left_leg.stl": {
+     "purpose": "left leg and foot, fingers at +/-70 mm",
+     "quantity": 1
+    },
+    "right_leg.stl": {
+     "purpose": "right leg and foot, fingers at +/-27 mm",
+     "quantity": 1
+    },
+    "crank_print_4.stl": {
+     "purpose": "crank, 12 mm radius, cross-axle bore and pin bore",
+     "quantity": 4
+    },
+    "gear_16t_print_6.stl": {
+     "purpose": "16-tooth module 1 spur gear, 5 mm thick, cross-axle bore",
+     "quantity": 6
+    },
+    "fit_coupon.stl": {
+     "purpose": "fit test: cross-axle hole, 4.95 mm pin hole, 5.35 mm bearing hole; print first",
+     "quantity": 1
+    }
+   }
+  },
+  "wheeled": {
+   "what": "Extra parts that turn either walker chassis into a two-wheel robot with a third support",
+   "files": {
+    "post_d43.stl": {
+     "purpose": "support post for the 43.2 mm wheel class: two pins up into the shelf holes, socket for a tip",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "post_d56.stl": {
+     "purpose": "support post for the 56 mm wheel class: two pins up into the shelf holes, socket for a tip",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "post_d65.stl": {
+     "purpose": "support post for the 65 mm wheel class: two pins up into the shelf holes, socket for a tip",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "tip_skid.stl": {
+     "purpose": "drag skid tip for the support post",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "tip_ball_16p5.stl": {
+     "purpose": "snap-in cup tip for a LEGO 16.5 mm ball (part 54821)",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "tip_ball_12p7.stl": {
+     "purpose": "snap-in cup tip for a 12.7 mm steel ball",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "tip_idler_fork.stl": {
+     "purpose": "fork tip carrying the printed idler on a Technic axle",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "idler_hub.stl": {
+     "purpose": "hub of the 19 mm idler, free on a Technic axle",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "idler_tyre_tpu.stl": {
+     "purpose": "tyre of the idler",
+     "quantity": 1,
+     "material": "TPU 95A",
+     "note": "if this option is chosen"
+    },
+    "wheel_solid_cross_d43.stl": {
+     "purpose": "one-piece wheel, Technic cross-axle bore; one 38 x 3 mm O-ring, rolls on 44.8 mm",
+     "quantity": 2,
+     "note": "if this option is chosen; the default printed wheel"
+    },
+    "wheel_band_cross_d43.stl": {
+     "purpose": "one-piece wheel, Technic cross-axle bore; groove 7 mm wide for a rubber band up to 6 mm wide",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "hub_tpu_cross_d43.stl": {
+     "purpose": "rigid hub for the TPU tyre, Technic cross-axle bore",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "wheel_solid_cross_d56.stl": {
+     "purpose": "one-piece wheel, Technic cross-axle bore; one 50 x 3 mm O-ring, rolls on 57.0 mm",
+     "quantity": 2,
+     "note": "if this option is chosen; the default printed wheel"
+    },
+    "wheel_band_cross_d56.stl": {
+     "purpose": "one-piece wheel, Technic cross-axle bore; groove 7 mm wide for a rubber band up to 6 mm wide",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "hub_tpu_cross_d56.stl": {
+     "purpose": "rigid hub for the TPU tyre, Technic cross-axle bore",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "wheel_solid_tt_d65.stl": {
+     "purpose": "one-piece wheel, TT double-flat shaft bore with retaining screw; two 58 x 3 mm O-rings, rolls on 65.2 mm",
+     "quantity": 2,
+     "note": "if this option is chosen; the default printed wheel"
+    },
+    "wheel_band_tt_d65.stl": {
+     "purpose": "one-piece wheel, TT double-flat shaft bore with retaining screw; groove 7 mm wide for a rubber band up to 6 mm wide",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "hub_tpu_tt_d65.stl": {
+     "purpose": "rigid hub for the TPU tyre, TT double-flat shaft bore with retaining screw",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "wheel_solid_horn_d56.stl": {
+     "purpose": "one-piece wheel, plain face to screw to a servo horn; one 50 x 3 mm O-ring, rolls on 57.0 mm",
+     "quantity": 2,
+     "note": "if this option is chosen; the default printed wheel"
+    },
+    "wheel_band_horn_d56.stl": {
+     "purpose": "one-piece wheel, plain face to screw to a servo horn; groove 7 mm wide for a rubber band up to 6 mm wide",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "hub_tpu_horn_d56.stl": {
+     "purpose": "rigid hub for the TPU tyre, plain face to screw to a servo horn",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "tyre_tpu_d43.stl": {
+     "purpose": "tyre, 43.2 mm outside, 4 mm thick, 2 percent stretch, keyed",
+     "quantity": 2,
+     "material": "TPU 95A",
+     "note": "if this option is chosen"
+    },
+    "tyre_tpu_d56.stl": {
+     "purpose": "tyre, 56 mm outside, 4 mm thick, 2 percent stretch, keyed",
+     "quantity": 2,
+     "material": "TPU 95A",
+     "note": "if this option is chosen"
+    },
+    "tyre_tpu_d65.stl": {
+     "purpose": "tyre, 65 mm outside, 4 mm thick, 2 percent stretch, keyed",
+     "quantity": 2,
+     "material": "TPU 95A",
+     "note": "if this option is chosen"
+    },
+    "tt_cradle_print_2.stl": {
+     "purpose": "cradle for a yellow TT gear motor on the outside of a side panel; hole pattern assumed",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "servo_cradle_print_2.stl": {
+     "purpose": "cradle for a 9 g 360-degree servo on the outside of a side panel; window size assumed",
+     "quantity": 2,
+     "note": "if this option is chosen"
+    },
+    "driver_plate.stl": {
+     "purpose": "generic slotted plate for a small motor driver board",
+     "quantity": 1,
+     "note": "if this option is chosen"
+    },
+    "fit_bore_cross.stl": {
+     "purpose": "fit test: cross-axle wheel bore",
+     "quantity": 1
+    },
+    "fit_bore_tt.stl": {
+     "purpose": "fit test: TT double-flat shaft pocket and screw hole",
+     "quantity": 1
+    },
+    "fit_bore_horn.stl": {
+     "purpose": "fit test: horn face centre hole",
+     "quantity": 1
+    },
+    "fit_tt_cradle.stl": {
+     "purpose": "fit test: TT motor hole pattern, 2 mm slice of the cradle",
+     "quantity": 1
+    },
+    "fit_servo_cradle.stl": {
+     "purpose": "fit test: servo window and ear holes, 2 mm slice of the cradle",
+     "quantity": 1
+    }
    }
   }
  }
