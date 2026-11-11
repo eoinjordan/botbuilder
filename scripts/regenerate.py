@@ -3,7 +3,7 @@
 
     python scripts/regenerate.py [--design-dir PATH] [--no-record]
 
-1. fetch_stls.py            copy the printable STLs into build/stl
+1. fetch_stls.py            copy the printable STLs into stl
 2. run_assembly.py          reports/assembly.json, docs/assembly.md, pictures
 3. generate_description.py  robot/*, the firmware table
 4. run_sim.py               reports/sim.json, docs/simulation.md, trajectories, recordings

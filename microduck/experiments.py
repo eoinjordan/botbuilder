@@ -173,7 +173,10 @@ def verdict(out: dict) -> dict:
     else:
         lift = max(gd["feet"]["max_whole_sole_lift_mm"].values())
         text["gait"] = (f"The default gait stays up for {gd['duration_s']} s and moves {round(gd['distance_forward_m'] * 1000)} mm forward "
-                        f"({gd['speed_mm_s']} mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is "
+                        f"({gd['speed_mm_s']} mm/s). "
+                        + ("It is a shuffle, not a walk" if lift < 1.0 or gd["feet"]["both_loaded_fraction"] > 0.9 else
+                           "The feet leave the floor in turn")
+                        + f": the highest a whole sole comes off the floor is "
                         f"{lift} mm, and both feet stay loaded {round(gd['feet']['both_loaded_fraction'] * 100)} percent of the time.")
     if best:
         sweep = out["gait_sweep"]
@@ -251,6 +254,18 @@ def suggestions() -> list:
     stance = rep["dimensions"]["stance_width_between_foot_centres_mm"]
     one = abs(rep["balance"]["one_foot_left"]["at_stand_pose"]["margin_mm"])
     swing = rep["balance"]["stand_pose"]["thigh_swing_deg"]
+    if rep["balance"]["one_foot_left"]["at_stand_pose"]["inside"]:
+        return [
+            f"Move the hips back under the body. The hip pitch axis is {hip_x:.0f} mm ahead of the torso origin, so with straight legs "
+            f"the centre of mass is behind the heels and the robot only stands with the thighs swung {swing:.0f} degrees back.",
+            f"The comb soles put the centre of mass {one:.0f} mm inside either sole alone, so a foot can be lifted. The gait here is the "
+            "one written for the flat soles, with its parameters unchanged: it was not tuned for these feet. A gait study on this "
+            "geometry is the next step.",
+            "Stiffness is not in the simulation. Standing on one foot bends the fingers, the shin plate and the servo mounts; the "
+            "design README gives a hand calculation for the printed parts only.",
+            "Add hip yaw or accept that the robot cannot turn by joint motion alone: with roll and pitch only, heading changes come from slipping.",
+            "Check the soles on the real floor. The contact model is the least certain part of the simulation.",
+        ]
     return [
         f"Move the hips back under the body. The hip pitch axis is {hip_x:.0f} mm ahead of the torso origin, so with straight legs "
         f"the centre of mass is behind the heels and the robot only stands with the thighs swung {swing:.0f} degrees back.",

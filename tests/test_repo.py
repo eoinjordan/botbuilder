@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: MIT
 """House rules for the repository: plain ASCII text, SPDX lines on source
-files, no STL in the tree, documents that agree with the reports."""
+files, only the generated printable STLs as meshes, documents that agree
+with the reports."""
+import json
 import re
 import subprocess
 
@@ -46,14 +48,23 @@ def test_source_files_carry_an_spdx_line():
             assert "SPDX-License-Identifier: MIT" in head, path.relative_to(ROOT).as_posix()
 
 
-def test_no_mesh_files_are_tracked():
-    for path in tracked():
-        assert path.suffix.lower() not in (".stl", ".obj", ".step", ".3mf"), path.name
+def test_only_the_generated_printable_parts_are_tracked_as_meshes():
+    """The derived printable STLs are committed under stl/, each listed in the
+    manifest. The third-party source meshes are not in the repository."""
+    with open(ROOT / "stl" / "manifest.json", encoding="utf-8") as handle:
+        listed = {entry["file"] for entry in json.load(handle)["files"]}
+    meshes = [path for path in tracked() if path.suffix.lower() in (".stl", ".obj", ".step", ".3mf")]
+    assert {path.name for path in meshes} == listed
+    for path in meshes:
+        assert path.parent == ROOT / "stl" and path.suffix == ".stl", path.name
+        assert not re.match(r"\d\d_[^t]", path.name), "source meshes are numbered 01 to 15; only the torso starts with 01_"
 
 
 def test_repository_stays_small():
     total = sum(path.stat().st_size for path in tracked())
-    assert total < 5_000_000
+    assert total < 20_000_000
+    stls = sum(path.stat().st_size for path in tracked() if path.suffix == ".stl")
+    assert stls < 12_000_000
     for path in tracked():
         assert path.stat().st_size < 1_000_000, path.name
 

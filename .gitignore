@@ -5,12 +5,8 @@ __pycache__/
 venv/
 .pytest_cache/
 
-# Printable STLs copied from the local design directory by
-# scripts/fetch_stls.py. They are derived from third-party Microduck meshes
-# whose licence is not settled (see NOTICE), so they stay out of the history.
+# Scratch output of the generators
 build/
-site/data/meshes/
-*.stl
 
 # Simulator scratch output
 output/
@@ -25,4 +21,5 @@ output/
 # Built by scripts/build_site.py from reports/, robot/ and docs/images/
 site/data/
 site/images/
+site/stl/
 site/.nojekyll

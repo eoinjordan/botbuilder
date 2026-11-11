@@ -10,25 +10,64 @@
         "mass_g": 62.0,
         "torque_kgcm_4v8": 12.2,
         "torque_kgcm_6v0": 14.5,
-        "speed_s_per_60deg_4v8": 0.20,
+        "speed_s_per_60deg_4v8": 0.2,
         "speed_s_per_60deg_6v0": 0.18,
         "rotation_range_deg": 180.0,
         "control": "PWM analog"
       },
       "assumed": {
-        "height_is_case_only": {"value": true, "why": "the page gives one height; taken as the case without the output spline"},
-        "shaft_from_end_mm": {"value": 10.25, "why": "half the case width, as on standard-size servos; not published"},
-        "ear_overhang_mm": {"value": 6.5, "why": "typical mounting ear of a standard-size servo; not published"},
-        "ear_thickness_mm": {"value": 2.5, "why": "typical; not published"},
-        "ear_bottom_height_mm": {"value": 27.0, "why": "about 0.68 of the case height; not published"},
-        "boss_radius_mm": {"value": 6.5, "why": "output bearing boss; not published"},
-        "boss_height_mm": {"value": 1.5, "why": "not published"},
-        "horn_radius_mm": {"value": 10.5, "why": "round horn of about 21 mm; the kit's horn is not dimensioned by the maker"},
-        "horn_thickness_mm": {"value": 2.5, "why": "not published"},
-        "horn_hub_radius_mm": {"value": 4.5, "why": "not published"},
-        "horn_face_above_case_mm": {"value": 5.5, "why": "case top to the outer face of the horn, where the printed blank sits; not published"},
-        "stall_current_a": {"value": 2.0, "why": "the maker publishes no stall current; typical for an analog servo of this torque at 5 V"},
-        "armature_kgm2": {"value": 0.003, "why": "reflected rotor inertia for the simulation; not published"}
+        "height_is_case_only": {
+          "value": true,
+          "why": "the page gives one height; taken as the case without the output spline"
+        },
+        "shaft_from_end_mm": {
+          "value": 10.25,
+          "why": "half the case width, as on standard-size servos; not published"
+        },
+        "ear_overhang_mm": {
+          "value": 6.5,
+          "why": "typical mounting ear of a standard-size servo; not published"
+        },
+        "ear_thickness_mm": {
+          "value": 2.5,
+          "why": "typical; not published"
+        },
+        "ear_bottom_height_mm": {
+          "value": 27.0,
+          "why": "about 0.68 of the case height; not published"
+        },
+        "boss_radius_mm": {
+          "value": 6.5,
+          "why": "output bearing boss; not published"
+        },
+        "boss_height_mm": {
+          "value": 1.5,
+          "why": "not published"
+        },
+        "horn_radius_mm": {
+          "value": 10.5,
+          "why": "round horn of about 21 mm; the kit's horn is not dimensioned by the maker"
+        },
+        "horn_thickness_mm": {
+          "value": 2.5,
+          "why": "not published"
+        },
+        "horn_hub_radius_mm": {
+          "value": 4.5,
+          "why": "not published"
+        },
+        "horn_face_above_case_mm": {
+          "value": 5.5,
+          "why": "case top to the outer face of the horn, where the printed blank sits; not published"
+        },
+        "stall_current_a": {
+          "value": 2.0,
+          "why": "the maker publishes no stall current; typical for an analog servo of this torque at 5 V"
+        },
+        "armature_kgm2": {
+          "value": 0.003,
+          "why": "reflected rotor inertia for the simulation; not published"
+        }
       }
     },
     "SR311": {
@@ -46,19 +85,58 @@
         "control": "PWM analog"
       },
       "assumed": {
-        "height_is_case_only": {"value": true, "why": "the page gives one height; taken as the case without the output spline"},
-        "shaft_from_end_mm": {"value": 8.25, "why": "half the case width; not published"},
-        "ear_overhang_mm": {"value": 4.5, "why": "typical mounting ear of a mini servo; not published"},
-        "ear_thickness_mm": {"value": 2.0, "why": "typical; not published"},
-        "ear_bottom_height_mm": {"value": 19.5, "why": "about 0.68 of the case height; not published"},
-        "boss_radius_mm": {"value": 5.0, "why": "not published"},
-        "boss_height_mm": {"value": 1.2, "why": "not published"},
-        "horn_radius_mm": {"value": 9.0, "why": "round horn of about 18 mm; not dimensioned by the maker"},
-        "horn_thickness_mm": {"value": 2.0, "why": "not published"},
-        "horn_hub_radius_mm": {"value": 3.5, "why": "not published"},
-        "horn_face_above_case_mm": {"value": 4.5, "why": "case top to the outer face of the horn; not published"},
-        "stall_current_a": {"value": 1.0, "why": "the maker publishes no stall current; typical for a mini analog servo at 5 V"},
-        "armature_kgm2": {"value": 0.001, "why": "reflected rotor inertia for the simulation; not published"}
+        "height_is_case_only": {
+          "value": true,
+          "why": "the page gives one height; taken as the case without the output spline"
+        },
+        "shaft_from_end_mm": {
+          "value": 8.25,
+          "why": "half the case width; not published"
+        },
+        "ear_overhang_mm": {
+          "value": 4.5,
+          "why": "typical mounting ear of a mini servo; not published"
+        },
+        "ear_thickness_mm": {
+          "value": 2.0,
+          "why": "typical; not published"
+        },
+        "ear_bottom_height_mm": {
+          "value": 19.5,
+          "why": "about 0.68 of the case height; not published"
+        },
+        "boss_radius_mm": {
+          "value": 5.0,
+          "why": "not published"
+        },
+        "boss_height_mm": {
+          "value": 1.2,
+          "why": "not published"
+        },
+        "horn_radius_mm": {
+          "value": 9.0,
+          "why": "round horn of about 18 mm; not dimensioned by the maker"
+        },
+        "horn_thickness_mm": {
+          "value": 2.0,
+          "why": "not published"
+        },
+        "horn_hub_radius_mm": {
+          "value": 3.5,
+          "why": "not published"
+        },
+        "horn_face_above_case_mm": {
+          "value": 4.5,
+          "why": "case top to the outer face of the horn; not published"
+        },
+        "stall_current_a": {
+          "value": 1.0,
+          "why": "the maker publishes no stall current; typical for a mini analog servo at 5 V"
+        },
+        "armature_kgm2": {
+          "value": 0.001,
+          "why": "reflected rotor inertia for the simulation; not published"
+        }
       }
     }
   },
@@ -85,9 +163,18 @@
       "pin_5v_max_a": 3.0
     },
     "assumed": {
-      "pcb_thickness_mm": {"value": 1.6, "why": "standard board thickness; not in the datasheet text"},
-      "mass_g": {"value": 30.0, "why": "the datasheet gives no mass; estimate for a populated UNO-format board"},
-      "spacer_mm": {"value": 2.5, "why": "insulating spacers the design README asks for; must exceed the 2 mm bottom-side parts"}
+      "pcb_thickness_mm": {
+        "value": 1.6,
+        "why": "standard board thickness; not in the datasheet text"
+      },
+      "mass_g": {
+        "value": 30.0,
+        "why": "the datasheet gives no mass; estimate for a populated UNO-format board"
+      },
+      "spacer_mm": {
+        "value": 2.5,
+        "why": "insulating spacers the design README asks for; must exceed the 2 mm bottom-side parts"
+      }
     }
   },
   "shield": {
@@ -98,22 +185,629 @@
       "width_mm": 53.34
     },
     "assumed": {
-      "mass_g": {"value": 25.0, "why": "not published; estimate for the shield with headers and jack"},
-      "pcb_gap_mm": {"value": 11.0, "why": "stacking header pitch between board and shield; not published"},
-      "stack_height_mm": {"value": 26.0, "why": "top of the servo plugs above the UNO Q board top; not published"}
+      "mass_g": {
+        "value": 25.0,
+        "why": "not published; estimate for the shield with headers and jack"
+      },
+      "pcb_gap_mm": {
+        "value": 11.0,
+        "why": "stacking header pitch between board and shield; not published"
+      },
+      "stack_height_mm": {
+        "value": 26.0,
+        "why": "top of the servo plugs above the UNO Q board top; not published"
+      }
+    }
+  },
+  "cameras": {
+    "esp32cam": {
+      "name": "AI-Thinker ESP32-CAM",
+      "source": "https://iarduino.ru/lib/78eba891fa500cedb3b7a5641d82ce74.pdf",
+      "source_note": "AI-Thinker 'ESP32-CAM Wi-Fi+BT SoC Module V1.0' specification, read from a mirror; docs.ai-thinker.com did not serve the page.",
+      "published": {
+        "length_mm": 40.5,
+        "width_mm": 27.0,
+        "overall_thickness_mm": 4.5,
+        "outline_tolerance_mm": 0.2,
+        "mass_g": 10.0,
+        "supply_v": 5.0,
+        "current_flash_off_ma": 180,
+        "current_flash_max_ma": 310,
+        "header_pitch_mm": 2.54,
+        "header_row_spacing_mm": 22.86,
+        "header_end_pin_from_lower_edge_mm": 4.58,
+        "mounting_holes": 0,
+        "connector": "none; 2 x 8 pin headers (5V, GND, U0R, U0T, IO0 for power and flashing)"
+      },
+      "third_party": {
+        "lens_fov_deg": {
+          "value": 65.0,
+          "source": "https://docs.m5stack.com/en/unit/esp32cam",
+          "note": "65 to 68 degrees is quoted for the stock OV2640 module; no source says whether diagonal or horizontal"
+        }
+      },
+      "assumed": {
+        "pcb_thickness_mm": {
+          "value": 1.6,
+          "why": "not published; the snap lips are spaced for 1.6 mm plus 0.3 mm, a thinner board sits loose by the difference"
+        },
+        "lens_centre_above_lower_edge_mm": {
+          "value": 31.5,
+          "why": "the camera lies over the card slot at the antenna end, about 9 mm from that edge; not dimensioned by the maker, tolerance 3 mm"
+        },
+        "lens_front_above_board_mm": {
+          "value": 6.5,
+          "why": "OV2640 module height on the card slot; not published, tolerance 1.5 mm"
+        },
+        "lens_diameter_mm": {
+          "value": 8.0,
+          "why": "module body about 8 mm square; not published"
+        }
+      }
+    },
+    "esp_eye": {
+      "name": "Espressif ESP-EYE V2.1",
+      "source": "https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP-EYE_Getting_Started_Guide.md",
+      "source_note": "Espressif's guide names the parts (OV2640 camera, Micro-USB, BOOT and RST buttons on the camera face, a side function button, microphone, 3D antenna) and gives no dimensions. Positions were scaled from its annotated photograph esp-eye_callout.png.",
+      "published": {
+        "connector": "Micro-USB on the back face at the lower short edge; powers the board",
+        "mounting_holes": 1,
+        "mounting_hole_note": "one hole of about 2.3 mm in a corner at the antenna end; one hole cannot locate the board, so it is held by its edges"
+      },
+      "third_party": {
+        "length_mm": {
+          "value": 41.0,
+          "source": "https://wiki.dfrobot.com/dfr0620/"
+        },
+        "width_mm": {
+          "value": 21.0,
+          "source": "https://wiki.dfrobot.com/dfr0620/"
+        },
+        "overall_thickness_mm": {
+          "value": 6.5,
+          "source": "https://wiki.dfrobot.com/dfr0620/"
+        },
+        "lens_fov_deg": {
+          "value": 66.5,
+          "source": "https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP32-S3-EYE_Getting_Started_Guide.md",
+          "note": "Espressif's figure for the OV2640 on the ESP32-S3-EYE; none is given for the ESP-EYE"
+        }
+      },
+      "assumed": {
+        "length_mm": {
+          "value": 41.0,
+          "why": "reseller figure; Espressif publishes none"
+        },
+        "width_mm": {
+          "value": 21.0,
+          "why": "reseller figure; Espressif publishes none"
+        },
+        "mass_g": {
+          "value": 8.0,
+          "why": "not published; estimate, tolerance 3 g"
+        },
+        "pcb_thickness_mm": {
+          "value": 1.6,
+          "why": "not published"
+        },
+        "lens_centre_above_lower_edge_mm": {
+          "value": 32.0,
+          "why": "scaled from Espressif's photograph: 9 mm from the antenna end, centred; tolerance 1 mm"
+        },
+        "lens_front_above_board_mm": {
+          "value": 6.5,
+          "why": "not published, tolerance 1.5 mm"
+        },
+        "lens_diameter_mm": {
+          "value": 8.0,
+          "why": "module body about 7.7 mm square in the photograph"
+        },
+        "boot_and_reset_above_lower_edge_mm": {
+          "value": 25.5,
+          "why": "scaled from the photograph: on the camera face, 1.6 mm from each long edge; tolerance 1 mm"
+        },
+        "side_button_above_lower_edge_mm": {
+          "value": 9.0,
+          "why": "scaled from the photograph: 7 to 11.5 mm, on the long edge at the robot's right; tolerance 1 mm"
+        },
+        "microphone_above_lower_edge_mm": {
+          "value": 2.0,
+          "why": "scaled from the photograph: camera face, centred, at the USB end"
+        }
+      }
+    },
+    "esp32_s3_eye": {
+      "name": "Espressif ESP32-S3-EYE v2.2",
+      "source": "https://dl.espressif.com/dl/schematics/DXF_ESP32-S3-EYE_MB_top_V2.2_20211207.pdf",
+      "source_note": "Espressif's dimension drawings of the main board and its getting-started guide (https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP32-S3-EYE_Getting_Started_Guide.md).",
+      "published": {
+        "length_mm": 60.0,
+        "width_mm": 30.0,
+        "sub_board_mm": [
+          30.0,
+          31.9
+        ],
+        "lens_fov_deg": 66.5,
+        "mounting_holes": 2,
+        "mounting_hole_note": "two holes of about 3 mm in the corners at the antenna end; not used, the antenna end is left open",
+        "connector": "Micro-USB on the back face at the lower short edge"
+      },
+      "assumed": {
+        "mass_g": {
+          "value": 25.0,
+          "why": "not published; estimate with the LCD sub board, tolerance 8 g"
+        },
+        "pcb_thickness_mm": {
+          "value": 1.6,
+          "why": "not published"
+        },
+        "lens_centre_above_lower_edge_mm": {
+          "value": 49.4,
+          "why": "scaled from the drawing: 10.6 mm from the antenna end, centred; tolerance 0.5 mm"
+        },
+        "lens_front_above_board_mm": {
+          "value": 6.5,
+          "why": "not published, tolerance 1.5 mm"
+        },
+        "lens_diameter_mm": {
+          "value": 8.6,
+          "why": "module body scaled from the drawing"
+        },
+        "stack_thickness": {
+          "value": "unknown",
+          "why": "the drawings are flat; where the LCD sub board's headers sit along the long edges is not known, so the lip and ledge positions of this preset are the least certain of the three"
+        }
+      }
+    }
+  },
+  "camera_optics": {
+    "assumed": {
+      "clear_cone_half_angle_deg": {
+        "value": 40.0,
+        "why": "covers 66.5 degrees whether that figure is the diagonal or the horizontal field of a 4:3 sensor (39.3 degrees to the corner in the second case)"
+      }
     }
   },
   "print": {
     "assumed": {
-      "material": {"value": "PLA", "why": "the design README names no material"},
-      "density_g_cm3": {"value": 1.24, "why": "typical PLA filament data sheet value; PETG is about 1.27"},
-      "solid_fraction": {"value": 0.6, "why": "4 mm plates with two perimeters and 0.8 mm skins at 20 percent infill are mostly shell"}
+      "material": {
+        "value": "PLA",
+        "why": "the design README names no material"
+      },
+      "density_g_cm3": {
+        "value": 1.24,
+        "why": "typical PLA filament data sheet value; PETG is about 1.27"
+      },
+      "solid_fraction": {
+        "value": 0.6,
+        "why": "4 mm plates with two perimeters and 0.8 mm skins at 20 percent infill are mostly shell"
+      }
     }
   },
   "driver": {
     "assumed": {
-      "screwdriver_radius_mm": {"value": 3.0, "why": "shank of a small cross-head driver for the horn screw"},
-      "screwdriver_length_mm": {"value": 80.0, "why": "free length needed in front of the access hole"}
+      "screwdriver_radius_mm": {
+        "value": 3.0,
+        "why": "shank of a small cross-head driver for the horn screw"
+      },
+      "screwdriver_length_mm": {
+        "value": 80.0,
+        "why": "free length needed in front of the access hole"
+      }
+    }
+  },
+  "head_servo": {
+    "name": "M5Stack Servo Kit 360 / 180 (SG90 class)",
+    "source": "https://docs.m5stack.com/en/accessory/servo_kit_360",
+    "sources": [
+      "https://docs.m5stack.com/en/accessory/servo_kit_360",
+      "https://docs.m5stack.com/en/accessory/servo_kit_180",
+      "https://docs.m5stack.com/en/app/balac",
+      "https://docs.m5stack.com/en/app/balac_plus",
+      "https://bit.nkust.edu.tw/~csshieh/teach/111A/mc/datasheet/SG90.pdf",
+      "https://static.rapidonline.com/pdf/37-1330t.pdf"
+    ],
+    "published": {
+      "kit_360_is_continuous_rotation": true,
+      "kit_180_is_positional": true,
+      "mass_g": 9.0,
+      "supply_v": [
+        4.8,
+        6.0
+      ],
+      "stall_torque_kgcm_4v8": 1.6,
+      "stall_current_ma": 750,
+      "no_load_current_ma": 60,
+      "signal": "50 Hz, 0.5 to 2.5 ms",
+      "kit_size_mm": [
+        40,
+        12,
+        36
+      ],
+      "sg90_body_mm": {
+        "length": [
+          22.2,
+          23.0
+        ],
+        "width": [
+          11.8,
+          12.5
+        ],
+        "overall_height": [
+          29.0,
+          31.0
+        ]
+      }
+    },
+    "assumed": {
+      "body_length_mm": {
+        "value": 23.0,
+        "why": "largest of the SG90 data sheet figures; M5Stack gives no body size for the servo alone"
+      },
+      "body_width_mm": {
+        "value": 12.5,
+        "why": "largest of the SG90 figures"
+      },
+      "body_below_ears_mm": {
+        "value": 19.5,
+        "why": "largest of the SG90 figures (17 to 19.5)"
+      },
+      "ear_span_mm": {
+        "value": 32.5,
+        "why": "SG90 figures give 32 to 32.5"
+      },
+      "shaft_from_body_centre_mm": {
+        "value": 5.6,
+        "why": "typical of the SG90; not on the data sheets read; measure"
+      },
+      "horn_face_above_deck_top_mm": {
+        "value": 14.5,
+        "why": "ears on the deck top, gear housing 10 mm, spline and horn about 4.5 mm; measure with the horn or adapter fitted"
+      },
+      "same_case_for_180_and_360": {
+        "value": true,
+        "why": "both are named SG90 by M5Stack; not stated"
+      },
+      "adapter_hole_pattern": {
+        "value": "four holes at 8 mm from the axis",
+        "why": "the kit's LEGO-compatible adapter is not dimensioned by M5Stack; measure with calipers"
+      }
+    }
+  },
+  "pixy": {
+    "name": "Charmed Labs Pixy2 and pan-tilt kit",
+    "source": "https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:dimensions",
+    "published": {
+      "board_mm": [
+        38.25,
+        42.0
+      ],
+      "mass_g": 10.0,
+      "hole_diameter_mm": 3.0,
+      "holes_from_top_left_mm": [
+        [
+          5.1,
+          31.3
+        ],
+        [
+          16.0,
+          38.8
+        ],
+        [
+          22.4,
+          38.8
+        ]
+      ],
+      "lens_fov_deg": [
+        60,
+        40
+      ],
+      "pan_tilt_servos_plug_into": "the Pixy2's own two servo connectors"
+    },
+    "assumed": {
+      "pan_tilt_base_slot_spacing_mm": {
+        "value": 25.0,
+        "why": "the kit's base is not dimensioned by the maker; measure"
+      },
+      "pan_tilt_base_slot_length_mm": {
+        "value": 20.0,
+        "why": "allows for the unknown hole spacing; measure"
+      },
+      "first_pixy_board_mm": {
+        "value": [
+          53.3,
+          50.8
+        ],
+        "why": "2.1 x 2.0 inches as commonly quoted for the first Pixy; not read from Charmed Labs' pages"
+      }
+    }
+  },
+  "controllers": {
+    "_comment": "Controllers the biped's deck has a torso variant for, other than the UNO Q with the Braccio shield (see 'board' and 'shield'). 'box_mm' is where the analysis puts the controller as one block in the torso frame (min corner, max corner): an assumption of this repository. Masses include what the entry names.",
+    "pi_zero_2w": {
+      "name": "Raspberry Pi Zero 2 W with a PCA9685 servo driver board",
+      "torso": "01_torso_pi_zero_2w_cam_{camera}.stl",
+      "source": "https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf",
+      "sources": [
+        "https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-mechanical-drawing.pdf",
+        "https://www.adafruit.com/product/815"
+      ],
+      "published": {
+        "length_mm": 65.0,
+        "width_mm": 30.0,
+        "hole_pattern_mm": [
+          58.0,
+          23.0
+        ],
+        "supply": "5 V 2.5 A on micro USB",
+        "driver_board_mm": [
+          62.5,
+          25.4
+        ],
+        "driver_mass_g": 9.0,
+        "driver_channels": 16
+      },
+      "assumed": {
+        "pi_mass_g": {
+          "value": 11.0,
+          "why": "not in the product brief; estimate"
+        },
+        "mass_g": {
+          "value": 20.0,
+          "why": "Pi estimate plus the driver board with headers (9 g, Adafruit)"
+        },
+        "stack_height_mm": {
+          "value": 20.0,
+          "why": "Pi, header and driver board above it; not measured"
+        },
+        "box_mm": {
+          "value": [
+            [
+              -32.5,
+              -15.0,
+              7.0
+            ],
+            [
+              32.5,
+              15.0,
+              27.0
+            ]
+          ],
+          "why": "long side along x on 3 mm bosses, centred on the deck"
+        }
+      }
+    },
+    "pi": {
+      "name": "Raspberry Pi, full size, with a PCA9685 servo driver board",
+      "torso": "01_torso_pi_cam_{camera}.stl",
+      "source": "https://www.adafruit.com/product/815",
+      "published": {
+        "driver_board_mm": [
+          62.5,
+          25.4
+        ],
+        "driver_mass_g": 9.0
+      },
+      "assumed": {
+        "length_mm": {
+          "value": 85.0,
+          "why": "the usual full-size Raspberry Pi outline; not read from a Raspberry Pi drawing in this work"
+        },
+        "width_mm": {
+          "value": 56.0,
+          "why": "as above"
+        },
+        "hole_pattern_mm": {
+          "value": [
+            58.0,
+            49.0
+          ],
+          "why": "as given for the full-size boards; 3.5 mm in from one short edge; not read from a Raspberry Pi drawing in this work"
+        },
+        "mass_g": {
+          "value": 55.0,
+          "why": "about 46 g for a Raspberry Pi 4 plus the 9 g driver; the board mass is not from a maker's page"
+        },
+        "stack_height_mm": {
+          "value": 22.0,
+          "why": "board, connectors and driver; not measured"
+        },
+        "box_mm": {
+          "value": [
+            [
+              -28.0,
+              -42.5,
+              7.0
+            ],
+            [
+              28.0,
+              42.5,
+              29.0
+            ]
+          ],
+          "why": "long side across the robot on 3 mm bosses, so the board clears the camera mount"
+        }
+      }
+    },
+    "hub51515": {
+      "name": "LEGO Technic large hub of the Robot Inventor 51515 set, with its battery",
+      "torso": "01_torso_hub51515_cam_{camera}.stl",
+      "source": "https://assets.education.lego.com/v3/assets/blt293eea581807678a/bltf512a371e82f6420/5f8801baf4f4cf0fa39d2feb/techspecs_techniclargehub.pdf",
+      "published": {
+        "length_mm": 88.0,
+        "width_mm": 56.0,
+        "height_mm": 32.0,
+        "mass_without_battery_g": 63.0,
+        "ports": "6 LPF2",
+        "battery": "2100 mAh, 7.3 V lithium ion"
+      },
+      "assumed": {
+        "same_as_spike_prime_hub_45601": {
+          "value": true,
+          "why": "the sheet is for the SPIKE Prime large hub; that the 51515 hub has the same case and mass is taken as known, not sourced"
+        },
+        "battery_mass_g": {
+          "value": 70.0,
+          "why": "LEGO's battery sheet gives no mass; estimate, tolerance 30 g"
+        },
+        "mass_g": {
+          "value": 133.0,
+          "why": "hub without battery (published) plus the battery estimate"
+        },
+        "box_mm": {
+          "value": [
+            [
+              -30.0,
+              -44.0,
+              7.8
+            ],
+            [
+              26.0,
+              44.0,
+              39.8
+            ]
+          ],
+          "why": "long side across the robot, resting on the two pad rows and the rear pad"
+        }
+      }
+    },
+    "ev3": {
+      "name": "LEGO EV3 Intelligent Brick with six AA cells",
+      "torso": "01_torso_hub51515_cam_{camera}.stl",
+      "source": "https://www.manualslib.com/manual/1243730/Lego-Ev3.html?page=8",
+      "source_note": "LEGO's EV3 user guide, read from a third-party host, gives ports and batteries only. No LEGO page read in this work gives the brick's dimensions or mass.",
+      "published": {
+        "ports": "4 motor, 4 sensor",
+        "power": "6 AA cells or the rechargeable pack"
+      },
+      "assumed": {
+        "length_mm": {
+          "value": 119.0,
+          "why": "retailer listing; not LEGO's figure"
+        },
+        "width_mm": {
+          "value": 76.0,
+          "why": "retailer listing; not LEGO's figure"
+        },
+        "height_mm": {
+          "value": 48.0,
+          "why": "retailer listing; not LEGO's figure"
+        },
+        "mass_g": {
+          "value": 300.0,
+          "why": "not found; estimate for the brick with six AA cells, tolerance 60 g"
+        },
+        "box_mm": {
+          "value": [
+            [
+              -42.0,
+              -59.5,
+              7.8
+            ],
+            [
+              34.0,
+              59.5,
+              55.8
+            ]
+          ],
+          "why": "long side across the robot on the hub torso, as far back as the deck allows; there is no torso made for it"
+        }
+      }
+    }
+  },
+  "round_display": {
+    "name": "Seeed Studio Round Display for XIAO with a XIAO ESP32S3 in its socket",
+    "source": "https://wiki.seeedstudio.com/get_start_round_display/",
+    "sources": [
+      "https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/",
+      "https://wiki.seeedstudio.com/seeedstudio_round_display_usage/",
+      "https://www.seeedstudio.com/Seeed-Studio-Round-Display-for-XIAO-p-5638.html",
+      "https://files.seeedstudio.com/wiki/round_display_for_xiao/round-pinout.png",
+      "https://files.seeedstudio.com/wiki/SeeedStudio-XIAO-ESP32S3/res/XIAO_ESP32S3_ExpBoard_v1.0_top.dxf"
+    ],
+    "published": {
+      "display_outline": "39 mm disc (the product page also lists 43 x 43 mm)",
+      "screen": "1.28 inch, 240 x 240, capacitive touch",
+      "xiao_socket": "on the back; facing the screen, the XIAO's USB-C points right and the power switch is at the lower left",
+      "battery_connector": "JST 1.25 mm, 2 pin, at the rim under the XIAO's USB-C end",
+      "charging": "3.7 V lithium cell through the XIAO's USB port, about 485 mA",
+      "microsd": true,
+      "rtc_cell": "CR927",
+      "xiao_board_mm": [
+        21.0,
+        17.8
+      ],
+      "xiao_sense_stack_mm": [
+        21.0,
+        17.8,
+        15.0
+      ],
+      "sense_camera": "OV2640 discontinued; OV3660 or OV5640 on current stock; module about 8 x 8 mm on a flex about 21 mm long overall",
+      "sense_camera_fov_deg": "OV3660 module: 102 diagonal, 85 horizontal"
+    },
+    "third_party": {
+      "thickness_mm": {
+        "value": 7.2,
+        "source": "https://docs.cirkitdesigner.com/component/aba01e81-f4aa-560b-6d27-78eee22b3eca/seeed-studio-round-display-for-xiao"
+      }
+    },
+    "assumed": {
+      "glass_diameter_mm": {
+        "value": 40.0,
+        "why": "Seeed says 39 mm disc and its photos show the glass slightly larger than the board; measure"
+      },
+      "rim_thickness_mm": {
+        "value": 5.0,
+        "why": "glass front to the back of the board at the rim; not published; measure"
+      },
+      "stack_depth_mm": {
+        "value": 16.0,
+        "why": "glass front to the back of the XIAO; not published; measure"
+      },
+      "mass_g": {
+        "value": 15.0,
+        "why": "display and XIAO together; Seeed publishes neither; tolerance 8 g"
+      },
+      "camera_faces_away_from_the_screen": {
+        "value": true,
+        "why": "Seeed's text puts the XIAO on the back and its camera-project pictures show the lens looking out of the back; no sentence says so"
+      },
+      "mounting": {
+        "value": "by the edge",
+        "why": "three M2 standoffs show on the back in Seeed's picture but their positions are not published"
+      }
+    }
+  },
+  "battery": {
+    "name": "LiPo cell for the head",
+    "source": "https://www.adafruit.com/products/2750",
+    "published": {
+      "example_cell_mm": [
+        36.0,
+        19.6,
+        5.2
+      ],
+      "example_cell_mass_g": 8.2,
+      "example_capacity_mah": 350,
+      "note": "an example of the size class from another maker; its JST-PH plug does not fit the display's JST 1.25 socket"
+    },
+    "assumed": {
+      "length_mm": {
+        "value": 36.0,
+        "why": "the owner's cell is not known; measure"
+      },
+      "width_mm": {
+        "value": 20.0,
+        "why": "as above"
+      },
+      "thickness_mm": {
+        "value": 5.5,
+        "why": "as above"
+      },
+      "mass_g": {
+        "value": 8.5,
+        "why": "as above"
+      }
     }
   }
 }

@@ -46,5 +46,15 @@ SR431 and 1.0 A for an SR311.
 - Size the supply and wiring for the stall figure, or fuse it, and put a
   switch in the servo supply within reach. A software stop or the watchdog
   does not cut power.
+- The round display and its XIAO run from their own 3.7 V lithium cell under
+  the deck and charge through the XIAO's USB-C port (about 485 mA, Seeed's
+  figure). They take nothing from the 5 V supplies, which is an advantage:
+  the eyes stay up when the servo rail sags. The camera board, if it is an
+  ESP32-CAM or ESP-EYE, still needs 5 V.
+- The camera board adds about 0.3 A at 5 V (ESP32-CAM, maker's figure with
+  the flash LED on). Feed it from the controller side, not the servo rail.
+  See [camera.md](camera.md).
+- The optional turning head adds one 9 g servo: up to 0.75 A at 5 V when
+  stalled against a stop (M5Stack's figure). See [head.md](head.md).
 - The robot is tethered. No battery, regulator or charger is part of this
   design, and the mass and balance figures do not include one.
