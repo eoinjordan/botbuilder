@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 """The static site: builds from the committed data, uses relative paths only,
-pins its one external script, carries no trackers and no STLs."""
+pins its one external script, carries no trackers and serves the printable STLs listed in the manifest."""
 import json
 import re
 import subprocess
@@ -28,9 +28,16 @@ def test_site_builds_with_data_and_pictures(built, assembly_report):
     assert json.loads((built / "data" / "assembly.json").read_text(encoding="utf-8"))["findings"] == assembly_report["findings"]
 
 
-def test_no_stls_are_published(built):
-    assert not list(built.rglob("*.stl"))
-    assert json.loads((built / "data" / "model.json").read_text(encoding="utf-8"))["meshes_published"] is False
+def test_the_printable_stls_are_published_as_listed(built):
+    manifest = json.loads((built / "stl" / "manifest.json").read_text(encoding="utf-8"))
+    assert {p.name for p in built.rglob("*.stl")} == {entry["file"] for entry in manifest["files"]}
+    for entry in manifest["files"]:
+        assert (built / "stl" / entry["file"]).stat().st_size == entry["bytes"]
+    model_data = json.loads((built / "data" / "model.json").read_text(encoding="utf-8"))
+    assert model_data["meshes_published"] is True
+    for link in model_data["links"]:
+        for mesh in link["meshes"]:
+            assert (built / "stl" / mesh["file"]).is_file()
 
 
 def test_paths_are_relative_so_a_repo_base_path_works():

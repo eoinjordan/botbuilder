@@ -287,12 +287,6 @@ def board_checks(robot: Robot) -> dict:
     env_common = envelope ^ torso
     deck_front = 39.0   # build.py: the rectangular deck plate ends at x = +39
     rail_top = 7.8      # build.py: rails from z 3.8 to 7.8
-    # Head clearance over the stack, with the board moved clear of the neck.
-    head_gap = None
-    dx = shift or 0.0
-    above = torso ^ box([bb[0][0] + dx + 2.0, bb[0][1], bb[1][2]], [bb[1][0] + dx, bb[1][1], 200.0])
-    if above.volume() > 0.5:
-        head_gap = float(_tight_bbox(above)[0][2] - _bbox(envelope)[1][2])
     return {
         "board_outline_mm": [b["length_mm"], b["width_mm"]],
         "board_box_min_mm": _r(bb[0]), "board_box_max_mm": _r(bb[1]),
@@ -304,8 +298,221 @@ def board_checks(robot: Robot) -> dict:
         "stack_envelope_interference_mm3": _r(env_common.volume(), 1),
         "forward_shift_to_clear_mm": shift,
         "front_overhang_after_shift_mm": None if shift is None else _r(max(0.0, bb[1][0] + shift - deck_front)),
-        "head_above_stack_top_after_shift_mm": None if head_gap is None else _r(head_gap),
     }
+
+
+# --- camera mount -----------------------------------------------------------
+
+def _cone_hits(robot: Robot, cone: Manifold, q=None, links=None) -> list:
+    out = []
+    for link, solid, m in robot.placed(q):
+        if solid.name == "camera_board" or m.is_empty() or (links and link not in links):
+            continue
+        volume = (cone ^ m).volume()
+        if volume > 0.5:
+            out.append({"solid": solid.name, "volume_mm3": _r(volume, 1)})
+    return out
+
+
+def camera_checks(robot: Robot, limits: dict, stand_q: dict) -> dict:
+    """The camera board in its mount: fit, clearance to the controller stack,
+    and the cone kept clear in front of the lens."""
+    cam, spec, pose = robot.camera, robot.camera["spec"], robot.camera["pose"]
+    torso = _solid(robot, "torso_print")[1].manifold
+    board = _solid(robot, "camera_board")[1].manifold
+    to_torso = pose["to_torso"]
+    w, l, t = spec["width"], spec["length"], spec["thickness"]
+
+    def pcb(grow_y=0.0, shift_x=0.0, shift_z=0.0):
+        # The volume the board sweeps when moved by the shifts.
+        return apply(box([min(shift_x, 0.0), -w / 2 - grow_y, min(shift_z, 0.0)],
+                         [t + max(shift_x, 0.0), w / 2 + grow_y, l + max(shift_z, 0.0)]), to_torso)
+
+    side = _largest_clear(lambda g: (pcb(grow_y=g) ^ torso).volume() < 1e-3)
+    forward = _largest_clear(lambda g: (pcb(shift_x=g) ^ torso).volume() < 1e-3)
+    back = _largest_clear(lambda g: (pcb(shift_x=-g) ^ torso).volume() < 1e-3)
+    seated = (pcb(shift_z=-0.2) ^ torso).volume() > 1e-3
+    lift = _largest_clear(lambda g: (pcb(shift_z=g) ^ torso).volume() < 1e-3, hi=10.0)
+    # The printed mount alone: the torso above the deck, ahead of the board bay.
+    mount = torso ^ box([34.4, -80, PLATE + 0.05], [200, 80, 300])
+    gaps = {}
+    for name in ("unoq", "braccio_shield"):
+        other = _solid(robot, name)[1].manifold
+        gaps[name] = {"to_mount_mm": _r(other.min_gap(mount, 60.0)), "to_camera_board_mm": _r(other.min_gap(board, 60.0))}
+    gaps["stack_envelope"] = {"to_mount_mm": _r(robot.envelope.min_gap(mount, 60.0)),
+                              "to_camera_board_mm": _r(robot.envelope.min_gap(board, 60.0))}
+    cone = model.view_cone(pose, cam["cone_half_angle_deg"])
+    # Each joint over its limits, others at the stand pose and at neutral:
+    # where does a leg come into the cone?
+    sweeps = {}
+    for joint in JOINTS:
+        links = set(robot.subtree(robot.link_of_joint(joint)))
+        lo, hi = limits[joint]["min_deg"], limits[joint]["max_deg"]
+        row = {}
+        for label, base in (("from_neutral", {}), ("from_stand", stand_q)):
+            inside = [float(a) for a in np.arange(lo, hi + 0.5, 3.0)
+                      if _cone_hits(robot, cone, {**base, joint: float(a)}, links)]
+            row[label] = {"angles_in_cone_deg": [min(inside), max(inside)] if inside else None}
+        sweeps[joint] = row
+    frames = robot.fk(stand_q)
+    sole = model.point(frames["left_shin"], [0, 0, sole_points(robot, "left")[:, 2].min()])[2]
+    feet = sole_points(robot, "left")
+    return {
+        "preset": cam["preset"], "name": spec["name"],
+        "board_mm": [w, l, t], "mass_g": spec["mass_g"],
+        "tilt_below_level_deg": robot.assumptions["camera"]["tilt_deg"],
+        "lens_mm": _r(pose["lens"]), "looks_along": _r(pose["forward"], 3),
+        "toes_ahead_of_shin_mm": _r(feet[:, 0].max()), "heel_behind_shin_mm": _r(-feet[:, 0].min()),
+        "looks_the_way_the_toes_point": bool(pose["forward"][0] > 0 and feet[:, 0].max() > -feet[:, 0].min()),
+        "lens_height_above_floor_at_stand_mm": _r(pose["lens"][2] - sole),
+        "clearance_each_side_mm": _r(side), "play_towards_the_lips_mm": _r(forward), "play_towards_the_ledges_mm": _r(back),
+        "seated_on_the_corner_seats": bool(seated), "play_upwards_to_the_catch_mm": _r(lift),
+        "board_overlap_with_mount_mm3": _r((board ^ torso).volume(), 2),
+        "gaps": gaps,
+        "cone_half_angle_deg": cam["cone_half_angle_deg"],
+        "cone_blocked_at_neutral": _cone_hits(robot, cone),
+        "cone_blocked_at_stand": _cone_hits(robot, cone, stand_q),
+        "cone_sweeps": sweeps,
+    }
+
+
+def camera_preset_summary(robot: Robot) -> dict:
+    """The short form of the checks, for a camera preset the full report does
+    not use: fit, clearances, the cone at two poses, mass and balance."""
+    threshold = robot.assumptions["interference_threshold_mm3"]
+    stand = support(robot, {}, ("left", "right"))
+    limits = {j: {"min_deg": -90.0, "max_deg": 90.0} for j in JOINTS}
+    bal = balance(robot, limits)
+    full = camera_checks(robot, {j: {"min_deg": 0.0, "max_deg": 0.0} for j in JOINTS}, bal["stand_pose"]["q_deg"])
+    total, com = centre_of_mass(robot)
+    keep = ("preset", "name", "board_mm", "mass_g", "lens_mm", "lens_height_above_floor_at_stand_mm", "clearance_each_side_mm",
+            "play_towards_the_lips_mm", "play_towards_the_ledges_mm", "play_upwards_to_the_catch_mm",
+            "seated_on_the_corner_seats", "board_overlap_with_mount_mm3", "gaps", "cone_blocked_at_neutral", "cone_blocked_at_stand")
+    out = {k: full[k] for k in keep}
+    out.update({"neutral_interferences": [(f["a"], f["b"], f["volume_mm3"]) for f in interferences(robot.placed(), threshold)],
+                "total_g": _r(total, 1), "com_neutral_mm": _r(com),
+                "neutral_margin_mm": stand["margin_mm"], "stand_thigh_swing_deg": bal["stand_pose"]["thigh_swing_deg"],
+                "stand_margin_mm": bal["stand_pose"]["margin_mm"]})
+    return out
+
+
+# --- attachment features compatible with LEGO elements -----------------------
+
+def _segment(a, b, radius, inner=0.0) -> Manifold:
+    a, b = np.asarray(a, float), np.asarray(b, float)
+    length = float(np.linalg.norm(b - a))
+    rod = cylinder_z(radius, 0.0, length)
+    if inner:
+        rod -= cylinder_z(inner, -1.0, length + 1.0)
+    return apply(rod, _axis_frame(a, b - a))
+
+
+def lego_checks(robot: Robot, design: dict) -> dict:
+    """Pin holes and studs the generator added: is each hole open for a pin of
+    nominal diameter over a full beam thickness, is there wall around it, does
+    each stud exist, and how far each is from the nearest joint axis and from
+    any other part at the neutral pose."""
+    spec = design["lego_compatible"]
+    frames = robot.fk()
+    placed = robot.placed()
+    by_part = {s.part: (link, s) for link, s in robot.solids() if s.kind == "print"}
+    axes = [(link.joint, frames[name][:3, 3], frames[name][:3, :3] @ link.axis) for name, link in robot.links.items() if link.joint]
+
+    def to_world(part, p):
+        link, solid = by_part[part]
+        return model.point(frames[link] @ solid.part_to_link, p), link, solid
+
+    def axis_distance(p):
+        return min(float(np.linalg.norm(np.cross(p - o, d))) for _, o, d in axes)
+
+    def neighbour_gap(shape, own):
+        gaps = [(shape.min_gap(m, 30.0), s.name) for _, s, m in placed if s.name != own and not m.is_empty()]
+        gap, name = min(gaps)
+        return _r(gap), name
+
+    holes, studs = [], []
+    pin_r = spec["pin_hole"] / 2
+    bore_r = (spec["pin_counterbore"][0] + spec["hole_extra"]) / 2
+    for h in spec["holes"]:
+        a, link, solid = to_world(h["part"], h["start"])
+        b = to_world(h["part"], h["end"])[0]
+        printed = apply(solid.manifold, frames[link])
+        inset = spec["pin_counterbore"][1] * (b - a) / np.linalg.norm(b - a)
+        wall = _segment(a + inset, b - inset, bore_r + 0.8, bore_r + 0.1)
+        gap, near = neighbour_gap(_segment(a, b, bore_r + 0.8), solid.name)
+        holes.append({"part": h["part"], "length_mm": _r(np.linalg.norm(b - a)),
+                      "open_for_a_nominal_pin": bool((_segment(a, b, pin_r) ^ printed).volume() < 1e-3),
+                      "wall_fill_fraction": _r((wall ^ printed).volume() / wall.volume(), 3),
+                      "from_nearest_joint_axis_mm": _r(axis_distance(0.5 * (a + b))),
+                      "nearest_other_part": near, "gap_to_it_mm": gap})
+    stud_r, stud_h = (spec["stud"][0] - spec["stud_under"]) / 2, spec["stud"][1]
+    for s in spec["studs"]:
+        base, link, solid = to_world(s["part"], s["base"])
+        tip = to_world(s["part"], np.asarray(s["base"]) + stud_h * np.asarray(s["axis"]))[0]
+        printed = apply(solid.manifold, frames[link])
+        body = _segment(base, tip, stud_r - 0.05)
+        gap, near = neighbour_gap(_segment(base, tip, stud_r), solid.name)
+        studs.append({"part": s["part"], "present": bool((body ^ printed).volume() > 0.98 * body.volume()),
+                      "points_up_at_neutral": bool((tip - base)[2] > 0.99 * stud_h),
+                      "from_nearest_joint_axis_mm": _r(axis_distance(base)),
+                      "nearest_other_part": near, "gap_to_it_mm": gap})
+    cone = model.view_cone(robot.camera["pose"], robot.camera["cone_half_angle_deg"])
+    in_cone = 0
+    for item, key in [(h, "start") for h in spec["holes"]] + [(s, "base") for s in spec["studs"]]:
+        p = to_world(item["part"], item[key])[0]
+        in_cone += int((apply(Manifold.sphere(3.0, 12), trans(*p)) ^ cone).volume() > 0)
+    return {"nominal_mm": {k: spec[k] for k in ("pitch", "pin_hole", "pin_counterbore", "beam", "stud")},
+            "print_allowance_mm": {"hole_extra": spec["hole_extra"], "stud_under": spec["stud_under"]},
+            "holes": holes, "studs": studs, "features_in_the_camera_cone_at_neutral": in_cone,
+            "counts": {part: {"holes": sum(h["part"] == part for h in holes), "studs": sum(s["part"] == part for s in studs)}
+                       for part in sorted({x["part"] for x in holes + studs})}}
+
+
+def decoration_budget(robot: Robot, stand_q: dict) -> list:
+    """How much extra mass the stand pose tolerates at a few places before the
+    centre of mass reaches the edge of the support polygon. Static balance on
+    two feet only: no servo torque, no motion."""
+    frames = robot.fk(stand_q)
+    base = support(robot, stand_q, ("left", "right"))
+    ground = np.linalg.inv(frames["left_shin"])
+    hull = ConvexHull(np.asarray(base["polygon_mm"]))
+    total, com = centre_of_mass(robot, stand_q)
+    com_g = model.point(ground, com)
+    pose = robot.camera["pose"]
+    places = [("at the camera, on the mount", [("torso", pose["lens"])]),
+              ("on the rear pin holes of the deck", [("torso", [-41.0, 0.0, 12.0])]),
+              ("on the deck studs, shared between both sides", [("torso", [-24.0, 48.0, 10.0]), ("torso", [-24.0, -48.0, 10.0])]),
+              ("on the thigh pin holes, shared between both thighs", None),
+              ("on the shin pin holes, shared between both shins", None),
+              ("on the foot studs, shared between both feet", None)]
+    by_part = {s.part: (link, s) for link, s in robot.solids() if s.kind == "print"}
+
+    def part_point(part, p):
+        link, solid = by_part[part]
+        return model.point(frames[link] @ solid.part_to_link, p)
+
+    places[3] = (places[3][0], [(None, part_point(f"{s}_thigh", [36.0, 0.0, -4.0])) for s in ("left", "right")])
+    places[4] = (places[4][0], [(None, part_point(f"{s}_shin", [0.0, 0.0, 40.0])) for s in ("left", "right")])
+    places[5] = (places[5][0], [(None, part_point(f"{s}_shin", [26.0, 0.0, 12.0])) for s in ("left", "right")])
+    out = []
+    for label, points in places:
+        where = np.mean([model.point(ground, p if link is None else model.point(frames[link], p)) for link, p in points], axis=0)
+
+        def margin(grams):
+            c = (total * com_g + grams * where) / (total + grams)
+            return float(-np.max(hull.equations[:, :2] @ c[:2] + hull.equations[:, 2]))
+
+        limit = None
+        if margin(3000.0) <= 0:
+            lo, hi = 0.0, 3000.0
+            while hi - lo > 0.5:
+                mid = 0.5 * (lo + hi)
+                lo, hi = (mid, hi) if margin(mid) > 0 else (lo, mid)
+            limit = lo
+        out.append({"where": label, "point_in_ground_frame_mm": _r(where), "margin_with_50_g_mm": _r(margin(50.0)),
+                    "margin_with_100_g_mm": _r(margin(100.0)), "margin_with_200_g_mm": _r(margin(200.0)),
+                    "mass_that_uses_up_the_margin_g": None if limit is None else _r(limit, 0)})
+    return out
 
 
 # --- mass and balance -------------------------------------------------------
@@ -530,4 +737,9 @@ def analyse(robot: Robot, progress=lambda text: None) -> dict:
     }
     progress("balance")
     report["balance"] = balance(robot, limits)
+    progress("camera mount")
+    report["camera"] = camera_checks(robot, limits, report["balance"]["stand_pose"]["q_deg"])
+    progress("pin holes and studs")
+    report["lego_compatible"] = lego_checks(robot, model.design_parameters())
+    report["decoration_budget"] = decoration_budget(robot, report["balance"]["stand_pose"]["q_deg"])
     return report

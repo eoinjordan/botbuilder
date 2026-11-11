@@ -157,10 +157,11 @@ def test_watchdog_is_not_armed_before_the_first_target(running):
     assert running.mode == RUN
 
 
-def test_status_line(running):
-    running.handle("J 0 45 -45 0 45 -45", 100)
+def test_status_line(running, cal):
+    # The controller starts at the stand pose, so commanding it moves nothing.
+    running.handle(protocol.format_joints(cal.stand_deg).strip(), 100)
     reply = running.handle("S", 160)
-    assert reply == "STAT mode=RUN age_ms=60 wd=500 q=0.0,45.0,-45.0,0.0,45.0,-45.0"
+    assert reply == "STAT mode=RUN age_ms=60 wd=500 q=" + ",".join(f"{q:.1f}" for q in cal.stand_deg)
 
 
 def test_calibration_moves_one_joint_by_small_steps(running, cal):
