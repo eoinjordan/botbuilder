@@ -162,7 +162,7 @@ def test_control_page_in_simulator_target_with_a_synthetic_gamepad(browser, site
     assert first["mode"] == "RELAX" and first["q"] == STAND and first["sent"] == 0
     assert "not served by the robot's server" in browser.js("document.getElementById('real-reason').textContent")
     assert "Playback, not physics" in browser.js("document.getElementById('view-note').textContent") or not first["viewer"]
-    assert "not run on hardware" in browser.js("document.body.textContent")
+    assert "Stop does not cut servo power" in browser.js("document.body.textContent")
 
     # what is missing is disabled and says why
     actions = browser.js("document.getElementById('actions').textContent")
@@ -295,7 +295,7 @@ def test_board_served_page_drives_the_virtual_robot(browser, bridge):  # noqa: F
     browser.js("document.getElementById('target-real').click(); true")
     browser.wait("window.microduckControl.snapshot().target === 'real'")
     browser.wait("!document.getElementById('arm').disabled")
-    assert "not run on hardware" in browser.js("document.getElementById('target-label').textContent").lower()
+    assert "support the robot" in browser.js("document.getElementById('target-label').textContent").lower()
 
     # not armed: a held pad does nothing
     browser.pad()

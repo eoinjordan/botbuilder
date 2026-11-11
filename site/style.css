@@ -51,6 +51,7 @@ img { max-width: 100%; height: auto; display: block; }
 .masthead nav a:hover { color: var(--green); text-decoration: none; }
 .masthead nav a[aria-current="page"] { color: var(--green); font-weight: 600; }
 .masthead nav a[hidden] { display: none; }
+.lead { max-width: 900px; margin: -8px 0 26px; }
 .subnav { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin: -14px 0 24px; }
 
 main { max-width: 1400px; margin: auto; padding: 36px 5% 0; }

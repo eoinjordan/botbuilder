@@ -73,7 +73,7 @@ def test_generated_documents_say_their_status():
     assert "never been assembled" in (ROOT / "docs" / "simulation.md").read_text(encoding="utf-8")
     assert "Nothing here has been printed, assembled or powered" in (ROOT / "docs" / "assembly.md").read_text(encoding="utf-8")
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "verified in simulation only" in readme
+    assert "docs/status.md" in readme
     assert "where their shape comes from" in readme
 
 

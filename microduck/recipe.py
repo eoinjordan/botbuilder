@@ -23,7 +23,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY_PATHS = ("reports/variants/summary.json", "reports/lego/summary.json")
 MANIFEST_PATHS = ("stl/manifest.json", "stl/MANIFEST.json")
-MAX_NEAREST_STEPS = 8
+PROGRAM_PATHS = ("programs/index.json",)
+VALIDATED_PATH = "config/validated.json"
+SEARCH_DEPTH = 6
 
 
 # --- data -------------------------------------------------------------------
@@ -81,7 +83,7 @@ def coverage(compat: dict, listing: dict, root: Path = ROOT) -> dict:
     if camera.get("preset") and home in own:
         overlaps = rep.get("neutral_interferences", [])
         entries.append({"match": {"controller": own[home], "camera": camera["preset"], "head": fixed}, "status": "analysed", "lines": [
-            f"Analysed with the {camera['name']} in the mount and the pin holes and studs on the parts.",
+            f"Simulated with the {camera['name']} in the mount and the pin holes and studs on the parts.",
             f"Mass {round(mass['total_g'])} g by the model ({round(mass['total_if_printed_solid_g'])} g if printed solid); "
             f"size {round(size[0])} x {round(size[1])} x {round(size[2])} mm; "
             f"feet {round(rep['dimensions']['stance_width_between_foot_centres_mm'])} mm apart.",
@@ -105,7 +107,7 @@ def coverage(compat: dict, listing: dict, root: Path = ROOT) -> dict:
             f"centre of mass {short['stand_margin_mm']:g} mm inside the support polygon at the stand pose "
             f"(thighs {short['stand_thigh_swing_deg']:g} degrees back), {short['clearance_each_side_mm']:g} mm each side in the mount, "
             f"view cone {cone} at the neutral and stand poses.",
-            f"Not simulated: the MuJoCo runs used the {simulated} torso. Joint sweeps and the full findings list were run for that torso only.",
+            f"The simulation, the joint sweeps and the full findings list used the {simulated} torso.",
         ]})
     torso_camera = {entry["file"]: entry["camera"] for entry in listing["files"]}
     report_name = compat["report_controller"]
@@ -114,7 +116,7 @@ def coverage(compat: dict, listing: dict, root: Path = ROOT) -> dict:
         block = assembly.get("controllers", {}).get(name)
         if block is None:
             continue
-        figures = (f"{block['name']}, taken as one block of {block['mass_g']:g} g (assumed): total mass {block['total_g']:g} g, "
+        figures = (f"{block['name']}, taken as one block of {block['mass_g']:g} g: total mass {block['total_g']:g} g, "
                    f"centre of mass {block['stand_margin_mm']:g} mm inside the support polygon at the stand pose "
                    f"(thighs {block['stand_thigh_swing_deg']:g} degrees back), holding torque "
                    f"{round(block['hip_pitch_torque_fraction'] * 100)} percent of the hip pitch servo limit")
@@ -124,11 +126,11 @@ def coverage(compat: dict, listing: dict, root: Path = ROOT) -> dict:
             entries.append({"match": {"controller": controller, "camera": torso_camera[block["torso_file"]], "head": fixed},
                             "status": "assembly_only", "lines": [
                 f"Digital assembly, fit and static balance only, with the {figures}; {clear}.",
-                f"Not simulated: the MuJoCo runs used the UNO Q torso with the {simulated}. Joint sweeps were not repeated for this torso.",
+                f"The simulation and the joint sweeps used the UNO Q torso with the {simulated}.",
             ]})
         elif not supported:
-            carried[controller] = (f"As a carried block only, the reports checked the servo biped's static balance with the {figures}. "
-                                   "That is a balance figure for carrying it. It is not a way to drive the servos, and it makes nothing buildable.")
+            carried[controller] = (f"Balance of the servo biped carrying it as a block: {figures}. "
+                                   "That is a figure for carrying it; it does not drive the servos.")
     head = assembly.get("turning_head")
     if head and home in own:
         travel = head["pan_travel_to_the_stops_deg"]
@@ -141,7 +143,7 @@ def coverage(compat: dict, listing: dict, root: Path = ROOT) -> dict:
             f"centre of mass {min(margins):g} to {max(margins):g} mm inside the support polygon at the stand pose across the pan travel.",
             f"Tilt is set by hand: the cradle is free from {tilt[0]:g} to {tilt[1]:g} degrees about its screw and was checked at "
             f"{head['tilt_set_to_deg']:g} degrees. At full pan the legs are in the camera's view cone.",
-            "Not simulated: the head has no joint in the robot description, the simulation or the command format.",
+            "The head has no joint in the robot description, the simulation or the command format.",
         ]
         for option, name in compat["manifest_map"]["head"].items():
             if name == "pan":
@@ -324,6 +326,84 @@ def _summary_entry(node: dict, hints: list[str], compat: dict) -> dict | None:
             "files": files, "parts": parts}
 
 
+PROGRAM_KEYS = ("files", "file", "program", "load_with")
+
+
+def programs(compat: dict, root: Path = ROOT) -> list[dict]:
+    """Program files for a controller and build, from programs/index.json
+    when another branch has written it. Any nesting; an object with a files,
+    file, program or load_with key is an entry, matched to a controller and
+    locomotion the same way as a summary entry."""
+    for name in PROGRAM_PATHS:
+        path = root / name
+        if path.is_file():
+            found: list[dict] = []
+            _walk_programs(_load(path), [], compat, found)
+            return found
+    return []
+
+
+def _walk_programs(node, hints: list[str], compat: dict, found: list[dict]) -> None:
+    if isinstance(node, list):
+        for item in node:
+            _walk_programs(item, hints, compat, found)
+    elif isinstance(node, dict):
+        if any(key in node for key in PROGRAM_KEYS):
+            tokens: list[str] = []
+            for text in hints + [node[key] for key in NAME_KEYS + ("build",) if isinstance(node.get(key), str)]:
+                for part in str(text).lower().replace(":", "/").replace("__", "/").split("/"):
+                    tokens.append(part.strip())
+            match = {}
+            for dim in ("controller", "locomotion", "drive"):
+                named = str(node.get(dim, "")).lower()
+                for token in ([named] if named else []) + tokens:
+                    hit = [option for option, names in compat["summary_aliases"][dim].items() if token in names]
+                    if hit:
+                        match[dim] = hit[0]
+                        break
+            if "controller" not in match:
+                return
+            listed = node.get("files", node.get("file", node.get("program", [])))
+            files = []
+            for item in listed if isinstance(listed, list) else [listed]:
+                if isinstance(item, dict):
+                    item = item.get("path", item.get("file", ""))
+                raw = str(item)
+                item = raw.replace("\\", "/").lstrip("./")
+                if item and "." not in item.split("/")[0][:1] and ".." not in raw and " " not in item:
+                    files.append(item if item.startswith("programs/") else "programs/" + item)
+            load = node.get("load_with")
+            if isinstance(load, str):
+                load = {"name": "Robot Creator", "url": compat["robot_creator"]} if "robot" in load.lower() else {"name": load, "url": ""}
+            elif isinstance(load, dict) and str(load.get("url", "")).startswith("https://"):
+                load = {"name": str(load.get("name", "the loader")), "url": load["url"]}
+            else:
+                load = None
+            steps = [str(step) for step in node.get("steps", []) if isinstance(step, str)] if isinstance(node.get("steps"), list) else []
+            if files:
+                found.append({"match": match, "files": files, "steps": steps, "load_with": load})
+            return
+        for key, value in node.items():
+            _walk_programs(value, hints + [str(key)], compat, found)
+
+
+def validated(root: Path = ROOT) -> list[dict]:
+    """The owner's own checks of printed builds and parts, from
+    config/validated.json. Empty until he records one."""
+    path = root / VALIDATED_PATH
+    if not path.is_file():
+        return []
+    content = _load(path)
+    records = content.get("records", []) if isinstance(content, dict) else content
+    out = []
+    for record in records if isinstance(records, list) else []:
+        if isinstance(record, dict) and isinstance(record.get("id"), str) and isinstance(record.get("date"), str):
+            out.append({"id": record["id"], "part": str(record.get("part") or ""), "date": record["date"],
+                        "checked": str(record.get("checked", "")), "photo": str(record.get("photo") or ""),
+                        "mark": record.get("mark", True) is True})
+    return out
+
+
 def bundle(root: Path = ROOT) -> dict:
     """Everything evaluate() needs, as one JSON-serialisable object. The site
     build writes this to site/data/recipe.json for site/build.js."""
@@ -338,6 +418,8 @@ def bundle(root: Path = ROOT) -> dict:
         "coverage": coverage(compat, listing, root),
         "manifest": listing,
         "variants": variants(compat, root),
+        "programs": programs(compat, root),
+        "validated": validated(root),
     }
 
 
@@ -387,6 +469,11 @@ def _fill(text: str, values: dict) -> str:
     return text
 
 
+def build_id(sel: dict) -> str:
+    """The id of a build: one row of the support table."""
+    return sel["controller"] + "-" + sel["locomotion"] + "-" + sel["drive"]
+
+
 def _find_row(compat: dict, sel: dict):
     for row in compat["support"]:
         if all(row[key] == sel[key] for key in ("controller", "locomotion", "drive")):
@@ -394,7 +481,7 @@ def _find_row(compat: dict, sel: dict):
     return None
 
 
-def _find_variant(entries: list, sel: dict):
+def _most_specific(entries: list, sel: dict):
     best = None
     for entry in entries:
         match = entry["match"]
@@ -404,71 +491,59 @@ def _find_variant(entries: list, sel: dict):
     return best
 
 
-def _why_not(compat: dict, sel: dict):
-    rows = [row for row in compat["support"] if row["controller"] == sel["controller"]]
-    offered = "; ".join(_label(compat, "locomotion", row["locomotion"]) + " through " + _label(compat, "drive", row["drive"])
-                        for row in rows)
-    reasons = [_label(compat, "controller", sel["controller"]) + " is not offered as '"
-               + _label(compat, "locomotion", sel["locomotion"]) + "' through '"
-               + _label(compat, "drive", sel["drive"]) + "'. Offered for this controller: " + offered + "."]
-    for item in compat["why_not"]:
-        if _matches(item["when"], sel):
-            reasons.append(item["reason"])
-    return reasons, rows
-
-
 def _unsupported(data: dict, sel: dict) -> dict:
     compat = data["compat"]
-    reasons, rows = _why_not(compat, sel)
+    rows = [row for row in compat["support"] if row["controller"] == sel["controller"]]
+    matched = [item for item in compat["why_not"] if _matches(item["when"], sel)]
+    reasons = [item["reason"] for item in matched]
     # A controller the reports only carried on the biped as a block: say so, as a note.
     reported = any(row["status"] == "report" and row["locomotion"] == sel["locomotion"] for row in compat["support"])
     if reported and sel["controller"] in data["coverage"]["carried"]:
         reasons.append(data["coverage"]["carried"][sel["controller"]])
-    pick = None
-    for row in rows:
-        if row["locomotion"] == sel["locomotion"]:
-            pick = row
-            break
-    if pick is None:
-        for row in rows:
-            if row["drive"] == sel["drive"]:
-                pick = row
-                break
-    if pick is None:
-        pick = rows[0]
-    return {"reasons": reasons, "nearest": {"locomotion": pick["locomotion"], "drive": pick["drive"]}}
+    reasons.append("With this controller: " + "; ".join(
+        _label(compat, "locomotion", row["locomotion"]) + " through " + _label(compat, "drive", row["drive"]) for row in rows) + ".")
+    # The rows this controller does have, nearest first: same locomotion, then same drive, then the rest.
+    order = ([row for row in rows if row["locomotion"] == sel["locomotion"]]
+             + [row for row in rows if row["locomotion"] != sel["locomotion"] and row["drive"] == sel["drive"]]
+             + [row for row in rows if row["locomotion"] != sel["locomotion"] and row["drive"] != sel["drive"]])
+    return {"blocked": True, "reasons": reasons,
+            "alternatives": [{"locomotion": row["locomotion"], "drive": row["drive"]} for row in order],
+            "codes": [item["code"] for item in matched] or ["not-offered"],
+            "short": matched[0]["short"] if matched else "Not available with this controller",
+            "details": [{"dims": list(item["when"]), "short": item["short"]} for item in matched],
+            "needs": bool(matched) and all(item.get("needs") for item in matched)}
 
 
 def _pass(data: dict, sel: dict) -> dict:
-    """One evaluation of a normalised selection, without the nearest search."""
+    """One evaluation of a normalised selection, without the search for a
+    possible neighbour."""
     compat = data["compat"]
     row = _find_row(compat, sel)
     if row is None:
-        blocked = _unsupported(data, sel)
-        return {"blocked": True, "reasons": blocked["reasons"], "nearest": blocked["nearest"]}
+        return _unsupported(data, sel)
     matched = [rule for rule in compat["rules"] if _matches(rule["when"], sel)]
     blocks = [rule for rule in matched if "block" in rule]
     if blocks:
-        nearest = {}
+        alternatives = []
         for rule in blocks:
-            nearest.update(rule["nearest"])
-        return {"blocked": True, "reasons": [rule["block"] for rule in blocks], "nearest": nearest}
+            alternatives.extend(rule["alternatives"])
+        return {"blocked": True, "reasons": [rule["block"] for rule in blocks], "alternatives": alternatives,
+                "codes": [rule["code"] for rule in blocks], "short": blocks[0]["short"],
+                "details": [{"dims": list(rule["when"]), "short": rule["short"]} for rule in blocks],
+                "needs": all(rule.get("needs") for rule in blocks)}
 
     variant = None
     reasons = [row["reason"]]
     lead = []
     if row["status"] == "summary":
-        variant = _find_variant(data["variants"], sel)
+        variant = _most_specific(data["variants"], sel)
         if variant is None:
             status = "being_analysed"
-            reasons.append("No analysis summary exists in reports/ yet for this base and locomotion.")
-            lead.append("Being analysed: no summary file exists in reports/ yet. No mass, stability or speed figure is given here.")
+            lead.append("In analysis: mass, stability and speed appear here when the summary is ready.")
         else:
             status = variant["status"]
-            lead.append("From the variants summary in reports/, status as written there: " + variant["status_text"] + ".")
+            lead.append("From the variants summary, status as written there: " + variant["status_text"] + ".")
             lead.extend(variant["lines"])
-            if status != "analysed":
-                lead.append("Not analysed to a verdict yet: the summary does not report this variant as analysed.")
     elif row["status"] == "report":
         covered = None
         for entry in data["coverage"]["entries"]:
@@ -477,15 +552,22 @@ def _pass(data: dict, sel: dict) -> dict:
                 break
         if covered is None:
             status = "defined"
-            lead.append("Not analysed: the reports do not cover this controller, camera and head together.")
+            lead.append("No analysis numbers for this controller, camera and head together.")
         else:
             status = covered["status"]
             lead.extend(covered["lines"])
     else:
         status = row["status"]
-        lead.append("Not analysed: no simulation or digital assembly exists for this selection.")
+        lead.append("No analysis numbers for this selection.")
+    program = _most_specific(data["programs"], sel)
     sections = {name: [] for name in compat["sections"]}
     sections["analysis"].extend(lead)
+    if program is not None:
+        for path in program["files"]:
+            sections["firmware"].append("Program for this build: " + compat["repo_blob"] + path)
+        sections["firmware"].extend(program["steps"])
+        if program["load_with"] is not None and program["load_with"]["url"]:
+            sections["firmware"].append("Load it with " + program["load_with"]["name"] + ": " + program["load_with"]["url"])
     settings = {"mechanism": "", "preset": ""}
     rails = {}
     loads = []
@@ -502,6 +584,9 @@ def _pass(data: dict, sel: dict) -> dict:
         loads.extend(rule.get("loads", []))
         for name, items in rule.get("add", {}).items():
             sections[name].extend(items)
+        if program is None:
+            for name, items in rule.get("without_program", {}).items():
+                sections[name].extend(items)
     if variant is not None:
         sections["print"].extend(variant["files"])
         sections["parts"].extend(variant["parts"])
@@ -520,20 +605,19 @@ def _pass(data: dict, sel: dict) -> dict:
         total = sum(load["qty"] * load["stall_ma"] for load in known)
         line = rail["label"] + ": "
         if known:
-            terms = " + ".join(f"{load['qty']} x {_amps(load['stall_ma'])} A {load['what']}, {load['basis']}" for load in known)
+            terms = " + ".join(f"{load['qty']} x {_amps(load['stall_ma'])} A {load['what']}" for load in known)
             line += "stalled demand " + _amps(total) + " A (" + terms + ")."
         else:
-            line += "stalled demand not known."
+            line += "size it for the stall current of what it feeds."
         if unknown:
-            line += " Not counted, stall current " + "; ".join(
-                f"{load['basis']}: {load['qty']} x {load['what']}" for load in unknown) + "."
+            line += " Add the stall current of: " + "; ".join(f"{load['qty']} x {load['what']}" for load in unknown) + "."
         if rail["limit_ma"] is not None and known:
             if total > rail["limit_ma"]:
                 tenths = total * 10 // rail["limit_ma"]
                 line += (f" That is {tenths // 10}.{tenths % 10} times the {rail['limit_label']}, "
                          f"{_amps(rail['limit_ma'])} A: size the supply and wiring for the stall figure, or fuse it.")
             else:
-                line += f" Within the {rail['limit_label']}, {_amps(rail['limit_ma'])} A, on these figures."
+                line += f" Within the {rail['limit_label']}, {_amps(rail['limit_ma'])} A."
         sizing.append(line)
     sections["power"] = sizing + sections["power"]
 
@@ -551,12 +635,12 @@ def _pass(data: dict, sel: dict) -> dict:
         head = maps["head"].get(sel["head"])
         torsos = [entry for entry in listing["files"]
                   if entry["part"] == "torso" and entry["controller"] == controller and entry["head"] == head]
-        known = [entry["camera"] for entry in listing["files"] if entry["camera"] is not None]
+        known = [entry["camera"] for entry in listing["files"] if entry["part"] == "torso" and entry["camera"] is not None]
         own = False
         torso = None
         if head is None:
             # A fixed mount: the torso of the selected camera, or of the default camera when the
-            # selection is not a camera the manifest knows (the mount is then left empty).
+            # selection is not a camera a torso is made for (the mount is then left empty).
             own = sel["camera"] in [entry["camera"] for entry in torsos]
             camera = sel["camera"] if sel["camera"] in known else listing["camera_default"]
             for entry in torsos:
@@ -584,8 +668,9 @@ def _pass(data: dict, sel: dict) -> dict:
     if no_torso:
         if status in ("analysed", "assembly_only"):
             status = "defined"
-        reasons.append("No torso file is committed for this controller with this camera and head. The design's generator "
-                       "would have to be run for it (CONTROLLER, CAMERA and the head option in build.py), and that part has not been checked.")
+        reasons.append("No torso file is in stl/ for this controller with this camera and head. The design's generator "
+                       "makes one (CONTROLLER, CAMERA and the head option in build.py).")
+    marks = {record["part"]: record["date"] for record in data["validated"] if record["part"] and record["mark"]}
     files = []
     for item in wanted:
         name = item["file"]
@@ -600,23 +685,29 @@ def _pass(data: dict, sel: dict) -> dict:
                 about = listing["info"].get(path, about)
                 break
         files.append({"file": name, "qty": item["qty"], "role": item["role"], "fit": bool(item.get("fit")),
-                      "link": link, "thumb": about["thumb"], "size": about["size"], "note": about["note"]})
+                      "link": link, "thumb": about["thumb"], "size": about["size"], "note": about["note"],
+                      "validated": marks.get(name, "")})
     files = [item for item in files if item["fit"]] + [item for item in files if not item["fit"]]
     if not files:
-        note = "No printable files are named for this selection yet: the design is in progress on another branch."
+        note = "No printable files are in stl/ for this selection yet."
     elif listing["present"]:
-        note = "Linked files are in the repository's stl/ directory; none has been printed. A name without a link is not in its manifest."
+        note = "Linked files are in the repository's stl/ directory. A name without a link is not there yet."
     else:
-        note = "File names only: the repository has no STL manifest, so nothing is linked."
+        note = "File names only."
 
     base = data["bases"]["bases"][row["base"]]
-    values = data["facts"]
+    values = dict(data["facts"], robot_creator=compat["robot_creator"])
+    mark = None
+    for record in data["validated"]:
+        if record["id"] == build_id(sel) and not record["part"] and record["mark"]:
+            mark = {"date": record["date"], "checked": record["checked"], "photo": record["photo"]}
     out = {
         "blocked": False,
         "status": status,
         "reasons": [_fill(text, values) for text in reasons],
         "base": row["base"],
-        "base_name": base["name"],
+        "build": build_id(sel),
+        "validated": mark,
         "sources": base["sources"],
         "mechanism": settings["mechanism"],
         "preset": settings["preset"],
@@ -629,6 +720,53 @@ def _pass(data: dict, sel: dict) -> dict:
     return out
 
 
+def search(data: dict, selection: dict, pinned: list) -> dict | None:
+    """The nearest possible selection, keeping the pinned choices as they
+    are: follow the alternatives each block offers, depth first, and stop at
+    the first selection that is not blocked. None if the pinned choices
+    cannot be part of any possible selection."""
+    compat = data["compat"]
+    start = normalise(compat, selection)
+    order = [dim["id"] for dim in compat["dimensions"]]
+    seen = set()
+
+    def walk(current: dict, depth: int):
+        result = _pass(data, current)
+        if not result["blocked"]:
+            return current
+        if depth == 0:
+            return None
+        for alternative in result["alternatives"]:
+            if any(key in pinned and start[key] != value for key, value in alternative.items()):
+                continue
+            merged = dict(current)
+            merged.update(alternative)
+            following = normalise(compat, merged)
+            key = "|".join(following[name] for name in order)
+            if key in seen:
+                continue
+            seen.add(key)
+            found = walk(following, depth - 1)
+            if found is not None:
+                return found
+        return None
+
+    return walk(start, SEARCH_DEPTH)
+
+
+def option_state(data: dict, selection: dict, dim_id: str, option_id: str) -> dict:
+    """Whether an option can be chosen with the current controller, and what
+    the selection becomes if it is. Not possible: the short reason."""
+    candidate = dict(normalise(data["compat"], selection))
+    candidate[dim_id] = option_id
+    found = search(data, candidate, ["controller", dim_id])
+    if found is not None:
+        return {"enabled": True, "selection": found, "short": ""}
+    result = _pass(data, normalise(data["compat"], candidate))
+    about = [item["short"] for item in result["details"] if dim_id in item["dims"]]
+    return {"enabled": False, "selection": None, "short": about[0] if about else result["short"]}
+
+
 def evaluate(data: dict, selection: dict) -> dict:
     """The recipe for a selection. Pure: the same data and selection always
     give the same recipe, and nothing outside the arguments is read."""
@@ -639,7 +777,6 @@ def evaluate(data: dict, selection: dict) -> dict:
         "selection": sel,
         "labels": {dim["id"]: _label(compat, dim["id"], sel[dim["id"]]) for dim in compat["dimensions"]},
         "query": query(compat, sel),
-        "not_built": compat["not_built"],
         "trademarks": compat["trademarks"],
     }
     if not first["blocked"]:
@@ -647,29 +784,27 @@ def evaluate(data: dict, selection: dict) -> dict:
         del recipe["blocked"]
         recipe["status_label"] = compat["statuses"][recipe["status"]]["label"]
         recipe["headline"] = compat["statuses"][recipe["status"]]["headline"]
+        recipe["refusal"] = []
         recipe["nearest"] = None
         return recipe
 
-    near = dict(sel)
-    result = first
-    for _ in range(MAX_NEAREST_STEPS):
-        near.update(result["nearest"])
-        near = normalise(compat, near)
-        result = _pass(data, near)
-        if not result["blocked"]:
-            break
-    if result["blocked"]:
+    near = search(data, sel, ["controller"])
+    if near is None:
+        near = search(data, sel, [])
+    if near is None:
         near = normalise(compat, compat["defaults"])
-        result = _pass(data, near)
+    result = _pass(data, near)
+    status = "needs_part" if first["needs"] else "not_possible"
     changes = [dim["label"] + ": " + _label(compat, dim["id"], near[dim["id"]])
                for dim in compat["dimensions"] if near[dim["id"]] != sel[dim["id"]]]
     recipe.update({
-        "status": "not_possible",
-        "status_label": compat["statuses"]["not_possible"]["label"],
-        "headline": compat["statuses"]["not_possible"]["headline"],
+        "status": status,
+        "status_label": compat["statuses"][status]["label"],
+        "headline": compat["statuses"][status]["headline"],
         "reasons": first["reasons"],
-        "base": None, "base_name": "", "sources": [], "mechanism": "", "preset": "",
-        "print": {"note": "Nothing to print: the selection is not possible.", "files": []},
+        "refusal": first["codes"],
+        "base": None, "build": build_id(sel), "validated": None, "sources": [], "mechanism": "", "preset": "",
+        "print": {"note": "", "files": []},
         "parts": [],
         "nearest": {
             "selection": near,

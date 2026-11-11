@@ -61,15 +61,14 @@ def test_no_external_script_style_or_tracker():
     assert set(re.findall(r"https://[a-z0-9.-]+", text)) <= {"https://github.com"}
 
 
-def test_page_states_the_status_rule_and_the_trademarks():
+def test_page_shows_the_tag_first_and_the_trademarks():
     html = read("index.html")
-    assert "No robot has been assembled or powered" in html
     assert "LEGO, Mindstorms and Technic are trademarks of the LEGO Group" in html
     assert "does not sponsor" in html
     assert "Raspberry Pi is a trademark of Raspberry Pi Ltd" in html
     assert "<img" not in html and "<svg" not in html  # no logos
     script = read("build.js")
-    assert "recipe.not_built" in script and "recipe.status_label" in script and "recipe.trademarks" in script
+    assert "recipe.not_built" not in script and "recipe.status_label" in script and "recipe.trademarks" in script
     # The verdict is rendered before anything else in the recipe.
     assert script.index("recipe.status_label") < script.index("recipe.print.files")
 
@@ -157,13 +156,14 @@ def test_no_page_refers_to_a_file_that_is_not_there(built):
 
 def test_switching_the_controller_takes_the_nearest_possible_selection():
     script = read("build.js")
-    at = script.index('event.target.name === "controller"')
-    handler = script[at:at + 700]
-    assert "tried.nearest" in handler and "sel = tried.nearest.selection" in handler
+    # The changed field and the controller stay; the rest moves to the nearest compatible state.
+    assert 'const found = search(data, next, ["controller", event.target.name]);' in script
+    assert "(not offered here)" not in script and "item.disabled = !state.enabled" in script and "item.title = state.short" in script
+    assert "Why some options are greyed out" in script and 'id="greyed"' in read("index.html")
     # A link is never adjusted: the first evaluation after loading takes the address as it is.
     start = script[script.index("async function start()"):]
     assert start.index("show(window.location.search.length > 1)") > start.index("const controls = buildForm")
-    assert "nearest.selection" not in start[start.index("const linked = fromUrl()"):start.index("const controls = buildForm")]
+    assert "search(" not in start[start.index("const linked = fromUrl()"):start.index("const controls = buildForm")]
 
 
 def test_the_biped_page_kept_its_anchors_and_scripts():

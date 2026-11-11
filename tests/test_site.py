@@ -65,8 +65,7 @@ def test_no_trackers():
 
 def test_status_box_is_plain():
     html = (SITE / "biped.html").read_text(encoding="utf-8")
-    assert "verified in simulation only" in html
-    assert "never been assembled or powered" in html
+    assert 'class="status"' not in html and "Status and assumptions" in html
 
 
 def test_sliders_use_the_generated_limits():

@@ -731,7 +731,7 @@ async function start() {
     page.state = initialState();
     say("target-label", page.target === "sim"
       ? "Simulator: playback of the joint commands in this page. Not physics: nothing falls or slips here."
-      : "Real robot through the robot's server. Not run on hardware: this path has only been tested against the virtual robot.");
+      : "Real robot through the robot's server. Support the robot and keep a hand on the supply switch.");
     if (page.target === "sim") { engine.reset(playback.current); show(playback.current); } else pollBoard();
     renderReal(); renderAvailability();
   }

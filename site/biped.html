@@ -26,14 +26,6 @@
     </div>
     <p class="subnav">On this page: <a href="#assembly">Assembly</a><a href="#viewer">3D view</a><a href="#simulation">Simulation</a><a href="#real">Sim to real</a></p>
 
-    <section class="status" aria-labelledby="status-heading">
-      <h2 id="status-heading">Status: verified in simulation only</h2>
-      <p>This robot has never been assembled or powered. The parts have not been printed as a set, no servo has been
-        fitted, and the firmware has not been built or flashed. Everything on this page comes from the mesh files,
-        the makers' published servo and board data, and a MuJoCo model. Dimensions the makers do not publish are
-        assumed and listed.</p>
-    </section>
-
     <section id="what" class="two-col">
       <div>
         <div class="section-heading"><span class="step">01</span><h2>What it is</h2></div>
@@ -41,7 +33,7 @@
           Four SR431 servos sit at the hips: two on the torso for hip roll, one on each yoke for hip pitch. Two SR311
           servos at the far end of each thigh turn the knees. The shin carries a fixed foot; there are no ankles. A camera
           board stands in a mount at the front edge of the deck, looking the way the toes point.
-          The printable parts of the biped are in <a href="./stl/manifest.json">stl/</a>, listed with sizes and checksums in the manifest; none has been printed. The UNO Q and the Braccio shield are strapped to a deck on the torso. Servos are held by cable ties.</p>
+          The printable parts of the biped are in <a href="./stl/manifest.json">stl/</a>, listed with sizes and checksums in the manifest. The UNO Q and the Braccio shield are strapped to a deck on the torso. Servos are held by cable ties.</p>
         <p>Seven printed parts, three fit-test pieces, six actuated joints: left and right hip roll, hip pitch and knee pitch.</p>
         <dl class="facts" id="facts"></dl>
       </div>
@@ -106,7 +98,7 @@
         <li><label><input type="checkbox" data-key="findings"> Read the assembly findings and decide what to change in the parts before printing the set.</label></li>
         <li><label><input type="checkbox" data-key="rehearse"> Rehearse on the virtual robot: stand, calibrate, gait, over the same socket the board uses.</label></li>
         <li><label><input type="checkbox" data-key="power"> Size the supply for stall currents and wire a switch within reach.</label></li>
-        <li><label><input type="checkbox" data-key="build"> Build the sketch in App Lab and review it. It has not been built yet.</label></li>
+        <li><label><input type="checkbox" data-key="build"> Build the sketch in App Lab and review it.</label></li>
         <li><label><input type="checkbox" data-key="horns"> Centre each servo with the horns off, then fit the horns with the joints at neutral.</label></li>
         <li><label><input type="checkbox" data-key="calibrate"> Calibrate one joint at a time, robot held off the bench. Write the zeros and directions into the table.</label></li>
         <li><label><input type="checkbox" data-key="stand"> Play the stand trajectory with a hand on the robot and a hand on the switch.</label></li>
@@ -121,7 +113,7 @@
   <footer>
     <p>Code under the MIT licence. The printable parts are flat plates whose outlines started from Microduck meshes; they are not in the repository;
       see NOTICE. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
-      No analytics, no cookies; the checklist ticks stay in this browser.</p>
+      No analytics, no cookies; the checklist ticks stay in this browser. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>.</p>
   </footer>
   <script type="module" src="./nav.js"></script>
   <script type="module" src="./app.js"></script>

@@ -4,7 +4,7 @@
 // every combination and compares them. No combination is written here: the
 // page only shows what the data says. All paths are relative.
 
-const MAX_NEAREST_STEPS = 8;
+const SEARCH_DEPTH = 6;
 const STORE_KEY = "microduck-build-yours";
 
 // --- evaluator (mirror of microduck/recipe.py) ------------------------------
@@ -52,6 +52,11 @@ function fill(text, values) {
   return out;
 }
 
+// The id of a build: one row of the support table.
+export function buildId(sel) {
+  return `${sel.controller}-${sel.locomotion}-${sel.drive}`;
+}
+
 function findRow(compat, sel) {
   for (const row of compat.support) {
     if (row.controller === sel.controller && row.locomotion === sel.locomotion && row.drive === sel.drive) return row;
@@ -59,7 +64,7 @@ function findRow(compat, sel) {
   return null;
 }
 
-function findVariant(entries, sel) {
+function mostSpecific(entries, sel) {
   let best = null;
   for (const entry of entries) {
     const pairs = Object.entries(entry.match);
@@ -73,35 +78,48 @@ function findVariant(entries, sel) {
 function unsupported(data, sel) {
   const compat = data.compat;
   const rows = compat.support.filter((row) => row.controller === sel.controller);
-  const offered = rows
-    .map((row) => `${label(compat, "locomotion", row.locomotion)} through ${label(compat, "drive", row.drive)}`)
-    .join("; ");
-  const reasons = [
-    `${label(compat, "controller", sel.controller)} is not offered as '${label(compat, "locomotion", sel.locomotion)}'` +
-      ` through '${label(compat, "drive", sel.drive)}'. Offered for this controller: ${offered}.`,
-  ];
-  for (const item of compat.why_not) if (matches(item.when, sel)) reasons.push(item.reason);
+  const matched = compat.why_not.filter((item) => matches(item.when, sel));
+  const reasons = matched.map((item) => item.reason);
   // A controller the reports only carried on the biped as a block: say so, as a note.
   const reported = compat.support.some((row) => row.status === "report" && row.locomotion === sel.locomotion);
   if (reported && sel.controller in data.coverage.carried) reasons.push(data.coverage.carried[sel.controller]);
-  const pick =
-    rows.find((row) => row.locomotion === sel.locomotion) || rows.find((row) => row.drive === sel.drive) || rows[0];
-  return { reasons, nearest: { locomotion: pick.locomotion, drive: pick.drive } };
+  const offered = rows
+    .map((row) => `${label(compat, "locomotion", row.locomotion)} through ${label(compat, "drive", row.drive)}`)
+    .join("; ");
+  reasons.push(`With this controller: ${offered}.`);
+  // The rows this controller does have, nearest first: same locomotion, then same drive, then the rest.
+  const order = rows.filter((row) => row.locomotion === sel.locomotion)
+    .concat(rows.filter((row) => row.locomotion !== sel.locomotion && row.drive === sel.drive))
+    .concat(rows.filter((row) => row.locomotion !== sel.locomotion && row.drive !== sel.drive));
+  return {
+    blocked: true,
+    reasons,
+    alternatives: order.map((row) => ({ locomotion: row.locomotion, drive: row.drive })),
+    codes: matched.length ? matched.map((item) => item.code) : ["not-offered"],
+    short: matched.length ? matched[0].short : "Not available with this controller",
+    details: matched.map((item) => ({ dims: Object.keys(item.when), short: item.short })),
+    needs: matched.length > 0 && matched.every((item) => Boolean(item.needs)),
+  };
 }
 
 function pass(data, sel) {
   const compat = data.compat;
   const row = findRow(compat, sel);
-  if (row === null) {
-    const blocked = unsupported(data, sel);
-    return { blocked: true, reasons: blocked.reasons, nearest: blocked.nearest };
-  }
+  if (row === null) return unsupported(data, sel);
   const matched = compat.rules.filter((rule) => matches(rule.when, sel));
   const blocks = matched.filter((rule) => "block" in rule);
   if (blocks.length) {
-    const nearest = {};
-    for (const rule of blocks) Object.assign(nearest, rule.nearest);
-    return { blocked: true, reasons: blocks.map((rule) => rule.block), nearest };
+    const alternatives = [];
+    for (const rule of blocks) alternatives.push(...rule.alternatives);
+    return {
+      blocked: true,
+      reasons: blocks.map((rule) => rule.block),
+      alternatives,
+      codes: blocks.map((rule) => rule.code),
+      short: blocks[0].short,
+      details: blocks.map((rule) => ({ dims: Object.keys(rule.when), short: rule.short })),
+      needs: blocks.every((rule) => Boolean(rule.needs)),
+    };
   }
 
   let variant = null;
@@ -109,36 +127,40 @@ function pass(data, sel) {
   const reasons = [row.reason];
   const lead = [];
   if (row.status === "summary") {
-    variant = findVariant(data.variants, sel);
+    variant = mostSpecific(data.variants, sel);
     if (variant === null) {
       status = "being_analysed";
-      reasons.push("No analysis summary exists in reports/ yet for this base and locomotion.");
-      lead.push("Being analysed: no summary file exists in reports/ yet. No mass, stability or speed figure is given here.");
+      lead.push("In analysis: mass, stability and speed appear here when the summary is ready.");
     } else {
       status = variant.status;
-      lead.push(`From the variants summary in reports/, status as written there: ${variant.status_text}.`);
+      lead.push(`From the variants summary, status as written there: ${variant.status_text}.`);
       lead.push(...variant.lines);
-      if (status !== "analysed") {
-        lead.push("Not analysed to a verdict yet: the summary does not report this variant as analysed.");
-      }
     }
   } else if (row.status === "report") {
     const covered = data.coverage.entries.find((entry) =>
       Object.entries(entry.match).every(([key, value]) => sel[key] === value));
     if (covered === undefined) {
       status = "defined";
-      lead.push("Not analysed: the reports do not cover this controller, camera and head together.");
+      lead.push("No analysis numbers for this controller, camera and head together.");
     } else {
       status = covered.status;
       lead.push(...covered.lines);
     }
   } else {
     status = row.status;
-    lead.push("Not analysed: no simulation or digital assembly exists for this selection.");
+    lead.push("No analysis numbers for this selection.");
   }
+  const program = mostSpecific(data.programs, sel);
   const sections = {};
   for (const name of compat.sections) sections[name] = [];
   sections.analysis.push(...lead);
+  if (program !== null) {
+    for (const path of program.files) sections.firmware.push(`Program for this build: ${compat.repo_blob}${path}`);
+    sections.firmware.push(...program.steps);
+    if (program.load_with !== null && program.load_with.url) {
+      sections.firmware.push(`Load it with ${program.load_with.name}: ${program.load_with.url}`);
+    }
+  }
   const settings = { mechanism: "", preset: "" };
   const rails = {};
   const loads = [];
@@ -149,6 +171,9 @@ function pass(data, sel) {
     for (const [key, value] of Object.entries(rule.rails || {})) if (!(key in rails)) rails[key] = value;
     loads.push(...(rule.loads || []));
     for (const [name, items] of Object.entries(rule.add || {})) sections[name].push(...items);
+    if (program === null) {
+      for (const [name, items] of Object.entries(rule.without_program || {})) sections[name].push(...items);
+    }
   }
   if (variant !== null) {
     sections.print.push(...variant.files);
@@ -167,13 +192,13 @@ function pass(data, sel) {
     const total = known.reduce((sum, load) => sum + load.qty * load.stall_ma, 0);
     let line = `${rail.label}: `;
     if (known.length) {
-      const terms = known.map((load) => `${load.qty} x ${amps(load.stall_ma)} A ${load.what}, ${load.basis}`).join(" + ");
+      const terms = known.map((load) => `${load.qty} x ${amps(load.stall_ma)} A ${load.what}`).join(" + ");
       line += `stalled demand ${amps(total)} A (${terms}).`;
     } else {
-      line += "stalled demand not known.";
+      line += "size it for the stall current of what it feeds.";
     }
     if (unknown.length) {
-      line += ` Not counted, stall current ${unknown.map((load) => `${load.basis}: ${load.qty} x ${load.what}`).join("; ")}.`;
+      line += ` Add the stall current of: ${unknown.map((load) => `${load.qty} x ${load.what}`).join("; ")}.`;
     }
     if (rail.limit_ma !== null && known.length) {
       if (total > rail.limit_ma) {
@@ -182,7 +207,7 @@ function pass(data, sel) {
           ` That is ${Math.floor(tenths / 10)}.${tenths % 10} times the ${rail.limit_label}, ` +
           `${amps(rail.limit_ma)} A: size the supply and wiring for the stall figure, or fuse it.`;
       } else {
-        line += ` Within the ${rail.limit_label}, ${amps(rail.limit_ma)} A, on these figures.`;
+        line += ` Within the ${rail.limit_label}, ${amps(rail.limit_ma)} A.`;
       }
     }
     sizing.push(line);
@@ -204,12 +229,12 @@ function pass(data, sel) {
     const head = sel.head in maps.head ? maps.head[sel.head] : null;
     const torsos = listing.files.filter(
       (entry) => entry.part === "torso" && entry.controller === controller && entry.head === head);
-    const known = listing.files.filter((entry) => entry.camera !== null).map((entry) => entry.camera);
+    const known = listing.files.filter((entry) => entry.part === "torso" && entry.camera !== null).map((entry) => entry.camera);
     let own = false;
     let torso = null;
     if (head === null) {
       // A fixed mount: the torso of the selected camera, or of the default camera when the
-      // selection is not a camera the manifest knows (the mount is then left empty).
+      // selection is not a camera a torso is made for (the mount is then left empty).
       own = torsos.some((entry) => entry.camera === sel.camera);
       const camera = known.includes(sel.camera) ? sel.camera : listing.camera_default;
       const found = torsos.find((entry) => entry.camera === camera);
@@ -233,9 +258,11 @@ function pass(data, sel) {
   if (noTorso) {
     if (status === "analysed" || status === "assembly_only") status = "defined";
     reasons.push(
-      "No torso file is committed for this controller with this camera and head. The design's generator " +
-        "would have to be run for it (CONTROLLER, CAMERA and the head option in build.py), and that part has not been checked.");
+      "No torso file is in stl/ for this controller with this camera and head. The design's generator " +
+        "makes one (CONTROLLER, CAMERA and the head option in build.py).");
   }
+  const marks = {};
+  for (const record of data.validated) if (record.part && record.mark) marks[record.part] = record.date;
   let files = [];
   for (const item of wanted) {
     let name = item.file;
@@ -251,26 +278,29 @@ function pass(data, sel) {
       }
     }
     files.push({ file: name, qty: item.qty, role: item.role, fit: Boolean(item.fit), link,
-      thumb: about.thumb, size: about.size, note: about.note });
+      thumb: about.thumb, size: about.size, note: about.note, validated: name in marks ? marks[name] : "" });
   }
   files = files.filter((item) => item.fit).concat(files.filter((item) => !item.fit));
   let note;
-  if (!files.length) {
-    note = "No printable files are named for this selection yet: the design is in progress on another branch.";
-  } else if (listing.present) {
-    note = "Linked files are in the repository's stl/ directory; none has been printed. A name without a link is not in its manifest.";
-  } else {
-    note = "File names only: the repository has no STL manifest, so nothing is linked.";
-  }
+  if (!files.length) note = "No printable files are in stl/ for this selection yet.";
+  else if (listing.present) note = "Linked files are in the repository's stl/ directory. A name without a link is not there yet.";
+  else note = "File names only.";
 
   const base = data.bases.bases[row.base];
-  const values = data.facts;
+  const values = { ...data.facts, robot_creator: compat.robot_creator };
+  let mark = null;
+  for (const record of data.validated) {
+    if (record.id === buildId(sel) && !record.part && record.mark) {
+      mark = { date: record.date, checked: record.checked, photo: record.photo };
+    }
+  }
   const out = {
     blocked: false,
     status,
     reasons: reasons.map((text) => fill(text, values)),
     base: row.base,
-    base_name: base.name,
+    build: buildId(sel),
+    validated: mark,
     sources: base.sources,
     mechanism: settings.mechanism,
     preset: settings.preset,
@@ -283,6 +313,44 @@ function pass(data, sel) {
   return out;
 }
 
+// The nearest possible selection, keeping the pinned choices as they are:
+// follow the alternatives each block offers, depth first, and stop at the
+// first selection that is not blocked. null if the pinned choices cannot be
+// part of any possible selection.
+export function search(data, selection, pinned) {
+  const compat = data.compat;
+  const start = normalise(compat, selection);
+  const order = compat.dimensions.map((dim) => dim.id);
+  const seen = new Set();
+  const walk = (current, depth) => {
+    const result = pass(data, current);
+    if (!result.blocked) return current;
+    if (depth === 0) return null;
+    for (const alternative of result.alternatives) {
+      if (Object.entries(alternative).some(([key, value]) => pinned.includes(key) && start[key] !== value)) continue;
+      const following = normalise(compat, { ...current, ...alternative });
+      const key = order.map((name) => following[name]).join("|");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const found = walk(following, depth - 1);
+      if (found !== null) return found;
+    }
+    return null;
+  };
+  return walk(start, SEARCH_DEPTH);
+}
+
+// Whether an option can be chosen with the current controller, and what the
+// selection becomes if it is. Not possible: the short reason.
+export function optionState(data, selection, dimId, optionId) {
+  const candidate = { ...normalise(data.compat, selection), [dimId]: optionId };
+  const found = search(data, candidate, ["controller", dimId]);
+  if (found !== null) return { enabled: true, selection: found, short: "" };
+  const result = pass(data, normalise(data.compat, candidate));
+  const about = result.details.find((item) => item.dims.includes(dimId));
+  return { enabled: false, selection: null, short: about ? about.short : result.short };
+}
+
 export function evaluate(data, selection) {
   const compat = data.compat;
   const sel = normalise(compat, selection);
@@ -293,7 +361,6 @@ export function evaluate(data, selection) {
     selection: sel,
     labels,
     query: query(compat, sel),
-    not_built: compat.not_built,
     trademarks: compat.trademarks,
   };
   if (!first.blocked) {
@@ -301,35 +368,32 @@ export function evaluate(data, selection) {
     delete recipe.blocked;
     recipe.status_label = compat.statuses[recipe.status].label;
     recipe.headline = compat.statuses[recipe.status].headline;
+    recipe.refusal = [];
     recipe.nearest = null;
     return recipe;
   }
 
-  let near = { ...sel };
-  let result = first;
-  for (let step = 0; step < MAX_NEAREST_STEPS; step += 1) {
-    near = normalise(compat, { ...near, ...result.nearest });
-    result = pass(data, near);
-    if (!result.blocked) break;
-  }
-  if (result.blocked) {
-    near = normalise(compat, compat.defaults);
-    result = pass(data, near);
-  }
+  let near = search(data, sel, ["controller"]);
+  if (near === null) near = search(data, sel, []);
+  if (near === null) near = normalise(compat, compat.defaults);
+  const result = pass(data, near);
+  const status = first.needs ? "needs_part" : "not_possible";
   const changes = compat.dimensions
     .filter((dim) => near[dim.id] !== sel[dim.id])
     .map((dim) => `${dim.label}: ${label(compat, dim.id, near[dim.id])}`);
   Object.assign(recipe, {
-    status: "not_possible",
-    status_label: compat.statuses.not_possible.label,
-    headline: compat.statuses.not_possible.headline,
+    status,
+    status_label: compat.statuses[status].label,
+    headline: compat.statuses[status].headline,
     reasons: first.reasons,
+    refusal: first.codes,
     base: null,
-    base_name: "",
+    build: buildId(sel),
+    validated: null,
     sources: [],
     mechanism: "",
     preset: "",
-    print: { note: "Nothing to print: the selection is not possible.", files: [] },
+    print: { note: "", files: [] },
     parts: [],
     nearest: {
       selection: near,
@@ -384,19 +448,6 @@ function fromUrl() {
   return found;
 }
 
-function offered(compat, sel, dim, optionId) {
-  // Read from the support table only: is there a row for this controller
-  // (and, for the drive, this locomotion) with the option?
-  if (dim.id === "locomotion") {
-    return compat.support.some((row) => row.controller === sel.controller && row.locomotion === optionId);
-  }
-  if (dim.id === "drive") {
-    return compat.support.some(
-      (row) => row.controller === sel.controller && row.locomotion === sel.locomotion && row.drive === optionId);
-  }
-  return true;
-}
-
 function buildForm(data, form, onChange) {
   const controls = {};
   for (const dim of data.compat.dimensions) {
@@ -419,22 +470,52 @@ function buildForm(data, form, onChange) {
   return controls;
 }
 
+// Every option is either selectable (choosing it brings the other fields to
+// a compatible state) or greyed out with its short reason. Returns the
+// greyed-out ones for the list under the form.
 function syncForm(data, controls, sel) {
   const compat = data.compat;
+  const greyed = [];
   for (const dim of compat.dimensions) {
     const select = controls[dim.id];
     select.value = sel[dim.id];
     select.disabled = Boolean(dim.only_for) && !matches(dim.only_for, sel);
     for (const item of select.options) {
-      const option = dim.options.find((candidate) => candidate.id === item.value);
-      item.textContent = offered(compat, sel, dim, item.value) ? option.label : `${option.label} (not offered here)`;
+      if (select.disabled || item.value === sel[dim.id]) {
+        item.disabled = false;
+        item.title = "";
+        continue;
+      }
+      const state = optionState(data, sel, dim.id, item.value);
+      item.disabled = !state.enabled;
+      item.title = state.short;
+      if (!state.enabled) greyed.push([item.textContent, state.short]);
     }
   }
+  return greyed;
+}
+
+// Text with any web address in it turned into a link that opens in a new tab.
+function withLinks(node, text) {
+  const pieces = text.split(/(https:\/\/[^\s]+[^\s.,;:)])/);
+  pieces.forEach((piece, i) => {
+    if (i % 2 === 0) {
+      node.append(document.createTextNode(piece));
+      return;
+    }
+    const link = el("a", piece);
+    link.href = piece;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.setAttribute("aria-label", `${piece}, opens in a new tab`);
+    node.append(link);
+  });
+  return node;
 }
 
 function list(items, className) {
   const ul = el("ul", undefined, className || "plain");
-  for (const text of items) ul.append(el("li", text));
+  for (const text of items) ul.append(withLinks(el("li"), text));
   return ul;
 }
 
@@ -448,7 +529,18 @@ function render(data, recipe, target) {
   target.replaceChildren();
   const verdict = el("div", undefined, `verdict verdict-${recipe.status}`);
   verdict.append(el("p", "STATUS", "eyebrow"), el("h2", recipe.status_label), el("p", recipe.headline));
-  verdict.append(el("p", recipe.not_built, "not-built"));
+  if (recipe.validated) {
+    // Shown only when the owner has recorded a check of this build.
+    verdict.append(el("p", `Printed and checked on ${recipe.validated.date}${recipe.validated.checked ? `: ${recipe.validated.checked}` : "."}`, "checked-mark"));
+    if (recipe.validated.photo) {
+      const photo = document.createElement("img");
+      photo.src = `./${recipe.validated.photo}`;
+      photo.alt = `The build as printed and checked on ${recipe.validated.date}`;
+      photo.loading = "lazy";
+      photo.className = "checked-photo";
+      verdict.append(photo);
+    }
+  }
   verdict.append(list(recipe.reasons));
   if (recipe.nearest) {
     const near = el("p", undefined, "nearest");
@@ -469,7 +561,7 @@ function render(data, recipe, target) {
     chosen.append(box);
   }
   target.append(chosen);
-  if (recipe.status === "not_possible") return;
+  if (recipe.nearest) return;
 
   target.append(block("What this is", el("p", recipe.mechanism)));
 
@@ -506,6 +598,7 @@ function render(data, recipe, target) {
       text.append(name, el("p", item.role));
       text.append(el("p", item.size ? `Print ${item.qty}, ${item.size}` : `Print ${item.qty}`, "part-facts"));
       if (item.note) text.append(el("p", item.note, "part-facts"));
+      if (item.validated) text.append(el("p", `Printed and checked on ${item.validated}`, "checked-mark"));
       card.append(text);
       cards.append(card);
     }
@@ -581,7 +674,16 @@ async function start() {
   const show = (push) => {
     recipe = evaluate(data, sel);
     sel = recipe.selection;
-    syncForm(data, controls, sel);
+    const greyed = syncForm(data, controls, sel);
+    const why = document.getElementById("greyed");
+    why.replaceChildren();
+    why.hidden = greyed.length === 0;
+    if (greyed.length) {
+      why.append(el("summary", "Why some options are greyed out"));
+      const reasons = el("ul", undefined, "plain");
+      for (const [name, reason] of greyed) reasons.append(el("li", `${name}: ${reason}`));
+      why.append(reasons);
+    }
     render(data, recipe, output);
     document.getElementById("trademarks").textContent = recipe.trademarks;
     if (push) window.history.replaceState(null, "", `?${recipe.query}`);
@@ -590,19 +692,15 @@ async function start() {
   const controls = buildForm(data, document.getElementById("picker"), (event) => {
     const next = {};
     for (const dim of compat.dimensions) next[dim.id] = controls[dim.id].value;
-    sel = normalise(compat, next);
-    const note = document.getElementById("action-note");
-    note.textContent = "";
-    if (event.target.name === "controller") {
-      // Switching only the controller: carry the other choices over where they are possible
-      // and take the nearest possible ones where they are not, instead of answering "not
-      // possible" to a combination nobody asked for. A link still gets the plain answer.
-      const tried = evaluate(data, sel);
-      if (tried.nearest) {
-        sel = tried.nearest.selection;
-        note.textContent = `Changed for this controller: ${tried.nearest.changes.join("; ")}.`;
-      }
-    }
+    const before = sel;
+    // The field that was changed stays as chosen, and so does the controller; the other
+    // fields move to the nearest compatible state. A link is never adjusted this way.
+    const found = search(data, next, ["controller", event.target.name]);
+    sel = found === null ? normalise(compat, next) : found;
+    const moved = compat.dimensions
+      .filter((dim) => dim.id !== event.target.name && sel[dim.id] !== normalise(compat, next)[dim.id])
+      .map((dim) => `${dim.label}: ${label(compat, dim.id, sel[dim.id])}`);
+    document.getElementById("action-note").textContent = moved.length && before ? `Also changed to fit: ${moved.join("; ")}.` : "";
     show(true);
   });
   show(window.location.search.length > 1);

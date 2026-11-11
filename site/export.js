@@ -168,8 +168,10 @@ export function recipePdf(recipe, images, meta) {
   doc.para(`${recipe.labels.controller}: ${recipe.labels.locomotion}`, { size: 18, bold: true, after: 4 });
   doc.para(`Status: ${recipe.status_label}`, { size: 12, bold: true, after: 1 });
   doc.para(recipe.headline);
-  if (recipe.not_built) doc.para(recipe.not_built, { bold: true });
-  if (recipe.validated) doc.para(recipe.validated, { bold: true });
+  if (recipe.validated) {
+    // Only when the owner has recorded a check of this build.
+    doc.para(`Printed and checked on ${recipe.validated.date}${recipe.validated.checked ? `: ${recipe.validated.checked}` : "."}`, { bold: true });
+  }
   doc.list(recipe.reasons);
   if (recipe.nearest) {
     doc.para(`Nearest possible selection: ${recipe.nearest.changes.join("; ")} (${recipe.nearest.status_label}).`, { bold: true });
@@ -179,7 +181,7 @@ export function recipePdf(recipe, images, meta) {
   for (const [name, value] of meta.selection) doc.para(`${name}: ${value}`, { after: 0 });
   doc.y -= 4;
 
-  if (recipe.status !== "not_possible") {
+  if (!recipe.nearest) {
     doc.heading("What this is");
     doc.para(recipe.mechanism);
 
@@ -199,7 +201,7 @@ export function recipePdf(recipe, images, meta) {
           name: wrap(item.file, 8.5, cell, true),
           role: wrap(item.role, 8, cell, false),
           facts: wrap(facts.join("  |  "), 8, cell, false),
-          note: item.note ? wrap(item.note, 8, cell, false) : [],
+          note: wrap([item.note, item.validated ? `Printed and checked on ${item.validated}` : ""].filter(Boolean).join(" "), 8, cell, false),
         };
       });
       const lines = Math.max(...row.map((card) => card.name.length + card.role.length + card.facts.length + card.note.length + (card.item.fit ? 1 : 0)));

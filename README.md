@@ -9,7 +9,9 @@ status first, then the files to print, parts, wiring, power and software.
 See [Build yours](#build-yours).
 
 The biped is the one design analysed so far, and most of this README is about
-it. Site: https://eoinjordan.github.io/botbuilder/.
+it. Site: https://eoinjordan.github.io/botbuilder/. What has been simulated,
+checked or assumed, and the owner's own print checks, are in
+[docs/status.md](docs/status.md).
 
 ## The biped: Microduck on Braccio servos and an Arduino UNO Q
 
@@ -17,11 +19,6 @@ A small printed biped, checked digitally before anything is printed:
 assembled from its STL files and a model of the servos, tested for fit and
 balance, described as URDF and MJCF, emulated in MuJoCo, and given the
 firmware and tools to play the same joint commands on the real robot.
-
-> **Status: verified in simulation only.** The robot has never been
-> assembled or powered. The parts have not been printed as a set. The UNO Q
-> sketch has not been built or flashed. Dimensions the makers do not publish
-> are assumed and listed in [docs/assembly.md](docs/assembly.md).
 
 ![assembled robot at the neutral pose, interferences in red](docs/images/assembly-iso.png)
 
@@ -174,8 +171,7 @@ the App Lab app on a UNO Q (commands only; nothing is flashed from the
 browser), and a Control page that drives the robot from a USB or Bluetooth
 game controller. Control plays back in the page by default; the real robot
 is reached through `app_lab/microduck_agent/control_server.py`, which serves
-the same page next to the robot's socket. Neither path has been run on
-hardware. See [docs/flash.md](docs/flash.md) and
+the same page next to the robot's socket. See [docs/flash.md](docs/flash.md) and
 [docs/control.md](docs/control.md).
 
 ## Layout
@@ -221,32 +217,7 @@ owed to the [Microduck by Pollen Robotics](https://github.com/pollen-robotics/mi
 The generated STLs are in `stl/`, listed in `stl/manifest.json` with what
 each is, its size, checksum and the design commit it came from. They are the
 files the assembly test read. `scripts/fetch_stls.py` copies them from the
-local design directory after its generator has run. None has been printed.
-
-## Unverified
-
-- Physical fit of anything: no part has been printed against a servo or a
-  camera board.
-- The pin holes and studs: no printed one has been tried with a real pin,
-  beam or brick. Their nominal dimensions are from secondary sources.
-- The other controllers: the masses of the Raspberry Pi boards, the hub's
-  battery and the EV3 brick are estimates, and the full-size Pi's hole
-  pattern and the EV3's size are not from their makers' pages.
-- The turning head: the servo body, shaft position and horn height are
-  assumed from SG90 data sheets, the adapter hole pattern is a guess to be
-  measured, and no firmware drives it.
-- The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
-  outline are the makers' figures. Lens, button, connector and pin positions,
-  board thickness and the other masses are assumed or scaled from pictures.
-- The camera firmware on an ESP32-CAM: see [docs/camera.md](docs/camera.md).
-- Every assumed dimension: servo ears, shaft position, horn size, board and
-  shield mass, print density and infill.
-- Holding torque, backlash, tie slip, flex of the 4 mm plates.
-- Floor friction and the contact model, on which the shuffle depends.
-- Servo direction and zero in the calibration table.
-- The sketch: not built, not flashed. `Serial` as the header UART, relax by
-  zero duty and the `String` Bridge function are to be checked at first build.
-- Stall currents, and how the Braccio shield shares power with the UNO Q.
+local design directory after its generator has run.
 
 ## Publishing
 

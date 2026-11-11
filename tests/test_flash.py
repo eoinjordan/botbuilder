@@ -112,7 +112,7 @@ def test_commands_match_the_manual_steps_in_the_document(tmp_path):
     wrapped = {step["id"]: step["command"] for step in out["plans"]["computer"]["steps"]}
     assert doc_blocks("From your computer instead") == [wrapped["mkdir"]]
     html = (ROOT / "site" / "flash.html").read_text(encoding="utf-8")
-    assert "not run on hardware" in html.lower()
+    assert "Disconnect servo power before the first flash" in " ".join(html.split())
     assert "sends nothing anywhere" in html
 
 

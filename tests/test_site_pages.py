@@ -53,8 +53,8 @@ def test_external_scripts():
 
 def test_status_is_said_on_both_pages():
     flash, control = read("flash.html"), read("control.html")
-    assert flash.lower().count("not run on hardware") >= 3
-    assert control.lower().count("not run on hardware") >= 2
+    assert "Disconnect servo power before the first flash" in " ".join(flash.split())
+    assert "Stop does not cut servo power" in " ".join(control.split())
     assert "Nothing is\n        flashed from the browser" in flash or "Nothing is flashed from the browser" in " ".join(flash.split())
     joined = " ".join(control.split())
     assert "cannot reach a robot" in joined and "Pairing is done in the operating system" in joined

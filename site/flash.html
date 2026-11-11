@@ -38,16 +38,11 @@
   <main>
     <div class="title-row">
       <div><p class="eyebrow">ARDUINO UNO Q / APP LAB / SSH</p><h1>Flash the board</h1></div>
-      <span class="release-tag">Not run on hardware</span>
     </div>
 
-    <section class="status" aria-labelledby="status-heading">
-      <h2 id="status-heading">Status: not run on hardware</h2>
-      <p>These commands have never been run on a UNO Q, and the sketch has not been built. They follow the steps the
-        sketchbot uses for its arm agent on the same board. This page only writes commands for you to run in your own
-        terminal. It opens no connection, has no password or key field, and sends nothing anywhere. Nothing is
-        flashed from the browser.</p>
-    </section>
+    <p class="lead">This page only writes commands for you to run in your own terminal. It opens no connection, has
+      no password or key field, and sends nothing anywhere. Nothing is flashed from the browser. Disconnect servo
+      power before the first flash.</p>
 
     <section aria-labelledby="preflight-heading">
       <div class="section-heading"><span class="step">01</span><h2 id="preflight-heading">Before the first flash</h2></div>
@@ -102,7 +97,7 @@
       <div class="table-wrap"><table>
         <thead><tr><th>Controller</th><th>Flash steps</th><th>Note</th></tr></thead>
         <tbody>
-          <tr><td>Arduino UNO Q</td><td>written, not run on hardware</td><td style="white-space:normal">App Lab app in <code>app_lab/microduck_agent</code>, commands above.</td></tr>
+          <tr><td>Arduino UNO Q</td><td>written</td><td style="white-space:normal">App Lab app in <code>app_lab/microduck_agent</code>, commands above.</td></tr>
           <tr><td>AI Thinker ESP32-CAM</td><td>not written</td><td style="white-space:normal">No firmware for it here. The sketchbot flashes its camera board by hand from the Arduino IDE over the serial port, not from its site and not over SSH.</td></tr>
           <tr><td>Raspberry Pi</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
           <tr><td>LEGO hubs</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
@@ -115,7 +110,7 @@
   </main>
   <footer>
     <p>Code under the MIT licence. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
-      No analytics, no cookies, no network requests from this page.</p>
+      No analytics, no cookies, no network requests from this page. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>.</p>
   </footer>
   <script type="module" src="./nav.js"></script>
   <script type="module" src="./flash.js"></script>

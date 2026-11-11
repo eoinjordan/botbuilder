@@ -24,7 +24,12 @@ select:focus-visible { outline: 3px solid #76b4ee; outline-offset: 3px; }
 .verdict-defined h2 { color: var(--warn); }
 .verdict-not_possible { border-left-color: var(--red); background: #fdf3f2; }
 .verdict-not_possible h2 { color: var(--red); }
-.not-built { font-weight: 600; }
+.checked-mark { font-weight: 600; color: var(--green); }
+.checked-photo { max-width: 240px; border: 1px solid var(--line); border-radius: 8px; margin: 6px 0 10px; }
+.greyed { font-size: 12px; color: var(--muted); margin: 0 0 14px; }
+.greyed summary { cursor: pointer; }
+.greyed ul { margin-top: 8px; }
+option:disabled { color: #a3b0ab; }
 .nearest { margin: 12px 0 0; }
 .nearest a { text-decoration: underline; }
 

@@ -22,22 +22,16 @@
   <main>
     <div class="title-row">
       <div><p class="eyebrow">PRINTED ROBOTS FOR THE CONTROLLERS, MOTORS AND CAMERAS YOU ALREADY OWN</p><h1>Build your own bot from the parts you have</h1></div>
-      <span class="release-tag">Nothing here has been built</span>
     </div>
 
-    <section class="status no-print" aria-labelledby="status-heading">
-      <h2 id="status-heading">Read the status line first</h2>
-      <p>Select the parts you have. The page answers with what this project can honestly say about that combination.
-        One combination has been analysed in simulation. Other camera boards, two Raspberry Pi decks and a turning
-        head were checked in the digital assembly only. The LEGO-motor walkers and the wheeled variants are being analysed. Others are only defined, and
-        many are not possible. No robot has been assembled or powered, so no
-        recipe on this page is a tested build.</p>
-    </section>
+    <p class="lead no-print">Select the parts you have. The recipe on the right lists the files to print, the parts,
+      the wiring and the software for that robot, and can be saved as a PDF or a zip with the files.</p>
 
     <div class="build-layout">
       <section class="no-print" aria-labelledby="pick-heading">
         <div class="section-heading"><span class="step">01</span><h2 id="pick-heading">What you have</h2></div>
         <form id="picker" class="picker" autocomplete="off"></form>
+        <details id="greyed" class="greyed" hidden></details>
         <div class="form-actions">
           <button id="reset" class="secondary" type="button">Reset to the analysed design</button>
         </div>
@@ -62,8 +56,7 @@
   </main>
   <footer>
     <p id="trademarks">LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd.</p>
-    <p>Maker figures and their sources are in config/bases.json; what is not verified is marked there. Code under the MIT
-      licence. No analytics, no cookies; the selection stays in this browser.</p>
+    <p>Code under the MIT licence. No analytics, no cookies; the selection stays in this browser. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>.</p>
   </footer>
   <script type="module" src="./nav.js"></script>
   <script type="module" src="./build.js"></script>
