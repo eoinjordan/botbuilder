@@ -1,0 +1,1345 @@
+{
+ "generated_by": "scripts/run_look.py",
+ "licence_of_the_shapes": "CC BY-NC-SA 4.0. Adapted from the Microduck by Pollen Robotics, https://github.com/pollen-robotics/microduck_rl. See LICENSE.",
+ "scale": 1.25,
+ "eye": "camera",
+ "camera": "esp_eye",
+ "feet": "web",
+ "dimensions": {
+  "height_stand_mm": 345.0,
+  "height_zero_pose_mm": 336.1,
+  "width_mm": 192.1,
+  "length_mm": 210.9,
+  "original_height_mm_in_the_source_meshes": 263.9
+ },
+ "mass": {
+  "total_kg": 1.2328,
+  "by_group_g": {
+   "printed shells": 355.4,
+   "printed brackets": 119.4,
+   "servos": 631.0,
+   "boards and camera": 127.0
+  },
+  "by_link_g": {
+   "trunk": 264.5,
+   "left_hip_yaw": 72.0,
+   "left_hip_roll": 3.5,
+   "left_thigh": 150.2,
+   "left_shin": 72.0,
+   "left_foot": 46.1,
+   "right_hip_yaw": 72.0,
+   "right_hip_roll": 3.5,
+   "right_thigh": 150.2,
+   "right_shin": 72.0,
+   "right_foot": 46.1,
+   "neck": 65.5,
+   "head_pitch": 2.4,
+   "head_yaw": 14.8,
+   "head": 168.6,
+   "beak": 29.4
+  },
+  "original_kg_in_its_simulation_model": 0.737,
+  "original_scaled_by_volume_kg": 1.439
+ },
+ "interferences": {
+  "zero_pose": [],
+  "stand_pose": []
+ },
+ "stand_pose": {
+  "q_deg": {
+   "left_hip_yaw": 0.0,
+   "left_hip_roll": 0.0,
+   "left_hip_pitch": -14.0,
+   "left_knee": 2.0,
+   "left_ankle": 16.0,
+   "right_hip_yaw": 0.0,
+   "right_hip_roll": 0.0,
+   "right_hip_pitch": 14.0,
+   "right_knee": -2.0,
+   "right_ankle": -16.0,
+   "neck_pitch": 0.0,
+   "head_pitch": 0.0,
+   "head_yaw": 0.0,
+   "head_roll": 0.0,
+   "beak": 0.0
+  },
+  "trunk_height_m": 0.1485,
+  "com_mm": [
+   -30.6,
+   -0.1,
+   144.2
+  ],
+  "margin_mm": 30.1,
+  "polygon_mm": [
+   [
+    -59.8,
+    -51.1
+   ],
+   [
+    -12.0,
+    -54.8
+   ],
+   [
+    -0.3,
+    -51.1
+   ],
+   [
+    -0.3,
+    51.1
+   ],
+   [
+    -12.0,
+    54.8
+   ],
+   [
+    -59.8,
+    51.1
+   ],
+   [
+    -60.8,
+    39.1
+   ],
+   [
+    -60.8,
+    -39.1
+   ]
+  ]
+ },
+ "one_foot": {
+  "left": {
+   "stance": "left",
+   "found": true,
+   "roll_deg": 20.0,
+   "q_deg": {
+    "left_hip_yaw": 0.0,
+    "left_hip_roll": 20.0,
+    "left_hip_pitch": -14.0,
+    "left_knee": 2.0,
+    "left_ankle": 16.0,
+    "right_hip_yaw": 0.0,
+    "right_hip_roll": 20.0,
+    "right_hip_pitch": 4.0,
+    "right_knee": -22.0,
+    "right_ankle": -26.0,
+    "neck_pitch": 0.0,
+    "head_pitch": 0.0,
+    "head_yaw": 0.0,
+    "head_roll": 0.0,
+    "beak": 0.0
+   },
+   "com_mm": [
+    -30.7,
+    15.4,
+    149.1
+   ],
+   "margin_mm": 8.4,
+   "polygon_mm": [
+    [
+     -59.8,
+     51.1
+    ],
+    [
+     -60.8,
+     39.1
+    ],
+    [
+     -54.8,
+     13.0
+    ],
+    [
+     -42.8,
+     7.0
+    ],
+    [
+     -21.3,
+     7.0
+    ],
+    [
+     -11.3,
+     10.0
+    ],
+    [
+     -2.3,
+     37.1
+    ],
+    [
+     -0.3,
+     51.1
+    ],
+    [
+     -12.0,
+     54.8
+    ]
+   ],
+   "swing_sole_height_mm": 23.0,
+   "interferences": [],
+   "torque_nm": {
+    "left_hip_yaw": -0.034,
+    "left_hip_roll": -0.159,
+    "left_hip_pitch": 0.127,
+    "left_knee": 0.285,
+    "left_ankle": -0.105,
+    "right_hip_yaw": 0.024,
+    "right_hip_roll": 0.142,
+    "right_hip_pitch": 0.068,
+    "right_knee": 0.031,
+    "right_ankle": -0.004,
+    "neck_pitch": -0.032,
+    "head_pitch": 0.032,
+    "head_yaw": 0.012,
+    "head_roll": 0.004,
+    "beak": 0.013
+   }
+  },
+  "right": {
+   "stance": "right",
+   "found": true,
+   "roll_deg": -20.0,
+   "q_deg": {
+    "left_hip_yaw": 0.0,
+    "left_hip_roll": -20.0,
+    "left_hip_pitch": -4.0,
+    "left_knee": 22.0,
+    "left_ankle": 26.0,
+    "right_hip_yaw": 0.0,
+    "right_hip_roll": -20.0,
+    "right_hip_pitch": 14.0,
+    "right_knee": -2.0,
+    "right_ankle": -16.0,
+    "neck_pitch": 0.0,
+    "head_pitch": 0.0,
+    "head_yaw": 0.0,
+    "head_roll": 0.0,
+    "beak": 0.0
+   },
+   "com_mm": [
+    -30.7,
+    -15.6,
+    149.0
+   ],
+   "margin_mm": 8.6,
+   "polygon_mm": [
+    [
+     -60.8,
+     -39.1
+    ],
+    [
+     -59.8,
+     -51.1
+    ],
+    [
+     -12.0,
+     -54.8
+    ],
+    [
+     -0.3,
+     -51.1
+    ],
+    [
+     -2.3,
+     -37.1
+    ],
+    [
+     -11.3,
+     -10.0
+    ],
+    [
+     -21.3,
+     -7.0
+    ],
+    [
+     -42.8,
+     -7.0
+    ],
+    [
+     -54.8,
+     -13.0
+    ]
+   ],
+   "swing_sole_height_mm": 23.0,
+   "interferences": [],
+   "torque_nm": {
+    "left_hip_yaw": -0.024,
+    "left_hip_roll": -0.142,
+    "left_hip_pitch": -0.068,
+    "left_knee": -0.031,
+    "left_ankle": 0.004,
+    "right_hip_yaw": 0.034,
+    "right_hip_roll": 0.157,
+    "right_hip_pitch": -0.127,
+    "right_knee": -0.285,
+    "right_ankle": 0.105,
+    "neck_pitch": -0.032,
+    "head_pitch": 0.032,
+    "head_yaw": -0.012,
+    "head_roll": -0.003,
+    "beak": 0.013
+   }
+  }
+ },
+ "sway_both_hips": {
+  "to_the_left_deg": 30.0,
+  "to_the_right_deg": 30.0
+ },
+ "joint_ranges": {
+  "left_hip_yaw": {
+   "joint": "left_hip_yaw",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    -25,
+    30
+   ],
+   "max_free_deg": 90.0,
+   "max_set_by": "servo travel",
+   "min_free_deg": -12.0,
+   "min_set_by": "left_hip_yaw against right_hip_yaw",
+   "min_deg": -9.0,
+   "max_deg": 30.0,
+   "part_of_original_range": 0.71
+  },
+  "left_hip_roll": {
+   "joint": "left_hip_roll",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    -22,
+    22
+   ],
+   "max_free_deg": 33.0,
+   "max_set_by": "body_left against left_hip_pitch_servo",
+   "min_free_deg": -6.0,
+   "min_set_by": "left_foot against right_foot",
+   "min_deg": -3.0,
+   "max_deg": 22.0,
+   "part_of_original_range": 0.57
+  },
+  "left_hip_pitch": {
+   "joint": "left_hip_pitch",
+   "from_deg": -14.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "max_free_deg": 88.0,
+   "max_set_by": "servo travel",
+   "min_free_deg": -89.0,
+   "min_set_by": "servo travel",
+   "min_deg": -89.0,
+   "max_deg": 88.0,
+   "part_of_original_range": 0.98
+  },
+  "left_knee": {
+   "joint": "left_knee",
+   "from_deg": 2.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "max_free_deg": 86.0,
+   "max_set_by": "left_hip_roll against left_shin",
+   "min_free_deg": -88.0,
+   "min_set_by": "servo travel",
+   "min_deg": -88.0,
+   "max_deg": 83.0,
+   "part_of_original_range": 0.95
+  },
+  "left_ankle": {
+   "joint": "left_ankle",
+   "from_deg": 16.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "max_free_deg": 73.0,
+   "max_set_by": "left_shin against left_foot",
+   "min_free_deg": -77.0,
+   "min_set_by": "left_shin against left_foot",
+   "min_deg": -74.0,
+   "max_deg": 70.0,
+   "part_of_original_range": 0.8
+  },
+  "right_hip_yaw": {
+   "joint": "right_hip_yaw",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    -30,
+    25
+   ],
+   "max_free_deg": 12.0,
+   "max_set_by": "left_hip_yaw against right_hip_yaw",
+   "min_free_deg": -90.0,
+   "min_set_by": "servo travel",
+   "min_deg": -30.0,
+   "max_deg": 9.0,
+   "part_of_original_range": 0.71
+  },
+  "right_hip_roll": {
+   "joint": "right_hip_roll",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    -22,
+    22
+   ],
+   "max_free_deg": 6.0,
+   "max_set_by": "left_foot against right_foot",
+   "min_free_deg": -33.0,
+   "min_set_by": "body_right against right_hip_pitch_servo",
+   "min_deg": -22.0,
+   "max_deg": 3.0,
+   "part_of_original_range": 0.57
+  },
+  "right_hip_pitch": {
+   "joint": "right_hip_pitch",
+   "from_deg": 14.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "max_free_deg": 89.0,
+   "max_set_by": "servo travel",
+   "min_free_deg": -88.0,
+   "min_set_by": "servo travel",
+   "min_deg": -88.0,
+   "max_deg": 89.0,
+   "part_of_original_range": 0.98
+  },
+  "right_knee": {
+   "joint": "right_knee",
+   "from_deg": -2.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "max_free_deg": 88.0,
+   "max_set_by": "servo travel",
+   "min_free_deg": -86.0,
+   "min_set_by": "right_hip_roll against right_shin",
+   "min_deg": -83.0,
+   "max_deg": 88.0,
+   "part_of_original_range": 0.95
+  },
+  "right_ankle": {
+   "joint": "right_ankle",
+   "from_deg": -16.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "max_free_deg": 77.0,
+   "max_set_by": "right_shin against right_foot",
+   "min_free_deg": -73.0,
+   "min_set_by": "right_shin against right_foot",
+   "min_deg": -70.0,
+   "max_deg": 74.0,
+   "part_of_original_range": 0.8
+  },
+  "neck_pitch": {
+   "joint": "neck_pitch",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    -90,
+    60
+   ],
+   "max_free_deg": 42.0,
+   "max_set_by": "unoq_stack_1 against head_base",
+   "min_free_deg": -90.0,
+   "min_set_by": "servo travel",
+   "min_deg": -90.0,
+   "max_deg": 39.0,
+   "part_of_original_range": 0.86
+  },
+  "head_pitch": {
+   "joint": "head_pitch",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "max_free_deg": 90.0,
+   "max_set_by": "servo travel",
+   "min_free_deg": -66.0,
+   "min_set_by": "body_left against head_top",
+   "min_deg": -63.0,
+   "max_deg": 90.0,
+   "part_of_original_range": 0.85
+  },
+  "head_yaw": {
+   "joint": "head_yaw",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    -170,
+    170
+   ],
+   "max_free_deg": 90.0,
+   "max_set_by": "servo travel",
+   "min_free_deg": -90.0,
+   "min_set_by": "servo travel",
+   "min_deg": -90.0,
+   "max_deg": 90.0,
+   "part_of_original_range": 0.53
+  },
+  "head_roll": {
+   "joint": "head_roll",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    -25,
+    25
+   ],
+   "max_free_deg": 30.0,
+   "max_set_by": "head_pitch_yoke against head_base",
+   "min_free_deg": -33.0,
+   "min_set_by": "neck against head_base",
+   "min_deg": -25.0,
+   "max_deg": 25.0,
+   "part_of_original_range": 1.0
+  },
+  "beak": {
+   "joint": "beak",
+   "from_deg": 0.0,
+   "original_range_deg": [
+    0,
+    30
+   ],
+   "max_free_deg": 42.0,
+   "max_set_by": "head_base against beak_jaw",
+   "min_free_deg": 0.0,
+   "min_set_by": "beak_top against beak_jaw",
+   "min_deg": 0.0,
+   "max_deg": 30.0,
+   "part_of_original_range": 1.0
+  }
+ },
+ "torque": {
+  "left_hip_yaw": {
+   "servo": "SR311",
+   "stall_nm": 0.304,
+   "hold_limit_nm": 0.152,
+   "required_nm": 0.034,
+   "worst_case": "on the left foot, other lifted",
+   "required_over_hold_limit": 0.22,
+   "required_over_stall": 0.11,
+   "by_case_nm": {
+    "stand, two feet": 0.0,
+    "stand pose, all weight on the left foot": 0.0,
+    "on the left foot, other lifted": -0.034,
+    "stand pose, all weight on the right foot": 0.0,
+    "on the right foot, other lifted": -0.024,
+    "step, hips -12 deg, left foot": -0.0,
+    "step, hips +12 deg, left foot": -0.0,
+    "neck 30 deg forward": 0.0,
+    "head 30 deg down": 0.0,
+    "head rolled 25 deg": 0.0
+   }
+  },
+  "left_hip_roll": {
+   "servo": "SR431",
+   "stall_nm": 1.196,
+   "hold_limit_nm": 0.598,
+   "required_nm": 0.347,
+   "worst_case": "stand pose, all weight on the left foot",
+   "required_over_hold_limit": 0.58,
+   "required_over_stall": 0.29,
+   "by_case_nm": {
+    "stand, two feet": -0.045,
+    "stand pose, all weight on the left foot": -0.347,
+    "on the left foot, other lifted": -0.159,
+    "stand pose, all weight on the right foot": -0.142,
+    "on the right foot, other lifted": -0.142,
+    "step, hips -12 deg, left foot": -0.347,
+    "step, hips +12 deg, left foot": -0.347,
+    "neck 30 deg forward": -0.045,
+    "head 30 deg down": -0.045,
+    "head rolled 25 deg": -0.043
+   }
+  },
+  "left_hip_pitch": {
+   "servo": "SR431",
+   "stall_nm": 1.196,
+   "hold_limit_nm": 0.598,
+   "required_nm": 0.151,
+   "worst_case": "step, hips +12 deg, left foot",
+   "required_over_hold_limit": 0.25,
+   "required_over_stall": 0.13,
+   "by_case_nm": {
+    "stand, two feet": 0.029,
+    "stand pose, all weight on the left foot": 0.126,
+    "on the left foot, other lifted": 0.127,
+    "stand pose, all weight on the right foot": -0.067,
+    "on the right foot, other lifted": -0.068,
+    "step, hips -12 deg, left foot": 0.099,
+    "step, hips +12 deg, left foot": 0.151,
+    "neck 30 deg forward": -0.03,
+    "head 30 deg down": 0.008,
+    "head rolled 25 deg": 0.029
+   }
+  },
+  "left_knee": {
+   "servo": "SR431",
+   "stall_nm": 1.196,
+   "hold_limit_nm": 0.598,
+   "required_nm": 0.336,
+   "worst_case": "step, hips +12 deg, left foot",
+   "required_over_hold_limit": 0.56,
+   "required_over_stall": 0.28,
+   "by_case_nm": {
+    "stand, two feet": 0.132,
+    "stand pose, all weight on the left foot": 0.286,
+    "on the left foot, other lifted": 0.285,
+    "stand pose, all weight on the right foot": -0.021,
+    "on the right foot, other lifted": -0.031,
+    "step, hips -12 deg, left foot": 0.221,
+    "step, hips +12 deg, left foot": 0.336,
+    "neck 30 deg forward": 0.192,
+    "head 30 deg down": 0.154,
+    "head rolled 25 deg": 0.132
+   }
+  },
+  "left_ankle": {
+   "servo": "SR431",
+   "stall_nm": 1.196,
+   "hold_limit_nm": 0.598,
+   "required_nm": 0.29,
+   "worst_case": "step, hips +12 deg, left foot",
+   "required_over_hold_limit": 0.48,
+   "required_over_stall": 0.24,
+   "by_case_nm": {
+    "stand, two feet": -0.051,
+    "stand pose, all weight on the left foot": -0.106,
+    "on the left foot, other lifted": -0.105,
+    "stand pose, all weight on the right foot": 0.004,
+    "on the right foot, other lifted": 0.004,
+    "step, hips -12 deg, left foot": 0.085,
+    "step, hips +12 deg, left foot": -0.29,
+    "neck 30 deg forward": -0.111,
+    "head 30 deg down": -0.073,
+    "head rolled 25 deg": -0.051
+   }
+  },
+  "right_hip_yaw": {
+   "servo": "SR311",
+   "stall_nm": 0.304,
+   "hold_limit_nm": 0.152,
+   "required_nm": 0.034,
+   "worst_case": "on the right foot, other lifted",
+   "required_over_hold_limit": 0.22,
+   "required_over_stall": 0.11,
+   "by_case_nm": {
+    "stand, two feet": -0.0,
+    "stand pose, all weight on the left foot": -0.0,
+    "on the left foot, other lifted": 0.024,
+    "stand pose, all weight on the right foot": -0.0,
+    "on the right foot, other lifted": 0.034,
+    "step, hips -12 deg, left foot": 0.0,
+    "step, hips +12 deg, left foot": 0.0,
+    "neck 30 deg forward": -0.0,
+    "head 30 deg down": -0.0,
+    "head rolled 25 deg": -0.0
+   }
+  },
+  "right_hip_roll": {
+   "servo": "SR431",
+   "stall_nm": 1.196,
+   "hold_limit_nm": 0.598,
+   "required_nm": 0.345,
+   "worst_case": "stand pose, all weight on the right foot",
+   "required_over_hold_limit": 0.58,
+   "required_over_stall": 0.29,
+   "by_case_nm": {
+    "stand, two feet": 0.045,
+    "stand pose, all weight on the left foot": 0.142,
+    "on the left foot, other lifted": 0.142,
+    "stand pose, all weight on the right foot": 0.345,
+    "on the right foot, other lifted": 0.157,
+    "step, hips -12 deg, left foot": 0.142,
+    "step, hips +12 deg, left foot": 0.142,
+    "neck 30 deg forward": 0.045,
+    "head 30 deg down": 0.045,
+    "head rolled 25 deg": 0.047
+   }
+  },
+  "right_hip_pitch": {
+   "servo": "SR431",
+   "stall_nm": 1.196,
+   "hold_limit_nm": 0.598,
+   "required_nm": 0.127,
+   "worst_case": "on the right foot, other lifted",
+   "required_over_hold_limit": 0.21,
+   "required_over_stall": 0.11,
+   "by_case_nm": {
+    "stand, two feet": -0.029,
+    "stand pose, all weight on the left foot": 0.067,
+    "on the left foot, other lifted": 0.068,
+    "stand pose, all weight on the right foot": -0.126,
+    "on the right foot, other lifted": -0.127,
+    "step, hips -12 deg, left foot": 0.04,
+    "step, hips +12 deg, left foot": 0.092,
+    "neck 30 deg forward": 0.03,
+    "head 30 deg down": -0.008,
+    "head rolled 25 deg": -0.029
+   }
+  },
+  "right_knee": {
+   "servo": "SR431",
+   "stall_nm": 1.196,
+   "hold_limit_nm": 0.598,
+   "required_nm": 0.286,
+   "worst_case": "stand pose, all weight on the right foot",
+   "required_over_hold_limit": 0.48,
+   "required_over_stall": 0.24,
+   "by_case_nm": {
+    "stand, two feet": -0.132,
+    "stand pose, all weight on the left foot": 0.021,
+    "on the left foot, other lifted": 0.031,
+    "stand pose, all weight on the right foot": -0.286,
+    "on the right foot, other lifted": -0.285,
+    "step, hips -12 deg, left foot": 0.033,
+    "step, hips +12 deg, left foot": 0.009,
+    "neck 30 deg forward": -0.192,
+    "head 30 deg down": -0.154,
+    "head rolled 25 deg": -0.132
+   }
+  },
+  "right_ankle": {
+   "servo": "SR431",
+   "stall_nm": 1.196,
+   "hold_limit_nm": 0.598,
+   "required_nm": 0.111,
+   "worst_case": "neck 30 deg forward",
+   "required_over_hold_limit": 0.18,
+   "required_over_stall": 0.09,
+   "by_case_nm": {
+    "stand, two feet": 0.051,
+    "stand pose, all weight on the left foot": -0.004,
+    "on the left foot, other lifted": -0.004,
+    "stand pose, all weight on the right foot": 0.106,
+    "on the right foot, other lifted": 0.105,
+    "step, hips -12 deg, left foot": -0.004,
+    "step, hips +12 deg, left foot": -0.004,
+    "neck 30 deg forward": 0.111,
+    "head 30 deg down": 0.073,
+    "head rolled 25 deg": 0.051
+   }
+  },
+  "neck_pitch": {
+   "servo": "SR311",
+   "stall_nm": 0.304,
+   "hold_limit_nm": 0.152,
+   "required_nm": 0.154,
+   "worst_case": "neck 30 deg forward",
+   "required_over_hold_limit": 1.01,
+   "required_over_stall": 0.51,
+   "by_case_nm": {
+    "stand, two feet": -0.035,
+    "stand pose, all weight on the left foot": -0.035,
+    "on the left foot, other lifted": -0.032,
+    "stand pose, all weight on the right foot": -0.035,
+    "on the right foot, other lifted": -0.032,
+    "step, hips -12 deg, left foot": -0.035,
+    "step, hips +12 deg, left foot": -0.035,
+    "neck 30 deg forward": -0.154,
+    "head 30 deg down": -0.078,
+    "head rolled 25 deg": -0.035
+   }
+  },
+  "head_pitch": {
+   "servo": "SR311",
+   "stall_nm": 0.304,
+   "hold_limit_nm": 0.152,
+   "required_nm": 0.078,
+   "worst_case": "head 30 deg down",
+   "required_over_hold_limit": 0.51,
+   "required_over_stall": 0.26,
+   "by_case_nm": {
+    "stand, two feet": 0.035,
+    "stand pose, all weight on the left foot": 0.035,
+    "on the left foot, other lifted": 0.032,
+    "stand pose, all weight on the right foot": 0.035,
+    "on the right foot, other lifted": 0.032,
+    "step, hips -12 deg, left foot": 0.035,
+    "step, hips +12 deg, left foot": 0.035,
+    "neck 30 deg forward": 0.078,
+    "head 30 deg down": 0.078,
+    "head rolled 25 deg": 0.035
+   }
+  },
+  "head_yaw": {
+   "servo": "M5_180",
+   "stall_nm": 0.157,
+   "hold_limit_nm": 0.079,
+   "required_nm": 0.012,
+   "worst_case": "on the left foot, other lifted",
+   "required_over_hold_limit": 0.15,
+   "required_over_stall": 0.08,
+   "by_case_nm": {
+    "stand, two feet": -0.0,
+    "stand pose, all weight on the left foot": -0.0,
+    "on the left foot, other lifted": 0.012,
+    "stand pose, all weight on the right foot": -0.0,
+    "on the right foot, other lifted": -0.012,
+    "step, hips -12 deg, left foot": 0.0,
+    "step, hips +12 deg, left foot": 0.0,
+    "neck 30 deg forward": -0.0,
+    "head 30 deg down": -0.0,
+    "head rolled 25 deg": -0.0
+   }
+  },
+  "head_roll": {
+   "servo": "M5_180",
+   "stall_nm": 0.157,
+   "hold_limit_nm": 0.079,
+   "required_nm": 0.005,
+   "worst_case": "head rolled 25 deg",
+   "required_over_hold_limit": 0.06,
+   "required_over_stall": 0.03,
+   "by_case_nm": {
+    "stand, two feet": 0.0,
+    "stand pose, all weight on the left foot": 0.0,
+    "on the left foot, other lifted": 0.004,
+    "stand pose, all weight on the right foot": 0.0,
+    "on the right foot, other lifted": -0.003,
+    "step, hips -12 deg, left foot": 0.0,
+    "step, hips +12 deg, left foot": 0.0,
+    "neck 30 deg forward": 0.0,
+    "head 30 deg down": 0.0,
+    "head rolled 25 deg": 0.005
+   }
+  },
+  "beak": {
+   "servo": "M5_180",
+   "stall_nm": 0.157,
+   "hold_limit_nm": 0.079,
+   "required_nm": 0.014,
+   "worst_case": "stand, two feet",
+   "required_over_hold_limit": 0.18,
+   "required_over_stall": 0.09,
+   "by_case_nm": {
+    "stand, two feet": 0.014,
+    "stand pose, all weight on the left foot": 0.014,
+    "on the left foot, other lifted": 0.013,
+    "stand pose, all weight on the right foot": 0.014,
+    "on the right foot, other lifted": 0.013,
+    "step, hips -12 deg, left foot": 0.014,
+    "step, hips +12 deg, left foot": 0.014,
+    "neck 30 deg forward": 0.01,
+    "head 30 deg down": 0.01,
+    "head rolled 25 deg": 0.013
+   }
+  }
+ },
+ "leg_clearance": {
+  "hip_roll_deg": [
+   -20.0,
+   -10.0,
+   0.0,
+   10.0,
+   20.0
+  ],
+  "rows_are": "left_hip_roll",
+  "columns_are": "right_hip_roll",
+  "gap_mm_or_minus_overlap_mm3": [
+   [
+    7.5,
+    4.0,
+    -445.0,
+    -3319.0,
+    -7884.0
+   ],
+   [
+    7.5,
+    7.5,
+    -228.0,
+    -2178.0,
+    -3308.0
+   ],
+   [
+    7.5,
+    7.5,
+    7.5,
+    -228.0,
+    -445.0
+   ],
+   [
+    7.5,
+    7.5,
+    7.5,
+    7.5,
+    4.0
+   ],
+   [
+    7.5,
+    7.5,
+    7.5,
+    7.5,
+    7.5
+   ]
+  ]
+ },
+ "bought_part_gaps": [
+  {
+   "part": "unoq_stack_1",
+   "nearest": "trunk_frame",
+   "gap_mm": 0.0
+  },
+  {
+   "part": "unoq_stack_2",
+   "nearest": "trunk_frame",
+   "gap_mm": 0.0
+  },
+  {
+   "part": "servo_driver",
+   "nearest": "body_left",
+   "gap_mm": 0.5
+  },
+  {
+   "part": "esp_eye",
+   "nearest": "head_face",
+   "gap_mm": 0.0
+  }
+ ],
+ "servo_clearance_in_cradle_mm": 0.5,
+ "servo_count": {
+  "SR431": 8,
+  "SR311": 4,
+  "M5_180": 3
+ },
+ "triangles": {
+  "parts": 36568,
+  "source_parts_used": 168878,
+  "simplification_tolerance_mm": 0.45
+ },
+ "assignments": {
+  "one kit, lightest": {
+   "assignment": {
+    "hip_yaw": "M5_180",
+    "hip_roll": "M5_180",
+    "hip_pitch": "SR311",
+    "knee": "SR431",
+    "ankle": "SR431",
+    "neck_pitch": "M5_180",
+    "head_pitch": "M5_180",
+    "head_yaw": "M5_180",
+    "head_roll": "M5_180",
+    "beak": "M5_180"
+   },
+   "servos": {
+    "M5_180": 9,
+    "SR311": 2,
+    "SR431": 4
+   },
+   "mass_kg": 0.985,
+   "leg_mass_kg": 0.256,
+   "one_foot": {
+    "left": true,
+    "right": true
+   },
+   "worst_joint": "left_hip_roll",
+   "worst_required_over_hold_limit": 3.65,
+   "over_hold_limit": [
+    "left_hip_roll",
+    "neck_pitch",
+    "right_hip_roll"
+   ],
+   "over_stall": [
+    "left_hip_roll",
+    "right_hip_roll"
+   ],
+   "joints": {
+    "left_hip_yaw": {
+     "servo": "M5_180",
+     "required_nm": 0.029,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.37,
+     "worst_case": "on the left foot, other lifted"
+    },
+    "left_hip_roll": {
+     "servo": "M5_180",
+     "required_nm": 0.286,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 3.65,
+     "worst_case": "step, hips -12 deg, left foot"
+    },
+    "left_hip_pitch": {
+     "servo": "SR311",
+     "required_nm": 0.143,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 0.94,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "left_knee": {
+     "servo": "SR431",
+     "required_nm": 0.237,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.4,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "left_ankle": {
+     "servo": "SR431",
+     "required_nm": 0.219,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.37,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "right_hip_yaw": {
+     "servo": "M5_180",
+     "required_nm": 0.029,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.37,
+     "worst_case": "on the right foot, other lifted"
+    },
+    "right_hip_roll": {
+     "servo": "M5_180",
+     "required_nm": 0.285,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 3.63,
+     "worst_case": "stand pose, all weight on the right foot"
+    },
+    "right_hip_pitch": {
+     "servo": "SR311",
+     "required_nm": 0.12,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 0.79,
+     "worst_case": "stand pose, all weight on the right foot"
+    },
+    "right_knee": {
+     "servo": "SR431",
+     "required_nm": 0.206,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.34,
+     "worst_case": "on the right foot, other lifted"
+    },
+    "right_ankle": {
+     "servo": "SR431",
+     "required_nm": 0.096,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.16,
+     "worst_case": "neck 30 deg forward"
+    },
+    "neck_pitch": {
+     "servo": "M5_180",
+     "required_nm": 0.149,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 1.89,
+     "worst_case": "neck 30 deg forward"
+    },
+    "head_pitch": {
+     "servo": "M5_180",
+     "required_nm": 0.078,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 1.0,
+     "worst_case": "neck 30 deg forward"
+    },
+    "head_yaw": {
+     "servo": "M5_180",
+     "required_nm": 0.01,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.13,
+     "worst_case": "on the left foot, other lifted"
+    },
+    "head_roll": {
+     "servo": "M5_180",
+     "required_nm": 0.005,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.06,
+     "worst_case": "head rolled 25 deg"
+    },
+    "beak": {
+     "servo": "M5_180",
+     "required_nm": 0.014,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.18,
+     "worst_case": "stand, two feet"
+    }
+   }
+  },
+  "two kits, built": {
+   "assignment": {
+    "hip_yaw": "SR311",
+    "hip_roll": "SR431",
+    "hip_pitch": "SR431",
+    "knee": "SR431",
+    "ankle": "SR431",
+    "neck_pitch": "SR311",
+    "head_pitch": "SR311",
+    "head_yaw": "M5_180",
+    "head_roll": "M5_180",
+    "beak": "M5_180"
+   },
+   "servos": {
+    "SR311": 4,
+    "SR431": 8,
+    "M5_180": 3
+   },
+   "mass_kg": 1.233,
+   "leg_mass_kg": 0.344,
+   "one_foot": {
+    "left": true,
+    "right": true
+   },
+   "worst_joint": "neck_pitch",
+   "worst_required_over_hold_limit": 1.01,
+   "over_hold_limit": [
+    "neck_pitch"
+   ],
+   "over_stall": [],
+   "joints": {
+    "left_hip_yaw": {
+     "servo": "SR311",
+     "required_nm": 0.034,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 0.22,
+     "worst_case": "on the left foot, other lifted"
+    },
+    "left_hip_roll": {
+     "servo": "SR431",
+     "required_nm": 0.347,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.58,
+     "worst_case": "stand pose, all weight on the left foot"
+    },
+    "left_hip_pitch": {
+     "servo": "SR431",
+     "required_nm": 0.151,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.25,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "left_knee": {
+     "servo": "SR431",
+     "required_nm": 0.336,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.56,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "left_ankle": {
+     "servo": "SR431",
+     "required_nm": 0.29,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.48,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "right_hip_yaw": {
+     "servo": "SR311",
+     "required_nm": 0.034,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 0.22,
+     "worst_case": "on the right foot, other lifted"
+    },
+    "right_hip_roll": {
+     "servo": "SR431",
+     "required_nm": 0.345,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.58,
+     "worst_case": "stand pose, all weight on the right foot"
+    },
+    "right_hip_pitch": {
+     "servo": "SR431",
+     "required_nm": 0.127,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.21,
+     "worst_case": "on the right foot, other lifted"
+    },
+    "right_knee": {
+     "servo": "SR431",
+     "required_nm": 0.286,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.48,
+     "worst_case": "stand pose, all weight on the right foot"
+    },
+    "right_ankle": {
+     "servo": "SR431",
+     "required_nm": 0.111,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.18,
+     "worst_case": "neck 30 deg forward"
+    },
+    "neck_pitch": {
+     "servo": "SR311",
+     "required_nm": 0.154,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 1.01,
+     "worst_case": "neck 30 deg forward"
+    },
+    "head_pitch": {
+     "servo": "SR311",
+     "required_nm": 0.078,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 0.51,
+     "worst_case": "head 30 deg down"
+    },
+    "head_yaw": {
+     "servo": "M5_180",
+     "required_nm": 0.012,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.15,
+     "worst_case": "on the left foot, other lifted"
+    },
+    "head_roll": {
+     "servo": "M5_180",
+     "required_nm": 0.005,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.06,
+     "worst_case": "head rolled 25 deg"
+    },
+    "beak": {
+     "servo": "M5_180",
+     "required_nm": 0.014,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.18,
+     "worst_case": "stand, two feet"
+    }
+   }
+  },
+  "two kits, light hips": {
+   "assignment": {
+    "hip_yaw": "M5_180",
+    "hip_roll": "SR311",
+    "hip_pitch": "SR431",
+    "knee": "SR431",
+    "ankle": "SR431",
+    "neck_pitch": "SR311",
+    "head_pitch": "SR311",
+    "head_yaw": "M5_180",
+    "head_roll": "M5_180",
+    "beak": "M5_180"
+   },
+   "servos": {
+    "M5_180": 5,
+    "SR311": 4,
+    "SR431": 6
+   },
+   "mass_kg": 1.127,
+   "leg_mass_kg": 0.309,
+   "one_foot": {
+    "left": true,
+    "right": true
+   },
+   "worst_joint": "left_hip_roll",
+   "worst_required_over_hold_limit": 2.16,
+   "over_hold_limit": [
+    "left_hip_roll",
+    "neck_pitch",
+    "right_hip_roll"
+   ],
+   "over_stall": [
+    "left_hip_roll",
+    "right_hip_roll"
+   ],
+   "joints": {
+    "left_hip_yaw": {
+     "servo": "M5_180",
+     "required_nm": 0.03,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.38,
+     "worst_case": "on the left foot, other lifted"
+    },
+    "left_hip_roll": {
+     "servo": "SR311",
+     "required_nm": 0.329,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 2.16,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "left_hip_pitch": {
+     "servo": "SR431",
+     "required_nm": 0.14,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.23,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "left_knee": {
+     "servo": "SR431",
+     "required_nm": 0.286,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.48,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "left_ankle": {
+     "servo": "SR431",
+     "required_nm": 0.266,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.44,
+     "worst_case": "step, hips +12 deg, left foot"
+    },
+    "right_hip_yaw": {
+     "servo": "M5_180",
+     "required_nm": 0.029,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.36,
+     "worst_case": "on the right foot, other lifted"
+    },
+    "right_hip_roll": {
+     "servo": "SR311",
+     "required_nm": 0.327,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 2.15,
+     "worst_case": "stand pose, all weight on the right foot"
+    },
+    "right_hip_pitch": {
+     "servo": "SR431",
+     "required_nm": 0.115,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.19,
+     "worst_case": "on the right foot, other lifted"
+    },
+    "right_knee": {
+     "servo": "SR431",
+     "required_nm": 0.242,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.4,
+     "worst_case": "stand pose, all weight on the right foot"
+    },
+    "right_ankle": {
+     "servo": "SR431",
+     "required_nm": 0.107,
+     "hold_limit_nm": 0.598,
+     "required_over_hold_limit": 0.18,
+     "worst_case": "neck 30 deg forward"
+    },
+    "neck_pitch": {
+     "servo": "SR311",
+     "required_nm": 0.154,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 1.01,
+     "worst_case": "neck 30 deg forward"
+    },
+    "head_pitch": {
+     "servo": "SR311",
+     "required_nm": 0.078,
+     "hold_limit_nm": 0.152,
+     "required_over_hold_limit": 0.51,
+     "worst_case": "neck 30 deg forward"
+    },
+    "head_yaw": {
+     "servo": "M5_180",
+     "required_nm": 0.011,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.14,
+     "worst_case": "on the left foot, other lifted"
+    },
+    "head_roll": {
+     "servo": "M5_180",
+     "required_nm": 0.005,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.06,
+     "worst_case": "head rolled 25 deg"
+    },
+    "beak": {
+     "servo": "M5_180",
+     "required_nm": 0.014,
+     "hold_limit_nm": 0.079,
+     "required_over_hold_limit": 0.18,
+     "worst_case": "step, hips +12 deg, left foot"
+    }
+   }
+  }
+ },
+ "pictures": {
+  "front": "stl/microduck-look/images/look-front.png",
+  "side": "stl/microduck-look/images/look-side.png",
+  "three-quarter": "stl/microduck-look/images/look-three-quarter.png",
+  "back": "stl/microduck-look/images/look-back.png",
+  "section-leg": "stl/microduck-look/images/look-section-leg.png",
+  "section-centre": "stl/microduck-look/images/look-section-centre.png",
+  "section-hips": "stl/microduck-look/images/look-section-hips.png",
+  "one-foot": "stl/microduck-look/images/look-one-foot.png"
+ }
+}

@@ -1,0 +1,54 @@
+Microduck-look parts: licence and credit
+
+The STL files in this directory, parameters.json and the pictures of the
+parts are licensed under the Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International licence
+(CC BY-NC-SA 4.0).
+
+  Summary:    https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Legal code: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+  SPDX:       CC-BY-NC-SA-4.0
+
+Credit
+
+  Adapted from the Microduck by Pollen Robotics,
+  https://github.com/pollen-robotics/microduck_rl
+
+  Their repository states: "3D model files are licensed under Creative
+  Commons BY-SA-NC". It names no version of the licence; version 4.0 is used
+  here. The shells were taken from a pack of 15 meshes exported from their
+  simulation model, which carries no licence or author of its own; its part
+  list matches their model.
+
+What was changed
+
+  - every shell scaled by 1.25;
+  - the model re-split into printable parts, each one closed solid, and
+    simplified to a tolerance of 0.45 mm;
+  - the original's servo mounts replaced by cradles and horn plates for
+    TinkerKit Braccio servos (SR431, SR311) and 9 g servos, the hip pitch
+    axis moved 4.75 mm forward, the hip roll axis 4.5 mm down and 5 mm
+    inward and the ankle axis 6.5 mm down so that those servos and the
+    parts on them clear each other;
+  - the thigh covers, feet and lower head shell cut back where the new parts
+    turn;
+  - the soles widened towards the centre line (a web);
+  - a frame added in the trunk with a back plate for two controller boards;
+  - a seat for a camera board added behind the eye.
+
+What this means for you
+
+  You may copy, print and adapt these parts for non-commercial purposes if
+  you give the credit above, say what you changed and share your version
+  under the same licence. You may not sell the parts or prints of them.
+  Pollen Robotics sell the original robot.
+
+  "Microduck" is the name of Pollen Robotics' robot and is used here only to
+  say what these parts were adapted from. This project is not affiliated with
+  or endorsed by Pollen Robotics.
+
+What is not covered
+
+  build.py, the script that generates the parts, is MIT licensed
+  (SPDX-License-Identifier: MIT). The source meshes are not in this
+  directory.

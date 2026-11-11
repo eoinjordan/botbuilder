@@ -1,0 +1,2175 @@
+{
+ "_licence": "CC BY-NC-SA 4.0. Adapted from the Microduck by Pollen Robotics, https://github.com/pollen-robotics/microduck_rl. See LICENSE.",
+ "scale": 1.25,
+ "eye": "camera",
+ "camera": "esp_eye",
+ "feet": "web",
+ "stacks": 2,
+ "clearance_mm": 0.5,
+ "cradle_wall_mm": 2.4,
+ "plate_mm": 3.0,
+ "decimate_mm": 0.45,
+ "floor_z_mm": -139.625,
+ "density_g_cm3": 1.24,
+ "fill": {
+  "shell": 0.8,
+  "frame": 0.6
+ },
+ "servo_types": {
+  "SR431": {
+   "L": 42.0,
+   "W": 20.5,
+   "H": 39.5,
+   "e": 10.25,
+   "ear_o": 6.5,
+   "ear_t": 2.5,
+   "ear_b": 27.0,
+   "hf": 5.5,
+   "horn_r": 10.5,
+   "horn_t": 2.5,
+   "mass": 62.0,
+   "torque": 1.196,
+   "speed": 300.0,
+   "stall_a": 2.0
+  },
+  "SR311": {
+   "L": 31.3,
+   "W": 16.5,
+   "H": 28.6,
+   "e": 8.25,
+   "ear_o": 4.5,
+   "ear_t": 2.0,
+   "ear_b": 19.5,
+   "hf": 4.5,
+   "horn_r": 9.0,
+   "horn_t": 2.0,
+   "mass": 27.0,
+   "torque": 0.304,
+   "speed": 428.6,
+   "stall_a": 1.0
+  },
+  "M5_180": {
+   "L": 23.0,
+   "W": 12.5,
+   "H": 26.5,
+   "e": 5.9,
+   "ear_o": 4.75,
+   "ear_t": 2.5,
+   "ear_b": 19.5,
+   "hf": 3.5,
+   "horn_r": 7.0,
+   "horn_t": 2.0,
+   "mass": 9.0,
+   "torque": 0.157,
+   "speed": 600.0,
+   "stall_a": 0.75
+  }
+ },
+ "parts": [
+  {
+   "file": "body_left.stl",
+   "link": "trunk",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -7.46541
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -2.4375
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     26.3447
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 19.46,
+   "mass_g": 19.3,
+   "fill": 0.8,
+   "triangles": 2556,
+   "size_mm": [
+    100.8,
+    51.8,
+    41.9
+   ],
+   "orientation": "seam face (the centre plane) on the bed",
+   "supports": "supports under the upper wall, inside"
+  },
+  {
+   "file": "body_right.stl",
+   "link": "trunk",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -7.41729
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     -0.625
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     26.5446
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 19.68,
+   "mass_g": 19.5,
+   "fill": 0.8,
+   "triangles": 2562,
+   "size_mm": [
+    100.9,
+    52.0,
+    39.5
+   ],
+   "orientation": "seam face (the centre plane) on the bed",
+   "supports": "supports under the upper wall, inside"
+  },
+  {
+   "file": "trunk_frame.stl",
+   "link": "trunk",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     0.0,
+     0.0,
+     -1.0,
+     44.5
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     -0.31069
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     0.16
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 70.87,
+   "mass_g": 52.7,
+   "fill": 0.6,
+   "triangles": 2204,
+   "size_mm": [
+    112.7,
+    73.9,
+    112.0
+   ],
+   "orientation": "back plates on the bed, deck upright",
+   "supports": "supports under the deck and the cradles"
+  },
+  {
+   "file": "left_hip_yaw.stl",
+   "link": "left_hip_yaw",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -3.45
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     18.05
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     -6.25
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 13.39,
+   "mass_g": 10.0,
+   "fill": 0.6,
+   "triangles": 548,
+   "size_mm": [
+    42.9,
+    28.6,
+    54.8
+   ],
+   "orientation": "horn disc on the bed",
+   "supports": "supports inside the cradle mouth"
+  },
+  {
+   "file": "right_hip_yaw.stl",
+   "link": "right_hip_yaw",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -3.45
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -18.05
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     -6.25
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 13.39,
+   "mass_g": 10.0,
+   "fill": 0.6,
+   "triangles": 548,
+   "size_mm": [
+    42.9,
+    28.6,
+    54.8
+   ],
+   "orientation": "horn disc on the bed",
+   "supports": "supports inside the cradle mouth"
+  },
+  {
+   "file": "left_hip_roll.stl",
+   "link": "left_hip_roll",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     0.0,
+     0.0,
+     -1.0,
+     26.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     26.1875
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     -24.125
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 4.77,
+   "mass_g": 3.5,
+   "fill": 0.6,
+   "triangles": 688,
+   "size_mm": [
+    28.5,
+    42.6,
+    28.2
+   ],
+   "orientation": "front bar on the bed",
+   "supports": "none"
+  },
+  {
+   "file": "right_hip_roll.stl",
+   "link": "right_hip_roll",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     0.0,
+     0.0,
+     -1.0,
+     26.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     -26.1875
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     -24.125
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 4.77,
+   "mass_g": 3.5,
+   "fill": 0.6,
+   "triangles": 688,
+   "size_mm": [
+    28.5,
+    42.6,
+    28.2
+   ],
+   "orientation": "front bar on the bed",
+   "supports": "none"
+  },
+  {
+   "file": "left_thigh.stl",
+   "link": "left_thigh",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -16.54753
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     95.4
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     -34.81883
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 26.4,
+   "mass_g": 26.2,
+   "fill": 0.8,
+   "triangles": 808,
+   "size_mm": [
+    78.9,
+    59.5,
+    35.0
+   ],
+   "orientation": "outer face on the bed, cradles open upward",
+   "supports": "supports under the rounded edge of the cover"
+  },
+  {
+   "file": "right_thigh.stl",
+   "link": "right_thigh",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -16.54753
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -95.4
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -34.81883
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 26.4,
+   "mass_g": 26.2,
+   "fill": 0.8,
+   "triangles": 808,
+   "size_mm": [
+    78.9,
+    59.5,
+    35.0
+   ],
+   "orientation": "outer face on the bed, cradles open upward",
+   "supports": "supports under the rounded edge of the cover"
+  },
+  {
+   "file": "left_shin.stl",
+   "link": "left_shin",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -39.75
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     44.5
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -79.45
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 13.47,
+   "mass_g": 10.0,
+   "fill": 0.6,
+   "triangles": 382,
+   "size_mm": [
+    26.3,
+    84.2,
+    30.5
+   ],
+   "orientation": "inner plate on the bed, cradle open upward",
+   "supports": "none"
+  },
+  {
+   "file": "right_shin.stl",
+   "link": "right_shin",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -39.75
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     -44.5
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     -79.45
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 13.47,
+   "mass_g": 10.0,
+   "fill": 0.6,
+   "triangles": 382,
+   "size_mm": [
+    26.3,
+    84.2,
+    30.5
+   ],
+   "orientation": "inner plate on the bed, cradle open upward",
+   "supports": "none"
+  },
+  {
+   "file": "left_foot.stl",
+   "link": "left_foot",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -30.90248
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     51.53626
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -139.625
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 46.46,
+   "mass_g": 46.1,
+   "fill": 0.8,
+   "triangles": 3690,
+   "size_mm": [
+    66.3,
+    89.1,
+    44.1
+   ],
+   "orientation": "sole on the bed",
+   "supports": "supports under the cheek and inside the well"
+  },
+  {
+   "file": "right_foot.stl",
+   "link": "right_foot",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     -30.90248
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     -51.53626
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -139.625
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 46.46,
+   "mass_g": 46.1,
+   "fill": 0.8,
+   "triangles": 3690,
+   "size_mm": [
+    66.3,
+    89.1,
+    44.1
+   ],
+   "orientation": "sole on the bed",
+   "supports": "supports under the cheek and inside the well"
+  },
+  {
+   "file": "neck.stl",
+   "link": "neck",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     32.5
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -17.875
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     71.75
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 15.51,
+   "mass_g": 11.5,
+   "fill": 0.6,
+   "triangles": 484,
+   "size_mm": [
+    22.3,
+    84.8,
+    22.4
+   ],
+   "orientation": "back wall on the bed, cradles open upward",
+   "supports": "none"
+  },
+  {
+   "file": "head_pitch_yoke.stl",
+   "link": "head_pitch",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     32.5
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     6.0625
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     121.25
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 3.28,
+   "mass_g": 2.4,
+   "fill": 0.6,
+   "triangles": 476,
+   "size_mm": [
+    22.0,
+    30.1,
+    28.8
+   ],
+   "orientation": "top plate on the bed",
+   "supports": "none"
+  },
+  {
+   "file": "head_yaw_carrier.stl",
+   "link": "head_yaw",
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     35.2375
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     131.75
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 7.78,
+   "mass_g": 5.8,
+   "fill": 0.6,
+   "triangles": 744,
+   "size_mm": [
+    50.2,
+    18.3,
+    22.4
+   ],
+   "orientation": "upside down: top bar on the bed",
+   "supports": "none"
+  },
+  {
+   "file": "head_base.stl",
+   "link": "head",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     34.85012
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     3e-05
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     123.38739
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 61.72,
+   "mass_g": 61.2,
+   "fill": 0.8,
+   "triangles": 6264,
+   "size_mm": [
+    145.4,
+    114.1,
+    34.3
+   ],
+   "orientation": "underside on the bed",
+   "supports": "supports under the rim where it rises at the back"
+  },
+  {
+   "file": "head_top.stl",
+   "link": "head",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     0.0,
+     0.0,
+     -1.0,
+     115.35776
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     -0.00113
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     167.67842
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 56.54,
+   "mass_g": 56.1,
+   "fill": 0.8,
+   "triangles": 3468,
+   "size_mm": [
+    57.6,
+    114.1,
+    153.4
+   ],
+   "orientation": "front opening on the bed, the head standing on its face",
+   "supports": "supports inside under the closed rear end only"
+  },
+  {
+   "file": "head_face.stl",
+   "link": "head",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     0.0,
+     0.0,
+     -1.0,
+     111.75
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     -0.11422
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     165.75901
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 20.54,
+   "mass_g": 20.4,
+   "fill": 0.8,
+   "triangles": 2058,
+   "size_mm": [
+    55.7,
+    109.6,
+    25.6
+   ],
+   "orientation": "eye ring on the bed, plate level above it",
+   "supports": "supports under the plate round the ring"
+  },
+  {
+   "file": "beak_jaw.stl",
+   "link": "beak",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     64.16922
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     122.98692
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 52.71,
+   "mass_g": 29.4,
+   "fill": 0.45,
+   "triangles": 1972,
+   "size_mm": [
+    85.4,
+    113.6,
+    36.5
+   ],
+   "orientation": "underside of the pad on the bed",
+   "supports": "supports under the two cheeks"
+  },
+  {
+   "file": "beak_top.stl",
+   "link": "head",
+   "kind": "shell",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     84.76515
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     2e-05
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     133.06372
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 4.89,
+   "mass_g": 4.9,
+   "fill": 0.8,
+   "triangles": 60,
+   "size_mm": [
+    40.3,
+    109.2,
+    3.7
+   ],
+   "orientation": "flat on the bed",
+   "supports": "none"
+  },
+  {
+   "file": "fit_SR431.stl",
+   "link": null,
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     10.75
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -47.9
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 11.2,
+   "mass_g": 8.3,
+   "fill": 0.6,
+   "triangles": 92,
+   "size_mm": [
+    47.8,
+    26.3,
+    29.9
+   ],
+   "orientation": "floor on the bed",
+   "supports": "none"
+  },
+  {
+   "file": "fit_horn_SR431.stl",
+   "link": null,
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 1.26,
+   "mass_g": 0.9,
+   "fill": 0.6,
+   "triangles": 384,
+   "size_mm": [
+    24.0,
+    24.0,
+    3.0
+   ],
+   "orientation": "flat",
+   "supports": "none"
+  },
+  {
+   "file": "fit_SR311.stl",
+   "link": null,
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     7.4
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -36.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 6.52,
+   "mass_g": 4.9,
+   "fill": 0.6,
+   "triangles": 92,
+   "size_mm": [
+    37.1,
+    22.3,
+    22.4
+   ],
+   "orientation": "floor on the bed",
+   "supports": "none"
+  },
+  {
+   "file": "fit_horn_SR311.stl",
+   "link": null,
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 0.94,
+   "mass_g": 0.7,
+   "fill": 0.6,
+   "triangles": 384,
+   "size_mm": [
+    21.0,
+    21.0,
+    3.0
+   ],
+   "orientation": "flat",
+   "supports": "none"
+  },
+  {
+   "file": "fit_M5_180.stl",
+   "link": null,
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     5.6
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -32.9
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 4.65,
+   "mass_g": 3.5,
+   "fill": 0.6,
+   "triangles": 92,
+   "size_mm": [
+    28.8,
+    18.3,
+    22.4
+   ],
+   "orientation": "floor on the bed",
+   "supports": "none"
+  },
+  {
+   "file": "fit_horn_M5_180.stl",
+   "link": null,
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 0.58,
+   "mass_g": 0.4,
+   "fill": 0.6,
+   "triangles": 384,
+   "size_mm": [
+    17.0,
+    17.0,
+    3.0
+   ],
+   "orientation": "flat",
+   "supports": "none"
+  },
+  {
+   "file": "fit_eye_esp_eye.stl",
+   "link": null,
+   "kind": "frame",
+   "print_to_robot": [
+    [
+     0.0,
+     0.0,
+     1.0,
+     92.15
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     -15.11422
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0,
+     163.89325
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ],
+   "volume_cm3": 1.8,
+   "mass_g": 1.3,
+   "fill": 0.6,
+   "triangles": 60,
+   "size_mm": [
+    28.0,
+    18.0,
+    8.0
+   ],
+   "orientation": "back on the bed",
+   "supports": "none"
+  }
+ ],
+ "joints": [
+  {
+   "name": "left_hip_yaw",
+   "parent": "trunk",
+   "child": "left_hip_yaw",
+   "anchor_mm": [
+    7.5,
+    21.875,
+    -6.25
+   ],
+   "axis": [
+    0,
+    0,
+    -1
+   ],
+   "original_range_deg": [
+    -25,
+    30
+   ],
+   "servo": "SR311",
+   "original_anchor_scaled_mm": [
+    7.5,
+    21.875,
+    -6.25
+   ]
+  },
+  {
+   "name": "left_hip_roll",
+   "parent": "left_hip_yaw",
+   "child": "left_hip_roll",
+   "anchor_mm": [
+    23.0,
+    16.875,
+    -26.375
+   ],
+   "axis": [
+    1,
+    0,
+    0
+   ],
+   "original_range_deg": [
+    -22,
+    22
+   ],
+   "servo": "SR431",
+   "original_anchor_scaled_mm": [
+    28.125,
+    21.875,
+    -21.875
+   ]
+  },
+  {
+   "name": "left_hip_pitch",
+   "parent": "left_hip_roll",
+   "child": "left_thigh",
+   "anchor_mm": [
+    9.75,
+    47.5,
+    -21.875
+   ],
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "servo": "SR431",
+   "original_anchor_scaled_mm": [
+    5.0,
+    53.125,
+    -21.875
+   ]
+  },
+  {
+   "name": "left_knee",
+   "parent": "left_thigh",
+   "child": "left_shin",
+   "anchor_mm": [
+    -39.75,
+    47.5,
+    -49.375
+   ],
+   "axis": [
+    0,
+    -1,
+    0
+   ],
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "servo": "SR431",
+   "original_anchor_scaled_mm": [
+    -39.75,
+    48.125,
+    -49.375
+   ]
+  },
+  {
+   "name": "left_ankle",
+   "parent": "left_shin",
+   "child": "left_foot",
+   "anchor_mm": [
+    -39.75,
+    93.0,
+    -108.375
+   ],
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "servo": "SR431",
+   "original_anchor_scaled_mm": [
+    -39.75,
+    80.625,
+    -101.875
+   ]
+  },
+  {
+   "name": "right_hip_yaw",
+   "parent": "trunk",
+   "child": "right_hip_yaw",
+   "anchor_mm": [
+    7.5,
+    -21.875,
+    -6.25
+   ],
+   "axis": [
+    0,
+    0,
+    -1
+   ],
+   "original_range_deg": [
+    -30,
+    25
+   ],
+   "servo": "SR311",
+   "original_anchor_scaled_mm": [
+    7.5,
+    -21.875,
+    -6.25
+   ]
+  },
+  {
+   "name": "right_hip_roll",
+   "parent": "right_hip_yaw",
+   "child": "right_hip_roll",
+   "anchor_mm": [
+    23.0,
+    -16.875,
+    -26.375
+   ],
+   "axis": [
+    1,
+    0,
+    0
+   ],
+   "original_range_deg": [
+    -22,
+    22
+   ],
+   "servo": "SR431",
+   "original_anchor_scaled_mm": [
+    28.125,
+    -21.875,
+    -21.875
+   ]
+  },
+  {
+   "name": "right_hip_pitch",
+   "parent": "right_hip_roll",
+   "child": "right_thigh",
+   "anchor_mm": [
+    9.75,
+    -47.5,
+    -21.875
+   ],
+   "axis": [
+    0,
+    -1,
+    0
+   ],
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "servo": "SR431",
+   "original_anchor_scaled_mm": [
+    5.0,
+    -53.125,
+    -21.875
+   ]
+  },
+  {
+   "name": "right_knee",
+   "parent": "right_thigh",
+   "child": "right_shin",
+   "anchor_mm": [
+    -39.75,
+    -47.5,
+    -49.375
+   ],
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "servo": "SR431",
+   "original_anchor_scaled_mm": [
+    -39.75,
+    -48.125,
+    -49.375
+   ]
+  },
+  {
+   "name": "right_ankle",
+   "parent": "right_shin",
+   "child": "right_foot",
+   "anchor_mm": [
+    -39.75,
+    -93.0,
+    -108.375
+   ],
+   "axis": [
+    0,
+    -1,
+    0
+   ],
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "servo": "SR431",
+   "original_anchor_scaled_mm": [
+    -39.75,
+    -80.625,
+    -101.875
+   ]
+  },
+  {
+   "name": "neck_pitch",
+   "parent": "trunk",
+   "child": "neck",
+   "anchor_mm": [
+    32.5,
+    18.125,
+    40.5
+   ],
+   "axis": [
+    0,
+    -1,
+    0
+   ],
+   "original_range_deg": [
+    -90,
+    60
+   ],
+   "servo": "SR311",
+   "original_anchor_scaled_mm": [
+    32.5,
+    18.125,
+    40.5
+   ]
+  },
+  {
+   "name": "head_pitch",
+   "parent": "neck",
+   "child": "head_pitch",
+   "anchor_mm": [
+    32.5,
+    18.125,
+    103.0
+   ],
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "servo": "SR311",
+   "original_anchor_scaled_mm": [
+    32.5,
+    18.125,
+    103.0
+   ]
+  },
+  {
+   "name": "head_yaw",
+   "parent": "head_pitch",
+   "child": "head_yaw",
+   "anchor_mm": [
+    32.5,
+    0.0,
+    121.25
+   ],
+   "axis": [
+    0,
+    0,
+    1
+   ],
+   "original_range_deg": [
+    -170,
+    170
+   ],
+   "servo": "M5_180",
+   "original_anchor_scaled_mm": [
+    32.5,
+    0.0,
+    126.375
+   ]
+  },
+  {
+   "name": "head_roll",
+   "parent": "head_yaw",
+   "child": "head",
+   "anchor_mm": [
+    10.125,
+    0.0,
+    144.5
+   ],
+   "axis": [
+    -1,
+    0,
+    0
+   ],
+   "original_range_deg": [
+    -25,
+    25
+   ],
+   "servo": "M5_180",
+   "original_anchor_scaled_mm": [
+    10.125,
+    0.0,
+    144.5
+   ]
+  },
+  {
+   "name": "beak",
+   "parent": "head",
+   "child": "beak",
+   "anchor_mm": [
+    32.625,
+    48.125,
+    148.5
+   ],
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "original_range_deg": [
+    0,
+    30
+   ],
+   "servo": "M5_180",
+   "original_anchor_scaled_mm": [
+    32.625,
+    48.125,
+    148.5
+   ]
+  }
+ ],
+ "servos": [
+  {
+   "joint": "left_hip_yaw",
+   "type": "SR311",
+   "link": "trunk",
+   "frame": [
+    [
+     -1.0,
+     0.0,
+     0.0,
+     7.5
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     21.875
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     -6.25
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "left_hip_roll",
+   "type": "SR431",
+   "link": "left_hip_yaw",
+   "frame": [
+    [
+     0.0,
+     -0.0,
+     1.0,
+     23.0
+    ],
+    [
+     0.0,
+     1.0,
+     0.0,
+     16.875
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0,
+     -26.375
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "left_hip_pitch",
+   "type": "SR431",
+   "link": "left_thigh",
+   "frame": [
+    [
+     -1.0,
+     -0.0,
+     0.0,
+     9.75
+    ],
+    [
+     0.0,
+     -0.0,
+     -1.0,
+     47.5
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -21.875
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "left_knee",
+   "type": "SR431",
+   "link": "left_thigh",
+   "frame": [
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -39.75
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     47.5
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     -49.375
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "left_ankle",
+   "type": "SR431",
+   "link": "left_shin",
+   "frame": [
+    [
+     0.0,
+     1.0,
+     0.0,
+     -39.75
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     93.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     -108.375
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "right_hip_yaw",
+   "type": "SR311",
+   "link": "trunk",
+   "frame": [
+    [
+     -1.0,
+     0.0,
+     0.0,
+     7.5
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -21.875
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     -6.25
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "right_hip_roll",
+   "type": "SR431",
+   "link": "right_hip_yaw",
+   "frame": [
+    [
+     0.0,
+     0.0,
+     1.0,
+     23.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -16.875
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0,
+     -26.375
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "right_hip_pitch",
+   "type": "SR431",
+   "link": "right_thigh",
+   "frame": [
+    [
+     -1.0,
+     0.0,
+     0.0,
+     9.75
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -47.5
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -21.875
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "right_knee",
+   "type": "SR431",
+   "link": "right_thigh",
+   "frame": [
+    [
+     0.0,
+     -1.0,
+     0.0,
+     -39.75
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     -47.5
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     -49.375
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "right_ankle",
+   "type": "SR431",
+   "link": "right_shin",
+   "frame": [
+    [
+     0.0,
+     1.0,
+     0.0,
+     -39.75
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     -93.0
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     -108.375
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "neck_pitch",
+   "type": "SR311",
+   "link": "neck",
+   "frame": [
+    [
+     0.0,
+     1.0,
+     0.0,
+     32.5
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     18.125
+    ],
+    [
+     1.0,
+     0.0,
+     0.0,
+     40.5
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "head_pitch",
+   "type": "SR311",
+   "link": "neck",
+   "frame": [
+    [
+     0.0,
+     -1.0,
+     0.0,
+     32.5
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     18.125
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0,
+     103.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "head_yaw",
+   "type": "M5_180",
+   "link": "head_yaw",
+   "frame": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     32.5
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     -1.0,
+     121.25
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "head_roll",
+   "type": "M5_180",
+   "link": "head",
+   "frame": [
+    [
+     0.0,
+     0.0,
+     1.0,
+     10.125
+    ],
+    [
+     -1.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     144.5
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  },
+  {
+   "joint": "beak",
+   "type": "M5_180",
+   "link": "head",
+   "frame": [
+    [
+     1.0,
+     0.0,
+     0.0,
+     32.625
+    ],
+    [
+     0.0,
+     0.0,
+     1.0,
+     46.625
+    ],
+    [
+     0.0,
+     -1.0,
+     0.0,
+     148.5
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ]
+   ]
+  }
+ ],
+ "electronics": [
+  {
+   "name": "unoq_stack_1",
+   "link": "trunk",
+   "box_mm": [
+    [
+     -95.5,
+     -34.29,
+     1.16
+    ],
+    [
+     -67.5,
+     34.29,
+     54.5
+    ]
+   ],
+   "mass_g": 55.0
+  },
+  {
+   "name": "unoq_stack_2",
+   "link": "trunk",
+   "box_mm": [
+    [
+     -95.5,
+     -34.29,
+     -54.18
+    ],
+    [
+     -67.5,
+     34.29,
+     -0.84
+    ]
+   ],
+   "mass_g": 55.0
+  },
+  {
+   "name": "servo_driver",
+   "link": "trunk",
+   "box_mm": [
+    [
+     -31.5,
+     -31.25,
+     0.95
+    ],
+    [
+     -23.5,
+     31.25,
+     26.35
+    ]
+   ],
+   "mass_g": 9.0
+  },
+  {
+   "name": "esp_eye",
+   "link": "head",
+   "box_mm": [
+    [
+     97.15,
+     -32.11,
+     153.39
+    ],
+    [
+     98.75,
+     8.89,
+     174.39
+    ]
+   ],
+   "mass_g": 8.0
+  }
+ ],
+ "source_triangles": {
+  "body_left": 20970,
+  "body_right": 20970,
+  "thigh_cover": 12250,
+  "foot_core": 19922,
+  "sole": 15788,
+  "ankle": 4978,
+  "head_bottom": 20970,
+  "head_top": 16120,
+  "face": 11412,
+  "eye_ring": 984,
+  "jaw": 9918,
+  "jaw_pad": 6726,
+  "beak_top": 7870
+ }
+}

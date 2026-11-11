@@ -79,7 +79,7 @@ def test_every_stl_has_a_current_picture_recorded_in_the_manifest():
         assert b"tRNS" not in data, name
     pictures = sorted(path.relative_to(STL).as_posix() for path in (STL / "thumbs").rglob("*.png"))
     assert pictures == sorted(picture["file"] for picture in recorded.values()), "no stray pictures"
-    assert sum(picture["bytes"] for picture in recorded.values()) < 400_000
+    assert sum(picture["bytes"] for picture in recorded.values()) < 450_000
 
 
 def test_recipes_carry_the_picture_and_size_of_each_part():

@@ -80,3 +80,40 @@ walkers/config/wheeled.json.
 
 Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. Microduck is
 a design of Pollen Robotics. This project is not affiliated with either.
+
+7. Microduck-look biped (stl/microduck-look/, microduck/look/, docs/microduck-look.md)
+
+Unlike the plates of section 1, the parts in stl/microduck-look/ reproduce
+the shells of the Microduck by Pollen Robotics
+(https://github.com/pollen-robotics/microduck_rl): body halves, thigh covers,
+feet, head shells, face plate, eye ring and beak, taken from the part pack
+described in section 1, which was exported from their simulation model. They
+are an adaptation of that model. Pollen Robotics' repository states: "3D model
+files are licensed under Creative Commons BY-SA-NC". It names no version;
+version 4.0 is used here.
+
+The STL files in stl/microduck-look/, stl/microduck-look/parameters.json, the
+pictures in stl/microduck-look/images/ and stl/thumbs/microduck-look/, and
+the shapes in robot/microduck-look/ are therefore licensed under the Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International licence
+(CC BY-NC-SA 4.0, https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode),
+not under the MIT licence.
+
+  Credit: Adapted from the Microduck by Pollen Robotics,
+  https://github.com/pollen-robotics/microduck_rl
+
+  Changes: scaled by 1.25; re-split into printable solids and simplified;
+  the servo mounts replaced by cradles and horn plates for TinkerKit Braccio
+  servos and 9 g servos, with three joint axes moved; covers, feet and head
+  shell cut back where the new parts turn; the soles widened towards the
+  centre line; a trunk frame with a back plate for two boards and a camera
+  seat behind the eye added. The full list is in stl/microduck-look/LICENSE.
+
+The 15 source meshes are not in this repository. The code under
+microduck/look/ and scripts/run_look.py is MIT. "Microduck" is the name of
+Pollen Robotics' robot and is used only to say what the parts were adapted
+from; this project is not affiliated with or endorsed by Pollen Robotics,
+who sell the original.
+
+Sources of the component data for this build are listed in
+config/microduck-look/build.json.

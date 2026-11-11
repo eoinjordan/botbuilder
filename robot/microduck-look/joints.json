@@ -1,0 +1,478 @@
+{
+ "generated_by": "scripts/run_look.py",
+ "order": [
+  "left_hip_yaw",
+  "left_hip_roll",
+  "left_hip_pitch",
+  "left_knee",
+  "left_ankle",
+  "right_hip_yaw",
+  "right_hip_roll",
+  "right_hip_pitch",
+  "right_knee",
+  "right_ankle",
+  "neck_pitch",
+  "head_pitch",
+  "head_yaw",
+  "head_roll",
+  "beak"
+ ],
+ "joints": {
+  "left_hip_yaw": {
+   "parent": "trunk",
+   "child": "left_hip_yaw",
+   "servo": "SR311",
+   "anchor_m": [
+    0.0075,
+    0.021875,
+    -0.00625
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "min_deg": -9.0,
+   "max_deg": 30.0,
+   "original_range_deg": [
+    -25,
+    30
+   ],
+   "torque_limit_nm": 0.304,
+   "speed_limit_deg_s": 428.6,
+   "armature_kgm2": 0.001,
+   "driven_by": "board 1",
+   "output": "M1",
+   "pin": 11,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "left_hip_roll": {
+   "parent": "left_hip_yaw",
+   "child": "left_hip_roll",
+   "servo": "SR431",
+   "anchor_m": [
+    0.023,
+    0.016875,
+    -0.026375
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "min_deg": -3.0,
+   "max_deg": 22.0,
+   "original_range_deg": [
+    -22,
+    22
+   ],
+   "torque_limit_nm": 1.196,
+   "speed_limit_deg_s": 300.0,
+   "armature_kgm2": 0.003,
+   "driven_by": "board 1",
+   "output": "M2",
+   "pin": 10,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "left_hip_pitch": {
+   "parent": "left_hip_roll",
+   "child": "left_thigh",
+   "servo": "SR431",
+   "anchor_m": [
+    0.00975,
+    0.0475,
+    -0.021875
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "min_deg": -89.0,
+   "max_deg": 88.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "torque_limit_nm": 1.196,
+   "speed_limit_deg_s": 300.0,
+   "armature_kgm2": 0.003,
+   "driven_by": "board 1",
+   "output": "M3",
+   "pin": 9,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "left_knee": {
+   "parent": "left_thigh",
+   "child": "left_shin",
+   "servo": "SR431",
+   "anchor_m": [
+    -0.03975,
+    0.0475,
+    -0.049375
+   ],
+   "axis": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "min_deg": -88.0,
+   "max_deg": 83.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "torque_limit_nm": 1.196,
+   "speed_limit_deg_s": 300.0,
+   "armature_kgm2": 0.003,
+   "driven_by": "board 1",
+   "output": "M4",
+   "pin": 6,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "left_ankle": {
+   "parent": "left_shin",
+   "child": "left_foot",
+   "servo": "SR431",
+   "anchor_m": [
+    -0.03975,
+    0.093,
+    -0.108375
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "min_deg": -74.0,
+   "max_deg": 70.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "torque_limit_nm": 1.196,
+   "speed_limit_deg_s": 300.0,
+   "armature_kgm2": 0.003,
+   "driven_by": "board 1",
+   "output": "M5",
+   "pin": 5,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "right_hip_yaw": {
+   "parent": "trunk",
+   "child": "right_hip_yaw",
+   "servo": "SR311",
+   "anchor_m": [
+    0.0075,
+    -0.021875,
+    -0.00625
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    -1.0
+   ],
+   "min_deg": -30.0,
+   "max_deg": 9.0,
+   "original_range_deg": [
+    -30,
+    25
+   ],
+   "torque_limit_nm": 0.304,
+   "speed_limit_deg_s": 428.6,
+   "armature_kgm2": 0.001,
+   "driven_by": "board 2",
+   "output": "M1",
+   "pin": 11,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "right_hip_roll": {
+   "parent": "right_hip_yaw",
+   "child": "right_hip_roll",
+   "servo": "SR431",
+   "anchor_m": [
+    0.023,
+    -0.016875,
+    -0.026375
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "min_deg": -22.0,
+   "max_deg": 3.0,
+   "original_range_deg": [
+    -22,
+    22
+   ],
+   "torque_limit_nm": 1.196,
+   "speed_limit_deg_s": 300.0,
+   "armature_kgm2": 0.003,
+   "driven_by": "board 2",
+   "output": "M2",
+   "pin": 10,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "right_hip_pitch": {
+   "parent": "right_hip_roll",
+   "child": "right_thigh",
+   "servo": "SR431",
+   "anchor_m": [
+    0.00975,
+    -0.0475,
+    -0.021875
+   ],
+   "axis": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "min_deg": -88.0,
+   "max_deg": 89.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "torque_limit_nm": 1.196,
+   "speed_limit_deg_s": 300.0,
+   "armature_kgm2": 0.003,
+   "driven_by": "board 2",
+   "output": "M3",
+   "pin": 9,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "right_knee": {
+   "parent": "right_thigh",
+   "child": "right_shin",
+   "servo": "SR431",
+   "anchor_m": [
+    -0.03975,
+    -0.0475,
+    -0.049375
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "min_deg": -83.0,
+   "max_deg": 88.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "torque_limit_nm": 1.196,
+   "speed_limit_deg_s": 300.0,
+   "armature_kgm2": 0.003,
+   "driven_by": "board 2",
+   "output": "M4",
+   "pin": 6,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "right_ankle": {
+   "parent": "right_shin",
+   "child": "right_foot",
+   "servo": "SR431",
+   "anchor_m": [
+    -0.03975,
+    -0.093,
+    -0.108375
+   ],
+   "axis": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "min_deg": -70.0,
+   "max_deg": 74.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "torque_limit_nm": 1.196,
+   "speed_limit_deg_s": 300.0,
+   "armature_kgm2": 0.003,
+   "driven_by": "board 2",
+   "output": "M5",
+   "pin": 5,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "neck_pitch": {
+   "parent": "trunk",
+   "child": "neck",
+   "servo": "SR311",
+   "anchor_m": [
+    0.0325,
+    0.018125,
+    0.0405
+   ],
+   "axis": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "min_deg": -90.0,
+   "max_deg": 39.0,
+   "original_range_deg": [
+    -90,
+    60
+   ],
+   "torque_limit_nm": 0.304,
+   "speed_limit_deg_s": 428.6,
+   "armature_kgm2": 0.001,
+   "driven_by": "board 1",
+   "output": "M6",
+   "pin": 3,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "head_pitch": {
+   "parent": "neck",
+   "child": "head_pitch",
+   "servo": "SR311",
+   "anchor_m": [
+    0.0325,
+    0.018125,
+    0.103
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "min_deg": -63.0,
+   "max_deg": 90.0,
+   "original_range_deg": [
+    -90,
+    90
+   ],
+   "torque_limit_nm": 0.304,
+   "speed_limit_deg_s": 428.6,
+   "armature_kgm2": 0.001,
+   "driven_by": "board 2",
+   "output": "M6",
+   "pin": 3,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "head_yaw": {
+   "parent": "head_pitch",
+   "child": "head_yaw",
+   "servo": "M5_180",
+   "anchor_m": [
+    0.0325,
+    0.0,
+    0.12125
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "min_deg": -90.0,
+   "max_deg": 90.0,
+   "original_range_deg": [
+    -170,
+    170
+   ],
+   "torque_limit_nm": 0.157,
+   "speed_limit_deg_s": 600.0,
+   "armature_kgm2": 0.0002,
+   "driven_by": "driver",
+   "output": "channel 0",
+   "pin": null,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "head_roll": {
+   "parent": "head_yaw",
+   "child": "head",
+   "servo": "M5_180",
+   "anchor_m": [
+    0.010125,
+    0.0,
+    0.1445
+   ],
+   "axis": [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   "min_deg": -25.0,
+   "max_deg": 25.0,
+   "original_range_deg": [
+    -25,
+    25
+   ],
+   "torque_limit_nm": 0.157,
+   "speed_limit_deg_s": 600.0,
+   "armature_kgm2": 0.0002,
+   "driven_by": "driver",
+   "output": "channel 1",
+   "pin": null,
+   "zero_deg": 90.0,
+   "direction": 1
+  },
+  "beak": {
+   "parent": "head",
+   "child": "beak",
+   "servo": "M5_180",
+   "anchor_m": [
+    0.032625,
+    0.048125,
+    0.1485
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "min_deg": 0.0,
+   "max_deg": 30.0,
+   "original_range_deg": [
+    0,
+    30
+   ],
+   "torque_limit_nm": 0.157,
+   "speed_limit_deg_s": 600.0,
+   "armature_kgm2": 0.0002,
+   "driven_by": "driver",
+   "output": "channel 2",
+   "pin": null,
+   "zero_deg": 90.0,
+   "direction": 1
+  }
+ },
+ "stand_pose_deg": {
+  "left_hip_yaw": 0.0,
+  "left_hip_roll": 0.0,
+  "left_hip_pitch": -14.0,
+  "left_knee": 2.0,
+  "left_ankle": 16.0,
+  "right_hip_yaw": 0.0,
+  "right_hip_roll": 0.0,
+  "right_hip_pitch": 14.0,
+  "right_knee": -2.0,
+  "right_ankle": -16.0,
+  "neck_pitch": 0.0,
+  "head_pitch": 0.0,
+  "head_yaw": 0.0,
+  "head_roll": 0.0,
+  "beak": 0.0
+ },
+ "stand_trunk_height_m": 0.1485,
+ "neutral_trunk_height_m": 0.13962,
+ "mass_kg": 1.2328,
+ "note": "zero_deg and direction are placeholders until the horns are fitted; no firmware reads this table yet"
+}

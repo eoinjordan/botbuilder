@@ -153,6 +153,8 @@ def main() -> int:
         from walkers import manifest as walkers_manifest
         with open(lego, encoding="utf-8") as handle:
             walkers_manifest.merge(json.load(handle))
+    from microduck.look import install as look                         # and the Microduck-look parts
+    look.remerge()
     thumbs.update(TARGET, redraw_all=True, log=lambda line: None)      # a picture of every part, recorded in the manifest
     print(f"copied {len(names) - 1} STLs ({record['total_bytes'] / 1e6:.2f} MB) to {TARGET}")
     return 0

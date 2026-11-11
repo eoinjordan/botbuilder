@@ -537,7 +537,7 @@ def test_the_real_manifest_is_read_as_it_is(data):
     for entry in listed["files"]:
         options_ = entry["options"]
         assert set(options_) <= {"part", "fit_piece", "controller", "head", "face", "display", "camera", "feet", "locomotion",
-                                 "drive", "wheel", "support", "wheel_class"}, entry["file"]
+                                 "drive", "wheel", "support", "wheel_class", "style"}, entry["file"]
         mine = by_name[entry["file"]]
         for key in ("camera", "display", "feet", "locomotion", "part"):
             assert mine[key] == options_.get(key), (entry["file"], key)

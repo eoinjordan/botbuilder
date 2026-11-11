@@ -113,3 +113,54 @@ the makers' documentation:
 - Values a builder must measure are marked "measure" in the recipes: the
   M5Stack bracket and adapter hole patterns, the Pixy pan-tilt base, horn
   screws, wheel shafts and the battery size.
+
+## The Microduck-look biped
+
+Report: [microduck-look.md](microduck-look.md). Generated geometry, an
+assembly test and a simulation; nothing printed.
+
+- Servo sizes: the case sizes of the SR431 and SR311 are the maker's; the
+  shaft position, the mounting ears, the horn and its height above the case
+  are assumed, as for the plate biped. The small servo's body is taken from
+  SG90 data sheets; M5Stack gives the kit's size only. Two axes were moved
+  because of the ears (hip pitch 4.75 mm, ankle 6.5 mm): if the real ears are
+  smaller the moves are larger than needed, if larger the servos meet.
+- The small servos: the build needs three position servos. M5Stack's Servo
+  Kit 180 is one; the owner's units from a BALA-C are continuous-rotation
+  servos driven there through an L9110S bridge and are not usable as joints.
+- Masses: UNO Q and shield 55 g a stack, camera 8 g, both estimates. Printed
+  mass is volume times 1.24 g/cm3 times 0.8 for shells and 0.6 for brackets
+  (0.45 for the lower beak). Wiring is not in the model.
+- The shells' walls are the source's, scaled; they were not measured part by
+  part. The upper head shell prints standing on its face with supports under
+  its closed end: not tried.
+- Holding torque limit: half of stall, a rule of thumb. Stall currents of the
+  Braccio servos are assumed (2.0 A and 1.0 A).
+- Joints hang on the servo shafts; only the neck, head roll and beak have a
+  second pivot. What a shaft and its plastic horn carry at the hip is not
+  known. The hip yaw shaft carries the leg's weight along its axis.
+- Joint ranges are from single-joint sweeps from the stand pose plus one
+  sweep of both hip rolls together. Other combinations were not swept. No
+  leg clearance rule exists for this build and the webs of the two feet can
+  meet.
+- The simulation collides parts with the floor only, uses rigid parts and an
+  ideal position servo (stall torque at a 4 degree error, no dead band, no
+  backlash, no supply limit), a 50 Hz command path with one tick of delay,
+  and floor friction 0.6. The motion study's fuller servo model
+  (docs/motion.md) was not applied to it.
+- The gait is open loop and was searched on three variations of the model
+  with a small budget. Whether it steps on the real floor is not known.
+- Firmware for fifteen joints, for two boards as one controller and for the
+  I2C driver: not written. The channel map in
+  `config/microduck-look/build.json` is a proposal.
+- The UNO Q's header has six PWM pins, all used by a Braccio shield; that a
+  second shield cannot share a board follows from the data sheet's pin table,
+  not from a trial.
+- The camera lies on its side: the picture needs turning a quarter, which the
+  camera sketch does not do.
+- The original: its servo variant is not named in Pollen Robotics' files; the
+  0.96 N m limit in its simulation is above Robotis' stall figure for either
+  XL330 at 5 V.
+- Licence: the part pack carries no licence of its own. That it is an export
+  of Pollen Robotics' model rests on its name, its part list and identical
+  triangle counts with the meshes in their repository.
