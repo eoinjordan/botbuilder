@@ -1,0 +1,491 @@
+{
+ "generated_by": "scripts/run_motion.py",
+ "status": "simulation only; the robot has never been assembled or powered",
+ "note": "A gait stayed up at every tested point inside speed_range_all_turns and turn_range_all_speeds, at floor friction 0.4, 0.6 and 0.9. Outside those ranges it is untested or it fell; null means no range passed.",
+ "presets": {
+  "drawn": {
+   "generator": "microduck.motions.walk",
+   "kind": "sway",
+   "params": {
+    "period_s": 0.96,
+    "hip_pitch_offset_deg": 10.212,
+    "knee_offset_deg": 1.567,
+    "splay_deg": 14.686,
+    "sway_deg": 4.24,
+    "abduct_deg": -9.235,
+    "stride_deg": 1.676,
+    "knee_follow": 1.005,
+    "lift_knee_deg": -14.337,
+    "lift_hip_deg": 2.267,
+    "swing_phase": 0.537,
+    "stride_phase": 0.396,
+    "swing_duty": 0.307
+   },
+   "stand_pose_deg": {
+    "left_hip_roll": 0.0,
+    "left_hip_pitch": 45.0,
+    "left_knee": -45.0,
+    "right_hip_roll": 0.0,
+    "right_hip_pitch": 45.0,
+    "right_knee": -45.0
+   },
+   "inputs": {
+    "speed": "0 to 1, scales the stride",
+    "turn": "-1 to 1, positive turns left: shortens the left stride and lengthens the right"
+   },
+   "max_speed_deg_s": 120.0,
+   "truly_steps": false,
+   "tested_envelope": {
+    "tested_speed": [
+     0.25,
+     0.5,
+     0.75,
+     1.0
+    ],
+    "tested_turn": [
+     -1.0,
+     -0.5,
+     0.0,
+     0.5,
+     1.0
+    ],
+    "tested_floor_friction": [
+     0.4,
+     0.6,
+     0.9
+    ],
+    "seconds_each": 20.0,
+    "speed_range_all_turns": [
+     0.25,
+     0.5
+    ],
+    "turn_range_all_speeds": [
+     0.0,
+     0.0
+    ],
+    "forward_mm_s_at_speed": {
+     "0.25": 7.3,
+     "0.5": 0.7,
+     "0.75": 7.6,
+     "1.0": 13.0
+    },
+    "yaw_rate_deg_s_at_turn": {
+     "-1.0": 1.33,
+     "-0.5": 0.18,
+     "0.0": 0.26,
+     "0.5": 3.54,
+     "1.0": -3.38
+    },
+    "yaw_rate_deg_s_at_turn_by_friction": {
+     "0.4": {
+      "-1.0": -0.62,
+      "-0.5": -0.66,
+      "0.0": 0.26,
+      "0.5": -1.06,
+      "1.0": 1.7
+     },
+     "0.6": {
+      "-1.0": 1.33,
+      "-0.5": 0.18,
+      "0.0": 0.26,
+      "0.5": 3.54,
+      "1.0": -3.38
+     },
+     "0.9": {
+      "-1.0": 1.47,
+      "-0.5": -1.89,
+      "0.0": -0.77,
+      "0.5": -1.46,
+      "1.0": -3.26
+     }
+    },
+    "straight_line_yaw_rate_deg_s": 0.26,
+    "turn_input_steers": false,
+    "turn_input_steers_at_every_friction": false
+   },
+   "points": [
+    {
+     "speed": 0.25,
+     "turn": -1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 2.3,
+     "yaw_rate_deg_s": -0.99
+    },
+    {
+     "speed": 0.25,
+     "turn": -0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 4.6,
+     "yaw_rate_deg_s": -0.36
+    },
+    {
+     "speed": 0.25,
+     "turn": 0.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 7.3,
+     "yaw_rate_deg_s": -0.04
+    },
+    {
+     "speed": 0.25,
+     "turn": 0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 5.0,
+     "yaw_rate_deg_s": 0.36
+    },
+    {
+     "speed": 0.25,
+     "turn": 1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 3.2,
+     "yaw_rate_deg_s": 1.05
+    },
+    {
+     "speed": 0.5,
+     "turn": -1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 3.6,
+     "yaw_rate_deg_s": -2.77
+    },
+    {
+     "speed": 0.5,
+     "turn": -0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 4.9,
+     "yaw_rate_deg_s": -0.99
+    },
+    {
+     "speed": 0.5,
+     "turn": 0.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 0.7,
+     "yaw_rate_deg_s": -0.03
+    },
+    {
+     "speed": 0.5,
+     "turn": 0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 5.0,
+     "yaw_rate_deg_s": 1.03
+    },
+    {
+     "speed": 0.5,
+     "turn": 1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 6.1,
+     "yaw_rate_deg_s": 2.17
+    },
+    {
+     "speed": 0.75,
+     "turn": -1.0,
+     "stayed_up_all_frictions": false,
+     "forward_mm_s": 108.9,
+     "yaw_rate_deg_s": -0.81
+    },
+    {
+     "speed": 0.75,
+     "turn": -0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 1.1,
+     "yaw_rate_deg_s": -1.15
+    },
+    {
+     "speed": 0.75,
+     "turn": 0.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 7.6,
+     "yaw_rate_deg_s": -0.04
+    },
+    {
+     "speed": 0.75,
+     "turn": 0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 3.5,
+     "yaw_rate_deg_s": 1.13
+    },
+    {
+     "speed": 0.75,
+     "turn": 1.0,
+     "stayed_up_all_frictions": false,
+     "forward_mm_s": 165.7,
+     "yaw_rate_deg_s": -0.12
+    },
+    {
+     "speed": 1.0,
+     "turn": -1.0,
+     "stayed_up_all_frictions": false,
+     "forward_mm_s": 108.4,
+     "yaw_rate_deg_s": 1.33
+    },
+    {
+     "speed": 1.0,
+     "turn": -0.5,
+     "stayed_up_all_frictions": false,
+     "forward_mm_s": 99.2,
+     "yaw_rate_deg_s": 0.18
+    },
+    {
+     "speed": 1.0,
+     "turn": 0.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 13.0,
+     "yaw_rate_deg_s": 0.26
+    },
+    {
+     "speed": 1.0,
+     "turn": 0.5,
+     "stayed_up_all_frictions": false,
+     "forward_mm_s": 163.8,
+     "yaw_rate_deg_s": 3.54
+    },
+    {
+     "speed": 1.0,
+     "turn": 1.0,
+     "stayed_up_all_frictions": false,
+     "forward_mm_s": 203.3,
+     "yaw_rate_deg_s": -3.38
+    }
+   ]
+  },
+  "comb_feet": {
+   "generator": "microduck.motions.crawl",
+   "kind": "crawl",
+   "params": {
+    "period_s": 0.8,
+    "stride_mm": 21.135,
+    "stand_reach_mm": -57.844,
+    "lift_knee_deg": -29.026,
+    "lift_hip_deg": 19.364,
+    "swing_fraction": 0.337,
+    "right_phase": 0.333,
+    "roll_gain": 1.403,
+    "lean_deg": -2.16,
+    "turn_trim": 0.051,
+    "roll_trim_deg": 0.223
+   },
+   "stand_pose_deg": {
+    "left_hip_roll": 0.0,
+    "left_hip_pitch": 45.0,
+    "left_knee": -45.0,
+    "right_hip_roll": 0.0,
+    "right_hip_pitch": 45.0,
+    "right_knee": -45.0
+   },
+   "inputs": {
+    "speed": "0 to 1, scales the stride",
+    "turn": "-1 to 1, positive turns left: shortens the left stride and lengthens the right"
+   },
+   "max_speed_deg_s": 120.0,
+   "truly_steps": true,
+   "tested_envelope": {
+    "tested_speed": [
+     0.25,
+     0.5,
+     0.75,
+     1.0
+    ],
+    "tested_turn": [
+     -1.0,
+     -0.5,
+     0.0,
+     0.5,
+     1.0
+    ],
+    "tested_floor_friction": [
+     0.4,
+     0.6,
+     0.9
+    ],
+    "seconds_each": 20.0,
+    "speed_range_all_turns": [
+     0.25,
+     1.0
+    ],
+    "turn_range_all_speeds": [
+     -1.0,
+     1.0
+    ],
+    "forward_mm_s_at_speed": {
+     "0.25": 13.2,
+     "0.5": 19.4,
+     "0.75": 28.6,
+     "1.0": 38.5
+    },
+    "yaw_rate_deg_s_at_turn": {
+     "-1.0": -3.14,
+     "-0.5": -3.96,
+     "0.0": -0.96,
+     "0.5": 1.13,
+     "1.0": 3.54
+    },
+    "yaw_rate_deg_s_at_turn_by_friction": {
+     "0.4": {
+      "-1.0": -3.49,
+      "-0.5": -1.45,
+      "0.0": 0.24,
+      "0.5": 3.1,
+      "1.0": 4.86
+     },
+     "0.6": {
+      "-1.0": -3.14,
+      "-0.5": -3.96,
+      "0.0": -0.96,
+      "0.5": 1.13,
+      "1.0": 3.54
+     },
+     "0.9": {
+      "-1.0": -5.06,
+      "-0.5": -3.87,
+      "0.0": -0.96,
+      "0.5": 1.87,
+      "1.0": 4.79
+     }
+    },
+    "straight_line_yaw_rate_deg_s": -0.96,
+    "turn_input_steers": false,
+    "turn_input_steers_at_every_friction": true
+   },
+   "points": [
+    {
+     "speed": 0.25,
+     "turn": -1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 10.9,
+     "yaw_rate_deg_s": 0.1
+    },
+    {
+     "speed": 0.25,
+     "turn": -0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 11.5,
+     "yaw_rate_deg_s": -1.16
+    },
+    {
+     "speed": 0.25,
+     "turn": 0.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 13.2,
+     "yaw_rate_deg_s": -2.24
+    },
+    {
+     "speed": 0.25,
+     "turn": 0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 13.2,
+     "yaw_rate_deg_s": -0.55
+    },
+    {
+     "speed": 0.25,
+     "turn": 1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 12.6,
+     "yaw_rate_deg_s": -0.18
+    },
+    {
+     "speed": 0.5,
+     "turn": -1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 17.5,
+     "yaw_rate_deg_s": -3.19
+    },
+    {
+     "speed": 0.5,
+     "turn": -0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 19.1,
+     "yaw_rate_deg_s": -2.61
+    },
+    {
+     "speed": 0.5,
+     "turn": 0.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 19.4,
+     "yaw_rate_deg_s": 0.17
+    },
+    {
+     "speed": 0.5,
+     "turn": 0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 19.2,
+     "yaw_rate_deg_s": 1.05
+    },
+    {
+     "speed": 0.5,
+     "turn": 1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 17.1,
+     "yaw_rate_deg_s": 2.93
+    },
+    {
+     "speed": 0.75,
+     "turn": -1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 17.3,
+     "yaw_rate_deg_s": -3.54
+    },
+    {
+     "speed": 0.75,
+     "turn": -0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 23.2,
+     "yaw_rate_deg_s": -3.96
+    },
+    {
+     "speed": 0.75,
+     "turn": 0.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 28.6,
+     "yaw_rate_deg_s": -0.85
+    },
+    {
+     "speed": 0.75,
+     "turn": 0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 26.4,
+     "yaw_rate_deg_s": 1.53
+    },
+    {
+     "speed": 0.75,
+     "turn": 1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 15.5,
+     "yaw_rate_deg_s": 3.61
+    },
+    {
+     "speed": 1.0,
+     "turn": -1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 18.8,
+     "yaw_rate_deg_s": -3.14
+    },
+    {
+     "speed": 1.0,
+     "turn": -0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 26.3,
+     "yaw_rate_deg_s": -3.96
+    },
+    {
+     "speed": 1.0,
+     "turn": 0.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 38.5,
+     "yaw_rate_deg_s": -0.96
+    },
+    {
+     "speed": 1.0,
+     "turn": 0.5,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 29.2,
+     "yaw_rate_deg_s": 1.13
+    },
+    {
+     "speed": 1.0,
+     "turn": 1.0,
+     "stayed_up_all_frictions": true,
+     "forward_mm_s": 15.5,
+     "yaw_rate_deg_s": 3.54
+    }
+   ]
+  }
+ }
+}

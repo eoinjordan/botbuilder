@@ -1,0 +1,4131 @@
+{
+ "generated_by": "scripts/run_motion.py",
+ "status": "simulation only; the robot has never been assembled or powered",
+ "physics": {
+  "timestep_s": {
+   "value": 0.002,
+   "why": "MuJoCo step; the headline runs are repeated at 0.001 s as a numerical check"
+  },
+  "floor_friction": {
+   "value": 0.6,
+   "why": "assumed: printed PLA sole on a table top, as in the first model; sensitivity is reported from 0.3 to 1.0"
+  },
+  "contact_timeconst_s": {
+   "value": 0.005,
+   "why": "assumed: stiff floor contact (MuJoCo solref); the default 0.02 lets a sole sink about 0.3 mm, which is the size of the clearances measured here"
+  },
+  "transport_delay_ms": {
+   "value": 20,
+   "why": "assumed: one controller tick for a command line to cross the USB or bridge link and be parsed"
+  },
+  "controller_tick_ms": {
+   "value": 20,
+   "why": "the firmware loop (microduck/protocol.py); commands are also rate limited there"
+  },
+  "pwm_latency_ms": {
+   "value": 20,
+   "why": "the servo reads one pulse per 50 Hz frame, so a new target is acted on one frame after the controller sets it"
+  },
+  "pulse_resolution_us": {
+   "value": 1,
+   "why": "the firmware rounds the pulse width to a whole microsecond, 0.09 degrees"
+  },
+  "deadband_deg": {
+   "value": 0.4,
+   "why": "assumed: an 8 microsecond dead band, typical for an analog servo; the maker publishes none"
+  },
+  "backlash_deg": {
+   "value": 1.0,
+   "why": "assumed: total gear play at the horn, typical for a plastic or mixed gear train. The feedback potentiometer is on the output shaft, so play adds to the zone in which the servo does not push back: half of it each side"
+  },
+  "full_torque_error_deg": {
+   "value": 4.0,
+   "why": "assumed in the first model: the servo reaches stall torque this far outside the dead zone"
+  },
+  "flex_nm_per_rad": {
+   "value": {
+    "SR431": 40.0,
+    "SR311": 12.0
+   },
+   "why": "assumed: series spring between horn and link for the cable-tied case, the plastic horn and the 4 mm plate; about 1.5 degrees at stall torque. Not sensed by the servo"
+  },
+  "flex_damping_nms_per_rad": {
+   "value": {
+    "SR431": 0.02,
+    "SR311": 0.006
+   },
+   "why": "assumed: light damping of that spring"
+  },
+  "supply_current_a": {
+   "value": 4.0,
+   "why": "published: the Braccio supply is 5 V 4 A. When the estimated current of the six servos exceeds it all torques are scaled down together. Stall currents are assumed (config/hardware.json)"
+  },
+  "relaxed_friction_nm": {
+   "value": 0.02,
+   "why": "assumed in the first model: friction of an unpowered gear train. Rest poses are also checked with zero friction"
+  }
+ },
+ "head": {
+  "_comment": "A point mass added to the torso so results can be rerun when the head end changes. Zero means the torso as generated in robot/microduck.xml.",
+  "extra_mass_g": 0.0,
+  "position_mm": [
+   -25.0,
+   0.0,
+   78.0
+  ]
+ },
+ "firmware": {
+  "max_speed_deg_s": {
+   "value": 120.0,
+   "why": "the default in config/calibration.json; walk, turn, sit and stand stay inside it"
+  },
+  "jump_max_speed_deg_s": {
+   "value": 430.0,
+   "why": "the jump needs the firmware rate limit raised to the no-load speed of the faster servo; the servo model still limits each joint to its published speed"
+  }
+ },
+ "robot_presets": {
+  "drawn": "The published geometry, as generated in robot/microduck.xml.",
+  "comb_feet": "Variant: the same robot with new sole plates only. Each sole has a rail under the leg and fingers that reach across the centreline between the fingers of the other sole, so the centre of mass is over either foot alone. Simulation only.",
+  "rocker_feet": "Rejected alternative: soles 48 mm wide moved inboard, curved across the foot (radius 200 mm, lowest line 26 mm from the centreline), joined to the shin by a raised bridge. Simulation only."
+ },
+ "search": {
+  "scenarios": [
+   {
+    "floor_friction": 0.6,
+    "mass_scale": 1.0,
+    "start_tilt_deg": [
+     0.0,
+     0.0
+    ],
+    "start_push_m_s": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "floor_friction": 0.4,
+    "mass_scale": 1.06,
+    "start_tilt_deg": [
+     0.0,
+     1.5
+    ],
+    "start_push_m_s": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "floor_friction": 0.9,
+    "mass_scale": 0.94,
+    "start_tilt_deg": [
+     1.5,
+     0.0
+    ],
+    "start_push_m_s": [
+     0.0,
+     0.03
+    ]
+   },
+   {
+    "floor_friction": 0.6,
+    "mass_scale": 1.0,
+    "start_tilt_deg": [
+     -1.0,
+     -1.0
+    ],
+    "start_push_m_s": [
+     0.02,
+     -0.02
+    ]
+   }
+  ],
+  "total_candidates": 3640,
+  "total_simulated_runs": 14560,
+  "total_wall_clock_s": 1086.0
+ },
+ "presets": {
+  "drawn": {
+   "stand": {
+    "fell": false,
+    "max_tilt_deg": 0.68,
+    "mass_kg": 0.5016,
+    "torso_height_mm": 159.3,
+    "peak_torque_fraction": 0.096,
+    "peak_speed_fraction": 0.079,
+    "time_at_torque_limit_fraction": 0.0,
+    "sole_mass_g": null
+   },
+   "one_foot_test": {
+    "left": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 0.0,
+     "lifted_foot_clearance_mm": -0.0,
+     "load_on_other_foot_fraction": 0.59,
+     "max_tilt_deg": 5.2
+    },
+    "right": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 0.0,
+     "lifted_foot_clearance_mm": -0.0,
+     "load_on_other_foot_fraction": 0.59,
+     "max_tilt_deg": 5.2
+    },
+    "stands_on_one_foot": false
+   },
+   "walk": {
+    "gait": {
+     "kind": "sway",
+     "params": {
+      "period_s": 0.96,
+      "hip_pitch_offset_deg": 10.212,
+      "knee_offset_deg": 1.567,
+      "splay_deg": 14.686,
+      "sway_deg": 4.24,
+      "abduct_deg": -9.235,
+      "stride_deg": 1.676,
+      "knee_follow": 1.005,
+      "lift_knee_deg": -14.337,
+      "lift_hip_deg": 2.267,
+      "swing_phase": 0.537,
+      "stride_phase": 0.396,
+      "swing_duty": 0.307
+     },
+     "search": {
+      "method": "CMA-ES, microduck/cmaes.py",
+      "seed": 2,
+      "generations": 70,
+      "population": 21,
+      "candidates": 1470,
+      "simulated_runs": 5880,
+      "seconds_each": 10.0,
+      "wall_clock_s": 521.1,
+      "wall_clock_budget_s": 1200.0,
+      "workers": 7,
+      "score": 2.643,
+      "best_score_by_generation": [
+       0.4791,
+       0.7629,
+       0.1646,
+       0.8177,
+       0.7887,
+       0.7925,
+       0.7968,
+       1.1352,
+       0.9327,
+       0.9611,
+       0.8397,
+       0.7516,
+       0.9768,
+       0.7588,
+       0.8541,
+       1.1607,
+       1.3182,
+       0.8269,
+       1.1594,
+       0.9491,
+       0.9264,
+       1.4453,
+       0.949,
+       1.3444,
+       1.4221,
+       1.4273,
+       1.3655,
+       1.5122,
+       1.6249,
+       1.5612,
+       1.5309,
+       1.3877,
+       1.4912,
+       2.005,
+       1.8791,
+       1.5341,
+       1.8926,
+       1.6294,
+       1.6403,
+       2.1875,
+       2.1496,
+       1.8313,
+       2.1019,
+       2.1006,
+       1.9468,
+       1.9761,
+       1.9309,
+       1.8939,
+       2.1132,
+       1.9381,
+       1.7703,
+       2.17,
+       2.1215,
+       2.267,
+       2.1499,
+       2.0046,
+       1.9968,
+       2.2918,
+       2.095,
+       2.6425,
+       2.3465,
+       2.3357,
+       2.2192,
+       2.3234,
+       2.2928,
+       2.2115,
+       2.1913,
+       2.4227,
+       2.4272,
+       2.3498
+      ]
+     }
+    },
+    "nominal": {
+     "fell": false,
+     "fell_at_s": null,
+     "fell_how": null,
+     "seconds": 30.0,
+     "forward_mm": 333.9,
+     "sideways_mm": -10.2,
+     "speed_mm_s": 11.7,
+     "path_speed_mm_s": 115.1,
+     "yaw_deg": 10.0,
+     "yaw_rate_deg_s": 0.35,
+     "max_tilt_deg": 15.0,
+     "expected_steps": 59.5,
+     "step_fraction": 0.74,
+     "single_support_fraction": 0.347,
+     "double_support_fraction": 0.599,
+     "flight_fraction": 0.054,
+     "steps": 44,
+     "alternating": true,
+     "median_clearance_mm": 2.53,
+     "median_swing_s": 0.06,
+     "step_length_mm": 3.24,
+     "stance_slip_mm_per_step": 5.69,
+     "peak_torque_fraction": 1.0,
+     "peak_speed_fraction": 0.512,
+     "time_at_torque_limit_fraction": 0.029,
+     "peak_supply_current_a": 3.56,
+     "supply_limited_fraction": 0.0,
+     "demand": {
+      "left_hip_roll": {
+       "peak_torque_nm": 0.625,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 0.522,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 123.2,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.411
+      },
+      "left_hip_pitch": {
+       "peak_torque_nm": 0.372,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 0.311,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 67.6,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.225
+      },
+      "left_knee": {
+       "peak_torque_nm": 0.304,
+       "torque_limit_nm": 0.304,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.027,
+       "peak_speed_deg_s": 217.4,
+       "speed_limit_deg_s": 428.6,
+       "peak_speed_fraction": 0.507
+      },
+      "right_hip_roll": {
+       "peak_torque_nm": 0.612,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 0.511,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 126.7,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.422
+      },
+      "right_hip_pitch": {
+       "peak_torque_nm": 0.358,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 0.299,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 96.2,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.321
+      },
+      "right_knee": {
+       "peak_torque_nm": 0.304,
+       "torque_limit_nm": 0.304,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.029,
+       "peak_speed_deg_s": 219.5,
+       "speed_limit_deg_s": 428.6,
+       "peak_speed_fraction": 0.512
+      }
+     },
+     "first_swings": [
+      {
+       "side": "left",
+       "start_s": 1.78,
+       "duration_s": 0.06,
+       "clearance_mm": 1.42,
+       "forward_mm": 2.74,
+       "stance_slip_mm": 3.35
+      },
+      {
+       "side": "right",
+       "start_s": 2.28,
+       "duration_s": 0.06,
+       "clearance_mm": 4.48,
+       "forward_mm": 3.09,
+       "stance_slip_mm": 5.74
+      },
+      {
+       "side": "left",
+       "start_s": 2.76,
+       "duration_s": 0.06,
+       "clearance_mm": 2.79,
+       "forward_mm": 2.47,
+       "stance_slip_mm": 5.55
+      },
+      {
+       "side": "right",
+       "start_s": 3.22,
+       "duration_s": 0.06,
+       "clearance_mm": 1.32,
+       "forward_mm": 2.87,
+       "stance_slip_mm": 3.24
+      },
+      {
+       "side": "left",
+       "start_s": 3.7,
+       "duration_s": 0.08,
+       "clearance_mm": 3.41,
+       "forward_mm": 3.43,
+       "stance_slip_mm": 7.86
+      },
+      {
+       "side": "right",
+       "start_s": 4.18,
+       "duration_s": 0.06,
+       "clearance_mm": 1.74,
+       "forward_mm": 2.87,
+       "stance_slip_mm": 2.96
+      },
+      {
+       "side": "left",
+       "start_s": 4.68,
+       "duration_s": 0.06,
+       "clearance_mm": 4.77,
+       "forward_mm": 3.23,
+       "stance_slip_mm": 5.66
+      },
+      {
+       "side": "right",
+       "start_s": 5.14,
+       "duration_s": 0.08,
+       "clearance_mm": 3.63,
+       "forward_mm": 4.42,
+       "stance_slip_mm": 6.49
+      }
+     ]
+    },
+    "truly_steps": false,
+    "long_horizon": {
+     "fell": false,
+     "fell_at_s": null,
+     "fell_how": null,
+     "seconds": 120.0,
+     "speed_mm_s": 9.8,
+     "yaw_deg": 21.9,
+     "steps": 141,
+     "step_fraction": 0.571
+    },
+    "half_timestep": {
+     "fell": false,
+     "fell_at_s": null,
+     "speed_mm_s": 19.4,
+     "yaw_deg": -2.9,
+     "steps": 50,
+     "step_fraction": 0.841,
+     "median_clearance_mm": 3.1
+    },
+    "robustness": {
+     "runs": 30,
+     "seconds_each": 30.0,
+     "fell": 0,
+     "stepping_runs": 12,
+     "speed_mm_s": [
+      2.5,
+      20.7
+     ],
+     "yaw_deg": [
+      -18.1,
+      30.8
+     ],
+     "by_friction": [
+      {
+       "floor_friction": 0.3,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        13.3,
+        20.7
+       ],
+       "yaw_deg": [
+        -1.1,
+        7.8
+       ],
+       "stepping_runs": 0
+      },
+      {
+       "floor_friction": 0.45,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        3.7,
+        12.3
+       ],
+       "yaw_deg": [
+        -6.4,
+        6.8
+       ],
+       "stepping_runs": 0
+      },
+      {
+       "floor_friction": 0.6,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        2.5,
+        11.2
+       ],
+       "yaw_deg": [
+        -1.6,
+        30.8
+       ],
+       "stepping_runs": 0
+      },
+      {
+       "floor_friction": 0.8,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        14.2,
+        19.1
+       ],
+       "yaw_deg": [
+        -4.5,
+        18.0
+       ],
+       "stepping_runs": 6
+      },
+      {
+       "floor_friction": 1.0,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        10.2,
+        18.0
+       ],
+       "yaw_deg": [
+        -18.1,
+        20.9
+       ],
+       "stepping_runs": 6
+      }
+     ],
+     "rows": [
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 13.3,
+       "yaw_deg": -1.1,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.275
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 13.6,
+       "yaw_deg": 1.6,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.254
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 3.7,
+       "yaw_deg": 4.6,
+       "step_fraction": 0.017,
+       "alternating": false,
+       "median_clearance_mm": 1.49,
+       "single_support_fraction": 0.311
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 3.8,
+       "yaw_deg": -6.4,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.334
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 2.5,
+       "yaw_deg": -1.6,
+       "step_fraction": 0.202,
+       "alternating": false,
+       "median_clearance_mm": 1.79,
+       "single_support_fraction": 0.307
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 6.6,
+       "yaw_deg": 4.1,
+       "step_fraction": 0.387,
+       "alternating": false,
+       "median_clearance_mm": 2.04,
+       "single_support_fraction": 0.321
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 17.9,
+       "yaw_deg": 2.4,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 6.7,
+       "single_support_fraction": 0.355
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 19.1,
+       "yaw_deg": 12.7,
+       "step_fraction": 0.975,
+       "alternating": true,
+       "median_clearance_mm": 6.54,
+       "single_support_fraction": 0.356
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 17.7,
+       "yaw_deg": -18.1,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 6.39,
+       "single_support_fraction": 0.34
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 18.0,
+       "yaw_deg": 8.6,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 6.43,
+       "single_support_fraction": 0.34
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 18.2,
+       "yaw_deg": 3.0,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.237
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 18.1,
+       "yaw_deg": 7.8,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.244
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 10.2,
+       "yaw_deg": 4.4,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.291
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 9.9,
+       "yaw_deg": 6.8,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.293
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 9.3,
+       "yaw_deg": 2.0,
+       "step_fraction": 0.572,
+       "alternating": false,
+       "median_clearance_mm": 2.58,
+       "single_support_fraction": 0.347
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 11.2,
+       "yaw_deg": 7.0,
+       "step_fraction": 0.572,
+       "alternating": false,
+       "median_clearance_mm": 2.83,
+       "single_support_fraction": 0.332
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 18.0,
+       "yaw_deg": 18.0,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 5.66,
+       "single_support_fraction": 0.348
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 17.7,
+       "yaw_deg": 0.6,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 5.69,
+       "single_support_fraction": 0.361
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 15.0,
+       "yaw_deg": -11.1,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 5.55,
+       "single_support_fraction": 0.329
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 14.9,
+       "yaw_deg": -11.4,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 5.6,
+       "single_support_fraction": 0.327
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 20.7,
+       "yaw_deg": 2.7,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.215
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 20.2,
+       "yaw_deg": 6.0,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.226
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 12.1,
+       "yaw_deg": -2.3,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.288
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 12.3,
+       "yaw_deg": 1.3,
+       "step_fraction": 0.0,
+       "alternating": false,
+       "median_clearance_mm": 0.0,
+       "single_support_fraction": 0.276
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 10.6,
+       "yaw_deg": 30.8,
+       "step_fraction": 0.673,
+       "alternating": false,
+       "median_clearance_mm": 2.53,
+       "single_support_fraction": 0.325
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 10.1,
+       "yaw_deg": 24.6,
+       "step_fraction": 0.79,
+       "alternating": true,
+       "median_clearance_mm": 2.77,
+       "single_support_fraction": 0.33
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 14.2,
+       "yaw_deg": -4.5,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 4.91,
+       "single_support_fraction": 0.36
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 14.5,
+       "yaw_deg": -4.4,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 4.87,
+       "single_support_fraction": 0.357
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 10.2,
+       "yaw_deg": 12.2,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 4.95,
+       "single_support_fraction": 0.312
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 10.9,
+       "yaw_deg": 20.9,
+       "step_fraction": 0.992,
+       "alternating": true,
+       "median_clearance_mm": 4.82,
+       "single_support_fraction": 0.326
+      }
+     ]
+    },
+    "head_sensitivity": [
+     {
+      "case": "as drawn",
+      "head": {},
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 11.7,
+      "yaw_deg": 10.0,
+      "step_fraction": 0.74,
+      "median_clearance_mm": 2.53
+     },
+     {
+      "case": "20 g more in the head",
+      "head": {
+       "extra_mass_g": 20.0
+      },
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 11.9,
+      "yaw_deg": 11.4,
+      "step_fraction": 0.757,
+      "median_clearance_mm": 2.72
+     },
+     {
+      "case": "40 g more in the head",
+      "head": {
+       "extra_mass_g": 40.0
+      },
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 11.2,
+      "yaw_deg": 10.0,
+      "step_fraction": 0.622,
+      "median_clearance_mm": 2.5
+     },
+     {
+      "case": "20 g, 40 mm further forward",
+      "head": {
+       "extra_mass_g": 20.0,
+       "position_mm": [
+        15.0,
+        0.0,
+        78.0
+       ]
+      },
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 12.3,
+      "yaw_deg": -21.9,
+      "step_fraction": 0.622,
+      "median_clearance_mm": 2.59
+     },
+     {
+      "case": "20 g, 40 mm further back",
+      "head": {
+       "extra_mass_g": 20.0,
+       "position_mm": [
+        -65.0,
+        0.0,
+        78.0
+       ]
+      },
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 11.7,
+      "yaw_deg": 3.2,
+      "step_fraction": 0.656,
+      "median_clearance_mm": 2.11
+     }
+    ],
+    "envelope": {
+     "tested_speed": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+     ],
+     "tested_turn": [
+      -1.0,
+      -0.5,
+      0.0,
+      0.5,
+      1.0
+     ],
+     "tested_floor_friction": [
+      0.4,
+      0.6,
+      0.9
+     ],
+     "seconds_each": 20.0,
+     "speed_range_all_turns": [
+      0.25,
+      0.5
+     ],
+     "turn_range_all_speeds": [
+      0.0,
+      0.0
+     ],
+     "points_stayed_up": 14,
+     "points": 20,
+     "forward_mm_s_at_speed": {
+      "0.25": 7.3,
+      "0.5": 0.7,
+      "0.75": 7.6,
+      "1.0": 13.0
+     },
+     "yaw_rate_deg_s_at_turn": {
+      "-1.0": 1.33,
+      "-0.5": 0.18,
+      "0.0": 0.26,
+      "0.5": 3.54,
+      "1.0": -3.38
+     },
+     "yaw_rate_deg_s_at_turn_by_friction": {
+      "0.4": {
+       "-1.0": -0.62,
+       "-0.5": -0.66,
+       "0.0": 0.26,
+       "0.5": -1.06,
+       "1.0": 1.7
+      },
+      "0.6": {
+       "-1.0": 1.33,
+       "-0.5": 0.18,
+       "0.0": 0.26,
+       "0.5": 3.54,
+       "1.0": -3.38
+      },
+      "0.9": {
+       "-1.0": 1.47,
+       "-0.5": -1.89,
+       "0.0": -0.77,
+       "0.5": -1.46,
+       "1.0": -3.26
+      }
+     },
+     "straight_line_yaw_rate_deg_s": 0.26,
+     "turn_input_steers": false,
+     "turn_input_steers_at_every_friction": false,
+     "grid": [
+      {
+       "speed": 0.25,
+       "turn": -1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 2.3,
+       "path_mm_s": 52.2,
+       "yaw_rate_deg_s": -0.99,
+       "yaw_rate_by_friction": {
+        "0.4": -0.78,
+        "0.6": -0.99,
+        "0.9": -1.02
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.25,
+       "turn": -0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 4.6,
+       "path_mm_s": 49.4,
+       "yaw_rate_deg_s": -0.36,
+       "yaw_rate_by_friction": {
+        "0.4": -0.36,
+        "0.6": -0.36,
+        "0.9": -0.72
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.25,
+       "turn": 0.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 7.3,
+       "path_mm_s": 47.9,
+       "yaw_rate_deg_s": -0.04,
+       "yaw_rate_by_friction": {
+        "0.4": 0.06,
+        "0.6": -0.04,
+        "0.9": 0.04
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.25,
+       "turn": 0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 5.0,
+       "path_mm_s": 49.0,
+       "yaw_rate_deg_s": 0.36,
+       "yaw_rate_by_friction": {
+        "0.4": 0.36,
+        "0.6": 0.36,
+        "0.9": 0.67
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.25,
+       "turn": 1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 3.2,
+       "path_mm_s": 51.1,
+       "yaw_rate_deg_s": 1.05,
+       "yaw_rate_by_friction": {
+        "0.4": 0.7,
+        "0.6": 1.05,
+        "0.9": 1.05
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.5,
+       "turn": -1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 3.6,
+       "path_mm_s": 71.9,
+       "yaw_rate_deg_s": -2.77,
+       "yaw_rate_by_friction": {
+        "0.4": -4.06,
+        "0.6": -2.77,
+        "0.9": 0.77
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.5,
+       "turn": -0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 4.9,
+       "path_mm_s": 63.6,
+       "yaw_rate_deg_s": -0.99,
+       "yaw_rate_by_friction": {
+        "0.4": -1.01,
+        "0.6": -0.99,
+        "0.9": -0.37
+       },
+       "step_fraction": 0.026
+      },
+      {
+       "speed": 0.5,
+       "turn": 0.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 0.7,
+       "path_mm_s": 65.9,
+       "yaw_rate_deg_s": -0.03,
+       "yaw_rate_by_friction": {
+        "0.4": -0.05,
+        "0.6": -0.03,
+        "0.9": 0.01
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.5,
+       "turn": 0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 5.0,
+       "path_mm_s": 63.3,
+       "yaw_rate_deg_s": 1.03,
+       "yaw_rate_by_friction": {
+        "0.4": 1.28,
+        "0.6": 1.03,
+        "0.9": 0.47
+       },
+       "step_fraction": 0.026
+      },
+      {
+       "speed": 0.5,
+       "turn": 1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 6.1,
+       "path_mm_s": 69.9,
+       "yaw_rate_deg_s": 2.17,
+       "yaw_rate_by_friction": {
+        "0.4": 3.66,
+        "0.6": 2.17,
+        "0.9": -0.83
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.75,
+       "turn": -1.0,
+       "stayed_up_all_frictions": false,
+       "fell_at_friction": [
+        0.4,
+        0.6,
+        0.9
+       ],
+       "forward_mm_s": 108.9,
+       "path_mm_s": 105.3,
+       "yaw_rate_deg_s": -0.81,
+       "yaw_rate_by_friction": {
+        "0.4": -3.17,
+        "0.6": -0.81,
+        "0.9": -0.89
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 0.75,
+       "turn": -0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 1.1,
+       "path_mm_s": 95.9,
+       "yaw_rate_deg_s": -1.15,
+       "yaw_rate_by_friction": {
+        "0.4": -1.91,
+        "0.6": -1.15,
+        "0.9": 1.6
+       },
+       "step_fraction": 0.207
+      },
+      {
+       "speed": 0.75,
+       "turn": 0.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 7.6,
+       "path_mm_s": 82.9,
+       "yaw_rate_deg_s": -0.04,
+       "yaw_rate_by_friction": {
+        "0.4": -0.02,
+        "0.6": -0.04,
+        "0.9": -0.0
+       },
+       "step_fraction": 0.207
+      },
+      {
+       "speed": 0.75,
+       "turn": 0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 3.5,
+       "path_mm_s": 98.4,
+       "yaw_rate_deg_s": 1.13,
+       "yaw_rate_by_friction": {
+        "0.4": 2.16,
+        "0.6": 1.13,
+        "0.9": -1.23
+       },
+       "step_fraction": 0.337
+      },
+      {
+       "speed": 0.75,
+       "turn": 1.0,
+       "stayed_up_all_frictions": false,
+       "fell_at_friction": [
+        0.4,
+        0.6,
+        0.9
+       ],
+       "forward_mm_s": 165.7,
+       "path_mm_s": 143.6,
+       "yaw_rate_deg_s": -0.12,
+       "yaw_rate_by_friction": {
+        "0.4": 3.25,
+        "0.6": -0.12,
+        "0.9": -0.78
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 1.0,
+       "turn": -1.0,
+       "stayed_up_all_frictions": false,
+       "fell_at_friction": [
+        0.4,
+        0.6,
+        0.9
+       ],
+       "forward_mm_s": 108.4,
+       "path_mm_s": 111.2,
+       "yaw_rate_deg_s": 1.33,
+       "yaw_rate_by_friction": {
+        "0.4": -0.62,
+        "0.6": 1.33,
+        "0.9": 1.47
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 1.0,
+       "turn": -0.5,
+       "stayed_up_all_frictions": false,
+       "fell_at_friction": [
+        0.4,
+        0.6,
+        0.9
+       ],
+       "forward_mm_s": 99.2,
+       "path_mm_s": 90.9,
+       "yaw_rate_deg_s": 0.18,
+       "yaw_rate_by_friction": {
+        "0.4": -0.66,
+        "0.6": 0.18,
+        "0.9": -1.89
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 1.0,
+       "turn": 0.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 13.0,
+       "path_mm_s": 114.5,
+       "yaw_rate_deg_s": 0.26,
+       "yaw_rate_by_friction": {
+        "0.4": 0.26,
+        "0.6": 0.26,
+        "0.9": -0.77
+       },
+       "step_fraction": 0.828
+      },
+      {
+       "speed": 1.0,
+       "turn": 0.5,
+       "stayed_up_all_frictions": false,
+       "fell_at_friction": [
+        0.4,
+        0.6,
+        0.9
+       ],
+       "forward_mm_s": 163.8,
+       "path_mm_s": 133.4,
+       "yaw_rate_deg_s": 3.54,
+       "yaw_rate_by_friction": {
+        "0.4": -1.06,
+        "0.6": 3.54,
+        "0.9": -1.46
+       },
+       "step_fraction": 0.0
+      },
+      {
+       "speed": 1.0,
+       "turn": 1.0,
+       "stayed_up_all_frictions": false,
+       "fell_at_friction": [
+        0.4,
+        0.6,
+        0.9
+       ],
+       "forward_mm_s": 203.3,
+       "path_mm_s": 119.6,
+       "yaw_rate_deg_s": -3.38,
+       "yaw_rate_by_friction": {
+        "0.4": 1.7,
+        "0.6": -3.38,
+        "0.9": -3.26
+       },
+       "step_fraction": 0.0
+      }
+     ]
+    }
+   },
+   "jump": {
+    "params": {
+     "crouch_hip_deg": 82.695,
+     "crouch_knee_deg": -84.069,
+     "push_hip_deg": 0.0,
+     "push_knee_deg": -38.542,
+     "knee_delay_s": 0.003,
+     "tuck_after_s": 0.156,
+     "land_hip_deg": 60.935,
+     "land_knee_deg": -56.716
+    },
+    "max_speed_deg_s": 430.0,
+    "result": {
+     "flight_s": 0.08,
+     "feet_rise_mm": 10.1,
+     "takeoff_after_push_s": 0.269,
+     "com_rise_in_flight_mm": 5.02,
+     "com_speed_up_at_takeoff_m_s": 0.207,
+     "com_rise_above_crouch_mm": 52.57,
+     "com_rise_above_stand_mm": 12.8,
+     "landed_upright": true,
+     "fell_how": null,
+     "fell_at_s": null,
+     "final_tilt_deg": 0.02,
+     "max_tilt_deg": 15.64,
+     "travel_forward_mm": -46.3,
+     "peak_supply_current_a": 8.71,
+     "supply_limited_fraction_of_push": 0.2,
+     "demand": {
+      "left_hip_pitch": {
+       "peak_torque_nm": 1.196,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.153,
+       "peak_speed_deg_s": 321.8,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 1.073
+      },
+      "left_knee": {
+       "peak_torque_nm": 0.304,
+       "torque_limit_nm": 0.304,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.106,
+       "peak_speed_deg_s": 297.5,
+       "speed_limit_deg_s": 428.6,
+       "peak_speed_fraction": 0.694
+      },
+      "right_hip_pitch": {
+       "peak_torque_nm": 1.196,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.153,
+       "peak_speed_deg_s": 321.8,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 1.073
+      },
+      "right_knee": {
+       "peak_torque_nm": 0.304,
+       "torque_limit_nm": 0.304,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.106,
+       "peak_speed_deg_s": 297.5,
+       "speed_limit_deg_s": 428.6,
+       "peak_speed_fraction": 0.694
+      }
+     },
+     "contacts": [
+      "sole"
+     ],
+     "verdict": "hop"
+    },
+    "at_default_speed_limit": {
+     "max_speed_deg_s": 120.0,
+     "flight_s": 0.02,
+     "feet_rise_mm": 0.01,
+     "com_rise_in_flight_mm": 2.4,
+     "com_rise_above_stand_mm": -0.11,
+     "landed_upright": true,
+     "fell_how": null,
+     "peak_supply_current_a": 4.43,
+     "verdict": "no flight"
+    },
+    "friction": [
+     {
+      "floor_friction": 0.3,
+      "flight_s": 0.08,
+      "feet_rise_mm": 9.58,
+      "com_rise_in_flight_mm": 5.03,
+      "com_rise_above_stand_mm": 12.9,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.61,
+      "verdict": "hop"
+     },
+     {
+      "floor_friction": 0.45,
+      "flight_s": 0.08,
+      "feet_rise_mm": 9.87,
+      "com_rise_in_flight_mm": 4.95,
+      "com_rise_above_stand_mm": 13.33,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.74,
+      "verdict": "hop"
+     },
+     {
+      "floor_friction": 0.6,
+      "flight_s": 0.08,
+      "feet_rise_mm": 10.1,
+      "com_rise_in_flight_mm": 5.02,
+      "com_rise_above_stand_mm": 12.8,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.71,
+      "verdict": "hop"
+     },
+     {
+      "floor_friction": 0.8,
+      "flight_s": 0.08,
+      "feet_rise_mm": 10.27,
+      "com_rise_in_flight_mm": 5.3,
+      "com_rise_above_stand_mm": 13.12,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.71,
+      "verdict": "hop"
+     },
+     {
+      "floor_friction": 1.0,
+      "flight_s": 0.08,
+      "feet_rise_mm": 10.3,
+      "com_rise_in_flight_mm": 5.57,
+      "com_rise_above_stand_mm": 13.23,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.68,
+      "verdict": "hop"
+     }
+    ],
+    "head": [
+     {
+      "case": "as drawn",
+      "flight_s": 0.08,
+      "feet_rise_mm": 10.1,
+      "com_rise_in_flight_mm": 5.02,
+      "com_rise_above_stand_mm": 12.8,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.71,
+      "verdict": "hop"
+     },
+     {
+      "case": "20 g more in the head",
+      "flight_s": 0.08,
+      "feet_rise_mm": 9.14,
+      "com_rise_in_flight_mm": 5.3,
+      "com_rise_above_stand_mm": 13.41,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.36,
+      "verdict": "hop"
+     },
+     {
+      "case": "40 g more in the head",
+      "flight_s": 0.08,
+      "feet_rise_mm": 7.57,
+      "com_rise_in_flight_mm": 4.56,
+      "com_rise_above_stand_mm": 12.95,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 7.81,
+      "verdict": "hop"
+     },
+     {
+      "case": "20 g, 40 mm further forward",
+      "flight_s": 0.08,
+      "feet_rise_mm": 9.92,
+      "com_rise_in_flight_mm": 5.14,
+      "com_rise_above_stand_mm": 12.73,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.67,
+      "verdict": "hop"
+     },
+     {
+      "case": "20 g, 40 mm further back",
+      "flight_s": 0.08,
+      "feet_rise_mm": 7.61,
+      "com_rise_in_flight_mm": 4.77,
+      "com_rise_above_stand_mm": 13.25,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.13,
+      "verdict": "hop"
+     }
+    ],
+    "half_timestep": {
+     "flight_s": 0.08,
+     "feet_rise_mm": 9.47,
+     "com_rise_in_flight_mm": 4.41,
+     "com_rise_above_stand_mm": 12.66,
+     "landed_upright": true,
+     "fell_how": null,
+     "peak_supply_current_a": 8.61,
+     "verdict": "hop"
+    },
+    "not_the_result": {
+     "what": "the same motion with the supply current limit removed; shown only to say what limits the hop",
+     "flight_s": 0.08,
+     "feet_rise_mm": 9.92,
+     "com_rise_in_flight_mm": 4.56,
+     "com_rise_above_stand_mm": 12.48,
+     "landed_upright": true,
+     "fell_how": null,
+     "peak_supply_current_a": 8.17,
+     "verdict": "hop"
+    },
+    "no_load_bound": {
+     "hip_lift_speed_m_s": 0.431,
+     "ballistic_rise_mm": 9.5,
+     "note": "thigh length times the no-load speed of the hip servo; a servo delivers no torque at that speed, so the real figure is lower"
+    }
+   },
+   "sit": {
+    "sat_down": true,
+    "sit_pose_deg": {
+     "left_hip_roll": 0.0,
+     "left_hip_pitch": 90.0,
+     "left_knee": -90.0,
+     "right_hip_roll": -0.0,
+     "right_hip_pitch": 90.0,
+     "right_knee": -90.0
+    },
+    "torso_lowered_mm": 58.2,
+    "torso_height_sitting_mm": 100.8,
+    "lowering_demand": {
+     "peak_torque_fraction": 0.176,
+     "peak_speed_fraction": 0.122,
+     "time_at_torque_limit_fraction": 0.0
+    },
+    "lowering_demand_by_joint": {
+     "left_hip_pitch": {
+      "peak_torque_nm": 0.115,
+      "torque_limit_nm": 1.196,
+      "peak_torque_fraction": 0.096,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 34.5,
+      "speed_limit_deg_s": 300.0,
+      "peak_speed_fraction": 0.115
+     },
+     "left_knee": {
+      "peak_torque_nm": 0.054,
+      "torque_limit_nm": 0.304,
+      "peak_torque_fraction": 0.176,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 52.1,
+      "speed_limit_deg_s": 428.6,
+      "peak_speed_fraction": 0.122
+     },
+     "right_hip_pitch": {
+      "peak_torque_nm": 0.115,
+      "torque_limit_nm": 1.196,
+      "peak_torque_fraction": 0.096,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 34.5,
+      "speed_limit_deg_s": 300.0,
+      "peak_speed_fraction": 0.115
+     },
+     "right_knee": {
+      "peak_torque_nm": 0.054,
+      "torque_limit_nm": 0.304,
+      "peak_torque_fraction": 0.176,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 52.1,
+      "speed_limit_deg_s": 428.6,
+      "peak_speed_fraction": 0.122
+     }
+    },
+    "relaxed_rest": {
+     "fell": false,
+     "tilt_deg": 0.24,
+     "max_joint_drift_deg": 0.0,
+     "torso_drop_mm": 0.0,
+     "touching_floor": [
+      "sole"
+     ]
+    },
+    "relaxed_rest_stable": true,
+    "lowest_part_above_floor_mm": {
+     "controller board": 107.1,
+     "deck": 100.6,
+     "head and neck": 108.5,
+     "hip cradle": 57.7,
+     "hip pitch servo": 64.6,
+     "hip roll servo": 54.1,
+     "knee servo": 73.5,
+     "shield": 119.7,
+     "shin plate": 5.0,
+     "thigh plate": 64.4,
+     "yoke": 68.1
+    },
+    "stood_up": true,
+    "rising_demand": {
+     "peak_torque_fraction": 0.402,
+     "peak_speed_fraction": 0.132,
+     "time_at_torque_limit_fraction": 0.0
+    },
+    "rising_demand_by_joint": {
+     "left_hip_pitch": {
+      "peak_torque_nm": 0.229,
+      "torque_limit_nm": 1.196,
+      "peak_torque_fraction": 0.191,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 39.5,
+      "speed_limit_deg_s": 300.0,
+      "peak_speed_fraction": 0.132
+     },
+     "left_knee": {
+      "peak_torque_nm": 0.122,
+      "torque_limit_nm": 0.304,
+      "peak_torque_fraction": 0.402,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 45.6,
+      "speed_limit_deg_s": 428.6,
+      "peak_speed_fraction": 0.106
+     },
+     "right_hip_pitch": {
+      "peak_torque_nm": 0.229,
+      "torque_limit_nm": 1.196,
+      "peak_torque_fraction": 0.191,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 39.5,
+      "speed_limit_deg_s": 300.0,
+      "peak_speed_fraction": 0.132
+     },
+     "right_knee": {
+      "peak_torque_nm": 0.122,
+      "torque_limit_nm": 0.304,
+      "peak_torque_fraction": 0.402,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 45.6,
+      "speed_limit_deg_s": 428.6,
+      "peak_speed_fraction": 0.106
+     }
+    },
+    "parts_that_touched_the_floor": [
+     "sole"
+    ],
+    "board_or_head_touched": false,
+    "relaxed_with_no_joint_friction": {
+     "sat_down": true,
+     "relaxed_rest": {
+      "fell": false,
+      "tilt_deg": 0.24,
+      "max_joint_drift_deg": 0.0,
+      "torso_drop_mm": 0.0,
+      "touching_floor": [
+       "sole"
+      ]
+     },
+     "relaxed_rest_stable": true,
+     "stood_up": true,
+     "parts_that_touched_the_floor": [
+      "sole"
+     ]
+    },
+    "relaxed_and_shoved": [
+     {
+      "shove_m_s": 0.1,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "shove_m_s": -0.1,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     }
+    ],
+    "friction": [
+     {
+      "floor_friction": 0.3,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "floor_friction": 0.45,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "floor_friction": 0.6,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "floor_friction": 0.8,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "floor_friction": 1.0,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     }
+    ],
+    "pulses_stopped_at_the_stand_pose": {
+     "fell": false,
+     "fell_how": null,
+     "final_tilt_deg": 0.24,
+     "ends_at_deg": {
+      "hip_pitch": 90.2,
+      "knee": -90.4
+     },
+     "torso_drop_mm": 58.5,
+     "peak_sink_speed_m_s": 0.442,
+     "touching_floor": [
+      "sole"
+     ]
+    },
+    "pulses_stopped_at_the_stand_pose_no_joint_friction": {
+     "fell": false,
+     "fell_how": null,
+     "final_tilt_deg": 0.24,
+     "ends_at_deg": {
+      "hip_pitch": 90.2,
+      "knee": -90.4
+     },
+     "torso_drop_mm": 58.5,
+     "peak_sink_speed_m_s": 0.49,
+     "touching_floor": [
+      "sole"
+     ]
+    },
+    "head": [
+     {
+      "case": "as drawn",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "case": "20 g more in the head",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "case": "40 g more in the head",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "case": "20 g, 40 mm further forward",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "case": "20 g, 40 mm further back",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     }
+    ]
+   }
+  },
+  "comb_feet": {
+   "stand": {
+    "fell": false,
+    "max_tilt_deg": 0.79,
+    "mass_kg": 0.5053,
+    "torso_height_mm": 159.3,
+    "peak_torque_fraction": 0.095,
+    "peak_speed_fraction": 0.065,
+    "time_at_torque_limit_fraction": 0.0,
+    "sole_mass_g": {
+     "left_sole_0": 4.9,
+     "left_sole_1": 3.9,
+     "left_sole_2": 3.9,
+     "left_sole_3": 4.6,
+     "right_sole_0": 4.9,
+     "right_sole_1": 3.9,
+     "right_sole_2": 4.6
+    }
+   },
+   "one_foot_test": {
+    "left": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 1.0,
+     "lifted_foot_clearance_mm": 4.2,
+     "load_on_other_foot_fraction": 1.0,
+     "max_tilt_deg": 2.6
+    },
+    "right": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 1.0,
+     "lifted_foot_clearance_mm": 4.3,
+     "load_on_other_foot_fraction": 1.0,
+     "max_tilt_deg": 2.5
+    },
+    "stands_on_one_foot": true
+   },
+   "walk": {
+    "gait": {
+     "kind": "crawl",
+     "params": {
+      "period_s": 0.8,
+      "stride_mm": 21.135,
+      "stand_reach_mm": -57.844,
+      "lift_knee_deg": -29.026,
+      "lift_hip_deg": 19.364,
+      "swing_fraction": 0.337,
+      "right_phase": 0.333,
+      "roll_gain": 1.403,
+      "lean_deg": -2.16,
+      "turn_trim": 0.051,
+      "roll_trim_deg": 0.223
+     },
+     "search": {
+      "method": "CMA-ES, microduck/cmaes.py",
+      "seed": 1,
+      "generations": 50,
+      "population": 21,
+      "candidates": 1050,
+      "simulated_runs": 4200,
+      "seconds_each": 10.0,
+      "wall_clock_s": 424.4,
+      "wall_clock_budget_s": 1200.0,
+      "workers": 7,
+      "score": 8.508,
+      "best_score_by_generation": [
+       4.3116,
+       4.2007,
+       4.187,
+       4.5793,
+       4.4776,
+       4.9173,
+       4.7857,
+       5.284,
+       5.1189,
+       4.9832,
+       5.2465,
+       5.4,
+       6.1491,
+       6.6841,
+       6.6399,
+       7.4883,
+       6.5315,
+       7.6209,
+       6.8691,
+       7.1522,
+       7.4647,
+       7.5388,
+       7.5053,
+       7.9388,
+       7.5637,
+       7.6859,
+       7.6024,
+       7.3692,
+       8.1709,
+       8.0167,
+       8.1299,
+       8.0075,
+       8.4075,
+       8.0503,
+       8.4108,
+       8.1426,
+       8.4573,
+       8.3663,
+       8.1331,
+       8.5078,
+       8.4293,
+       8.32,
+       8.4187,
+       8.4682,
+       8.3488,
+       8.3785,
+       8.3092,
+       8.3111,
+       8.394,
+       8.3799
+      ]
+     }
+    },
+    "nominal": {
+     "fell": false,
+     "fell_at_s": null,
+     "fell_how": null,
+     "seconds": 30.0,
+     "forward_mm": 1074.6,
+     "sideways_mm": -142.3,
+     "speed_mm_s": 38.1,
+     "path_speed_mm_s": 45.1,
+     "yaw_deg": -19.7,
+     "yaw_rate_deg_s": -0.7,
+     "max_tilt_deg": 13.9,
+     "expected_steps": 70.5,
+     "step_fraction": 1.0,
+     "single_support_fraction": 0.624,
+     "double_support_fraction": 0.365,
+     "flight_fraction": 0.011,
+     "steps": 73,
+     "alternating": true,
+     "median_clearance_mm": 12.97,
+     "median_swing_s": 0.2,
+     "step_length_mm": 16.47,
+     "stance_slip_mm_per_step": 3.28,
+     "peak_torque_fraction": 0.681,
+     "peak_speed_fraction": 0.422,
+     "time_at_torque_limit_fraction": 0.0,
+     "peak_supply_current_a": 4.31,
+     "supply_limited_fraction": 0.004,
+     "demand": {
+      "left_hip_roll": {
+       "peak_torque_nm": 0.76,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 0.635,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 119.3,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.398
+      },
+      "left_hip_pitch": {
+       "peak_torque_nm": 0.338,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 0.282,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 124.4,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.415
+      },
+      "left_knee": {
+       "peak_torque_nm": 0.207,
+       "torque_limit_nm": 0.304,
+       "peak_torque_fraction": 0.681,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 180.9,
+       "speed_limit_deg_s": 428.6,
+       "peak_speed_fraction": 0.422
+      },
+      "right_hip_roll": {
+       "peak_torque_nm": 0.645,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 0.539,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 91.0,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.304
+      },
+      "right_hip_pitch": {
+       "peak_torque_nm": 0.377,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 0.315,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 121.8,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.406
+      },
+      "right_knee": {
+       "peak_torque_nm": 0.143,
+       "torque_limit_nm": 0.304,
+       "peak_torque_fraction": 0.471,
+       "time_at_torque_limit_fraction": 0.0,
+       "peak_speed_deg_s": 180.8,
+       "speed_limit_deg_s": 428.6,
+       "peak_speed_fraction": 0.422
+      }
+     },
+     "first_swings": [
+      {
+       "side": "left",
+       "start_s": 1.94,
+       "duration_s": 0.24,
+       "clearance_mm": 17.15,
+       "forward_mm": 18.7,
+       "stance_slip_mm": 0.12
+      },
+      {
+       "side": "right",
+       "start_s": 2.2,
+       "duration_s": 0.2,
+       "clearance_mm": 12.97,
+       "forward_mm": 14.81,
+       "stance_slip_mm": 8.3
+      },
+      {
+       "side": "left",
+       "start_s": 2.74,
+       "duration_s": 0.24,
+       "clearance_mm": 15.9,
+       "forward_mm": 20.57,
+       "stance_slip_mm": 2.52
+      },
+      {
+       "side": "right",
+       "start_s": 3.02,
+       "duration_s": 0.2,
+       "clearance_mm": 11.5,
+       "forward_mm": 15.28,
+       "stance_slip_mm": 6.48
+      },
+      {
+       "side": "left",
+       "start_s": 3.54,
+       "duration_s": 0.24,
+       "clearance_mm": 15.93,
+       "forward_mm": 20.47,
+       "stance_slip_mm": 2.45
+      },
+      {
+       "side": "right",
+       "start_s": 3.84,
+       "duration_s": 0.18,
+       "clearance_mm": 12.57,
+       "forward_mm": 14.42,
+       "stance_slip_mm": 3.56
+      },
+      {
+       "side": "left",
+       "start_s": 4.34,
+       "duration_s": 0.24,
+       "clearance_mm": 15.96,
+       "forward_mm": 20.05,
+       "stance_slip_mm": 1.62
+      },
+      {
+       "side": "right",
+       "start_s": 4.6,
+       "duration_s": 0.22,
+       "clearance_mm": 11.33,
+       "forward_mm": 16.01,
+       "stance_slip_mm": 8.55
+      }
+     ]
+    },
+    "truly_steps": true,
+    "long_horizon": {
+     "fell": false,
+     "fell_at_s": null,
+     "fell_how": null,
+     "seconds": 120.0,
+     "speed_mm_s": 36.8,
+     "yaw_deg": -22.2,
+     "steps": 299,
+     "step_fraction": 1.0
+    },
+    "half_timestep": {
+     "fell": false,
+     "fell_at_s": null,
+     "speed_mm_s": 32.9,
+     "yaw_deg": -66.1,
+     "steps": 71,
+     "step_fraction": 1.0,
+     "median_clearance_mm": 13.56
+    },
+    "robustness": {
+     "runs": 30,
+     "seconds_each": 30.0,
+     "fell": 0,
+     "stepping_runs": 29,
+     "speed_mm_s": [
+      34.7,
+      39.8
+     ],
+     "yaw_deg": [
+      -44.7,
+      29.0
+     ],
+     "by_friction": [
+      {
+       "floor_friction": 0.3,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        37.5,
+        38.6
+       ],
+       "yaw_deg": [
+        18.1,
+        29.0
+       ],
+       "stepping_runs": 5
+      },
+      {
+       "floor_friction": 0.45,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        37.8,
+        39.8
+       ],
+       "yaw_deg": [
+        -32.9,
+        11.0
+       ],
+       "stepping_runs": 6
+      },
+      {
+       "floor_friction": 0.6,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        34.7,
+        38.5
+       ],
+       "yaw_deg": [
+        -42.5,
+        3.0
+       ],
+       "stepping_runs": 6
+      },
+      {
+       "floor_friction": 0.8,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        34.8,
+        39.6
+       ],
+       "yaw_deg": [
+        -44.7,
+        4.0
+       ],
+       "stepping_runs": 6
+      },
+      {
+       "floor_friction": 1.0,
+       "runs": 6,
+       "fell": 0,
+       "speed_mm_s": [
+        37.3,
+        38.8
+       ],
+       "yaw_deg": [
+        3.4,
+        21.5
+       ],
+       "stepping_runs": 6
+      }
+     ],
+     "rows": [
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.7,
+       "yaw_deg": 29.0,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 14.29,
+       "single_support_fraction": 0.661
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.7,
+       "yaw_deg": 28.6,
+       "step_fraction": 1.0,
+       "alternating": false,
+       "median_clearance_mm": 14.02,
+       "single_support_fraction": 0.681
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.5,
+       "yaw_deg": 11.0,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 14.18,
+       "single_support_fraction": 0.656
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.7,
+       "yaw_deg": 2.9,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 14.23,
+       "single_support_fraction": 0.673
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.3,
+       "yaw_deg": 3.0,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 13.67,
+       "single_support_fraction": 0.592
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.2,
+       "yaw_deg": -2.1,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 13.69,
+       "single_support_fraction": 0.584
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 39.6,
+       "yaw_deg": 4.0,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 14.4,
+       "single_support_fraction": 0.61
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 39.6,
+       "yaw_deg": 1.6,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 14.44,
+       "single_support_fraction": 0.614
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.8,
+       "yaw_deg": 19.4,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 14.04,
+       "single_support_fraction": 0.617
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 0.9,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.8,
+       "yaw_deg": 21.5,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 14.1,
+       "single_support_fraction": 0.614
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.5,
+       "yaw_deg": 24.1,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 13.73,
+       "single_support_fraction": 0.664
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.6,
+       "yaw_deg": 23.1,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 13.6,
+       "single_support_fraction": 0.674
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 39.1,
+       "yaw_deg": -16.9,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 13.61,
+       "single_support_fraction": 0.67
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 39.8,
+       "yaw_deg": -17.7,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.96,
+       "single_support_fraction": 0.656
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.5,
+       "yaw_deg": -19.1,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.49,
+       "single_support_fraction": 0.609
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.0,
+       "yaw_deg": -19.8,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 13.52,
+       "single_support_fraction": 0.617
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.6,
+       "yaw_deg": -22.9,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 13.15,
+       "single_support_fraction": 0.59
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.8,
+       "yaw_deg": -22.6,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.82,
+       "single_support_fraction": 0.585
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.3,
+       "yaw_deg": 12.5,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.73,
+       "single_support_fraction": 0.566
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 1.0,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.3,
+       "yaw_deg": 12.4,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.7,
+       "single_support_fraction": 0.564
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.5,
+       "yaw_deg": 25.5,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 13.01,
+       "single_support_fraction": 0.65
+      },
+      {
+       "floor_friction": 0.3,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.6,
+       "yaw_deg": 18.1,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.68,
+       "single_support_fraction": 0.653
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.8,
+       "yaw_deg": -32.9,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.13,
+       "single_support_fraction": 0.638
+      },
+      {
+       "floor_friction": 0.45,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 38.4,
+       "yaw_deg": -31.4,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.42,
+       "single_support_fraction": 0.639
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 34.7,
+       "yaw_deg": -42.5,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.15,
+       "single_support_fraction": 0.585
+      },
+      {
+       "floor_friction": 0.6,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 35.6,
+       "yaw_deg": -35.9,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.84,
+       "single_support_fraction": 0.603
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 34.8,
+       "yaw_deg": -44.7,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 12.03,
+       "single_support_fraction": 0.584
+      },
+      {
+       "floor_friction": 0.8,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 35.1,
+       "yaw_deg": -40.6,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 11.82,
+       "single_support_fraction": 0.584
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        1.5,
+        1.5
+       ],
+       "start_push_m_s": [
+        0.02,
+        0.02
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.3,
+       "yaw_deg": 3.4,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 11.6,
+       "single_support_fraction": 0.587
+      },
+      {
+       "floor_friction": 1.0,
+       "mass_scale": 1.1,
+       "start_tilt_deg": [
+        -1.5,
+        -1.0
+       ],
+       "start_push_m_s": [
+        -0.02,
+        0.03
+       ],
+       "fell": false,
+       "fell_at_s": null,
+       "speed_mm_s": 37.3,
+       "yaw_deg": 3.5,
+       "step_fraction": 1.0,
+       "alternating": true,
+       "median_clearance_mm": 11.6,
+       "single_support_fraction": 0.587
+      }
+     ]
+    },
+    "head_sensitivity": [
+     {
+      "case": "as drawn",
+      "head": {},
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 38.1,
+      "yaw_deg": -19.7,
+      "step_fraction": 1.0,
+      "median_clearance_mm": 12.97
+     },
+     {
+      "case": "20 g more in the head",
+      "head": {
+       "extra_mass_g": 20.0
+      },
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 38.3,
+      "yaw_deg": -22.7,
+      "step_fraction": 1.0,
+      "median_clearance_mm": 11.58
+     },
+     {
+      "case": "40 g more in the head",
+      "head": {
+       "extra_mass_g": 40.0
+      },
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 21.3,
+      "yaw_deg": 100.9,
+      "step_fraction": 1.0,
+      "median_clearance_mm": 11.81
+     },
+     {
+      "case": "20 g, 40 mm further forward",
+      "head": {
+       "extra_mass_g": 20.0,
+       "position_mm": [
+        15.0,
+        0.0,
+        78.0
+       ]
+      },
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 36.8,
+      "yaw_deg": -25.2,
+      "step_fraction": 1.0,
+      "median_clearance_mm": 12.14
+     },
+     {
+      "case": "20 g, 40 mm further back",
+      "head": {
+       "extra_mass_g": 20.0,
+       "position_mm": [
+        -65.0,
+        0.0,
+        78.0
+       ]
+      },
+      "fell": false,
+      "fell_at_s": null,
+      "speed_mm_s": 32.1,
+      "yaw_deg": 43.8,
+      "step_fraction": 1.0,
+      "median_clearance_mm": 11.98
+     }
+    ],
+    "envelope": {
+     "tested_speed": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+     ],
+     "tested_turn": [
+      -1.0,
+      -0.5,
+      0.0,
+      0.5,
+      1.0
+     ],
+     "tested_floor_friction": [
+      0.4,
+      0.6,
+      0.9
+     ],
+     "seconds_each": 20.0,
+     "speed_range_all_turns": [
+      0.25,
+      1.0
+     ],
+     "turn_range_all_speeds": [
+      -1.0,
+      1.0
+     ],
+     "points_stayed_up": 20,
+     "points": 20,
+     "forward_mm_s_at_speed": {
+      "0.25": 13.2,
+      "0.5": 19.4,
+      "0.75": 28.6,
+      "1.0": 38.5
+     },
+     "yaw_rate_deg_s_at_turn": {
+      "-1.0": -3.14,
+      "-0.5": -3.96,
+      "0.0": -0.96,
+      "0.5": 1.13,
+      "1.0": 3.54
+     },
+     "yaw_rate_deg_s_at_turn_by_friction": {
+      "0.4": {
+       "-1.0": -3.49,
+       "-0.5": -1.45,
+       "0.0": 0.24,
+       "0.5": 3.1,
+       "1.0": 4.86
+      },
+      "0.6": {
+       "-1.0": -3.14,
+       "-0.5": -3.96,
+       "0.0": -0.96,
+       "0.5": 1.13,
+       "1.0": 3.54
+      },
+      "0.9": {
+       "-1.0": -5.06,
+       "-0.5": -3.87,
+       "0.0": -0.96,
+       "0.5": 1.87,
+       "1.0": 4.79
+      }
+     },
+     "straight_line_yaw_rate_deg_s": -0.96,
+     "turn_input_steers": false,
+     "turn_input_steers_at_every_friction": true,
+     "grid": [
+      {
+       "speed": 0.25,
+       "turn": -1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 10.9,
+       "path_mm_s": 21.4,
+       "yaw_rate_deg_s": 0.1,
+       "yaw_rate_by_friction": {
+        "0.4": 0.72,
+        "0.6": 0.1,
+        "0.9": -0.14
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.25,
+       "turn": -0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 11.5,
+       "path_mm_s": 21.7,
+       "yaw_rate_deg_s": -1.16,
+       "yaw_rate_by_friction": {
+        "0.4": -0.11,
+        "0.6": -1.16,
+        "0.9": -1.0
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.25,
+       "turn": 0.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 13.2,
+       "path_mm_s": 27.3,
+       "yaw_rate_deg_s": -2.24,
+       "yaw_rate_by_friction": {
+        "0.4": -0.59,
+        "0.6": -2.24,
+        "0.9": -1.65
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.25,
+       "turn": 0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 13.2,
+       "path_mm_s": 29.7,
+       "yaw_rate_deg_s": -0.55,
+       "yaw_rate_by_friction": {
+        "0.4": 0.45,
+        "0.6": -0.55,
+        "0.9": -1.18
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.25,
+       "turn": 1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 12.6,
+       "path_mm_s": 26.5,
+       "yaw_rate_deg_s": -0.18,
+       "yaw_rate_by_friction": {
+        "0.4": 1.18,
+        "0.6": -0.18,
+        "0.9": 0.22
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.5,
+       "turn": -1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 17.5,
+       "path_mm_s": 23.5,
+       "yaw_rate_deg_s": -3.19,
+       "yaw_rate_by_friction": {
+        "0.4": -3.4,
+        "0.6": -3.19,
+        "0.9": -5.39
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.5,
+       "turn": -0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 19.1,
+       "path_mm_s": 25.2,
+       "yaw_rate_deg_s": -2.61,
+       "yaw_rate_by_friction": {
+        "0.4": -1.35,
+        "0.6": -2.61,
+        "0.9": -3.39
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.5,
+       "turn": 0.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 19.4,
+       "path_mm_s": 31.1,
+       "yaw_rate_deg_s": 0.17,
+       "yaw_rate_by_friction": {
+        "0.4": 1.13,
+        "0.6": 0.17,
+        "0.9": 0.85
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.5,
+       "turn": 0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 19.2,
+       "path_mm_s": 27.1,
+       "yaw_rate_deg_s": 1.05,
+       "yaw_rate_by_friction": {
+        "0.4": 1.53,
+        "0.6": 1.05,
+        "0.9": 1.49
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.5,
+       "turn": 1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 17.1,
+       "path_mm_s": 29.7,
+       "yaw_rate_deg_s": 2.93,
+       "yaw_rate_by_friction": {
+        "0.4": 4.6,
+        "0.6": 2.93,
+        "0.9": 3.99
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.75,
+       "turn": -1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 17.3,
+       "path_mm_s": 24.3,
+       "yaw_rate_deg_s": -3.54,
+       "yaw_rate_by_friction": {
+        "0.4": -3.83,
+        "0.6": -3.54,
+        "0.9": -5.61
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.75,
+       "turn": -0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 23.2,
+       "path_mm_s": 30.2,
+       "yaw_rate_deg_s": -3.96,
+       "yaw_rate_by_friction": {
+        "0.4": -1.05,
+        "0.6": -3.96,
+        "0.9": -4.95
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.75,
+       "turn": 0.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 28.6,
+       "path_mm_s": 34.5,
+       "yaw_rate_deg_s": -0.85,
+       "yaw_rate_by_friction": {
+        "0.4": -0.99,
+        "0.6": -0.85,
+        "0.9": -0.87
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.75,
+       "turn": 0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 26.4,
+       "path_mm_s": 33.9,
+       "yaw_rate_deg_s": 1.53,
+       "yaw_rate_by_friction": {
+        "0.4": 3.64,
+        "0.6": 1.53,
+        "0.9": 2.54
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 0.75,
+       "turn": 1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 15.5,
+       "path_mm_s": 30.6,
+       "yaw_rate_deg_s": 3.61,
+       "yaw_rate_by_friction": {
+        "0.4": 4.73,
+        "0.6": 3.61,
+        "0.9": 4.83
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 1.0,
+       "turn": -1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 18.8,
+       "path_mm_s": 24.5,
+       "yaw_rate_deg_s": -3.14,
+       "yaw_rate_by_friction": {
+        "0.4": -3.49,
+        "0.6": -3.14,
+        "0.9": -5.06
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 1.0,
+       "turn": -0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 26.3,
+       "path_mm_s": 33.0,
+       "yaw_rate_deg_s": -3.96,
+       "yaw_rate_by_friction": {
+        "0.4": -1.45,
+        "0.6": -3.96,
+        "0.9": -3.87
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 1.0,
+       "turn": 0.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 38.5,
+       "path_mm_s": 45.9,
+       "yaw_rate_deg_s": -0.96,
+       "yaw_rate_by_friction": {
+        "0.4": 0.24,
+        "0.6": -0.96,
+        "0.9": -0.96
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 1.0,
+       "turn": 0.5,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 29.2,
+       "path_mm_s": 34.9,
+       "yaw_rate_deg_s": 1.13,
+       "yaw_rate_by_friction": {
+        "0.4": 3.1,
+        "0.6": 1.13,
+        "0.9": 1.87
+       },
+       "step_fraction": 1.0
+      },
+      {
+       "speed": 1.0,
+       "turn": 1.0,
+       "stayed_up_all_frictions": true,
+       "fell_at_friction": [],
+       "forward_mm_s": 15.5,
+       "path_mm_s": 30.5,
+       "yaw_rate_deg_s": 3.54,
+       "yaw_rate_by_friction": {
+        "0.4": 4.86,
+        "0.6": 3.54,
+        "0.9": 4.79
+       },
+       "step_fraction": 1.0
+      }
+     ]
+    }
+   },
+   "jump": {
+    "params": {
+     "crouch_hip_deg": 67.438,
+     "crouch_knee_deg": -90.0,
+     "push_hip_deg": 22.17,
+     "push_knee_deg": -65.461,
+     "knee_delay_s": -0.042,
+     "tuck_after_s": 0.126,
+     "land_hip_deg": 60.281,
+     "land_knee_deg": -80.0
+    },
+    "max_speed_deg_s": 430.0,
+    "result": {
+     "flight_s": 0.08,
+     "feet_rise_mm": 11.65,
+     "takeoff_after_push_s": 0.21,
+     "com_rise_in_flight_mm": 4.65,
+     "com_speed_up_at_takeoff_m_s": 0.227,
+     "com_rise_above_crouch_mm": 32.87,
+     "com_rise_above_stand_mm": 0.24,
+     "landed_upright": true,
+     "fell_how": null,
+     "fell_at_s": null,
+     "final_tilt_deg": 0.18,
+     "max_tilt_deg": 28.41,
+     "travel_forward_mm": -29.0,
+     "peak_supply_current_a": 8.5,
+     "supply_limited_fraction_of_push": 0.2,
+     "demand": {
+      "left_hip_pitch": {
+       "peak_torque_nm": 1.196,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.071,
+       "peak_speed_deg_s": 278.6,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.929
+      },
+      "left_knee": {
+       "peak_torque_nm": 0.304,
+       "torque_limit_nm": 0.304,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.107,
+       "peak_speed_deg_s": 298.3,
+       "speed_limit_deg_s": 428.6,
+       "peak_speed_fraction": 0.696
+      },
+      "right_hip_pitch": {
+       "peak_torque_nm": 1.196,
+       "torque_limit_nm": 1.196,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.071,
+       "peak_speed_deg_s": 279.2,
+       "speed_limit_deg_s": 300.0,
+       "peak_speed_fraction": 0.931
+      },
+      "right_knee": {
+       "peak_torque_nm": 0.304,
+       "torque_limit_nm": 0.304,
+       "peak_torque_fraction": 1.0,
+       "time_at_torque_limit_fraction": 0.107,
+       "peak_speed_deg_s": 295.3,
+       "speed_limit_deg_s": 428.6,
+       "peak_speed_fraction": 0.689
+      }
+     },
+     "contacts": [
+      "sole"
+     ],
+     "verdict": "hop"
+    },
+    "at_default_speed_limit": {
+     "max_speed_deg_s": 120.0,
+     "flight_s": 0.0,
+     "feet_rise_mm": 0.0,
+     "com_rise_in_flight_mm": 0.0,
+     "com_rise_above_stand_mm": 0.0,
+     "landed_upright": true,
+     "fell_how": null,
+     "peak_supply_current_a": 4.39,
+     "verdict": "no flight"
+    },
+    "friction": [
+     {
+      "floor_friction": 0.3,
+      "flight_s": 0.08,
+      "feet_rise_mm": 9.7,
+      "com_rise_in_flight_mm": 3.79,
+      "com_rise_above_stand_mm": 0.29,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.55,
+      "verdict": "hop"
+     },
+     {
+      "floor_friction": 0.45,
+      "flight_s": 0.08,
+      "feet_rise_mm": 11.36,
+      "com_rise_in_flight_mm": 4.31,
+      "com_rise_above_stand_mm": 0.11,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.53,
+      "verdict": "hop"
+     },
+     {
+      "floor_friction": 0.6,
+      "flight_s": 0.08,
+      "feet_rise_mm": 11.65,
+      "com_rise_in_flight_mm": 4.65,
+      "com_rise_above_stand_mm": 0.24,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.5,
+      "verdict": "hop"
+     },
+     {
+      "floor_friction": 0.8,
+      "flight_s": 0.08,
+      "feet_rise_mm": 10.71,
+      "com_rise_in_flight_mm": 3.84,
+      "com_rise_above_stand_mm": 0.12,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.53,
+      "verdict": "hop"
+     },
+     {
+      "floor_friction": 1.0,
+      "flight_s": 0.08,
+      "feet_rise_mm": 10.63,
+      "com_rise_in_flight_mm": 3.89,
+      "com_rise_above_stand_mm": 0.04,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.54,
+      "verdict": "hop"
+     }
+    ],
+    "head": [
+     {
+      "case": "as drawn",
+      "flight_s": 0.08,
+      "feet_rise_mm": 11.65,
+      "com_rise_in_flight_mm": 4.65,
+      "com_rise_above_stand_mm": 0.24,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.5,
+      "verdict": "hop"
+     },
+     {
+      "case": "20 g more in the head",
+      "flight_s": 0.08,
+      "feet_rise_mm": 12.13,
+      "com_rise_in_flight_mm": 4.42,
+      "com_rise_above_stand_mm": 0.3,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.16,
+      "verdict": "hop"
+     },
+     {
+      "case": "40 g more in the head",
+      "flight_s": 0.08,
+      "feet_rise_mm": 12.57,
+      "com_rise_in_flight_mm": 4.79,
+      "com_rise_above_stand_mm": 0.11,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 7.89,
+      "verdict": "hop"
+     },
+     {
+      "case": "20 g, 40 mm further forward",
+      "flight_s": 0.1,
+      "feet_rise_mm": 10.89,
+      "com_rise_in_flight_mm": 8.52,
+      "com_rise_above_stand_mm": -0.01,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.36,
+      "verdict": "hop"
+     },
+     {
+      "case": "20 g, 40 mm further back",
+      "flight_s": 0.08,
+      "feet_rise_mm": 12.0,
+      "com_rise_in_flight_mm": 4.62,
+      "com_rise_above_stand_mm": 0.07,
+      "landed_upright": true,
+      "fell_how": null,
+      "peak_supply_current_a": 8.02,
+      "verdict": "hop"
+     }
+    ],
+    "half_timestep": {
+     "flight_s": 0.08,
+     "feet_rise_mm": 10.61,
+     "com_rise_in_flight_mm": 3.61,
+     "com_rise_above_stand_mm": 0.22,
+     "landed_upright": true,
+     "fell_how": null,
+     "peak_supply_current_a": 8.53,
+     "verdict": "hop"
+    },
+    "not_the_result": {
+     "what": "the same motion with the supply current limit removed; shown only to say what limits the hop",
+     "flight_s": 0.08,
+     "feet_rise_mm": 11.51,
+     "com_rise_in_flight_mm": 3.5,
+     "com_rise_above_stand_mm": 0.06,
+     "landed_upright": true,
+     "fell_how": null,
+     "peak_supply_current_a": 8.8,
+     "verdict": "hop"
+    },
+    "no_load_bound": {
+     "hip_lift_speed_m_s": 0.431,
+     "ballistic_rise_mm": 9.5,
+     "note": "thigh length times the no-load speed of the hip servo; a servo delivers no torque at that speed, so the real figure is lower"
+    }
+   },
+   "sit": {
+    "sat_down": true,
+    "sit_pose_deg": {
+     "left_hip_roll": 0.0,
+     "left_hip_pitch": 90.0,
+     "left_knee": -90.0,
+     "right_hip_roll": -0.0,
+     "right_hip_pitch": 90.0,
+     "right_knee": -90.0
+    },
+    "torso_lowered_mm": 58.1,
+    "torso_height_sitting_mm": 100.8,
+    "lowering_demand": {
+     "peak_torque_fraction": 0.177,
+     "peak_speed_fraction": 0.121,
+     "time_at_torque_limit_fraction": 0.0
+    },
+    "lowering_demand_by_joint": {
+     "left_hip_pitch": {
+      "peak_torque_nm": 0.113,
+      "torque_limit_nm": 1.196,
+      "peak_torque_fraction": 0.095,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 33.4,
+      "speed_limit_deg_s": 300.0,
+      "peak_speed_fraction": 0.111
+     },
+     "left_knee": {
+      "peak_torque_nm": 0.054,
+      "torque_limit_nm": 0.304,
+      "peak_torque_fraction": 0.177,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 51.9,
+      "speed_limit_deg_s": 428.6,
+      "peak_speed_fraction": 0.121
+     },
+     "right_hip_pitch": {
+      "peak_torque_nm": 0.113,
+      "torque_limit_nm": 1.196,
+      "peak_torque_fraction": 0.095,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 33.4,
+      "speed_limit_deg_s": 300.0,
+      "peak_speed_fraction": 0.111
+     },
+     "right_knee": {
+      "peak_torque_nm": 0.054,
+      "torque_limit_nm": 0.304,
+      "peak_torque_fraction": 0.177,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 51.8,
+      "speed_limit_deg_s": 428.6,
+      "peak_speed_fraction": 0.121
+     }
+    },
+    "relaxed_rest": {
+     "fell": false,
+     "tilt_deg": 0.25,
+     "max_joint_drift_deg": 0.0,
+     "torso_drop_mm": 0.0,
+     "touching_floor": [
+      "sole"
+     ]
+    },
+    "relaxed_rest_stable": true,
+    "lowest_part_above_floor_mm": {
+     "controller board": 107.1,
+     "deck": 100.6,
+     "head and neck": 108.5,
+     "hip cradle": 57.8,
+     "hip pitch servo": 64.6,
+     "hip roll servo": 54.1,
+     "knee servo": 73.5,
+     "shield": 119.7,
+     "shin plate": 5.0,
+     "thigh plate": 64.4,
+     "yoke": 68.1
+    },
+    "stood_up": true,
+    "rising_demand": {
+     "peak_torque_fraction": 0.402,
+     "peak_speed_fraction": 0.132,
+     "time_at_torque_limit_fraction": 0.0
+    },
+    "rising_demand_by_joint": {
+     "left_hip_pitch": {
+      "peak_torque_nm": 0.229,
+      "torque_limit_nm": 1.196,
+      "peak_torque_fraction": 0.191,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 39.6,
+      "speed_limit_deg_s": 300.0,
+      "peak_speed_fraction": 0.132
+     },
+     "left_knee": {
+      "peak_torque_nm": 0.122,
+      "torque_limit_nm": 0.304,
+      "peak_torque_fraction": 0.402,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 45.4,
+      "speed_limit_deg_s": 428.6,
+      "peak_speed_fraction": 0.106
+     },
+     "right_hip_pitch": {
+      "peak_torque_nm": 0.229,
+      "torque_limit_nm": 1.196,
+      "peak_torque_fraction": 0.192,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 39.7,
+      "speed_limit_deg_s": 300.0,
+      "peak_speed_fraction": 0.132
+     },
+     "right_knee": {
+      "peak_torque_nm": 0.122,
+      "torque_limit_nm": 0.304,
+      "peak_torque_fraction": 0.402,
+      "time_at_torque_limit_fraction": 0.0,
+      "peak_speed_deg_s": 45.5,
+      "speed_limit_deg_s": 428.6,
+      "peak_speed_fraction": 0.106
+     }
+    },
+    "parts_that_touched_the_floor": [
+     "sole"
+    ],
+    "board_or_head_touched": false,
+    "relaxed_with_no_joint_friction": {
+     "sat_down": true,
+     "relaxed_rest": {
+      "fell": false,
+      "tilt_deg": 0.25,
+      "max_joint_drift_deg": 0.0,
+      "torso_drop_mm": 0.0,
+      "touching_floor": [
+       "sole"
+      ]
+     },
+     "relaxed_rest_stable": true,
+     "stood_up": true,
+     "parts_that_touched_the_floor": [
+      "sole"
+     ]
+    },
+    "relaxed_and_shoved": [
+     {
+      "shove_m_s": 0.1,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "shove_m_s": -0.1,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     }
+    ],
+    "friction": [
+     {
+      "floor_friction": 0.3,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "floor_friction": 0.45,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "floor_friction": 0.6,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "floor_friction": 0.8,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "floor_friction": 1.0,
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     }
+    ],
+    "pulses_stopped_at_the_stand_pose": {
+     "fell": false,
+     "fell_how": null,
+     "final_tilt_deg": 0.25,
+     "ends_at_deg": {
+      "hip_pitch": 90.2,
+      "knee": -90.4
+     },
+     "torso_drop_mm": 58.5,
+     "peak_sink_speed_m_s": 0.443,
+     "touching_floor": [
+      "sole"
+     ]
+    },
+    "pulses_stopped_at_the_stand_pose_no_joint_friction": {
+     "fell": false,
+     "fell_how": null,
+     "final_tilt_deg": 0.25,
+     "ends_at_deg": {
+      "hip_pitch": 90.2,
+      "knee": -90.4
+     },
+     "torso_drop_mm": 58.5,
+     "peak_sink_speed_m_s": 0.491,
+     "touching_floor": [
+      "sole"
+     ]
+    },
+    "head": [
+     {
+      "case": "as drawn",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "case": "20 g more in the head",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "case": "40 g more in the head",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "case": "20 g, 40 mm further forward",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     },
+     {
+      "case": "20 g, 40 mm further back",
+      "sat_down": true,
+      "relaxed_rest_stable": true,
+      "stood_up": true,
+      "parts_that_touched_the_floor": [
+       "sole"
+      ]
+     }
+    ]
+   }
+  }
+ },
+ "design_evidence": {
+  "drawn": {
+   "description": "The published geometry, as generated in robot/microduck.xml.",
+   "one_foot_test": {
+    "left": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 0.0,
+     "lifted_foot_clearance_mm": -0.0,
+     "load_on_other_foot_fraction": 0.59,
+     "max_tilt_deg": 5.2
+    },
+    "right": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 0.0,
+     "lifted_foot_clearance_mm": -0.0,
+     "load_on_other_foot_fraction": 0.59,
+     "max_tilt_deg": 5.2
+    },
+    "stands_on_one_foot": false
+   }
+  },
+  "comb_feet": {
+   "description": "Variant: the same robot with new sole plates only. Each sole has a rail under the leg and fingers that reach across the centreline between the fingers of the other sole, so the centre of mass is over either foot alone. Simulation only.",
+   "one_foot_test": {
+    "left": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 1.0,
+     "lifted_foot_clearance_mm": 4.2,
+     "load_on_other_foot_fraction": 1.0,
+     "max_tilt_deg": 2.6
+    },
+    "right": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 1.0,
+     "lifted_foot_clearance_mm": 4.3,
+     "load_on_other_foot_fraction": 1.0,
+     "max_tilt_deg": 2.5
+    },
+    "stands_on_one_foot": true
+   }
+  },
+  "rocker_feet": {
+   "description": "Rejected alternative: soles 48 mm wide moved inboard, curved across the foot (radius 200 mm, lowest line 26 mm from the centreline), joined to the shin by a raised bridge. Simulation only.",
+   "one_foot_test": {
+    "left": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 0.0,
+     "lifted_foot_clearance_mm": -0.0,
+     "load_on_other_foot_fraction": 0.71,
+     "max_tilt_deg": 11.0
+    },
+    "right": {
+     "fell": false,
+     "fell_how": null,
+     "lifted_foot_clear_of_floor_fraction": 0.0,
+     "lifted_foot_clearance_mm": -0.0,
+     "load_on_other_foot_fraction": 0.71,
+     "max_tilt_deg": 11.1
+    },
+    "stands_on_one_foot": false
+   }
+  }
+ },
+ "manifest": "trajectories/manifest.json",
+ "recordings": {
+  "drawn_walk": "images/motion-drawn-walk.gif",
+  "drawn_turn": "images/motion-drawn-turn.gif",
+  "drawn_jump": "images/motion-drawn-jump.gif",
+  "drawn_sit": "images/motion-drawn-sit.gif",
+  "comb_feet_walk": "images/motion-comb-feet-walk.gif",
+  "comb_feet_turn": "images/motion-comb-feet-turn.gif",
+  "comb_feet_jump": "images/motion-comb-feet-jump.gif",
+  "comb_feet_sit": "images/motion-comb-feet-sit.gif"
+ },
+ "offscreen_rendering": "worked"
+}
