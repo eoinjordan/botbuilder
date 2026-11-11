@@ -107,6 +107,17 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 10 A (assumed stall currents; the maker publishes none) against the kit's
 5 V 4 A supply, and the UNO Q needs its own 5 V 3 A.
 
+## Build yours
+
+The site has a configurator, `site/build.html`: pick a controller (UNO Q,
+Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack Core), a locomotion
+(the six-servo biped, the two-motor crank walker of the LEGO prototypes, or
+two driven wheels), drive, camera and head, and read what can honestly be
+said about that combination: analysed in simulation, being analysed, defined
+but not designed, or not possible with the reason. Only the UNO Q biped has
+been analysed; nothing has been built. Data and sources:
+[docs/build-yours.md](docs/build-yours.md).
+
 ## Layout
 
 | Path | What |
