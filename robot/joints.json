@@ -1,0 +1,193 @@
+{
+ "generated_by": "scripts/generate_description.py",
+ "order": [
+  "left_hip_roll",
+  "left_hip_pitch",
+  "left_knee",
+  "right_hip_roll",
+  "right_hip_pitch",
+  "right_knee"
+ ],
+ "joints": {
+  "left_hip_roll": {
+   "parent": "torso",
+   "child": "left_hip",
+   "servo": "SR431",
+   "origin_m": [
+    0.049,
+    0.057,
+    -0.00825
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "shaft_direction": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "min_deg": -52.0,
+   "max_deg": 90.0,
+   "min_set_by": "collision",
+   "max_set_by": "servo travel",
+   "torque_limit_nm": 1.1964,
+   "speed_limit_deg_s": 300.0,
+   "spec_voltage_v": 4.8,
+   "armature_kgm2": 0.003
+  },
+  "left_hip_pitch": {
+   "parent": "left_hip",
+   "child": "left_thigh",
+   "servo": "SR431",
+   "origin_m": [
+    0.04,
+    0.064,
+    -0.01075
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "shaft_direction": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "min_deg": -90.0,
+   "max_deg": 90.0,
+   "min_set_by": "servo travel",
+   "max_set_by": "servo travel",
+   "torque_limit_nm": 1.1964,
+   "speed_limit_deg_s": 300.0,
+   "spec_voltage_v": 4.8,
+   "armature_kgm2": 0.003
+  },
+  "left_knee": {
+   "parent": "left_thigh",
+   "child": "left_shin",
+   "servo": "SR311",
+   "origin_m": [
+    -0.0,
+    -0.0331,
+    -0.0824
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "shaft_direction": [
+    -0.0,
+    -1.0,
+    0.0
+   ],
+   "min_deg": -90.0,
+   "max_deg": 90.0,
+   "min_set_by": "servo travel",
+   "max_set_by": "servo travel",
+   "torque_limit_nm": 0.304,
+   "speed_limit_deg_s": 428.6,
+   "spec_voltage_v": 4.8,
+   "armature_kgm2": 0.001
+  },
+  "right_hip_roll": {
+   "parent": "torso",
+   "child": "right_hip",
+   "servo": "SR431",
+   "origin_m": [
+    0.049,
+    -0.057,
+    -0.00825
+   ],
+   "axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "shaft_direction": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "min_deg": -90.0,
+   "max_deg": 52.0,
+   "min_set_by": "servo travel",
+   "max_set_by": "collision",
+   "torque_limit_nm": 1.1964,
+   "speed_limit_deg_s": 300.0,
+   "spec_voltage_v": 4.8,
+   "armature_kgm2": 0.003
+  },
+  "right_hip_pitch": {
+   "parent": "right_hip",
+   "child": "right_thigh",
+   "servo": "SR431",
+   "origin_m": [
+    0.04,
+    -0.064,
+    -0.01075
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "shaft_direction": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "min_deg": -90.0,
+   "max_deg": 90.0,
+   "min_set_by": "servo travel",
+   "max_set_by": "servo travel",
+   "torque_limit_nm": 1.1964,
+   "speed_limit_deg_s": 300.0,
+   "spec_voltage_v": 4.8,
+   "armature_kgm2": 0.003
+  },
+  "right_knee": {
+   "parent": "right_thigh",
+   "child": "right_shin",
+   "servo": "SR311",
+   "origin_m": [
+    -0.0,
+    0.0331,
+    -0.0824
+   ],
+   "axis": [
+    0.0,
+    1.0,
+    0.0
+   ],
+   "shaft_direction": [
+    -0.0,
+    1.0,
+    0.0
+   ],
+   "min_deg": -90.0,
+   "max_deg": 90.0,
+   "min_set_by": "servo travel",
+   "max_set_by": "servo travel",
+   "torque_limit_nm": 0.304,
+   "speed_limit_deg_s": 428.6,
+   "spec_voltage_v": 4.8,
+   "armature_kgm2": 0.001
+  }
+ },
+ "stand_pose_deg": {
+  "left_hip_roll": 0.0,
+  "left_hip_pitch": 45.0,
+  "left_knee": -45.0,
+  "right_hip_roll": 0.0,
+  "right_hip_pitch": 45.0,
+  "right_knee": -45.0
+ },
+ "stand_torso_height_m": 0.15927,
+ "neutral_torso_height_m": 0.1834,
+ "mass_kg": 0.501,
+ "thigh_face": "rail"
+}
