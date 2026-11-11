@@ -107,18 +107,19 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 10 A (assumed stall currents; the maker publishes none) against the kit's
 5 V 4 A supply, and the UNO Q needs its own 5 V 3 A.
 
-## LEGO-motor crank walkers
+## Crank walkers and two-wheeled builds
 
-Two walkers of the owner's design on LEGO motors, one for the EV3 brick and
-one for a Raspberry Pi Zero 2 W with the Build HAT: printable parts in
-`stl/lego/`, a digital assembly and balance test, a MuJoCo simulation of the
-crank gait and controller sketches, all under `walkers/`. Analysed and
-simulated only; never assembled. Report: [docs/lego-walkers.md](docs/lego-walkers.md).
+Three crank walkers of the owner's design on LEGO motors, for the EV3 brick,
+the Robot Inventor 51515 hub and a Raspberry Pi Zero 2 W with the Build HAT:
+printable parts in `stl/lego/`, programs in `programs/`, the assembly and
+balance test and the MuJoCo simulation of the crank gait under `walkers/`.
+Report: [docs/lego-walkers.md](docs/lego-walkers.md).
 
-A wheeled variant of every controller base uses the same chassis: two driven
+The same chassis carries a two-wheeled build for every controller: two driven
 wheels (LEGO motors, 360-degree servos or yellow TT motors), a skid or ball,
-printed wheels with an O-ring groove or a TPU tyre. Also analysed and
-simulated only: [docs/wheeled-variants.md](docs/wheeled-variants.md).
+printed wheels with an O-ring groove or a TPU tyre. Report:
+[docs/wheeled-variants.md](docs/wheeled-variants.md). The LEGO programs load
+through [Mindstorms Robot Creator](https://github.com/eoinjordan/mindstorms-robot-creator).
 
 ## Layout
 

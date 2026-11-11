@@ -221,7 +221,7 @@ For those who have flexible filament. Hardness: 95A assumed; Ultimaker's TPU 95A
 
 The driver sits on `driver_plate.stl`, a generic slotted plate, because boards vary.
 
-Controller sketches, syntax-checked and never run on hardware, in `walkers/controllers/`: `ev3_drive.py` (Pybricks, ports B and C), `hub51515_drive.py` (Pybricks, ports A and B), `buildhat_drive.py` (ports A and B), `pi_servo_drive.py` (GPIO12 and GPIO13) and `pi_tt_drive.py` (TB6612FNG). Each sets two wheel speeds. The servo and TT sketches are open loop: equal commands do not give a straight line. No sketch is given for the UNO Q or for BaseX: an Arduino sketch cannot be checked here, and BaseX's motor registers were not verified.
+Programs, compiled to bytecode by the tests and never run on hardware, in `programs/` (listed in `programs/index.json`): `ev3/wheeled/drive_pybricks.py` and `drive_ev3dev.py` (ports B and C, with remote control from the brick buttons), `hub51515/wheeled/drive_pybricks.py` (ports A and B, remote control from the hub buttons) and `drive_lego_python.py` (stock firmware, no remote control: the button calls could not be confirmed), `pi/wheeled/drive_buildhat.py` (ports A and B), `drive_servo.py` (GPIO12 and GPIO13) and `drive_tt.py` (TB6612FNG). Each sets two wheel speeds with a ramped start. The servo and TT programs are open loop: equal commands do not give a straight line. For the UNO Q and for BaseX no program is written: an Arduino sketch cannot be checked here, and BaseX's motor registers were not confirmed. The LEGO programs load through Mindstorms Robot Creator (https://eoinjordan.github.io/mindstorms-robot-creator/) as described in docs/lego-walkers.md.
 
 ## Unverified
 

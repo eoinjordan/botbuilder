@@ -59,36 +59,98 @@ def end_comparison(analysis: dict, sim: dict) -> dict:
     return out
 
 
-def summary_entries(analysis: dict, sim: dict, cfg: dict) -> list:
+RINGS = {"d43": ("O-ring 38 x 3 mm", 2), "d56": ("O-ring 50 x 3 mm", 2), "d65": ("O-ring 58 x 3 mm", 4)}
+
+
+def variant_files(a: dict, cfg: dict, manifest: dict) -> list:
+    """The STLs one wheeled variant prints, by manifest name, with quantities."""
+    b, w = cfg["bases"][a["base"]], cfg["wheels"][a["wheel"]]
+    size = min(("d43", 43.2), ("d56", 56.0), ("d65", 65.0), key=lambda k: abs(k[1] - w["diameter_mm"]))[0]
+    want = {f"lego/{b['chassis']}/fit_coupon.stl": 1, f"lego/{b['chassis']}/chassis.stl": 1,
+            f"lego/{b['chassis']}/{b['head']}.stl": 1, f"lego/wheeled/post_{size}.stl": 1,
+            f"lego/wheeled/{cfg['supports'][a['support']]['stl'][0]}.stl": 1}
+    if "stl" in w:
+        want[f"lego/wheeled/fit_bore_{w['bore']}.stl"] = 1
+        want[f"lego/wheeled/{w['stl'][0]}.stl"] = 2
+        if w["friction"] == "tpu":
+            want[f"lego/wheeled/{w['stl'][1]}.stl"] = 2
+    if a["drive"] == "tt":
+        want.update({"lego/wheeled/fit_tt_cradle.stl": 1, "lego/wheeled/tt_cradle_print_2.stl": 2, "lego/wheeled/driver_plate.stl": 1})
+    if a["drive"] == "servo360":
+        want.update({"lego/wheeled/fit_servo_cradle.stl": 1, "lego/wheeled/servo_cradle_print_2.stl": 2})
+    what = {f["file"]: f["what"] for f in manifest["files"]}
+    files = [{"file": name, "qty": qty, "role": what[name], "fit": name.rsplit("/", 1)[-1].startswith("fit")}
+             for name, qty in want.items()]
+    return sorted(files, key=lambda f: not f["fit"])
+
+
+def variant_parts(a: dict, cfg: dict) -> list:
+    b, d, w = cfg["bases"][a["base"]], cfg["drives"][a["drive"]], cfg["wheels"][a["wheel"]]
+    parts = [{"name": b["controller"]["name"], "qty": 1, "note": "on the deck, centred"}]
+    for extra in b["extra"]:
+        parts.append({"name": extra["name"], "qty": 1, "note": "tied under the deck, toward the support"})
+    parts.append({"name": d["name"], "qty": 2, "note": d["mount"]})
+    if a["drive"] in ("ev3_large", "angular"):
+        parts += [{"name": "Technic cross axle", "qty": 2, "note": "motor to wheel through the panel's bearing hole; length not fixed by the design: measure the stack"},
+                  {"name": "Technic bush", "qty": 4, "note": "to retain the wheels; count to suit"},
+                  {"name": "Technic beams and pins for the motor brackets", "qty": None, "note": "built around the motor in hand; two fixing points per motor"}]
+    else:
+        parts.append({"name": "Technic pin", "qty": 8, "note": "four per cradle into the side panel"})
+    if a["drive"] == "tt":
+        parts += [{"name": "M3 screw, about 25 mm", "qty": 4, "note": "two per TT motor into its cradle; measure the motor's holes against fit_tt_cradle first"},
+                  {"name": "Motor driver board, TB6612FNG or DRV8833", "qty": 1, "note": "on the driver plate; an L298N loses about 2 V and is not suitable"}]
+    if a["drive"] == "servo360":
+        parts.append({"name": "Servo screws (supplied with the servo)", "qty": 4, "note": "ears to the cradle; the wheel screws to the servo's own horn"})
+    if w["kind"] == "LEGO" or w["kind"] == "TT stock":
+        parts.append({"name": w["name"], "qty": 2, "note": "stock wheel"})
+    elif "ring" in w["kind"] or "O-ring" in w["kind"]:
+        size = a["wheel"].split("_")[-1]
+        ring, qty = RINGS[size]
+        parts.append({"name": ring, "qty": qty, "note": "one per groove; or print the wheel_band version and fit a rubber band up to 6 mm wide"})
+    else:
+        parts.append({"name": "TPU 95A filament for the tyres", "qty": None, "note": "print slowly"})
+    parts.append({"name": "Technic pin", "qty": 3, "note": "two hold the support post under the shelf, one locks the tip in the post"})
+    if a["support"] == "ball":
+        parts.append({"name": "Ball: LEGO 16.5 mm (part 54821) or 12.7 mm steel", "qty": 1, "note": "snaps into the matching cup tip"})
+    return parts
+
+
+def summary_entries(analysis: dict, sim: dict, cfg: dict, manifest: dict) -> list:
+    from . import programs
     entries = []
-    for (base, drive), combos in groups(analysis).items():
-        b, d = cfg["bases"][base], cfg["drives"][drive]
-        first = analysis["variants"][combos[("skid", "back")]]
-        kinds = [cfg["wheels"][w]["kind"] for w in b["wheels"][drive]]
-        options = {}
-        for (support, end), vid in combos.items():
-            a, s = analysis["variants"][vid], sim["variants"][vid]
-            options[f"{support}, wheels at the {end}"] = {
-                "id": vid, "mass_g": a["mass_g"], "static_margin_mm": a["static_margin_mm"],
-                "speed_m_s": s["straight"]["speed_m_s"], "max_slope_deg": s["slope"]["steepest_climbed_deg"],
-                "max_step_mm": s["step"]["highest_climbed_mm"], "spin_deg_s": s["spin"]["yaw_rate_deg_s"],
-                "model": f"robot/lego/wheeled/{vid}.xml"}
+    for vid in analysis["all"]:
+        a, s = analysis["variants"][vid], sim["variants"][vid]
+        ids = a["ids"]
+        b, d = cfg["bases"][a["base"]], cfg["drives"][a["drive"]]
+        notes = [
+            f"Speed {s['straight']['speed_m_s']} m/s in simulation; turns on the spot at {s['spin']['yaw_rate_deg_s']} degrees a second.",
+            f"Steepest slope climbed in simulation: {s['slope']['steepest_climbed_deg']} degrees. Highest step: {s['step']['highest_climbed_mm']} mm.",
+            "Wheels at the back with a ramped start is the better arrangement: it climbs steeper, and a hard start is what lifts the support.",
+            "Fit a ring, a band or a TPU tyre to a printed wheel: bare plastic slips on a smooth floor.",
+            "For wheels at the front, pin the head on facing the other way and reverse the drive.",
+            "A printed idler tip is a third support option (tip_idler_fork, idler_hub, idler_tyre_tpu).",
+            "Print the fit pieces first.",
+            f"Power: {b['power']}.",
+        ]
+        if a["drive"] in ("servo360", "tt"):
+            notes.append("Speed is open loop: there is no feedback from these drives, so equal commands do not give a straight line.")
         entries.append({
-            "id": f"{base}-{drive}-wheeled".replace("_", ""), "base": b["name"], "locomotion": "wheeled",
-            "drive": d["name"], "drive_mount": d["mount"], "feedback": d["feedback"],
-            "wheels": [k for k in WHEEL_KINDS if k in kinds],
-            "default_wheel": cfg["wheels"][b["wheels"][drive][0]]["name"],
-            "third_support": ["drag skid", "ball in a printed cup", "printed idler (analysed for drag only)"],
-            "wheels_at": ["back", "front"], "recommended_wheels_at": "back",
-            "chassis": f"stl/lego/{b['chassis']}/chassis.stl", "extra_printed_parts": "stl/lego/wheeled/",
-            "mass_g": first["mass_g"],
-            "balance": {"verdict": "centre of mass inside the wheel and support triangle" if first["stable"] else "outside the triangle",
-                        "static_margin_mm": first["static_margin_mm"], "sideways_tilt_to_tip_deg": first["sideways_tilt_to_tip_deg"]},
-            "ground_clearance_mm": first["ground_clearance_mm"], "top_speed_no_load_m_s": first["top_speed_no_load_m_s"],
-            "power": b["power"], "signals": b["signals"] if "see the control" not in b["signals"] else d["signals"],
-            "options": options, "controller_sketch": b["sketch"],
-            "status": "analysed and simulated only; never printed, assembled or powered",
-            "docs": "docs/wheeled-variants.md", "reports": ["reports/wheeled/analysis.json", "reports/wheeled/sim.json"],
+            "id": vid, "controller": ids["controller"], "locomotion": "wheeled", "drive": ids["drive"],
+            "wheels": ids["wheels"], "support": ids["support"], "wheel": ids["wheel"],
+            "base": b["name"], "title": f"{b['name']}: two wheels on {d['name']}",
+            "status": "analysed in simulation", "mass_g": a["mass_g"],
+            "stability_verdict": f"centre of mass inside the triangle of the two wheels and the support, {a['static_margin_mm']} mm "
+                                 f"from the nearest edge; tips sideways at {a['sideways_tilt_to_tip_deg']} degrees",
+            "stability_margin_mm": a["static_margin_mm"],
+            "drive_summary": f"{d['name']}: {d['mount']}; {d['feedback']}",
+            "wheel_name": cfg["wheels"][a["wheel"]]["name"], "wheel_diameter_mm": a["wheel_diameter_mm"],
+            "speed_m_s": s["straight"]["speed_m_s"], "top_speed_no_load_m_s": a["top_speed_no_load_m_s"],
+            "spin_deg_s": s["spin"]["yaw_rate_deg_s"], "slope_limit_deg": s["slope"]["steepest_climbed_deg"],
+            "step_limit_mm": s["step"]["highest_climbed_mm"], "ground_clearance_mm": a["ground_clearance_mm"],
+            "notes": notes, "files": variant_files(a, cfg, manifest), "parts": variant_parts(a, cfg),
+            "programs": programs.for_build(ids["controller"], "wheeled", ids["drive"]),
+            "model": f"robot/lego/wheeled/{vid}.xml", "docs": "docs/wheeled-variants.md",
+            "reports": ["reports/wheeled/analysis.json", "reports/wheeled/sim.json"],
         })
     return entries
 
@@ -330,12 +392,16 @@ def document(analysis: dict, sim: dict, cfg: dict) -> str:
     add("")
     add("The driver sits on `driver_plate.stl`, a generic slotted plate, because boards vary.")
     add("")
-    add("Controller sketches, syntax-checked and never run on hardware, in `walkers/controllers/`: `ev3_drive.py` "
-        "(Pybricks, ports B and C), `hub51515_drive.py` (Pybricks, ports A and B), `buildhat_drive.py` (ports A and "
-        "B), `pi_servo_drive.py` (GPIO12 and GPIO13) and `pi_tt_drive.py` (TB6612FNG). Each sets two wheel speeds. "
-        "The servo and TT sketches are open loop: equal commands do not give a straight line. No sketch is given for "
-        "the UNO Q or for BaseX: an Arduino sketch cannot be checked here, and BaseX's motor registers were not "
-        "verified.")
+    add("Programs, compiled to bytecode by the tests and never run on hardware, in `programs/` (listed in "
+        "`programs/index.json`): `ev3/wheeled/drive_pybricks.py` and `drive_ev3dev.py` (ports B and C, with remote "
+        "control from the brick buttons), `hub51515/wheeled/drive_pybricks.py` (ports A and B, remote control from the "
+        "hub buttons) and `drive_lego_python.py` (stock firmware, no remote control: the button calls could not be "
+        "confirmed), `pi/wheeled/drive_buildhat.py` (ports A and B), `drive_servo.py` (GPIO12 and GPIO13) and "
+        "`drive_tt.py` (TB6612FNG). Each sets two wheel speeds with a ramped start. The servo and TT programs are "
+        "open loop: equal commands do not give a straight line. For the UNO Q and for BaseX no program is written: "
+        "an Arduino sketch cannot be checked here, and BaseX's motor registers were not confirmed. The LEGO programs "
+        "load through Mindstorms Robot Creator (https://eoinjordan.github.io/mindstorms-robot-creator/) as described "
+        "in docs/lego-walkers.md.")
     add("")
     add("## Unverified")
     add("")
