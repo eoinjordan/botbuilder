@@ -1,0 +1,95 @@
+{
+ "_comment": "Bought parts of the two crank walkers. class: maker = the maker's own published figure; third-party = a parts catalogue or reseller page; assumed = not published anywhere found, with the reason for the value. Lengths in mm, masses in g, torque in N m.",
+ "ev3_brick": {
+  "name": "EV3 Intelligent Brick 45500",
+  "size_mm": {"value": [110, 71, 44], "class": "third-party", "source": "https://www.brickowl.com/catalog/860665", "note": "BrickOwl catalogue, 14 x 9 x 4.67 studs. LEGO publishes no outer dimensions. With the rechargeable pack the brick is deeper (LEGO: 'slightly larger'); not modelled."},
+  "mass_bare_g": {"value": 210, "class": "assumed", "why": "LEGO publishes no mass. Retailer listings give 206 to 215 g and may include packaging."},
+  "mass_six_aa_g": {"value": 138, "class": "assumed", "why": "six alkaline AA cells at 23 g each, a typical cell data sheet value"},
+  "mass_rechargeable_pack_g": {"value": 100, "class": "assumed", "why": "45501 pack, 7.4 V lithium ion; no published mass found"},
+  "battery_assumed": "six AA cells (the retail 31313 set has no rechargeable pack), so 348 g; 310 g with the pack",
+  "supply": {"value": "six AA cells or the 7.4 V rechargeable pack", "class": "maker", "source": "https://www.ub.uzh.ch/dam/jcr:5ca1d1a6-aad5-479e-8946-d868d1c12ee2/ev3-user-guide-EN.pdf", "note": "LEGO EV3 user guide, mirror"},
+  "mounting_holes": {"value": "not found", "class": "assumed", "why": "no drawing of the pin holes found; the design straps the brick instead of pinning it"}
+ },
+ "ev3_large_motor": {
+  "name": "EV3 Large Servo Motor 45502",
+  "size_mm": {"value": [108, 39, 47], "class": "third-party", "source": "https://www.brickowl.com/catalog/lego-medium-stone-gray-mindstorms-ev3-large-motor-95658", "note": "13.5 x 5 x 5 studs"},
+  "mass_g": {"value": 76, "class": "assumed", "why": "LEGO publishes none. 76 g is quoted in a third-party book; a reseller lists 82 g with packaging."},
+  "no_load_rpm": {"value": 165, "class": "maker", "source": "https://www.ub.uzh.ch/dam/jcr:5ca1d1a6-aad5-479e-8946-d868d1c12ee2/ev3-user-guide-EN.pdf", "note": "user guide: 'runs at 160-170 rpm'; the middle is used as the no-load speed"},
+  "running_torque_nm": {"value": 0.20, "class": "maker", "source": "https://www.ub.uzh.ch/dam/jcr:5ca1d1a6-aad5-479e-8946-d868d1c12ee2/ev3-user-guide-EN.pdf", "note": "'running torque of 20 Ncm'"},
+  "stall_torque_nm": {"value": 0.40, "class": "maker", "source": "https://www.ub.uzh.ch/dam/jcr:5ca1d1a6-aad5-479e-8946-d868d1c12ee2/ev3-user-guide-EN.pdf", "note": "'stall torque of 40 Ncm'"},
+  "rated_max_deg_s": {"value": 1050, "class": "third-party", "source": "https://sites.google.com/site/ev3devpython/learn-ev3-python/using-motors", "note": "ev3dev figure, 175 rpm"},
+  "encoder": {"value": "1 degree", "class": "maker", "source": "https://www.ub.uzh.ch/dam/jcr:5ca1d1a6-aad5-479e-8946-d868d1c12ee2/ev3-user-guide-EN.pdf", "note": "the guide states 1-degree resolution for the medium motor; the large motor is taken as the same"},
+  "hole_pattern": {"value": "not found", "class": "assumed", "why": "no dimensioned drawing found. The output is a cross-axle hole through a hub at one end. Brackets are built around the motor in hand, as the design README says."},
+  "envelope": {"class": "assumed", "why": "two boxes inside the catalogue size: a hub 24 x 24 x 24 mm on the output axis and a body 84 x 39 x 47 mm beyond it", "hub": [[-12, -12, -12], [12, 12, 12]], "body": [[12, -19.5, -12], [96, 19.5, 35]]},
+  "rotor_inertia_kgm2": {"value": 0.0002, "class": "assumed", "why": "reflected rotor and gear inertia at the output, for the simulation"}
+ },
+ "ev3_medium_motor": {
+  "name": "EV3 Medium Servo Motor 45503 (optional head pan, not modelled)",
+  "size_mm": {"value": [71, 24, 31], "class": "third-party", "source": "https://brickowl.com/catalog/269807"},
+  "mass_g": {"value": 36, "class": "assumed", "why": "LEGO publishes none; 36 g is quoted in a third-party book"},
+  "no_load_rpm": {"value": 245, "class": "maker", "source": "https://www.ub.uzh.ch/dam/jcr:5ca1d1a6-aad5-479e-8946-d868d1c12ee2/ev3-user-guide-EN.pdf", "note": "'runs at 240-250 rpm'"},
+  "running_torque_nm": {"value": 0.08, "class": "maker", "source": "https://www.ub.uzh.ch/dam/jcr:5ca1d1a6-aad5-479e-8946-d868d1c12ee2/ev3-user-guide-EN.pdf"},
+  "stall_torque_nm": {"value": 0.12, "class": "maker", "source": "https://www.ub.uzh.ch/dam/jcr:5ca1d1a6-aad5-479e-8946-d868d1c12ee2/ev3-user-guide-EN.pdf"}
+ },
+ "angular_motor": {
+  "name": "Technic Medium Angular Motor (Robot Inventor 51515, element 6299646)",
+  "size_mm": {"value": [72, 24, 32], "class": "third-party", "source": "https://www.brickowl.com/catalog/436655-64", "note": "9 x 3 x 4 studs"},
+  "mass_g": {"value": 50, "class": "assumed", "why": "LEGO publishes none; resellers list 50 g for the SPIKE version, possibly with packaging"},
+  "no_load_rpm": {"value": 185, "class": "maker", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Medium_Angular_Motor_45603.pdf", "note": "LEGO Education sheet for the SPIKE Prime motor, the same motor in another colour: 185 rpm +/- 15 percent at 7.2 V"},
+  "running_torque_nm": {"value": 0.035, "class": "maker", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Medium_Angular_Motor_45603.pdf", "note": "torque at maximum efficiency, 3.5 Ncm at 135 rpm"},
+  "stall_torque_nm": {"value": 0.18, "class": "maker", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Medium_Angular_Motor_45603.pdf", "note": "18 Ncm, 800 mA"},
+  "encoder": {"value": "360 counts per revolution, absolute, +/- 3 degrees", "class": "maker", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Medium_Angular_Motor_45603.pdf"},
+  "hole_pattern": {"value": "not found", "class": "assumed", "why": "LEGO states a cross hole on one side and a rotating disc with a cross hole and building interface on the other; no dimensioned drawing found"},
+  "envelope": {"class": "assumed", "why": "one box of the catalogue size with the output axis 16 mm from one end", "hub": [[-16, -12, -16], [16, 12, 16]], "body": [[16, -12, -16], [56, 12, 16]]},
+  "rotor_inertia_kgm2": {"value": 0.0001, "class": "assumed", "why": "reflected rotor and gear inertia at the output, for the simulation"}
+ },
+ "pi_zero_2w": {
+  "name": "Raspberry Pi Zero 2 W",
+  "size_mm": {"value": [65, 30, 1.5], "class": "maker", "source": "https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf", "note": "65 x 30 mm; holes 3.5 mm from each edge, so 58 x 23 mm centres"},
+  "mass_g": {"value": 10, "class": "third-party", "source": "https://www.adafruit.com/product/5291"},
+  "header_and_spacers_g": {"value": 6, "class": "assumed", "why": "soldered 40-pin header, four spacers and screws"},
+  "supply": {"value": "5 V 2.5 A micro USB, or from the Build HAT", "class": "maker", "source": "https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf"}
+ },
+ "build_hat": {
+  "name": "Raspberry Pi Build HAT",
+  "size_mm": {"value": [65, 56.5, 1.6], "class": "maker", "source": "https://datasheets.raspberrypi.com/build-hat/raspberry-pi-build-hat-product-brief.pdf"},
+  "mass_g": {"value": 26, "class": "assumed", "why": "not published; a HAT of this size with four connectors and a barrel jack"},
+  "spacer_mm": {"value": 9, "class": "maker", "source": "https://www.raspberrypi.com/documentation/accessories/build-hat.html", "note": "'Attach 9 mm spacers to the bottom of the board'"},
+  "supply": {"value": "8 V +/- 10 percent, 48 W, 5.5 x 2.1 mm barrel jack (the product brief says 7.2 V to 8.5 V); it also powers the Raspberry Pi", "class": "maker", "source": "https://www.raspberrypi.com/documentation/accessories/build-hat.html"},
+  "battery": {"value": "none in the design", "class": "assumed", "why": "the design README assumes the Build HAT's supported 8 V supply, which is a mains adapter: the robot is tethered. A battery is treated here as optional ballast."},
+  "battery_pack_g": {"value": 190, "class": "assumed", "why": "six AA NiMH cells at 28 g in a holder, 7.2 V nominal, inside the brief's range; not tested"}
+ },
+ "camera_module_2": {
+  "name": "Raspberry Pi Camera Module 2",
+  "size_mm": {"value": [25, 23.9, 9], "class": "maker", "source": "https://www.raspberrypi.com/documentation/accessories/camera.html", "note": "holes 2.2 mm on 21 x 12.5 mm centres from the mechanical drawing"},
+  "mass_g": {"value": 3, "class": "maker", "source": "https://www.raspberrypi.com/documentation/accessories/camera.html"}
+ },
+ "pixy2": {
+  "name": "Pixy2 (Charmed Labs)",
+  "size_mm": {"value": [15, 38.25, 42], "class": "maker", "source": "https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:dimensions", "note": "38.25 x 42 mm board, 15 mm deep"},
+  "mass_g": {"value": 10, "class": "maker", "source": "https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:overview"},
+  "supply": {"value": "5 V, 140 mA typical", "class": "maker", "source": "https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:overview"},
+  "lego_brackets_g": {"value": 5, "class": "assumed", "why": "four small right-angle brackets and fasteners of the LEGO edition"}
+ },
+ "pixy2_pan_tilt": {
+  "name": "Pixy2 pan-tilt kit",
+  "size_mm": {"value": [70, 54, 60], "class": "assumed", "why": "no drawing published. The base plate carries an Arduino hole pattern, so it is at least Arduino sized; height to the tilt axis estimated."},
+  "mass_g": {"value": 60, "class": "assumed", "why": "two micro servos, plates and fasteners; not published"}
+ },
+ "technic": {
+  "name": "Technic axles, bushes, pins and bracket beams",
+  "axle_g_per_mm": {"value": 0.014, "class": "assumed", "why": "cross axle section of about 13 mm2 in ABS"},
+  "hardware_per_side_g": {"value": 6, "class": "assumed", "why": "three axles, bushes and two pins"},
+  "motor_bracket_g": {"value": 6, "class": "assumed", "why": "two beams and pins per motor; layouts are not designed"},
+  "bush_length_mm": {"value": 7.8, "class": "assumed", "why": "one module"},
+  "gear_16t": {"value": "module 1, 16 teeth, 16 mm pitch diameter, 7.8 mm wide", "class": "assumed", "why": "the Technic gear system uses module 1 with axles on an 8 mm grid; LEGO publishes no gear drawing"}
+ },
+ "printing": {
+  "density_g_cm3": {"value": 1.24, "class": "assumed", "why": "typical PLA data sheet value"},
+  "solid_fraction": {"value": 0.6, "class": "assumed", "why": "same as the biped report: mostly shell at 20 percent infill"}
+ },
+ "floor": {
+  "friction": {"value": 0.4, "class": "assumed", "why": "printed PLA soles on a hard floor; generic tables give 0.2 to 0.5 for hard plastics. 0.2 and 0.8 are run as sensitivity"},
+  "friction_sensitivity": [0.2, 0.4, 0.8]
+ }
+}
