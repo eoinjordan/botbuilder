@@ -36,9 +36,9 @@ fit-test pieces. The torso, thighs, shins and feet carry pin holes and studs
 compatible with LEGO Technic and System elements, for decoration. LEGO,
 Technic, Mindstorms and SPIKE are trademarks of the LEGO Group, which does
 not sponsor or endorse this. The head is part of the torso: a Seeed Studio Round
-Display for XIAO, screen forward, with an AI-Thinker ESP32-CAM above it by
-default; the camera below, an ESP-EYE, the camera alone and a turning head
-are options. See [docs/camera.md](docs/camera.md).
+Display for XIAO, screen forward, with an Espressif ESP-EYE above it by
+default; the camera below, an AI-Thinker ESP32-CAM, the camera alone and a
+turning head are options. See [docs/camera.md](docs/camera.md).
 
 Six actuated joints: left and right hip roll, hip pitch, knee pitch. No yaw,
 no ankles.
@@ -59,14 +59,16 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   which leaves 0.5 mm under the deck and 0.75 mm beside the assumed ear. The
   neck that the UNO Q ran into is gone with the head.
 - **Face.** A round display stands in a ring at the deck front, screen
-  forward as the eyes, with the ESP32-CAM on a shelf above it between two
-  posts with 0.5 mm each side. Display, camera and print do not overlap. The
-  lens looks the way the toes point, 10 degrees below level, 277 mm above
-  the floor at the stand pose. A cone of 40 degrees half angle in front of
-  it is clear at the neutral and stand poses; a thigh swung more than 39
-  degrees forward comes into it. With the camera below the display instead
-  the lens is at 226 mm and the thigh enters at 21 degrees. The display's
-  size and mass are assumed, and its battery is strapped under the deck.
+  forward as the eyes, with the ESP-EYE on a shelf above it between two
+  posts with 0.5 mm each side, USB connector up so that the head is 124 mm
+  tall and not 149 mm. Display, camera and print do not overlap. The lens
+  looks the way the toes point, 10 degrees below level, 245 mm above the
+  floor at the stand pose. A cone of 40 degrees half angle in front of it is
+  clear at the neutral and stand poses and through the walk; a thigh has to
+  come 15 degrees forward of straight down to enter it, and the walk keeps
+  the thighs 47 to 60 degrees back. With the camera below the display
+  instead the lens is at 192 mm. The display's size and mass are assumed,
+  and its battery is strapped under the deck.
 - **Other controllers.** The deck has torso variants for a Raspberry Pi Zero
   2 W, a full-size Raspberry Pi and the LEGO 51515 hub. As blocks of their
   mass they clear the print and the camera, and the robot still balances at
@@ -108,10 +110,10 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   from a joint axis; none cost any joint range. At the stand pose, static
   balance carries about 750 g of decoration on the rear of the deck before
   the margin is gone; 100 g there leaves 34 mm of the 47 mm.
-- **Mass.** 564 g: servos 302 g (published), printed parts 174 g (PLA at 60
+- **Mass.** 562 g: servos 302 g (published), printed parts 173 g (PLA at 60
   percent of solid, assumed), board 30 g and shield 25 g (assumed), camera
-  10 g (published), display with its XIAO 15 g and its battery 8.5 g (both
-  assumed). 680 g if printed solid. The comb shins should be printed solid,
+  8 g, display with its XIAO 15 g and its battery 8.5 g (all three
+  assumed). 677 g if printed solid. The comb shins should be printed solid,
   which the 60 percent figure understates by a few grams.
 - **Balance.** With the legs straight down the centre of mass is 2.7 mm
   behind the heels: it falls backward. With the thighs swung 52 degrees back
@@ -138,11 +140,11 @@ Full results: [docs/simulation.md](docs/simulation.md). Numbers:
   the assembly test predicted.
 - **The gait steps.** The gait in `config/gait.json`, tuned for the comb
   soles by the motion study below, keeps the robot up for the whole run and
-  moves it 537 mm in 11 s (48.8 mm/s) in this first, simpler servo model. The
-  feet leave the floor in turn: a whole sole lifts up to 6.18 mm and both
-  feet are loaded 41 percent of the time. Of 54 parameter sets around it,
+  moves it 531 mm in 11 s (48.2 mm/s) in this first, simpler servo model. The
+  feet leave the floor in turn: a whole sole lifts up to 6.03 mm and both
+  feet are loaded 38 percent of the time. Of 54 parameter sets around it,
   18 ask for a pose the leg clearance rule refuses and were not run; the
-  best of the other 36 inside the speed limit manages 368 mm in 11 s and
+  best of the other 36 inside the speed limit manages 370 mm in 11 s and
   0 fell.
 - **Watchdog and power off.** Commands cut in mid gait: the controller holds
   and the robot stays up. With the pulses stopped at the stand pose it sinks
@@ -165,18 +167,18 @@ fuller servo (dead band, gear play, a series spring, the command delay, the
 `microduck/gait.py`.
 
 - **It steps.** On the comb soles the tuned gait
-  (`config/gait.json`) walks at 41.9 mm/s with a sole
-  clear of the floor by 3.86 mm on 97 percent of its steps and a
-  peak torque of 0.658 of the limit. It stayed up in all 30 runs over
+  (`config/gait.json`) walks at 44.4 mm/s with a sole
+  clear of the floor by 3.85 mm on 99 percent of its steps and a
+  peak torque of 0.647 of the limit. It stayed up in all 30 runs over
   floor friction 0.3 to 1.0, mass 0.9 to 1.1 times and disturbed starts,
-  worst peak torque 0.716. With flat soles the same search gives
+  worst peak torque 0.696. With flat soles the same search gives
   1.3 mm/s and no steps.
 - **It drifts and does not steer.** Walking straight the heading turns by
-  about 1.31 deg/s, more with a heavier head (113.0 degrees in 30 s with
-  57 g at the head, at 23.6 mm/s); the step difference does not steer it reliably, so turning is not offered to the control page.
+  about 0.81 deg/s, more with a heavier head (96.2 degrees in 30 s with
+  32 g more at the head, at 28.0 mm/s); the step difference does not steer it reliably, so turning is not offered to the control page.
   Tested envelope: forward [0.0, 1.0], turn [0.0, 0.0].
 - **The jump is a hop** and stays locked: 0.06 s off the floor with the
-  centre of mass rising 0.39 mm. It runs four servos at stall torque from
+  centre of mass rising 0.32 mm. It runs four servos at stall torque from
   a supply that cannot feed them and can strip gears or break parts.
 - **Sit and power off.** The sit is a squat to the hip pitch limit. With the
   pulses stopped, in the squat or at the stand pose, the robot sinks on to

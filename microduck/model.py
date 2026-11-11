@@ -36,7 +36,7 @@ CAMERA = _config["camera"]["preset"]
 FACE = _config.get("face")
 FEET = _config.get("feet", "comb")
 FOOT_PRESETS = ("comb", "flat")
-FACES = ("eyes_above_esp32cam", "eyes_above_esp_eye", "eyes_below_esp32cam", "stack_camera_forward")
+FACES = ("eyes_above_esp32cam", "eyes_above_esp_eye", "eyes_below_esp32cam", "eyes_below_esp_eye", "stack_camera_forward")
 PART_FILES = {
     "torso": f"01_torso_unoq_{FACE}_{CAMERA}.stl" if FACE else f"01_torso_unoq_cam_{CAMERA}.stl",
     "left_yoke": "left_hip_roll_pitch_yoke.stl",
@@ -56,7 +56,7 @@ FIT_FILES = {"SR431": "fit_SR431.stl", "SR311": "fit_SR311.stl", "horn": "fit_ho
 # Torsos for the camera presets the assembly does not use.
 CONTROLLER_TORSOS = ("pi_zero_2w", "pi", "hub51515")
 OTHER_FILES = ([f"01_torso_unoq_cam_{name}.stl" for name in CAMERAS] + list(HEAD_FILES.values())
-               + [f"01_torso_{name}_cam_{CAMERA}.stl" for name in CONTROLLER_TORSOS]
+               + [f"01_torso_{name}_cam_{camera}.stl" for name in CONTROLLER_TORSOS for camera in ("esp32cam", "esp_eye")]
                + [f"head_tilt_cradle_{name}.stl" for name in CAMERAS]
                + [f"01_torso_unoq_{name}.stl" for name in FACES] + [f"head_tilt_cradle_{name}.stl" for name in FACES]
                + [f"{side}_shin_{feet}_foot.stl" for side in ("left", "right") for feet in FOOT_PRESETS]

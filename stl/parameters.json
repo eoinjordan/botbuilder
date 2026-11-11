@@ -8,7 +8,7 @@
   0.15,
   0.38
  ],
- "camera_default": "esp32cam",
+ "camera_default": "esp_eye",
  "clearance_each_side": 0.5,
  "cameras": {
   "esp32cam": {
@@ -61,9 +61,9 @@
     0.984808
    ],
    "lens": [
-    58.3958,
+    54.4019,
     0.0,
-    61.6819
+    39.0313
    ],
    "cone_half_angle_deg": 40.0,
    "tilt_deg": 10.0,
@@ -108,11 +108,11 @@
  "controller_default": "unoq",
  "controllers": {
   "unoq": {
-   "torso": "01_torso_unoq_cam_esp32cam.stl",
+   "torso": "01_torso_unoq_cam_esp_eye.stl",
    "seat": "rails"
   },
   "pi_zero_2w": {
-   "torso": "01_torso_pi_zero_2w_cam_esp32cam.stl",
+   "torso": "01_torso_pi_zero_2w_cam_esp_eye.stl",
    "seat": "bosses",
    "holes": [
     [
@@ -136,7 +136,7 @@
    "screw": 2.8
   },
   "pi": {
-   "torso": "01_torso_pi_cam_esp32cam.stl",
+   "torso": "01_torso_pi_cam_esp_eye.stl",
    "seat": "bosses",
    "holes": [
     [
@@ -161,7 +161,7 @@
    "studs": false
   },
   "hub51515": {
-   "torso": "01_torso_hub51515_cam_esp32cam.stl",
+   "torso": "01_torso_hub51515_cam_esp_eye.stl",
    "seat": "pads",
    "rows": [
     -16.0,
@@ -364,12 +364,12 @@
      "board_origin": [
       -1.0,
       0.0,
-      115.5
+      90.5
      ],
      "lens": [
       7.1,
       0.0,
-      147.5
+      99.5
      ],
      "width": 21.0,
      "length": 41.0,
@@ -405,14 +405,14 @@
    "tilt_deg": 10.0,
    "camera": {
     "board_origin": [
-     59.3047,
+     54.9635,
      0.0,
-     107.7236
+     83.1034
     ],
     "lens": [
-     72.8384,
+     64.5033,
      0.0,
-     137.8309
+     90.5601
     ],
     "width": 21.0,
     "length": 41.0,
@@ -510,6 +510,98 @@
     "length": 40.5,
     "thickness": 1.6,
     "mass_g": 10.0
+   }
+  },
+  "eyes_below_esp_eye": {
+   "face": "eyes_below",
+   "camera_preset": "esp_eye",
+   "torso": "01_torso_unoq_eyes_below_esp_eye.stl",
+   "cradle": "head_tilt_cradle_eyes_below_esp_eye.stl",
+   "on_platform": {
+    "display": {
+     "centre": [
+      5.0,
+      0.0,
+      108.5
+     ],
+     "glass_faces": [
+      1.0,
+      0,
+      -0.0
+     ],
+     "diameter": 40.0,
+     "depth": 16.0,
+     "mass_g": 15.0
+    },
+    "forward": [
+     1.0,
+     0,
+     -0.0
+    ],
+    "up": [
+     0.0,
+     0,
+     1.0
+    ],
+    "tilt_deg": 0.0,
+    "camera": {
+     "board_origin": [
+      -2.0,
+      0.0,
+      38.0
+     ],
+     "lens": [
+      6.1,
+      0.0,
+      47.0
+     ],
+     "width": 21.0,
+     "length": 41.0,
+     "thickness": 1.6,
+     "mass_g": 8.0
+    }
+   },
+   "display": {
+    "centre": [
+     63.998,
+     0.0,
+     99.788
+    ],
+    "glass_faces": [
+     0.984808,
+     0,
+     -0.173648
+    ],
+    "diameter": 40.0,
+    "depth": 16.0,
+    "mass_g": 15.0
+   },
+   "forward": [
+    0.984808,
+    0,
+    -0.173648
+   ],
+   "up": [
+    0.173648,
+    0,
+    0.984808
+   ],
+   "tilt_deg": 10.0,
+   "camera": {
+    "board_origin": [
+     44.8621,
+     0.0,
+     31.5746
+    ],
+    "lens": [
+     54.4019,
+     0.0,
+     39.0313
+    ],
+    "width": 21.0,
+    "length": 41.0,
+    "thickness": 1.6,
+    "mass_g": 8.0
    }
   },
   "stack_camera_forward": {
@@ -650,12 +742,12 @@
     "board_origin": [
      -2.0,
      0.0,
-     38.0
+     13.0
     ],
     "lens": [
      6.1,
      0.0,
-     70.0
+     22.0
     ]
    },
    "esp32_s3_eye": {

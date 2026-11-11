@@ -589,7 +589,7 @@ def run(progress=print) -> dict:
     presets[config["camera"]["preset"] + " alone in the fixed mount"] = assembly.camera_preset_summary(
         build_robot(selected, hardware, dict(config, face=None)))
     faces = {}
-    for face, camera in (("eyes_above", "esp32cam"), ("eyes_below", "esp32cam"), ("eyes_above", "esp_eye")):
+    for face, camera in (("eyes_above", "esp_eye"), ("eyes_below", "esp_eye"), ("eyes_above", "esp32cam"), ("eyes_below", "esp32cam")):
         progress(f"face {face} {camera}")
         other = dict(config, face=face, camera=dict(config["camera"], preset=camera))
         faces[f"{face}_{camera}"] = assembly.face_summary(build_robot(selected, hardware, other), reports[selected]["joint_limits_deg"])
@@ -602,7 +602,8 @@ def run(progress=print) -> dict:
     turning = build_robot(selected, hardware, dict(config, head="pan", face=None))
     head = assembly.head_checks(turning, reports[selected]["balance"]["stand_pose"]["q_deg"])
     turning_faces = {}
-    for face, camera in (("eyes_above", "esp32cam"), ("eyes_below", "esp32cam"), ("stack_camera_forward", "esp32cam")):
+    default_camera = config["camera"]["preset"]
+    for face, camera in (("eyes_above", default_camera), ("eyes_below", default_camera), ("stack_camera_forward", default_camera)):
         progress(f"turning head with {face}")
         key = face if face == "stack_camera_forward" else f"{face}_{camera}"
         robot_tf = build_robot(selected, hardware, dict(config, head="pan", face=face, camera=dict(config["camera"], preset=camera)))

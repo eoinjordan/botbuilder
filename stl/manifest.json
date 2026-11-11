@@ -5,16 +5,16 @@
   "repository": "eoinjordan/3d-print-designs",
   "directory": "microduck-braccio-unoq",
   "generator": "build.py",
-  "commit": "ff8dbb80f1b43e8451adf36163285fc674cc0700",
+  "commit": "f035d5fb60dfca528a8c583048c5780ec5d9cbf7",
   "uncommitted_changes": false
  },
  "generator_parameters_file": "parameters.json",
- "generator_parameters_sha256": "149f12714400ee5db12a11b4555951a5d703ed78810fb1dc5272b55499ce64e7",
- "camera_default": "esp32cam",
+ "generator_parameters_sha256": "2243ffc803dc2aed0facb0aaa9c68ace63207b6a217575006dbee37c44f4459b",
+ "camera_default": "esp_eye",
  "face_default": "eyes_above",
  "controller_default": "unoq",
  "feet_default": "comb",
- "total_bytes": 19258528,
+ "total_bytes": 21612048,
  "files": [
   {
    "file": "01_torso_hub51515_cam_esp32cam.stl",
@@ -46,6 +46,38 @@
     "file": "thumbs/01_torso_hub51515_cam_esp32cam.png",
     "stl_sha256": "a518032b54f693e491cbc840fcb4a9744e572f67603fedae1fbda7202710a1c7",
     "bytes": 4019
+   }
+  },
+  {
+   "file": "01_torso_hub51515_cam_esp_eye.stl",
+   "what": "torso with the deck for a LEGO 51515 hub on two rows of pin holes and the fixed camera mount for the esp_eye preset",
+   "options": {
+    "part": "torso",
+    "controller": "hub51515",
+    "head": "fixed",
+    "face": "none",
+    "camera": "esp_eye"
+   },
+   "triangles": 17256,
+   "volume_mm3": 65024.2,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     55.82,
+     75.25,
+     76.82
+    ]
+   ],
+   "bytes": 862884,
+   "sha256": "117e8dca6408d53872fda0c3fd2c1d03d3a415ca20b57352d997b315b2aade05",
+   "thumbnail": {
+    "file": "thumbs/01_torso_hub51515_cam_esp_eye.png",
+    "stl_sha256": "117e8dca6408d53872fda0c3fd2c1d03d3a415ca20b57352d997b315b2aade05",
+    "bytes": 4050
    }
   },
   {
@@ -81,6 +113,38 @@
    }
   },
   {
+   "file": "01_torso_pi_cam_esp_eye.stl",
+   "what": "torso with the deck for a full-size Raspberry Pi on bosses and the fixed camera mount for the esp_eye preset",
+   "options": {
+    "part": "torso",
+    "controller": "pi",
+    "head": "fixed",
+    "face": "none",
+    "camera": "esp_eye"
+   },
+   "triangles": 5948,
+   "volume_mm3": 64245.0,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     55.82,
+     75.25,
+     76.82
+    ]
+   ],
+   "bytes": 297484,
+   "sha256": "e28d8b04082473a8e01c7aa5378555972e6007482d9454cfe074048aad27ca81",
+   "thumbnail": {
+    "file": "thumbs/01_torso_pi_cam_esp_eye.png",
+    "stl_sha256": "e28d8b04082473a8e01c7aa5378555972e6007482d9454cfe074048aad27ca81",
+    "bytes": 3466
+   }
+  },
+  {
    "file": "01_torso_pi_zero_2w_cam_esp32cam.stl",
    "what": "torso with the deck for a Raspberry Pi Zero 2 W on bosses and the fixed camera mount for the esp32cam preset",
    "options": {
@@ -110,6 +174,38 @@
     "file": "thumbs/01_torso_pi_zero_2w_cam_esp32cam.png",
     "stl_sha256": "5f07af04ebc8295795731dc95ae8e9c769b8ceee6056065720c410620cfb471a",
     "bytes": 3698
+   }
+  },
+  {
+   "file": "01_torso_pi_zero_2w_cam_esp_eye.stl",
+   "what": "torso with the deck for a Raspberry Pi Zero 2 W on bosses and the fixed camera mount for the esp_eye preset",
+   "options": {
+    "part": "torso",
+    "controller": "pi_zero_2w",
+    "head": "fixed",
+    "face": "none",
+    "camera": "esp_eye"
+   },
+   "triangles": 10556,
+   "volume_mm3": 64966.0,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     55.82,
+     75.25,
+     76.82
+    ]
+   ],
+   "bytes": 527884,
+   "sha256": "f2903e93a525ceb7c4ca2c65842673f0c228c9793a36a483785be25f7f229734",
+   "thumbnail": {
+    "file": "thumbs/01_torso_pi_zero_2w_cam_esp_eye.png",
+    "stl_sha256": "f2903e93a525ceb7c4ca2c65842673f0c228c9793a36a483785be25f7f229734",
+    "bytes": 3696
    }
   },
   {
@@ -186,8 +282,8 @@
     "face": "none",
     "camera": "esp_eye"
    },
-   "triangles": 9120,
-   "volume_mm3": 63144.2,
+   "triangles": 9078,
+   "volume_mm3": 65358.4,
    "bounding_box_mm": [
     [
      -45.0,
@@ -200,12 +296,12 @@
      76.82
     ]
    ],
-   "bytes": 456084,
-   "sha256": "7237b395d12d24dff5296ba9b8f4ea29395b0f9255f9698868a226f072076fbf",
+   "bytes": 453984,
+   "sha256": "3f7e74c2662432a8847734d1ea5b12e7a03039e39289bf25154039f17fa74be3",
    "thumbnail": {
     "file": "thumbs/01_torso_unoq_cam_esp_eye.png",
-    "stl_sha256": "7237b395d12d24dff5296ba9b8f4ea29395b0f9255f9698868a226f072076fbf",
-    "bytes": 3853
+    "stl_sha256": "3f7e74c2662432a8847734d1ea5b12e7a03039e39289bf25154039f17fa74be3",
+    "bytes": 3765
    }
   },
   {
@@ -252,8 +348,8 @@
     "display": "round_display",
     "camera": "esp_eye"
    },
-   "triangles": 11294,
-   "volume_mm3": 76764.1,
+   "triangles": 11246,
+   "volume_mm3": 74152.9,
    "bounding_box_mm": [
     [
      -45.0,
@@ -261,17 +357,17 @@
      -45.5
     ],
     [
-     70.26,
+     65.92,
      75.25,
-     152.97
+     128.35
     ]
    ],
-   "bytes": 564784,
-   "sha256": "29ec7c15aaf279c4f1830e78564a80bf800fd903893e618cd4e1c6bd40a065b3",
+   "bytes": 562384,
+   "sha256": "2eecfc1c5b17068fa47c0b5fd0374e27d991f48761a7f8059ca8c7e9aad24f8b",
    "thumbnail": {
     "file": "thumbs/01_torso_unoq_eyes_above_esp_eye.png",
-    "stl_sha256": "29ec7c15aaf279c4f1830e78564a80bf800fd903893e618cd4e1c6bd40a065b3",
-    "bytes": 3512
+    "stl_sha256": "2eecfc1c5b17068fa47c0b5fd0374e27d991f48761a7f8059ca8c7e9aad24f8b",
+    "bytes": 3574
    }
   },
   {
@@ -305,6 +401,39 @@
     "file": "thumbs/01_torso_unoq_eyes_below_esp32cam.png",
     "stl_sha256": "be7f406031302cdc76b664cda29aa299fa490aa59410a7aad35013f10fb789da",
     "bytes": 3561
+   }
+  },
+  {
+   "file": "01_torso_unoq_eyes_below_esp_eye.stl",
+   "what": "torso with the UNO Q deck and the head: round display as the eyes with the camera below (esp_eye)",
+   "options": {
+    "part": "torso",
+    "controller": "unoq",
+    "head": "fixed",
+    "face": "eyes_below",
+    "display": "round_display",
+    "camera": "esp_eye"
+   },
+   "triangles": 11122,
+   "volume_mm3": 69536.8,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     69.17,
+     75.25,
+     123.57
+    ]
+   ],
+   "bytes": 556184,
+   "sha256": "99a0881c3e55cfedacb6a2de5d8bba300b6d36b16a74c7bdf7d6cee73d5f9cfb",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_eyes_below_esp_eye.png",
+    "stl_sha256": "99a0881c3e55cfedacb6a2de5d8bba300b6d36b16a74c7bdf7d6cee73d5f9cfb",
+    "bytes": 3605
    }
   },
   {
@@ -437,8 +566,8 @@
     "fit_piece": true,
     "camera": "esp_eye"
    },
-   "triangles": 272,
-   "volume_mm3": 9812.4,
+   "triangles": 234,
+   "volume_mm3": 8609.9,
    "bounding_box_mm": [
     [
      -12.0,
@@ -448,15 +577,15 @@
     [
      12.0,
      28.5,
-     77.5
+     55.5
     ]
    ],
-   "bytes": 13684,
-   "sha256": "7cb410f716efaac6501a84b9cc2793b90edc066094fbd25310c449c9fb78ec14",
+   "bytes": 11784,
+   "sha256": "cc0c6496412fecce51ffb4249196c17ab4ddbd187a6f4af3e83670f9b63c50d7",
    "thumbnail": {
     "file": "thumbs/fit_cam_esp_eye.png",
-    "stl_sha256": "7cb410f716efaac6501a84b9cc2793b90edc066094fbd25310c449c9fb78ec14",
-    "bytes": 2831
+    "stl_sha256": "cc0c6496412fecce51ffb4249196c17ab4ddbd187a6f4af3e83670f9b63c50d7",
+    "bytes": 2622
    }
   },
   {
@@ -787,8 +916,8 @@
     "face": "none",
     "camera": "esp_eye"
    },
-   "triangles": 468,
-   "volume_mm3": 10573.8,
+   "triangles": 428,
+   "volume_mm3": 7964.4,
    "bounding_box_mm": [
     [
      -9.0,
@@ -798,15 +927,15 @@
     [
      9.0,
      27.5,
-     83.5
+     58.5
     ]
    ],
-   "bytes": 23484,
-   "sha256": "6b58adb91716f2d62fa4feda631dfef8a1da8cfa732625a030529f8156eeac13",
+   "bytes": 21484,
+   "sha256": "caf130440cc7a21407746d9b537122918301acd2dd9e7ed683b18067c00a8cff",
    "thumbnail": {
     "file": "thumbs/head_tilt_cradle_esp_eye.png",
-    "stl_sha256": "6b58adb91716f2d62fa4feda631dfef8a1da8cfa732625a030529f8156eeac13",
-    "bytes": 2610
+    "stl_sha256": "caf130440cc7a21407746d9b537122918301acd2dd9e7ed683b18067c00a8cff",
+    "bytes": 2483
    }
   },
   {
@@ -851,8 +980,8 @@
     "display": "round_display",
     "camera": "esp_eye"
    },
-   "triangles": 2548,
-   "volume_mm3": 25505.7,
+   "triangles": 2500,
+   "volume_mm3": 22894.6,
    "bounding_box_mm": [
     [
      -11.0,
@@ -862,15 +991,15 @@
     [
      11.0,
      31.0,
-     161.0
+     136.0
     ]
    ],
-   "bytes": 127484,
-   "sha256": "1a505f29833dcab83f361473ae0ee95cc11faaf6e499aa0074e27cfdbee24970",
+   "bytes": 125084,
+   "sha256": "a5038b848ba600b3f96f5af78f004e22af47ea373d9d087a23a314b2901eb0f5",
    "thumbnail": {
     "file": "thumbs/head_tilt_cradle_eyes_above_esp_eye.png",
-    "stl_sha256": "1a505f29833dcab83f361473ae0ee95cc11faaf6e499aa0074e27cfdbee24970",
-    "bytes": 3130
+    "stl_sha256": "a5038b848ba600b3f96f5af78f004e22af47ea373d9d087a23a314b2901eb0f5",
+    "bytes": 3278
    }
   },
   {
@@ -903,6 +1032,38 @@
     "file": "thumbs/head_tilt_cradle_eyes_below_esp32cam.png",
     "stl_sha256": "85fd1948fc79d0c1f442bb444d6f179061c786dfe4a5d4607898e612af70b44c",
     "bytes": 2970
+   }
+  },
+  {
+   "file": "head_tilt_cradle_eyes_below_esp_eye.stl",
+   "what": "turning head: tilt cradle with the round display as the eyes with the camera below (esp_eye)",
+   "options": {
+    "part": "head_cradle",
+    "head": "pan",
+    "face": "eyes_below",
+    "display": "round_display",
+    "camera": "esp_eye"
+   },
+   "triangles": 2396,
+   "volume_mm3": 18129.6,
+   "bounding_box_mm": [
+    [
+     -11.0,
+     -31.0,
+     -6.0
+    ],
+    [
+     11.0,
+     31.0,
+     131.5
+    ]
+   ],
+   "bytes": 119884,
+   "sha256": "3d7856d5a201da5a7efe543bb6a57cce51bfd8bec7c23f0ef3211f6293bf2943",
+   "thumbnail": {
+    "file": "thumbs/head_tilt_cradle_eyes_below_esp_eye.png",
+    "stl_sha256": "3d7856d5a201da5a7efe543bb6a57cce51bfd8bec7c23f0ef3211f6293bf2943",
+    "bytes": 2929
    }
   },
   {

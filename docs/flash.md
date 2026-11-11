@@ -118,16 +118,21 @@ stand-in programs and checks hostile input.
 | Controller | Flash steps |
 |---|---|
 | Arduino UNO Q | written above, not run on hardware |
+| Espressif ESP-EYE (the camera) | by hand from the Arduino IDE with the sketchbot's sketch: see [camera.md](camera.md) |
 | AI Thinker ESP32-CAM | not written |
 | Raspberry Pi | not written |
 | LEGO hubs | not written |
 | M5Stack | not written |
 
-There is no firmware for an ESP32-CAM in this repository. In the sketchbot
-arrangement the camera board is flashed by hand from the Arduino IDE over its
-serial port (esp32 boards package, PSRAM enabled, Huge APP partition,
-Upload); neither its site nor its SSH commands flash it. So there is no
-command to give, and the page gives none.
+The camera board is an ESP-EYE and runs the sketchbot's sketch
+(https://github.com/eoinjordan/unoq-braccio-sketchbot/tree/main/firmware/esp_eye_camera).
+It is flashed by hand from the Arduino IDE over its own Micro-USB connector:
+esp32 boards package, board "ESP32 Wrover Module", partition "Huge APP (3MB
+No OTA)", `secrets.h` with the Wi-Fi name and password, `VFLIP` and `HMIRROR`
+set to 1 for the way the board stands on this robot, Upload. Neither the
+sketchbot's site nor its SSH commands flash it, so the page gives the steps
+and no command. [camera.md](camera.md) has them in full, with the stream
+address. There is no firmware for an ESP32-CAM.
 
 The page accepts the selection in the address, for example
 `flash.html?base=unoq_braccio`. For a controller without steps it says "not written"

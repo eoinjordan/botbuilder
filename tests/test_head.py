@@ -48,7 +48,7 @@ def test_view_is_clear_straight_ahead_and_balance_holds_at_the_stops(head, selec
 
 def test_faces_on_the_platform_are_analysed(assembly_report, selected):
     heads = assembly_report["turning_head_with_faces"]
-    assert set(heads) == {"eyes_above_esp32cam", "eyes_below_esp32cam", "stack_camera_forward"}
+    assert set(heads) == {"eyes_above_esp_eye", "eyes_below_esp_eye", "stack_camera_forward"}
     for name, head in heads.items():
         assert head["neutral_interferences"] == [], name
         lo, hi = head["pan_travel_to_the_stops_deg"]

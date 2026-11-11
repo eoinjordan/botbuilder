@@ -99,7 +99,8 @@
         <thead><tr><th>Controller</th><th>Flash steps</th><th>Note</th></tr></thead>
         <tbody>
           <tr><td>Arduino UNO Q</td><td>written</td><td style="white-space:normal">App Lab app in <code>app_lab/microduck_agent</code>, commands above.</td></tr>
-          <tr><td>AI Thinker ESP32-CAM</td><td>not written</td><td style="white-space:normal">No firmware for it here. The sketchbot flashes its camera board by hand from the Arduino IDE over the serial port, not from its site and not over SSH.</td></tr>
+          <tr><td>Espressif ESP-EYE (the camera)</td><td>by hand</td><td style="white-space:normal">Arduino IDE with the <a href="https://github.com/eoinjordan/unoq-braccio-sketchbot/tree/main/firmware/esp_eye_camera" rel="noopener noreferrer">sketchbot's camera sketch</a> over the board's own Micro-USB connector: board ESP32 Wrover Module, partition Huge APP, Wi-Fi name and password in <code>secrets.h</code>, <code>VFLIP</code> and <code>HMIRROR</code> set to 1, Upload. The stream is at <code>http://esp-eye.local/stream</code>.</td></tr>
+          <tr><td>AI Thinker ESP32-CAM</td><td>not written</td><td style="white-space:normal">No firmware for it. The sketchbot's camera sketch is for the ESP-EYE.</td></tr>
           <tr><td>Raspberry Pi</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
           <tr><td>LEGO hubs</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
           <tr><td>M5Stack</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>

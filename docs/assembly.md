@@ -10,12 +10,12 @@ Status: geometry only. Nothing here has been printed, assembled or powered.
 - **ok**: Each cradle has 4 tie slot pairs; on every cradle at least 2 of the tie paths cross the case clear of the output shaft and horn (the pairs at the shaft end do not, and are for a servo lying the other way round). This depends on the assumed shaft position and horn size.
 - **ok**: Every servo case fits between its rails with 0.5 mm each side, sits fully on its plate, and all tie slots are open.
 - **ok**: All six horn screw holes are on their shaft axes and a screwdriver has a free path to each at the neutral pose.
-- **ok**: The AI-Thinker ESP32-CAM stands in its mount with 0.5 mm each side and 0.3 mm of play under the snap lips, on the corner seats, overlapping the print by 0.0 mm3. The mount is 5.06 mm from the UNO Q and 5.34 mm from the space kept for the shield and its plugs.
-- **ok**: The lens looks along +x, the way the toes point, 10.0 degrees below level, 266.95 mm above the floor at the stand pose. A cone of 40.0 degrees half angle in front of it is clear at the neutral and stand poses. A leg comes into the cone with left_hip_pitch between -90.0 and -21.0 degrees; right_hip_pitch between -90.0 and -24.0 degrees (one joint moved, the others at the stand or neutral pose).
+- **ok**: The Espressif ESP-EYE V2.1 stands in its mount with 0.5 mm each side and 0.3 mm of play under the snap lips, on the corner seats, overlapping the print by 0.0 mm3. The mount is 5.06 mm from the UNO Q and 5.34 mm from the space kept for the shield and its plugs.
+- **ok**: The lens looks along +x, the way the toes point, 10.0 degrees below level, 244.79 mm above the floor at the stand pose. A cone of 40.0 degrees half angle in front of it is clear at the neutral and stand poses. A leg comes into the cone with left_hip_pitch between -90.0 and -15.0 degrees; right_hip_pitch between -90.0 and -15.0 degrees (one joint moved, the others at the stand or neutral pose).
 - **ok**: 23 pin holes and 32 studs compatible with LEGO Technic and System elements: every hole is open for a 4.8 mm pin over 7.8 mm with wall all round, none is nearer than 14.78 mm to a joint axis or 2.71 mm to another part at the neutral pose, and none is in the camera's clear cone. Whether a real pin or brick holds in a printed one is not known.
-- **balance**: Legs straight down: the centre of mass is 2.74 mm outside the support polygon of the two feet (behind the heels); it falls backward.
-- **ok**: With the thighs swung back 52.0 degrees and the knees turned the other way to keep the soles level, the centre of mass is 46.8 mm inside the polygon. This is the stand pose.
-- **ok**: On one foot the centre of mass is inside the sole at the stand pose: 32.07 mm on the left foot alone and 21.26 mm on the right, with the other foot level with it. The soles reach across the centre line, so no weight shift is needed. This is static and rigid: the fingers, the shin plate and the servos give under the load.
+- **balance**: Legs straight down: the centre of mass is 2.75 mm outside the support polygon of the two feet (behind the heels); it falls backward.
+- **ok**: With the thighs swung back 52.0 degrees and the knees turned the other way to keep the soles level, the centre of mass is 46.7 mm inside the polygon. This is the stand pose.
+- **ok**: On one foot the centre of mass is inside the sole at the stand pose: 32.07 mm on the left foot alone and 21.17 mm on the right, with the other foot level with it. The soles reach across the centre line, so no weight shift is needed. This is static and rigid: the fingers, the shin plate and the servos give under the load.
 
 ![assembled robot](images/assembly-iso.png)
 
@@ -93,10 +93,17 @@ Dimensions the makers do not publish, and the values assumed for them:
 | print | solid_fraction | 0.6 | 4 mm plates with two perimeters and 0.8 mm skins at 20 percent infill are mostly shell |
 | driver | screwdriver_radius_mm | 3.0 | shank of a small cross-head driver for the horn screw |
 | driver | screwdriver_length_mm | 80.0 | free length needed in front of the access hole |
-| AI-Thinker ESP32-CAM | pcb_thickness_mm | 1.6 | not published; the snap lips are spaced for 1.6 mm plus 0.3 mm, a thinner board sits loose by the difference |
-| AI-Thinker ESP32-CAM | lens_centre_above_lower_edge_mm | 31.5 | the camera lies over the card slot at the antenna end, about 9 mm from that edge; not dimensioned by the maker, tolerance 3 mm |
-| AI-Thinker ESP32-CAM | lens_front_above_board_mm | 6.5 | OV2640 module height on the card slot; not published, tolerance 1.5 mm |
-| AI-Thinker ESP32-CAM | lens_diameter_mm | 8.0 | module body about 8 mm square; not published |
+| Espressif ESP-EYE V2.1 | length_mm | 41.0 | reseller figure; Espressif publishes none |
+| Espressif ESP-EYE V2.1 | width_mm | 21.0 | reseller figure; Espressif publishes none |
+| Espressif ESP-EYE V2.1 | mass_g | 8.0 | not published; estimate, tolerance 3 g |
+| Espressif ESP-EYE V2.1 | pcb_thickness_mm | 1.6 | not published |
+| Espressif ESP-EYE V2.1 | lens_centre_above_lower_edge_mm | 9.0 | scaled from Espressif's photograph: 9 mm from the camera end, centred; tolerance 1 mm |
+| Espressif ESP-EYE V2.1 | lens_front_above_board_mm | 6.5 | not published, tolerance 1.5 mm |
+| Espressif ESP-EYE V2.1 | lens_diameter_mm | 8.0 | module body about 7.7 mm square in the photograph |
+| Espressif ESP-EYE V2.1 | boot_and_reset_above_lower_edge_mm | 15.5 | scaled from the photograph: on the camera face, 1.6 mm from each long edge; tolerance 1 mm |
+| Espressif ESP-EYE V2.1 | side_button_above_lower_edge_mm | 31.75 | scaled from the photograph: 29.5 to 34 mm, on the long edge at the robot's left as mounted; tolerance 1 mm |
+| Espressif ESP-EYE V2.1 | microphone_above_lower_edge_mm | 39.0 | scaled from the photograph: camera face, centred, at the USB end |
+| Espressif ESP-EYE V2.1 | picture_is_upright_with_usb_down | True | the board's lettering reads upright with the connector down; taken as the sensor's upright, not confirmed on a board |
 | camera | clear_cone_half_angle_deg | 40.0 | covers 66.5 degrees whether that figure is the diagonal or the horizontal field of a 4:3 sensor (39.3 degrees to the corner in the second case) |
 
 Published dimensions and their sources:
@@ -106,7 +113,7 @@ Published dimensions and their sources:
 | SR431 and SR311 servos, supply | https://store-usa.arduino.cc/products/tinkerkit-braccio-robot |
 | Arduino UNO Q outline and power | https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf |
 | Braccio shield outline | https://store-usa.arduino.cc/products/tinkerkit-braccio-robot |
-| AI-Thinker ESP32-CAM | https://iarduino.ru/lib/78eba891fa500cedb3b7a5641d82ce74.pdf |
+| Espressif ESP-EYE V2.1 | https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP-EYE_Getting_Started_Guide.md |
 
 ## The two thigh mountings
 
@@ -122,7 +129,7 @@ Everything below is for the `rail` mounting, which the robot description uses.
 
 ## Size
 
-Bounding box at the neutral pose: 198.0 x 250.0 x 313.75 mm (length, width, height). Soles at z = -185.9 mm in the torso frame.
+Bounding box at the neutral pose: 198.0 x 250.0 x 314.25 mm (length, width, height). Soles at z = -185.9 mm in the torso frame.
 
 | joint | axis point in the torso frame (mm) |
 |---|---|
@@ -227,14 +234,15 @@ measure a print. The horn itself is not dimensioned by the maker.
 
 The default head carries a Seeed Studio Round Display for XIAO in a ring at the deck front, screen forward as the
 eyes, and a camera board on the same head above or below it. A LiPo cell for the display is strapped under the deck
-front. The assembly, description and simulation use `eyes_above_esp32cam`. The display is drawn as a disc with
+front. The assembly, description and simulation use `eyes_above_esp_eye`. The display is drawn as a disc with
 a block for the XIAO behind it; its diameter, thickness and mass are assumed (see `config/hardware.json`).
 
 | face and camera | torso file | interference at neutral | display overlap with print (mm3) | lens (mm) | lens above the floor at stand (mm) | top of the head above the deck (mm) | cone clear at neutral and stand | thigh angles in the cone, others at stand (deg) | total mass (g) | centre of mass at neutral (mm) | legs straight: margin (mm) | stand: thighs back (deg) | stand margin (mm) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| eyes_above_esp_eye | 01_torso_unoq_eyes_above_esp_eye.stl | 0 | 0.0 | [64.5, 0.0, 90.56] | 244.79 | 124.35 | True | [-90.0, -15.0] | 561.6 | [56.25, -0.03, -36.13] | -2.75 | 52.0 | 46.7 |
+| eyes_below_esp_eye | 01_torso_unoq_eyes_below_esp_eye.stl | 0 | 0.0 | [54.4, 0.0, 39.03] | 193.26 | 119.57 | True | [-90.0, 6.0] | 558.2 | [56.31, 0.04, -36.24] | -2.69 | 52.0 | 46.67 |
 | eyes_above_esp32cam | 01_torso_unoq_eyes_above_esp32cam.stl | 0 | 0.0 | [68.41, 0.0, 112.72] | 266.95 | 123.85 | True | [-90.0, -21.0] | 564.5 | [56.26, -0.03, -35.4] | -2.74 | 52.0 | 46.8 |
 | eyes_below_esp32cam | 01_torso_unoq_eyes_below_esp32cam.stl | 0 | 0.0 | [58.31, 0.0, 61.19] | 215.42 | 119.07 | True | [-90.0, -3.0] | 560.5 | [56.28, 0.05, -35.86] | -2.72 | 52.0 | 46.7 |
-| eyes_above_esp_eye | 01_torso_unoq_eyes_above_esp_eye.stl | 0 | 0.0 | [72.84, 0.0, 137.83] | 292.06 | 148.97 | True | [-90.0, -33.0] | 563.6 | [56.33, -0.02, -35.19] | -2.67 | 52.0 | 46.84 |
 
 The display stack turned round (`stack_camera_forward`: XIAO Sense camera forward, screen to the rear), on the fixed
 head, with the lens taken on the display axis:
@@ -261,8 +269,8 @@ lead to the display crosses the pan joint and needs a loop for the travel; the l
 
 | head on the platform | pan travel to the stops (deg) | tilt free range (deg) | interference at neutral | new interference at the stand pose, pan at either stop or centre | head mass with servo (g) | total mass (g) | stand margin at the stops and centre (mm) | parts in the clear cone straight ahead |
 |---|---|---|---|---|---|---|---|---|
-| eyes_above_esp32cam | [-75.25, 75.25] | [-12.5, 12.5] | 0 | 0 | 56.6 | 586.2 | [46.64, 45.71, 46.5] | none |
-| eyes_below_esp32cam | [-75.25, 75.25] | [-12.5, 12.5] | 0 | 0 | 52.5 | 582.1 | [46.72, 45.95, 46.71] | none |
+| eyes_above_esp_eye | [-75.25, 75.25] | [-12.5, 12.5] | 0 | 0 | 53.7 | 583.3 | [46.75, 45.9, 46.61] | none |
+| eyes_below_esp_eye | [-75.25, 75.25] | [-12.5, 12.5] | 0 | 0 | 50.2 | 579.8 | [46.81, 46.07, 46.79] | none |
 | stack_camera_forward | [-75.25, 75.25] | [-12.5, 12.5] | 0 | 0 | 41.9 | 571.5 | [46.94, 46.35, 46.94] | none |
 
 ## Camera mount
@@ -275,9 +283,9 @@ towards +x, so the hips stand ahead of the deck and the mount looks out between 
 
 | check | value |
 |---|---|
-| camera preset | esp32cam (AI-Thinker ESP32-CAM) |
-| board as modelled: width, length, thickness (mm) | [27.0, 40.5, 1.6] |
-| board mass (g) | 10.0 |
+| camera preset | esp_eye (Espressif ESP-EYE V2.1) |
+| board as modelled: width, length, thickness (mm) | [21.0, 41.0, 1.6] |
+| board mass (g) | 8.0 |
 | clearance to each post (mm) | 0.5 |
 | play towards the snap lips (mm) | 0.3 |
 | play towards the back ledges (mm) | 0.0 |
@@ -288,9 +296,9 @@ towards +x, so the hips stand ahead of the deck and the mount looks out between 
 | mount to Braccio shield (mm) | 7.25 |
 | mount to the space kept for shield plugs (mm) | 5.34 |
 | camera board to the space kept for shield plugs (mm) | 53.19 |
-| lens front in the torso frame (mm) | [68.41, 0.0, 112.72] |
+| lens front in the torso frame (mm) | [64.5, 0.0, 90.56] |
 | tilt below level (deg) | 10.0 |
-| lens above the floor at the stand pose (mm) | 266.95 |
+| lens above the floor at the stand pose (mm) | 244.79 |
 | clear cone, half angle (deg) | 40.0 |
 | parts in the cone at neutral | none |
 | parts in the cone at the stand pose | none |
@@ -300,19 +308,19 @@ Joint angles inside the limits at which a leg is in the cone, one joint moved at
 | joint | others at neutral (deg) | others at the stand pose (deg) |
 |---|---|---|
 | left_hip_roll | never | never |
-| left_hip_pitch | [-90.0, -45.0] | [-90.0, -21.0] |
+| left_hip_pitch | [-90.0, -39.0] | [-90.0, -15.0] |
 | left_knee | never | never |
 | right_hip_roll | never | never |
-| right_hip_pitch | [-90.0, -45.0] | [-90.0, -24.0] |
+| right_hip_pitch | [-90.0, -39.0] | [-90.0, -15.0] |
 | right_knee | never | never |
 
 The camera presets alone in the fixed mount, without the display, each with its own torso file, checked in short form:
 
 | preset | board (mm) | each side (mm) | under the lips (mm) | up to the catch (mm) | on the seats | overlap with print (mm3) | mount to UNO Q (mm) | cone clear at neutral and stand | total mass (g) | centre of mass at neutral (mm) | stand margin (mm) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| esp_eye | [21.0, 41.0, 1.6] | 0.5 | 0.3 | 1.04 | True | 0.0 | 1.06 | True | 530.0 | [56.81, 0.05, -41.5] | 47.0 |
+| esp32cam | [27.0, 40.5, 1.6] | 0.5 | 0.3 | 1.03 | True | 0.0 | 1.06 | True | 534.1 | [56.71, 0.05, -40.92] | 46.97 |
 | esp32_s3_eye | [30.0, 60.0, 1.6] | 0.5 | 0.3 | 1.04 | True | 0.0 | 1.06 | True | 547.6 | [56.66, 0.04, -37.98] | 46.73 |
-| esp32cam alone in the fixed mount | [27.0, 40.5, 1.6] | 0.5 | 0.3 | 1.03 | True | 0.0 | 1.06 | True | 534.1 | [56.71, 0.05, -40.92] | 46.97 |
+| esp_eye alone in the fixed mount | [21.0, 41.0, 1.6] | 0.5 | 0.3 | 1.04 | True | 0.0 | 1.06 | True | 531.6 | [56.74, 0.05, -41.41] | 46.98 |
 
 The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are
 and what is assumed about them is in `config/hardware.json` and the design README.
@@ -326,11 +334,11 @@ assumed, are in `config/hardware.json` under `controllers`.
 
 | controller | torso file | block mass (g) | overlap with the print (mm3) | gap to the camera board (mm) | interference at neutral | total mass (g) | centre of mass at neutral (mm) | legs straight: margin (mm) | stand pose: thighs back (deg) | stand margin (mm) | hip pitch holding torque / limit |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| unoq with Braccio shield | 01_torso_unoq_eyes_above_esp32cam.stl | 55.0 | 0.0 | 53.19 | 0 | 564.5 | [56.26, -0.03, -35.4] | -2.74 | 52.0 | 46.8 | see the simulation |
-| pi_zero_2w | 01_torso_pi_zero_2w_cam_esp32cam.stl | 20.0 | 0.0 | 13.18 | 0 | 498.8 | [60.72, 0.05, -44.58] | 1.72 | 49.0 | 46.78 | 0.06 |
-| pi | 01_torso_pi_cam_esp32cam.stl | 55.0 | 0.0 | 17.06 | 0 | 533.3 | [56.82, 0.04, -40.48] | -2.18 | 53.0 | 46.89 | 0.073 |
-| hub51515 | 01_torso_hub51515_cam_esp32cam.stl | 133.0 | 0.0 | 18.86 | 0 | 611.9 | [49.07, 0.04, -31.72] | -9.93 | 62.0 | 46.91 | 0.103 |
-| ev3 | 01_torso_hub51515_cam_esp32cam.stl (not made for it) | 300.0 | 0.0 | 10.86 | 0 | 778.9 | [37.35, 0.03, -16.73] | -21.65 | 62.0 | 38.6 | 0.167 |
+| unoq with Braccio shield | 01_torso_unoq_eyes_above_esp_eye.stl | 55.0 | 0.0 | 53.19 | 0 | 561.6 | [56.25, -0.03, -36.13] | -2.75 | 52.0 | 46.7 | see the simulation |
+| pi_zero_2w | 01_torso_pi_zero_2w_cam_esp_eye.stl | 20.0 | 0.0 | 13.18 | 0 | 496.3 | [60.78, 0.05, -45.11] | 1.78 | 49.0 | 46.81 | 0.06 |
+| pi | 01_torso_pi_cam_esp_eye.stl | 55.0 | 0.0 | 17.06 | 0 | 530.8 | [56.86, 0.04, -40.96] | -2.14 | 53.0 | 46.93 | 0.073 |
+| hub51515 | 01_torso_hub51515_cam_esp_eye.stl | 133.0 | 0.0 | 18.86 | 0 | 609.3 | [49.07, 0.04, -32.1] | -9.93 | 62.0 | 46.84 | 0.102 |
+| ev3 | 01_torso_hub51515_cam_esp_eye.stl (not made for it) | 300.0 | 0.0 | 10.86 | 0 | 776.3 | [37.31, 0.03, -16.98] | -21.69 | 62.0 | 38.52 | 0.167 |
 
 The hip pitch torque is the static moment of everything above the hips about the hip pitch axis at the stand pose,
 shared by two servos, against the SR431's published 4.8 V torque.
@@ -347,7 +355,7 @@ assumed (see the design README); nothing has been fitted.
 
 | check | value |
 |---|---|
-| camera preset | esp32cam |
+| camera preset | esp_eye |
 | pan travel between the printed stops (deg) | [-75.25, 75.25] |
 | stopped by | head_platform_print / torso_print |
 | tilt set to (deg below level) | 10.0 |
@@ -355,16 +363,16 @@ assumed (see the design README); nothing has been fitted.
 | tilt stopped by | head_cradle_print / head_platform_print, head_cradle_print / head_platform_print |
 | interference at the neutral pose | 0 |
 | left hip roll, hip pitch, knee free range with the head on (deg) | [[-38.75, 130.25], [-180.0, 65.75], [-150.5, 111.5]] |
-| mass of the head with its servo and camera (g) | 30.1 |
-| total mass (g) | 551.2 |
-| centre of mass at neutral (mm) | [57.24, 0.05, -38.89] |
-| margin with legs straight (mm) | -1.76 |
+| mass of the head with its servo and camera (g) | 27.6 |
+| total mass (g) | 548.7 |
+| centre of mass at neutral (mm) | [57.18, 0.05, -39.43] |
+| margin with legs straight (mm) | -1.82 |
 
 | at the stand pose, pan (deg) | new interference | parts in the clear cone | centre of mass (mm) | stand margin (mm) | lens (mm) |
 |---|---|---|---|---|---|
-| -75.25 | 0 | right_yoke_print, right_pitch_servo, right_thigh_print, right_pitch_horn | [41.29, -0.18, -31.2] | 46.78 | [63.02, -17.15, 77.06] |
-| 0.0 | 0 | none | [41.47, 0.05, -31.2] | 46.6 | [76.23, 0.0, 77.06] |
-| 75.25 | 0 | left_yoke_print, left_pitch_servo, left_thigh_print, left_pitch_horn | [41.3, 0.29, -31.2] | 46.77 | [63.02, 17.15, 77.06] |
+| -75.25 | 0 | right_yoke_print, right_pitch_servo, right_thigh_print, right_pitch_horn | [41.19, -0.13, -31.7] | 46.87 | [62.02, -13.37, 54.91] |
+| 0.0 | 0 | none | [41.35, 0.05, -31.7] | 46.72 | [72.33, 0.0, 54.91] |
+| 75.25 | 0 | left_yoke_print, left_pitch_servo, left_thigh_print, left_pitch_horn | [41.21, 0.24, -31.7] | 46.86 | [62.02, 13.37, 54.91] |
 
 ## Pin holes and studs
 
@@ -393,23 +401,23 @@ the gait was not rerun with added mass.
 
 | where | margin with 50 g (mm) | with 100 g (mm) | with 200 g (mm) | mass that uses up the margin (g) |
 |---|---|---|---|---|
-| at the camera, on the mount | 44.96 | 43.06 | 40.0 | more than 3000 |
-| on the rear pin holes of the deck | 40.14 | 34.48 | 25.38 | 753.0 |
-| on the deck studs, shared between both sides | 41.52 | 37.03 | 29.83 | 1462.0 |
-| on the thigh pin holes, shared between both thighs | 45.6 | 44.23 | 42.03 | more than 3000 |
-| on the shin pin holes, shared between both shins | 45.43 | 44.27 | 42.4 | more than 3000 |
-| on the foot studs, shared between both feet | 46.46 | 45.82 | 44.8 | more than 3000 |
+| at the camera, on the mount | 45.36 | 43.71 | 41.07 | more than 3000 |
+| on the rear pin holes of the deck | 40.02 | 34.34 | 25.23 | 748.0 |
+| on the deck studs, shared between both sides | 41.41 | 36.91 | 29.69 | 1452.0 |
+| on the thigh pin holes, shared between both thighs | 45.67 | 44.3 | 42.08 | more than 3000 |
+| on the shin pin holes, shared between both shins | 45.34 | 44.18 | 42.32 | more than 3000 |
+| on the foot studs, shared between both feet | 46.54 | 45.89 | 44.86 | more than 3000 |
 
-The margin with nothing added is 46.8 mm.
+The margin with nothing added is 46.7 mm.
 
 ## Mass and centre of mass
 
-Total 564.5 g: servos 302.0 g, printed parts 174.0 g (PLA at 1.24 g/cm3, 60 percent of solid; 680.5 g in total if printed solid), board 30.0 g and shield 25.0 g (both assumed), camera 10.0 g, display with its XIAO 15.0 g and battery 8.5 g (both assumed).
-Centre of mass at the neutral pose: [56.26, -0.03, -35.4] mm in the torso frame.
+Total 561.6 g: servos 302.0 g, printed parts 173.1 g (PLA at 1.24 g/cm3, 60 percent of solid; 677.1 g in total if printed solid), board 30.0 g and shield 25.0 g (both assumed), camera 8.0 g, display with its XIAO 15.0 g and battery 8.5 g (both assumed).
+Centre of mass at the neutral pose: [56.25, -0.03, -36.13] mm in the torso frame.
 
 | link | mass (g) | centre of mass in the link frame (mm) |
 |---|---|---|
-| torso | 268.5 | [19.13, -0.16, 1.66] |
+| torso | 265.7 | [18.7, -0.17, 0.52] |
 | left_hip | 73.9 | [37.58, 34.69, -0.05] |
 | left_thigh | 36.6 | [0.15, -10.3, -66.3] |
 | left_shin | 40.0 | [9.04, -35.38, -62.72] |
@@ -423,11 +431,11 @@ Centre of mass at the neutral pose: [56.26, -0.03, -35.4] mm in the torso frame.
 
 | case | margin (mm) | inside the support polygon |
 |---|---|---|
-| two feet, legs straight down | -2.74 | False |
-| two feet, stand pose (thighs back 52.0 deg) | 46.8 | True |
+| two feet, legs straight down | -2.75 | False |
+| two feet, stand pose (thighs back 52.0 deg) | 46.7 | True |
 | left foot alone, stand pose | 32.07 | True |
-| right foot alone, stand pose | 21.26 | True |
-| one foot, best with stance hip roll within 30 deg | 43.86 | True |
+| right foot alone, stand pose | 21.17 | True |
+| one foot, best with stance hip roll within 30 deg | 43.6 | True |
 
 Margin is the distance from the ground projection of the centre of mass to the nearest edge of the support polygon;
 negative means outside. The stand pose keeps the shins vertical and the soles level: hip pitch = t, knee = -t.
