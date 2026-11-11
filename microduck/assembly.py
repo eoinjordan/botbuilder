@@ -14,7 +14,7 @@ from manifold3d import Manifold
 from scipy.spatial import ConvexHull
 
 from . import model
-from .model import (BLANK_HOLE_RADIUS, JOINTS, PLATE, SLOT_SIZE, SLOT_X_FRACTION, SLOT_Y_OFFSET,
+from .model import (BLANK_HOLE_RADIUS, JOINTS, PLATE, SLOT_SIZE, SLOT_X_FRACTIONS, SLOT_Y_OFFSET,
                     Robot, apply, box, cylinder_z, frame, servo_shape, trans, trimesh_from_manifold)
 
 SERVO_HALF_TRAVEL = 90.0
@@ -186,8 +186,8 @@ def cradle_checks(robot: Robot) -> list:
 
         seat = apply(box([-l / 2, -w / 2, -0.2], [l / 2, w / 2, 0.0]), c.servo_to_link)
         slots_open = 0
-        for sx, sy in itertools.product((-1, 1), (-1, 1)):
-            cx, cy = sx * l * SLOT_X_FRACTION, sy * (w / 2 + SLOT_Y_OFFSET)
+        for fx, sy in itertools.product(SLOT_X_FRACTIONS, (-1, 1)):
+            cx, cy = fx * l, sy * (w / 2 + SLOT_Y_OFFSET)
             probe = box([cx - SLOT_SIZE[0] / 2 + 0.3, cy - SLOT_SIZE[1] / 2 + 0.3, 0.5],
                         [cx + SLOT_SIZE[0] / 2 - 0.3, cy + SLOT_SIZE[1] / 2 - 0.3, PLATE - 0.5])
             if (apply(probe, c.cradle_to_link) ^ printed).volume() < 1e-3:
@@ -195,8 +195,8 @@ def cradle_checks(robot: Robot) -> list:
         # A tie over the case top at each slot pair: does it cross the output
         # boss or the horn hub?
         ties = []
-        for sx in (-1, 1):
-            cx = sx * l * SLOT_X_FRACTION
+        for fx in SLOT_X_FRACTIONS:
+            cx = fx * l
             band = box([cx - SLOT_SIZE[0] / 2, -w / 2, h], [cx + SLOT_SIZE[0] / 2, w / 2, h + 1.5])
             blocked = (band ^ (shape.body + shape.horn)).volume()
             ties.append({"at_x_mm": _r(cx), "shaft_x_mm": _r(shape.shaft_x), "overlap_mm3": _r(blocked, 1),
@@ -206,7 +206,7 @@ def cradle_checks(robot: Robot) -> list:
             "rail_clearance_each_side_mm": _r(_largest_clear(side_clear)),
             "rail_clearance_designed_mm": model.RAIL_GAP_EACH_SIDE,
             "seat_support_fraction": _r((seat ^ printed).volume() / (l * w * 0.2)),
-            "tie_slots_open": slots_open, "tie_slots_expected": 4,
+            "tie_slots_open": slots_open, "tie_slots_expected": 2 * len(SLOT_X_FRACTIONS),
             "ties": ties,
             "case_interference_mm3": _r((case ^ printed).volume(), 1),
             "body_interference_mm3": _r((body ^ printed).volume(), 1),
@@ -299,6 +299,30 @@ def board_checks(robot: Robot) -> dict:
         "forward_shift_to_clear_mm": shift,
         "front_overhang_after_shift_mm": None if shift is None else _r(max(0.0, bb[1][0] + shift - deck_front)),
     }
+
+
+def roll_seat_checks(robot: Robot) -> dict:
+    """The hip roll servo under the deck: gap between the case end and the
+    deck, gap around the upper mounting ear, and the deck left around the cut."""
+    torso = _solid(robot, "torso_print")[1].manifold
+    cradle = next(c for c in robot.cradles if c.servo == "left_roll_servo")
+    shape = servo_shape("SR431", robot.hardware)
+    body = _solid(robot, "left_roll_servo")[1].manifold
+    case = apply(shape.case, cradle.servo_to_link)
+    deck = torso ^ box([-60, -80, 0.0], [60, 80, PLATE])
+    ears = body - apply(shape.case + cylinder_z(30.0, shape.height, shape.height + 5.0), cradle.servo_to_link)
+    upper = ears ^ box([-100, -100, -8.0], [100, 100, 50.0])
+    # Deck section across the robot at the cut, and ahead of the cradle plate.
+    def width_at(x):
+        slab = deck ^ box([x - 0.05, -80, 0.0], [x + 0.05, 80, PLATE])
+        return slab.volume() / (0.1 * PLATE)
+    return {"case_end_below_deck_mm": _r(case.min_gap(deck, 20.0)) if (case ^ deck).volume() < 1e-6 else _r(-(case ^ deck).volume(), 1),
+            "case_overlap_with_deck_mm3": _r((case ^ deck).volume(), 1),
+            "upper_ear_gap_to_deck_mm": _r(upper.min_gap(deck, 20.0)) if (upper ^ deck).volume() < 1e-6 else 0.0,
+            "upper_ear_overlap_with_deck_mm3": _r((upper ^ deck).volume(), 1),
+            "overlap_with_torso_mm3": _r((body ^ torso).volume(), 1),
+            "deck_width_behind_the_cut_mm": _r(width_at(20.0)), "deck_width_at_the_cut_mm": _r(width_at(34.0)),
+            "cradle_z_mm": model.TORSO_CRADLE_Z}
 
 
 # --- camera mount -----------------------------------------------------------
@@ -733,6 +757,7 @@ def analyse(robot: Robot, progress=lambda text: None) -> dict:
         "cradles": cradle_checks(robot),
         "horns": horn_checks(robot, placed),
         "board": board_checks(robot),
+        "roll_seat": roll_seat_checks(robot),
         "mass": mass_report(robot),
     }
     progress("balance")

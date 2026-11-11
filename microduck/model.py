@@ -51,14 +51,14 @@ COLORS = {"print": (236, 205, 120), "servo": (60, 66, 74), "horn": (225, 228, 23
 # From build.py: cradle plate thickness, torso cradle position, yoke cradle
 # position, thigh cradle position, knee axis height in the shin, blank thickness.
 PLATE = 4.0
-TORSO_CRADLE_Y, TORSO_CRADLE_Z = 57.0, -19.0
+TORSO_CRADLE_Y, TORSO_CRADLE_Z = 57.0, -21.5     # 2.5 mm lower than first drawn (ROLL_SEAT_FIX)
 YOKE_CRADLE_Y, YOKE_CRADLE_Z = 15.0, 40.0
 THIGH_CRADLE_X = 75.0
 SHIN_KNEE_Z = 82.0
 SHIN_HALF_THICKNESS = 2.0
 BLANK_HOLE_RADIUS = 4.0
 BLANK_RADIUS = 17.0
-SLOT_X_FRACTION, SLOT_Y_OFFSET, SLOT_SIZE = 0.26, 5.5, (4.4, 2.8)
+SLOT_X_FRACTIONS, SLOT_Y_OFFSET, SLOT_SIZE = (-0.38, -0.15, 0.15, 0.38), 5.5, (4.4, 2.8)
 RAIL_GAP_EACH_SIDE = 0.5
 
 

@@ -85,19 +85,14 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
         [render.render(stand, "left", (520, 620)), render.render(stand, "iso", (620, 620))],
         ["stand pose, left view", "stand pose"]), "stand-pose.png")
 
-    # Close-ups of the interferences at the neutral pose.
-    close = {"interference_roll_servo_deck": ("torso_print", "left_roll_servo"),
-             }
-    for key, (a, b) in close.items():
-        hit = next((f for f in rep["neutral_interferences"] if {f["a"], f["b"]} == {a, b}), None)
-        if hit is None:
-            continue
-        frame_box = _pad(hit["box_min_mm"], hit["box_max_mm"], 28.0)
-        extra = [("braccio_shield", "torso_print")] if b == "unoq" else []
-        picture = render.render(_items(placed, {a, b, "braccio_shield"} if b == "unoq" else {a, b}), "iso", (760, 560),
-                                overlays=_overlaps(placed, [(a, b)] + extra), bounds=frame_box,
-                                title=f"{a} and {b}: {hit['volume_mm3']} mm3 overlap (red)")
-        images[key] = _save(picture, key.replace("_", "-") + ".png")
+    # The hip roll servo where its case end and upper ear meet the deck.
+    seat = rep["roll_seat"]
+    pair = {"torso_print", "left_roll_servo"}
+    views = [render.render(_items(placed, pair), v, (560, 520), overlays=_overlaps(placed, [("torso_print", "left_roll_servo")]),
+                           bounds=_pad([-6, 34, -30], [48, 80, 12], 4.0)) for v in ("iso", "left", "top")]
+    images["roll_servo_seat"] = _save(_side_by_side(
+        views, [f"left hip roll servo: overlap with the deck {seat['overlap_with_torso_mm3']} mm3 (red if any)", "left", "top"]),
+        "roll-servo-seat.png")
 
     # The camera in its mount, with the controller stack behind it.
     names = {"torso_print", "camera_board", "unoq", "braccio_shield"}
@@ -133,8 +128,8 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
         cradle = model.load_part("fit_" + name)
         blank = apply(model.load_part("fit_horn"), to_cradle @ model.trans(shape.shaft_x, 0, shape.face_z))
         ties, blocked = [], []
-        for sx in (-1, 1):
-            cx = sx * shape.length * model.SLOT_X_FRACTION
+        for fx in model.SLOT_X_FRACTIONS:
+            cx = fx * shape.length
             half = shape.width / 2
             top = model.PLATE + shape.height
             band = (box([cx - 2.2, -half - 6.1, -1.2], [cx + 2.2, half + 6.1, top + 1.2])
@@ -146,7 +141,7 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
         parts += [(*_mesh(t), (40, 150, 70)) for t in ties] + [(*_mesh(t), RED) for t in blocked]
         views = [render.render(parts, v, (560, 460)) for v in ("iso", "left")]
         images[f"assumption_cradle_{name}"] = _save(_side_by_side(
-            views, [f"{name} in its cradle: horn, drill blank, ties (red tie crosses the output shaft)", "side"]),
+            views, [f"{name} in its cradle: horn, drill blank, tie paths (a red one crosses the output shaft)", "side"]),
             f"assumption-cradle-{name}.png")
 
     images["balance"] = _save(_balance_plot(rep["balance"]), "balance.png")
@@ -188,14 +183,11 @@ def findings(rep: dict) -> list:
         else:
             out.append({"id": f"{f['a']}-{f['b']}", "level": "interference",
                         "text": f"{f['a']} and {f['b']} overlap by {f['volume_mm3']} mm3 at the neutral pose."})
-    blocked = [c for c in rep["cradles"] if not all(t["clear"] for t in c["ties"])]
-    if blocked:
-        c = blocked[0]
-        t = next(t for t in c["ties"] if not t["clear"])
-        out.append({"id": "tie-over-shaft", "level": "fit",
-                    "text": f"On all {len(blocked)} cradles one of the two cable ties crosses the output shaft: the slot pair at "
-                            f"{abs(t['at_x_mm'])} mm from the cradle centre is in line with the shaft at {t['shaft_x_mm']} mm "
-                            f"(SR431; depends on the assumed shaft position). Only the tie at the far end can go over the case."})
+    fewest = min(sum(t["clear"] for t in c["ties"]) for c in rep["cradles"])
+    out.append({"id": "ties", "level": "ok" if fewest >= 2 else "fit",
+                "text": f"Each cradle has {len(rep['cradles'][0]['ties'])} tie slot pairs; on every cradle at least {fewest} "
+                        "of the tie paths cross the case clear of the output shaft and horn (the pairs at the shaft end do not, "
+                        "and are for a servo lying the other way round). This depends on the assumed shaft position and horn size."})
     if all(c["rail_clearance_each_side_mm"] > 0 for c in rep["cradles"]):
         out.append({"id": "rails", "level": "ok",
                     "text": "Every servo case fits between its rails with "
@@ -314,9 +306,7 @@ def markdown(report: dict) -> str:
                       [(f["a"], f["b"], f["volume_mm3"], f["depth_mm"], f["box_min_mm"], f["box_max_mm"]) for f in rep["neutral_interferences"]]), ""]
     else:
         md += ["None.", ""]
-    for key in ("interference_roll_servo_deck",):
-        if key in img:
-            md += [f"![{key}]({img[key]})", ""]
+    md += [f"![hip roll servo under the deck]({img['roll_servo_seat']})", ""]
 
     md += ["## Joint sweeps", "",
            "One joint at a time from the neutral pose, others at zero, until a part that moves with the joint meets one that",
@@ -331,8 +321,8 @@ def markdown(report: dict) -> str:
 
     md += ["## Servos in their cradles", "",
            _table(["servo", "model", "rail clearance each side (mm)", "seated on plate", "tie slots open", "ties clear of shaft", "overlap with its printed part (mm3)"],
-                  [(c["servo"], c["model"], c["rail_clearance_each_side_mm"], c["seat_support_fraction"], f"{c['tie_slots_open']}/4",
-                    f"{sum(t['clear'] for t in c['ties'])}/2", c["body_interference_mm3"]) for c in rep["cradles"]]), "",
+                  [(c["servo"], c["model"], c["rail_clearance_each_side_mm"], c["seat_support_fraction"], f"{c['tie_slots_open']}/{c['tie_slots_expected']}",
+                    f"{sum(t['clear'] for t in c['ties'])}/{len(c['ties'])}", c["body_interference_mm3"]) for c in rep["cradles"]]), "",
            "## Horn blanks", "",
            _table(["joint", "hole on shaft axis", "blank solid under the horn", "driver path clear", "driver comes from"],
                   [(h["joint"], h["hole_on_shaft_axis"], h["blank_fill_fraction"], h["driver_path_clear"], h["driver_from"]) for h in rep["horns"]]), "",

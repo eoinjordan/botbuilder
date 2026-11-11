@@ -5,13 +5,13 @@
   "repository": "eoinjordan/3d-print-designs",
   "directory": "microduck-braccio-unoq",
   "generator": "build.py",
-  "commit": "2362e25b3a5d6db5f99d1e1fbd1fef3fe7d730ee",
+  "commit": "1e45bd25848cbaa0526415322270b4c276db08fc",
   "uncommitted_changes": false
  },
  "generator_parameters_file": "parameters.json",
- "generator_parameters_sha256": "164cd0741302eb6e5dff08fcc7c7138a532acc66448e5d420a73d2e3d3bf5735",
+ "generator_parameters_sha256": "38656ba28abaaf3d38eeed2dd4a2f363f4a740e9efb1d81e85ce964499fb9931",
  "camera_default": "esp32cam",
- "total_bytes": 2660044,
+ "total_bytes": 2713844,
  "files": [
   {
    "file": "01_torso_unoq_cam_esp32_s3_eye.stl",
@@ -20,13 +20,13 @@
     "part": "torso",
     "camera": "esp32_s3_eye"
    },
-   "triangles": 8920,
-   "volume_mm3": 65182.8,
+   "triangles": 9092,
+   "volume_mm3": 64083.2,
    "bounding_box_mm": [
     [
      -45.0,
      -75.25,
-     -43.0
+     -45.5
     ],
     [
      59.12,
@@ -34,8 +34,8 @@
      95.53
     ]
    ],
-   "bytes": 446084,
-   "sha256": "52cfebe20b04a8eed4691b7f3ffd97ca7b99ea5f21d422af98fd2255fe27dae3"
+   "bytes": 454684,
+   "sha256": "e875fe6fdf8ac0de55bc3de2f3c52924deedd1c5be0def407d71d990a9aa39ec"
   },
   {
    "file": "01_torso_unoq_cam_esp32cam.stl",
@@ -44,13 +44,13 @@
     "part": "torso",
     "camera": "esp32cam"
    },
-   "triangles": 8932,
-   "volume_mm3": 67188.4,
+   "triangles": 9104,
+   "volume_mm3": 66088.7,
    "bounding_box_mm": [
     [
      -45.0,
      -75.25,
-     -43.0
+     -45.5
     ],
     [
      55.73,
@@ -58,8 +58,8 @@
      76.33
     ]
    ],
-   "bytes": 446684,
-   "sha256": "054ca5eafffd4d52b8cb6a60bfc2de2d3dba52a7acedb16b017cbc0c3001c09e"
+   "bytes": 455284,
+   "sha256": "d5b4cca0e1f2097c7c6af7003d9d5a7032f9326133c085273272dedf393b6515"
   },
   {
    "file": "01_torso_unoq_cam_esp_eye.stl",
@@ -68,13 +68,13 @@
     "part": "torso",
     "camera": "esp_eye"
    },
-   "triangles": 8948,
-   "volume_mm3": 64243.8,
+   "triangles": 9120,
+   "volume_mm3": 63144.2,
    "bounding_box_mm": [
     [
      -45.0,
      -75.25,
-     -43.0
+     -45.5
     ],
     [
      55.82,
@@ -82,8 +82,8 @@
      76.82
     ]
    ],
-   "bytes": 447484,
-   "sha256": "7d11bf5545d8c65616576b7df6b6c5bce35d8f9c83aa1e8ef6d2d8f94c62e3a5"
+   "bytes": 456084,
+   "sha256": "7237b395d12d24dff5296ba9b8f4ea29395b0f9255f9698868a226f072076fbf"
   },
   {
    "file": "fit_cam_esp32_s3_eye.stl",
@@ -209,8 +209,8 @@
    "options": {
     "fit_piece": true
    },
-   "triangles": 124,
-   "volume_mm3": 5433.1,
+   "triangles": 204,
+   "volume_mm3": 5236.0,
    "bounding_box_mm": [
     [
      -18.65,
@@ -223,8 +223,8 @@
      8.8
     ]
    ],
-   "bytes": 6284,
-   "sha256": "1ae18b3fa90ceb951c0f25b11ed2c0b91bbfda3d2a6c0355ac7edbcaad16e0fa"
+   "bytes": 10284,
+   "sha256": "d3e91e9fc838a273b768ec925fbe4243f4070a25cc1d6a3e256ff9ed97fde77b"
   },
   {
    "file": "fit_SR431.stl",
@@ -232,8 +232,8 @@
    "options": {
     "fit_piece": true
    },
-   "triangles": 124,
-   "volume_mm3": 7859.2,
+   "triangles": 204,
+   "volume_mm3": 7662.1,
    "bounding_box_mm": [
     [
      -24.0,
@@ -246,8 +246,8 @@
      8.8
     ]
    ],
-   "bytes": 6284,
-   "sha256": "5ae6a519326addb31b68cef066acd19a9f3d7386321c4bc4a51317f5b7bb8419"
+   "bytes": 10284,
+   "sha256": "84b200d520ee4139262d89d87f8709d5abb4ddd09ccbd61fd653f90261e01802"
   },
   {
    "file": "left_hip_roll_pitch_yoke.stl",
@@ -255,8 +255,8 @@
    "options": {
     "part": "left_hip"
    },
-   "triangles": 964,
-   "volume_mm3": 16267.6,
+   "triangles": 1056,
+   "volume_mm3": 16001.1,
    "bounding_box_mm": [
     [
      -24.0,
@@ -269,8 +269,8 @@
      58.25
     ]
    ],
-   "bytes": 48284,
-   "sha256": "5d809beed8db17d549e6eda75e554b550faeb14ee9ea475848f8bef399d19020"
+   "bytes": 52884,
+   "sha256": "b899508a0f4e8c4447ff17974de14b710e6902a658099ba24c25afd735ba70bb"
   },
   {
    "file": "left_shin_fixed_foot.stl",
@@ -301,8 +301,8 @@
    "options": {
     "part": "left_thigh"
    },
-   "triangles": 3280,
-   "volume_mm3": 13107.8,
+   "triangles": 3388,
+   "volume_mm3": 12910.6,
    "bounding_box_mm": [
     [
      -17.0,
@@ -315,8 +315,8 @@
      8.8
     ]
    ],
-   "bytes": 164084,
-   "sha256": "bf83748eefba429b242cb19316ce43c2f2a00f258b1d370fca47e3233e1620dd"
+   "bytes": 169484,
+   "sha256": "1b9ec853bf373191f53bbd7c456b5650e1ea0006faa06998dc73084632840251"
   },
   {
    "file": "right_hip_roll_pitch_yoke.stl",
@@ -324,8 +324,8 @@
    "options": {
     "part": "right_hip"
    },
-   "triangles": 964,
-   "volume_mm3": 16267.6,
+   "triangles": 1056,
+   "volume_mm3": 16001.1,
    "bounding_box_mm": [
     [
      -24.0,
@@ -338,8 +338,8 @@
      58.25
     ]
    ],
-   "bytes": 48284,
-   "sha256": "b24f8eae11d42b2c70bc3dd7b7f6c2c2316bd28c34371911dbf5acde1030445d"
+   "bytes": 52884,
+   "sha256": "e3cbee6d3397bd4fa7e435879b5270f496b3dccca05f1ec3ba48c61a6842559f"
   },
   {
    "file": "right_shin_fixed_foot.stl",
@@ -370,8 +370,8 @@
    "options": {
     "part": "right_thigh"
    },
-   "triangles": 3280,
-   "volume_mm3": 13107.8,
+   "triangles": 3388,
+   "volume_mm3": 12910.6,
    "bounding_box_mm": [
     [
      -17.0,
@@ -384,8 +384,8 @@
      8.8
     ]
    ],
-   "bytes": 164084,
-   "sha256": "01d06e26dfd38c6c396beb69dae63f3561b191f2557073a9539c6b504e76f882"
+   "bytes": 169484,
+   "sha256": "60df128db9f8a70b03c0f9cde4a2a02d9fdddc1bced0d7a444cee65240c6ff27"
   }
  ]
 }

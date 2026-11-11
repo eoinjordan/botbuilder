@@ -56,8 +56,10 @@ def test_cradles(selected):
     for cradle in selected["cradles"]:
         assert cradle["rail_clearance_each_side_mm"] == pytest.approx(0.5, abs=0.02)
         assert cradle["seat_support_fraction"] == pytest.approx(1.0, abs=0.01)
-        assert cradle["tie_slots_open"] == 4
-        assert len(cradle["ties"]) == 2
+        assert cradle["tie_slots_open"] == cradle["tie_slots_expected"] == 8
+        assert len(cradle["ties"]) == 4
+        assert sum(tie["clear"] for tie in cradle["ties"]) >= 2, "two ties must cross the case clear of the shaft"
+        assert cradle["body_interference_mm3"] < 0.5
 
 
 def test_horns(selected):
@@ -82,6 +84,23 @@ def test_balance_findings_are_consistent(selected):
         one = balance[f"one_foot_{side}"]
         assert one["at_stand_pose"]["inside"] == (one["at_stand_pose"]["margin_mm"] > 0)
         assert one["balances_within_30_deg"] in (True, False)
+
+
+def test_nothing_interferes_at_the_neutral_pose(assembly_report, selected):
+    assert selected["neutral_interferences"] == []
+    assert assembly_report["variants"]["flat"]["neutral_interferences"] == []
+    seat = selected["roll_seat"]
+    assert seat["case_overlap_with_deck_mm3"] == 0 and seat["upper_ear_overlap_with_deck_mm3"] == 0
+    assert seat["case_end_below_deck_mm"] == pytest.approx(0.5, abs=0.02)
+    assert seat["upper_ear_gap_to_deck_mm"] >= 0.5
+    assert seat["deck_width_at_the_cut_mm"] >= 90.0
+
+
+def test_model_constants_match_the_generator():
+    made = model.design_parameters()
+    assert made["roll_seat_fix"] is True
+    assert made["roll_cradle_z"] == model.TORSO_CRADLE_Z
+    assert tuple(made["tie_slot_fractions"]) == model.SLOT_X_FRACTIONS
 
 
 def test_findings_name_every_neutral_interference(assembly_report, selected):

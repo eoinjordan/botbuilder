@@ -35,7 +35,7 @@ def test_features_did_not_cost_any_joint_range(selected):
     assert sweeps["left_hip_roll"]["collision_free_deg"] == [-55.0, 180.0]
     assert sweeps["left_hip_pitch"]["collision_free_deg"] == [-180.0, 180.0]
     assert sweeps["left_knee"]["collision_free_deg"] == pytest.approx([-137.25, 115.25], abs=0.5)
-    assert len(selected["neutral_interferences"]) == 2
+    assert selected["neutral_interferences"] == []
 
 
 def test_decoration_budget_is_consistent(selected):

@@ -1,4 +1,13 @@
 {
+ "roll_seat_fix": true,
+ "roll_cradle_z": -21.5,
+ "roll_ear_cut_from_x": 29.0,
+ "tie_slot_fractions": [
+  -0.38,
+  -0.15,
+  0.15,
+  0.38
+ ],
  "camera_default": "esp32cam",
  "clearance_each_side": 0.5,
  "cameras": {
