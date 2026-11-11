@@ -1,0 +1,124 @@
+{
+ "_comment": "Robot presets for the motion study (microduck/variant.py). 'drawn' is the published geometry. Any other preset is a design variant explored in simulation only; it is not the owner's design and no part has been made for it. Plate rectangles are millimetres in the shin frame: x forward from the knee axis, y outboard.",
+ "presets": {
+  "drawn": {
+   "description": "The published geometry, as generated in robot/microduck.xml.",
+   "overrides": {}
+  },
+  "comb_feet": {
+   "description": "Variant: the same robot with new sole plates only. Each sole has a rail under the leg and fingers that reach across the centreline between the fingers of the other sole, so the centre of mass is over either foot alone. Simulation only.",
+   "overrides": {
+    "foot": {
+     "thickness_mm": 5.0,
+     "left_plates": [
+      {
+       "min": [
+        -30,
+        -46.0
+       ],
+       "max": [
+        64,
+        -32.0
+       ]
+      },
+      {
+       "min": [
+        -30,
+        -120.0
+       ],
+       "max": [
+        -16,
+        -46.0
+       ]
+      },
+      {
+       "min": [
+        50,
+        -120.0
+       ],
+       "max": [
+        64,
+        -46.0
+       ]
+      },
+      {
+       "min": [
+        -17,
+        -32.0
+       ],
+       "max": [
+        17,
+        4.0
+       ]
+      }
+     ],
+     "right_plates": [
+      {
+       "min": [
+        -30,
+        -46.0
+       ],
+       "max": [
+        64,
+        -32.0
+       ]
+      },
+      {
+       "min": [
+        10,
+        -120.0
+       ],
+       "max": [
+        24,
+        -46.0
+       ]
+      },
+      {
+       "min": [
+        -17,
+        -32.0
+       ],
+       "max": [
+        17,
+        4.0
+       ]
+      }
+     ]
+    }
+   }
+  },
+  "rocker_feet": {
+   "description": "Rejected alternative: soles 48 mm wide moved inboard, curved across the foot (radius 200 mm, lowest line 26 mm from the centreline), joined to the shin by a raised bridge. Simulation only.",
+   "overrides": {
+    "foot": {
+     "thickness_mm": 3.0,
+     "plates": [
+      {
+       "min": [
+        -28.5,
+        -82.0
+       ],
+       "max": [
+        46.5,
+        -36.0
+       ],
+       "rocker_radius_mm": 200.0,
+       "rocker_centre_y_mm": -60.0
+      },
+      {
+       "min": [
+        -17,
+        -36.0
+       ],
+       "max": [
+        17,
+        4.0
+       ],
+       "raise_mm": 4.0
+      }
+     ]
+    }
+   }
+  }
+ }
+}

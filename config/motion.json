@@ -1,0 +1,28 @@
+{
+  "_comment": "Parameters of the motion study (microduck/motionsim.py, scripts/run_motion.py). 'published' values are the maker's; every 'assumed' value carries the reason it was chosen. None of them has been measured on the robot.",
+  "physics": {
+    "timestep_s": {"value": 0.002, "why": "MuJoCo step; the headline runs are repeated at 0.001 s as a numerical check"},
+    "floor_friction": {"value": 0.6, "why": "assumed: printed PLA sole on a table top, as in the first model; sensitivity is reported from 0.3 to 1.0"},
+    "contact_timeconst_s": {"value": 0.005, "why": "assumed: stiff floor contact (MuJoCo solref); the default 0.02 lets a sole sink about 0.3 mm, which is the size of the clearances measured here"},
+    "transport_delay_ms": {"value": 20, "why": "assumed: one controller tick for a command line to cross the USB or bridge link and be parsed"},
+    "controller_tick_ms": {"value": 20, "why": "the firmware loop (microduck/protocol.py); commands are also rate limited there"},
+    "pwm_latency_ms": {"value": 20, "why": "the servo reads one pulse per 50 Hz frame, so a new target is acted on one frame after the controller sets it"},
+    "pulse_resolution_us": {"value": 1, "why": "the firmware rounds the pulse width to a whole microsecond, 0.09 degrees"},
+    "deadband_deg": {"value": 0.4, "why": "assumed: an 8 microsecond dead band, typical for an analog servo; the maker publishes none"},
+    "backlash_deg": {"value": 1.0, "why": "assumed: total gear play at the horn, typical for a plastic or mixed gear train. The feedback potentiometer is on the output shaft, so play adds to the zone in which the servo does not push back: half of it each side"},
+    "full_torque_error_deg": {"value": 4.0, "why": "assumed in the first model: the servo reaches stall torque this far outside the dead zone"},
+    "flex_nm_per_rad": {"value": {"SR431": 40.0, "SR311": 12.0}, "why": "assumed: series spring between horn and link for the cable-tied case, the plastic horn and the 4 mm plate; about 1.5 degrees at stall torque. Not sensed by the servo"},
+    "flex_damping_nms_per_rad": {"value": {"SR431": 0.02, "SR311": 0.006}, "why": "assumed: light damping of that spring"},
+    "supply_current_a": {"value": 4.0, "why": "published: the Braccio supply is 5 V 4 A. When the estimated current of the six servos exceeds it all torques are scaled down together. Stall currents are assumed (config/hardware.json)"},
+    "relaxed_friction_nm": {"value": 0.02, "why": "assumed in the first model: friction of an unpowered gear train. Rest poses are also checked with zero friction"}
+  },
+  "head": {
+    "_comment": "A point mass added to the torso so results can be rerun when the head end changes. Zero means the torso as generated in robot/microduck.xml.",
+    "extra_mass_g": 0.0,
+    "position_mm": [-25.0, 0.0, 78.0]
+  },
+  "firmware": {
+    "max_speed_deg_s": {"value": 120.0, "why": "the default in config/calibration.json; walk, turn, sit and stand stay inside it"},
+    "jump_max_speed_deg_s": {"value": 430.0, "why": "the jump needs the firmware rate limit raised to the no-load speed of the faster servo; the servo model still limits each joint to its published speed"}
+  }
+}
