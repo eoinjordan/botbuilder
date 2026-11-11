@@ -29,7 +29,8 @@ def test_site_builds_with_data_and_pictures(built, assembly_report):
 
 
 def test_no_stls_are_published(built):
-    assert not list(built.rglob("*.stl"))
+    # Only the published parts under stl/ are copied; the biped's meshes are not.
+    assert not [p for p in built.rglob("*.stl") if p.relative_to(built).parts[0] != "stl"]
     assert json.loads((built / "data" / "model.json").read_text(encoding="utf-8"))["meshes_published"] is False
 
 

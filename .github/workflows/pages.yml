@@ -7,6 +7,7 @@ on:
       - 'site/**'
       - 'reports/**'
       - 'robot/**'
+      - 'stl/**'
       - 'docs/images/**'
       - 'config/hardware.json'
       - 'scripts/build_site.py'

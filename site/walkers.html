@@ -1,0 +1,120 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087f60">
+  <meta name="description" content="Two crank walkers on LEGO motors: printable parts, digital assembly and balance test, MuJoCo simulation.">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./walkers.css">
+  <title>Crank walkers / botbuilder</title>
+  <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">MD</span><span>Microduck <b>walkers</b></span></a>
+    <nav aria-label="Sections">
+      <a href="./">Biped</a><a href="#builds">Builds</a><a href="#viewer">3D view</a><a href="#assembly">Assembly</a><a href="#simulation">Simulation</a><a href="#print">Print</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+    </nav>
+  </header>
+  <main>
+    <div class="title-row">
+      <div><p class="eyebrow">LEGO MOTORS / EV3 BRICK / RASPBERRY PI BUILD HAT</p><h1>Two crank walkers</h1></div>
+      <span class="release-tag">Analysed and simulated</span>
+    </div>
+
+    <section class="status" aria-labelledby="status-heading">
+      <h2 id="status-heading">Status: analysed and simulated only, never assembled</h2>
+      <p>Nothing on this page has been printed, assembled or powered. No controller has run on hardware. The numbers come
+        from the printable files, the makers' published data and a MuJoCo model. Masses and dimensions the makers do not
+        publish are assumed and listed in the report.</p>
+    </section>
+
+    <section id="builds">
+      <div class="section-heading"><span class="step">01</span><h2>The two builds</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/lego-walkers.md" rel="noopener noreferrer">Full report</a></div>
+      <p>One mechanism, two sets of electronics. On each side three axles sit 16 mm apart with a 16-tooth gear on each;
+        the middle gear idles. A 12 mm crank on each outer axle carries the leg on two pins 32 mm apart, so the leg does
+        not rotate: the flat foot stays level and moves on a circle. The legs are half a turn apart and one motor drives
+        each side. One crank turn moves the robot 48 mm.</p>
+      <div class="build-cards" id="build-cards"></div>
+    </section>
+
+    <section id="viewer">
+      <div class="section-heading"><span class="step">02</span><h2>The crank cycle</h2></div>
+      <div class="viewer-layout">
+        <div class="viewer-stage"><canvas id="view" tabindex="0" aria-label="3D view of the walker. Arrow keys turn the view, plus and minus zoom."></canvas><p id="view-note" class="small-note">Loading the printable parts.</p></div>
+        <div class="viewer-controls">
+          <div class="form-actions" role="group" aria-label="Build">
+            <button id="pick-ev3-pixy2" class="primary" type="button" aria-pressed="true">EV3</button>
+            <button id="pick-pi-zero-2w-51515" class="secondary" type="button" aria-pressed="false">Pi Zero 2 W</button>
+          </div>
+          <div class="slider">
+            <label for="phase">Crank phase</label><output id="phase-out">90 deg</output>
+            <input id="phase" type="range" min="0" max="359" step="1" value="90">
+          </div>
+          <div class="form-actions"><button id="play" class="primary" type="button" aria-pressed="false">Play</button><button id="follow" class="secondary" type="button" aria-pressed="true">Walk along the floor</button></div>
+          <dl class="facts" id="phase-facts"></dl>
+          <p class="small-note">The parts are the STLs offered below, placed as in the assembly test. Motors, controller
+            and camera are boxes of their published or assumed size. The motion is the kinematics, not the simulation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="assembly">
+      <div class="section-heading"><span class="step">03</span><h2>Assembly and balance</h2></div>
+      <p>Printed parts, axles, gears, cranks, motors, controller and camera placed as the design's assembly steps say,
+        then checked with exact mesh intersections at rest and at 72 crank phases. Where the steps leave a placement
+        open, one was chosen and is stated in the report.</p>
+      <ul class="findings" id="findings"></ul>
+      <h3>Balance through the cycle</h3>
+      <p>The lower foot carries the robot. It is balanced while the centre of mass is over that foot's outline; the
+        margin is the distance to the nearest edge.</p>
+      <div class="table-wrap"><table id="balance"><thead><tr><th>Build</th><th>Mass (g)</th><th>Smallest margin (mm)</th><th>Tilt that uses it up (deg)</th><th>Centre of mass window, fore and aft (mm)</th><th>Sideways (mm)</th></tr></thead><tbody></tbody></table></div>
+      <p id="brick" class="small-note wide"></p>
+      <div class="gallery" id="assembly-gallery"></div>
+    </section>
+
+    <section id="simulation">
+      <div class="section-heading"><span class="step">04</span><h2>Simulation</h2></div>
+      <p>A MuJoCo model per build generated from the same placements. The crank linkage is a closed loop: a pin
+        constraint at the second crank and a gear constraint between the two cranks of a side. Motors follow LEGO's
+        stall torque and speed figures.</p>
+      <div class="two-col">
+        <ul class="findings" id="sim-findings"></ul>
+        <div class="gallery tight" id="recordings"></div>
+      </div>
+      <h3>Straight ahead</h3>
+      <div class="table-wrap"><table id="forward"><thead><tr><th>Build</th><th>Crank rpm</th><th>Speed (mm/s)</th><th>Slip</th><th>Max tilt (deg)</th><th>Heading change (deg)</th><th>Peak torque (N m)</th><th>Stall (N m)</th></tr></thead><tbody></tbody></table></div>
+      <h3>Limits</h3>
+      <div class="table-wrap"><table id="limits"><thead><tr><th>Build</th><th>Steady up to (mm/s)</th><th>Uphill (deg)</th><th>Downhill (deg)</th><th>Cross slope (deg)</th><th>Step (mm)</th><th>Phase error tolerated (deg)</th><th>Turns</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section id="print">
+      <div class="section-heading"><span class="step">05</span><h2>Print list</h2><a href="https://github.com/eoinjordan/botbuilder/tree/main/stl/lego" rel="noopener noreferrer">Folder</a></div>
+      <p>Print the fit coupon first: a cross axle in the keyed hole, a pin in the 4.95 mm hole, an axle turning freely
+        in the 5.35 mm hole. Millimetres, 100 percent scale. The Pixy2 pan-tilt kit needs <code>camera_head_pantilt</code>
+        in place of <code>camera_head</code>.</p>
+      <div class="table-wrap"><table id="parts"><thead><tr><th>File</th><th>Print</th><th>For</th><th>Volume (cm3)</th><th>Box (mm)</th><th>Size</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section id="control">
+      <div class="section-heading"><span class="step">06</span><h2>Controllers and camera</h2></div>
+      <ul class="plain">
+        <li><b>EV3:</b> a Pybricks sketch, large motors on ports B and C. The EV3 encoders are relative, so the legs are set by hand once (left foot down, right foot up) and the encoders hold the phase from there.</li>
+        <li><b>Raspberry Pi:</b> a <code>buildhat</code> sketch, 51515 motors on Build HAT ports A and B. Their absolute encoders let the program home itself.</li>
+        <li><b>Neither sketch has run on hardware.</b> Both are in <code>walkers/controllers/</code> and are only syntax-checked.</li>
+        <li><b>Pixy2:</b> a standard Pixy2 is the same board as the LEGO edition and needs the LEGO firmware and the EV3 cable for the EV3 blocks. Its hardware bag has no LEGO brackets. The pan-tilt servos are driven by the Pixy2; moving them from the EV3 is not supported by the LEGO firmware and is untested with the stock one.</li>
+        <li><b>Power:</b> the Pi build is designed around the Build HAT's 8 V mains adapter, so it walks on a tether unless a 7.2 to 8.5 V battery is added.</li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <p>Code and the walker parts under the MIT licence. LEGO, Mindstorms and Technic are trademarks of the LEGO Group,
+      which does not sponsor or endorse this. Raspberry Pi is a trademark of Raspberry Pi Ltd. Fonts: Space Grotesk,
+      SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>). No analytics, no cookies.</p>
+  </footer>
+  <script type="module" src="./walkers.js"></script>
+</body>
+</html>

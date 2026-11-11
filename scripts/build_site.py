@@ -26,6 +26,13 @@ DATA = {
     "joints.json": ROOT / "robot" / "joints.json",
     "model.json": ROOT / "robot" / "model.json",
     "hardware.json": ROOT / "config" / "hardware.json",
+    # walkers.html
+    "lego-assembly.json": ROOT / "reports" / "lego" / "assembly.json",
+    "lego-sim.json": ROOT / "reports" / "lego" / "sim.json",
+    "lego-manifest.json": ROOT / "stl" / "lego" / "manifest.json",
+    "lego-model-ev3-pixy2.json": ROOT / "robot" / "lego" / "ev3-pixy2.json",
+    "lego-model-pi-zero-2w-51515.json": ROOT / "robot" / "lego" / "pi-zero-2w-51515.json",
+    "variants-summary.json": ROOT / "reports" / "variants" / "summary.json",
 }
 
 
@@ -53,6 +60,11 @@ def main() -> int:
             shutil.copyfile(picture, images / picture.name)
             count += 1
     (SITE / ".nojekyll").write_text("", encoding="utf-8")
+    # The walkers' printable parts are published; walkers.html links them.
+    for stl in sorted((ROOT / "stl" / "lego").rglob("*.stl")):
+        target = SITE / "stl" / "lego" / stl.relative_to(ROOT / "stl" / "lego")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(stl, target)
     if args.with_meshes:
         source = ROOT / "build" / "stl"
         if not source.is_dir():
