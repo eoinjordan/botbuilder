@@ -108,6 +108,14 @@ def summary(assembly: dict, sim: dict) -> dict:
             "status": "analysed and simulated only; never printed, assembled or powered",
             "docs": "docs/lego-walkers.md", "reports": ["reports/lego/assembly.json", "reports/lego/sim.json"],
         })
+    if (ROOT / "reports" / "wheeled" / "sim.json").is_file():
+        from . import wheeled_report
+        out["entries"] += wheeled_report.summary_entries(*wheeled_report.load())
+        out["wheel_options"] = wheeled_report.WHEEL_KINDS
+        out["locomotion_types"] = ["biped", "crank walker", "wheeled"]
+        out["notes"] = ["The biped entries belong to the biped's own reports; this file covers the crank walkers and the wheeled variants.",
+                        "reports/lego/summary.json was the name first planned for this file; it is reports/variants/summary.json "
+                        "because the wheeled variants include bases that are not LEGO."]
     return out
 
 
@@ -403,6 +411,8 @@ def document(assembly: dict, sim: dict, comp: dict, manifest: dict) -> str:
     add(f"The STLs are in `stl/lego/` with `stl/lego/manifest.json` (purpose, quantity, triangle count, volume, bounding "
         f"box, SHA-256 and the design commit of each): {len(manifest['files'])} files, {manifest['total_bytes'] / 1e6:.2f} MB. "
         f"Print the fit coupon first.")
+    add("")
+    add("The `wheeled` folder belongs to the wheeled variants: see docs/wheeled-variants.md.")
     add("")
     add("| File | Print | Purpose | Volume (cm3) | Box (mm) |")
     add("|---|---|---|---|---|")

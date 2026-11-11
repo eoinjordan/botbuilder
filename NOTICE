@@ -67,7 +67,9 @@ walkers/config/components.json.
 
 LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not
 sponsor or endorse this. Raspberry Pi is a trademark of Raspberry Pi Ltd.
-Pixy2 is a product of Charmed Labs.
+Pixy2 is a product of Charmed Labs. M5Stack is a trademark of M5Stack
+Technology. Sources for the wheeled variants are in
+walkers/config/wheeled.json.
 
 Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. Microduck is
 a design of Pollen Robotics. This project is not affiliated with either.

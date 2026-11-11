@@ -69,6 +69,783 @@
     "reports/lego/assembly.json",
     "reports/lego/sim.json"
    ]
+  },
+  {
+   "id": "ev3-ev3large-wheeled",
+   "base": "LEGO EV3 brick",
+   "locomotion": "wheeled",
+   "drive": "EV3 large motor",
+   "drive_mount": "inside the panels, output hub on the wheel axle, body pointing toward the support",
+   "feedback": "encoder, 1 degree: closed-loop speed",
+   "wheels": [
+    "LEGO",
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "LEGO tyre 44309 on rim 56145 (EV3 31313)",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/ev3-pixy2/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 748.9,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 37.3,
+    "sideways_tilt_to_tip_deg": 26.6
+   },
+   "ground_clearance_mm": 9.6,
+   "top_speed_no_load_m_s": 0.373,
+   "power": "the brick's own cells",
+   "signals": "motor ports B and C",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "ev3-ev3large-lego43-skid-back",
+     "mass_g": 748.9,
+     "static_margin_mm": 37.3,
+     "speed_m_s": 0.303,
+     "max_slope_deg": 24,
+     "max_step_mm": 4,
+     "spin_deg_s": 216.9,
+     "model": "robot/lego/wheeled/ev3-ev3large-lego43-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "ev3-ev3large-lego43-skid-front",
+     "mass_g": 748.9,
+     "static_margin_mm": 35.2,
+     "speed_m_s": 0.284,
+     "max_slope_deg": 14,
+     "max_step_mm": 4,
+     "spin_deg_s": 217.0,
+     "model": "robot/lego/wheeled/ev3-ev3large-lego43-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "ev3-ev3large-lego43-ball-back",
+     "mass_g": 751.7,
+     "static_margin_mm": 37.6,
+     "speed_m_s": 0.298,
+     "max_slope_deg": 24,
+     "max_step_mm": 8,
+     "spin_deg_s": 227.6,
+     "model": "robot/lego/wheeled/ev3-ev3large-lego43-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "ev3-ev3large-lego43-ball-front",
+     "mass_g": 751.7,
+     "static_margin_mm": 35.5,
+     "speed_m_s": 0.298,
+     "max_slope_deg": 18,
+     "max_step_mm": 6,
+     "spin_deg_s": 228.1,
+     "model": "robot/lego/wheeled/ev3-ev3large-lego43-ball-front.xml"
+    }
+   },
+   "controller_sketch": "walkers/controllers/ev3_drive.py",
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
+  },
+  {
+   "id": "pibuildhat-angular-wheeled",
+   "base": "Raspberry Pi Zero 2 W with Build HAT",
+   "locomotion": "wheeled",
+   "drive": "51515 medium angular motor",
+   "drive_mount": "inside the panels, output on the wheel axle, body pointing toward the support",
+   "feedback": "absolute encoder, 360 counts: closed-loop speed",
+   "wheels": [
+    "LEGO",
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "LEGO wheel 39367, 56 x 14 (Robot Inventor 51515)",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/pi-zero-2w-51515/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 502.0,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 34.4,
+    "sideways_tilt_to_tip_deg": 34.4
+   },
+   "ground_clearance_mm": 12.0,
+   "top_speed_no_load_m_s": 0.542,
+   "power": "a 7.2 to 8.5 V battery on the Build HAT's barrel jack (it also powers the Pi), or the 8 V adapter on a tether",
+   "signals": "Build HAT ports A and B",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "pibuildhat-angular-lego56-skid-back",
+     "mass_g": 502.0,
+     "static_margin_mm": 34.4,
+     "speed_m_s": 0.432,
+     "max_slope_deg": 28,
+     "max_step_mm": 8,
+     "spin_deg_s": 334.7,
+     "model": "robot/lego/wheeled/pibuildhat-angular-lego56-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "pibuildhat-angular-lego56-skid-front",
+     "mass_g": 502.0,
+     "static_margin_mm": 34.6,
+     "speed_m_s": 0.431,
+     "max_slope_deg": 12,
+     "max_step_mm": 6,
+     "spin_deg_s": 336.2,
+     "model": "robot/lego/wheeled/pibuildhat-angular-lego56-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "pibuildhat-angular-lego56-ball-back",
+     "mass_g": 504.8,
+     "static_margin_mm": 34.2,
+     "speed_m_s": 0.434,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 353.8,
+     "model": "robot/lego/wheeled/pibuildhat-angular-lego56-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "pibuildhat-angular-lego56-ball-front",
+     "mass_g": 504.8,
+     "static_margin_mm": 34.4,
+     "speed_m_s": 0.434,
+     "max_slope_deg": 16,
+     "max_step_mm": 6,
+     "spin_deg_s": 353.8,
+     "model": "robot/lego/wheeled/pibuildhat-angular-lego56-ball-front.xml"
+    }
+   },
+   "controller_sketch": "walkers/controllers/buildhat_drive.py",
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
+  },
+  {
+   "id": "hub51515-angular-wheeled",
+   "base": "LEGO 51515 hub",
+   "locomotion": "wheeled",
+   "drive": "51515 medium angular motor",
+   "drive_mount": "inside the panels, output on the wheel axle, body pointing toward the support",
+   "feedback": "absolute encoder, 360 counts: closed-loop speed",
+   "wheels": [
+    "LEGO",
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "LEGO wheel 39367, 56 x 14 (Robot Inventor 51515)",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/ev3-pixy2/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 412.0,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 28.6,
+    "sideways_tilt_to_tip_deg": 25.5
+   },
+   "ground_clearance_mm": 12.0,
+   "top_speed_no_load_m_s": 0.542,
+   "power": "the hub's own 7.3 V battery",
+   "signals": "hub ports A and B",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "hub51515-angular-lego56-skid-back",
+     "mass_g": 412.0,
+     "static_margin_mm": 28.6,
+     "speed_m_s": 0.436,
+     "max_slope_deg": 22,
+     "max_step_mm": 8,
+     "spin_deg_s": 347.0,
+     "model": "robot/lego/wheeled/hub51515-angular-lego56-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "hub51515-angular-lego56-skid-front",
+     "mass_g": 412.0,
+     "static_margin_mm": 28.2,
+     "speed_m_s": 0.429,
+     "max_slope_deg": 16,
+     "max_step_mm": 6,
+     "spin_deg_s": 346.9,
+     "model": "robot/lego/wheeled/hub51515-angular-lego56-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "hub51515-angular-lego56-ball-back",
+     "mass_g": 414.8,
+     "static_margin_mm": 29.1,
+     "speed_m_s": 0.434,
+     "max_slope_deg": 22,
+     "max_step_mm": 8,
+     "spin_deg_s": 354.9,
+     "model": "robot/lego/wheeled/hub51515-angular-lego56-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "hub51515-angular-lego56-ball-front",
+     "mass_g": 414.8,
+     "static_margin_mm": 28.7,
+     "speed_m_s": 0.434,
+     "max_slope_deg": 20,
+     "max_step_mm": 6,
+     "spin_deg_s": 355.1,
+     "model": "robot/lego/wheeled/hub51515-angular-lego56-ball-front.xml"
+    }
+   },
+   "controller_sketch": "walkers/controllers/hub51515_drive.py",
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
+  },
+  {
+   "id": "m5basex-ev3large-wheeled",
+   "base": "M5Stack Core with BaseX",
+   "locomotion": "wheeled",
+   "drive": "EV3 large motor",
+   "drive_mount": "inside the panels, output hub on the wheel axle, body pointing toward the support",
+   "feedback": "encoder, 1 degree: closed-loop speed",
+   "wheels": [
+    "LEGO",
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "LEGO tyre 44309 on rim 56145 (EV3 31313)",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/ev3-pixy2/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 522.9,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 37.4,
+    "sideways_tilt_to_tip_deg": 36.3
+   },
+   "ground_clearance_mm": 9.6,
+   "top_speed_no_load_m_s": 0.373,
+   "power": "BaseX needs 9 to 12 V on its jack for the motors; its own 950 mAh cell runs the logic",
+   "signals": "BaseX motor ports 1 and 2 for EV3 motors, or its two servo outputs for the 360-degree servos. Its documentation says nothing about bare DC motors on the motor ports, so the TT motor is not offered here.",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "m5basex-ev3large-lego43-skid-back",
+     "mass_g": 522.9,
+     "static_margin_mm": 37.4,
+     "speed_m_s": 0.301,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 222.9,
+     "model": "robot/lego/wheeled/m5basex-ev3large-lego43-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "m5basex-ev3large-lego43-skid-front",
+     "mass_g": 522.9,
+     "static_margin_mm": 37.6,
+     "speed_m_s": 0.292,
+     "max_slope_deg": 14,
+     "max_step_mm": 4,
+     "spin_deg_s": 223.8,
+     "model": "robot/lego/wheeled/m5basex-ev3large-lego43-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "m5basex-ev3large-lego43-ball-back",
+     "mass_g": 525.6,
+     "static_margin_mm": 37.2,
+     "speed_m_s": 0.298,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 232.0,
+     "model": "robot/lego/wheeled/m5basex-ev3large-lego43-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "m5basex-ev3large-lego43-ball-front",
+     "mass_g": 525.6,
+     "static_margin_mm": 37.4,
+     "speed_m_s": 0.298,
+     "max_slope_deg": 20,
+     "max_step_mm": 4,
+     "spin_deg_s": 231.4,
+     "model": "robot/lego/wheeled/m5basex-ev3large-lego43-ball-front.xml"
+    }
+   },
+   "controller_sketch": null,
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
+  },
+  {
+   "id": "m5basex-servo360-wheeled",
+   "base": "M5Stack Core with BaseX",
+   "locomotion": "wheeled",
+   "drive": "M5Stack 360-degree servo (9 g, as in BALA-C and the Servo Kit 360)",
+   "drive_mount": "printed servo_cradle on the outside of each panel, wheel screwed to the servo's own horn",
+   "feedback": "none: open-loop speed",
+   "wheels": [
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "Printed solid wheel, horn face, 50 x 3 O-ring",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/ev3-pixy2/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 395.3,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 33.9,
+    "sideways_tilt_to_tip_deg": 28.4
+   },
+   "ground_clearance_mm": 16.5,
+   "top_speed_no_load_m_s": 0.248,
+   "power": "BaseX needs 9 to 12 V on its jack for the motors; its own 950 mAh cell runs the logic",
+   "signals": "BaseX motor ports 1 and 2 for EV3 motors, or its two servo outputs for the 360-degree servos. Its documentation says nothing about bare DC motors on the motor ports, so the TT motor is not offered here.",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "m5basex-servo360-solidhornd56-skid-back",
+     "mass_g": 395.3,
+     "static_margin_mm": 33.9,
+     "speed_m_s": 0.236,
+     "max_slope_deg": 26,
+     "max_step_mm": 4,
+     "spin_deg_s": 136.0,
+     "model": "robot/lego/wheeled/m5basex-servo360-solidhornd56-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "m5basex-servo360-solidhornd56-skid-front",
+     "mass_g": 395.3,
+     "static_margin_mm": 33.5,
+     "speed_m_s": 0.236,
+     "max_slope_deg": 14,
+     "max_step_mm": 4,
+     "spin_deg_s": 135.4,
+     "model": "robot/lego/wheeled/m5basex-servo360-solidhornd56-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "m5basex-servo360-solidhornd56-ball-back",
+     "mass_g": 398.0,
+     "static_margin_mm": 34.4,
+     "speed_m_s": 0.239,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 138.9,
+     "model": "robot/lego/wheeled/m5basex-servo360-solidhornd56-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "m5basex-servo360-solidhornd56-ball-front",
+     "mass_g": 398.0,
+     "static_margin_mm": 34.0,
+     "speed_m_s": 0.24,
+     "max_slope_deg": 20,
+     "max_step_mm": 4,
+     "spin_deg_s": 139.0,
+     "model": "robot/lego/wheeled/m5basex-servo360-solidhornd56-ball-front.xml"
+    }
+   },
+   "controller_sketch": null,
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
+  },
+  {
+   "id": "unoq-servo360-wheeled",
+   "base": "Arduino UNO Q",
+   "locomotion": "wheeled",
+   "drive": "M5Stack 360-degree servo (9 g, as in BALA-C and the Servo Kit 360)",
+   "drive_mount": "printed servo_cradle on the outside of each panel, wheel screwed to the servo's own horn",
+   "feedback": "none: open-loop speed",
+   "wheels": [
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "Printed solid wheel, horn face, 50 x 3 O-ring",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/ev3-pixy2/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 456.8,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 37.3,
+    "sideways_tilt_to_tip_deg": 35.4
+   },
+   "ground_clearance_mm": 16.5,
+   "top_speed_no_load_m_s": 0.248,
+   "power": "a 5 V 3 A source for the board and a separate 4.8 to 6 V pack for the wheel drives",
+   "signals": "one servo pulse output per wheel",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "unoq-servo360-solidhornd56-skid-back",
+     "mass_g": 456.8,
+     "static_margin_mm": 37.3,
+     "speed_m_s": 0.234,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 133.5,
+     "model": "robot/lego/wheeled/unoq-servo360-solidhornd56-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "unoq-servo360-solidhornd56-skid-front",
+     "mass_g": 456.8,
+     "static_margin_mm": 36.9,
+     "speed_m_s": 0.234,
+     "max_slope_deg": 14,
+     "max_step_mm": 4,
+     "spin_deg_s": 134.2,
+     "model": "robot/lego/wheeled/unoq-servo360-solidhornd56-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "unoq-servo360-solidhornd56-ball-back",
+     "mass_g": 459.5,
+     "static_margin_mm": 37.7,
+     "speed_m_s": 0.238,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 138.3,
+     "model": "robot/lego/wheeled/unoq-servo360-solidhornd56-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "unoq-servo360-solidhornd56-ball-front",
+     "mass_g": 459.5,
+     "static_margin_mm": 37.4,
+     "speed_m_s": 0.238,
+     "max_slope_deg": 20,
+     "max_step_mm": 4,
+     "spin_deg_s": 138.1,
+     "model": "robot/lego/wheeled/unoq-servo360-solidhornd56-ball-front.xml"
+    }
+   },
+   "controller_sketch": null,
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
+  },
+  {
+   "id": "unoq-tt-wheeled",
+   "base": "Arduino UNO Q",
+   "locomotion": "wheeled",
+   "drive": "Yellow TT gear motor, 1:48",
+   "drive_mount": "printed tt_cradle on the outside of each panel, wheel on the outer shaft",
+   "feedback": "none: open-loop speed (an encoder version exists)",
+   "wheels": [
+    "TT stock",
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "Stock TT wheel, 65 mm",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/ev3-pixy2/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 556.1,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 32.8,
+    "sideways_tilt_to_tip_deg": 31.8
+   },
+   "ground_clearance_mm": 20.5,
+   "top_speed_no_load_m_s": 0.681,
+   "power": "a 5 V 3 A source for the board and a separate 4.8 to 6 V pack for the wheel drives",
+   "signals": "an H-bridge channel per wheel: one PWM and one or two direction lines",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "unoq-tt-tt65-skid-back",
+     "mass_g": 556.1,
+     "static_margin_mm": 32.8,
+     "speed_m_s": 0.593,
+     "max_slope_deg": 28,
+     "max_step_mm": 8,
+     "spin_deg_s": 290.9,
+     "model": "robot/lego/wheeled/unoq-tt-tt65-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "unoq-tt-tt65-skid-front",
+     "mass_g": 556.1,
+     "static_margin_mm": 32.5,
+     "speed_m_s": 0.593,
+     "max_slope_deg": 12,
+     "max_step_mm": 8,
+     "spin_deg_s": 291.3,
+     "model": "robot/lego/wheeled/unoq-tt-tt65-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "unoq-tt-tt65-ball-back",
+     "mass_g": 558.9,
+     "static_margin_mm": 33.2,
+     "speed_m_s": 0.614,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 310.0,
+     "model": "robot/lego/wheeled/unoq-tt-tt65-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "unoq-tt-tt65-ball-front",
+     "mass_g": 558.9,
+     "static_margin_mm": 32.9,
+     "speed_m_s": 0.615,
+     "max_slope_deg": 14,
+     "max_step_mm": 8,
+     "spin_deg_s": 310.4,
+     "model": "robot/lego/wheeled/unoq-tt-tt65-ball-front.xml"
+    }
+   },
+   "controller_sketch": null,
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
+  },
+  {
+   "id": "pi-servo360-wheeled",
+   "base": "Raspberry Pi without a LEGO HAT",
+   "locomotion": "wheeled",
+   "drive": "M5Stack 360-degree servo (9 g, as in BALA-C and the Servo Kit 360)",
+   "drive_mount": "printed servo_cradle on the outside of each panel, wheel screwed to the servo's own horn",
+   "feedback": "none: open-loop speed",
+   "wheels": [
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "Printed solid wheel, horn face, 50 x 3 O-ring",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/pi-zero-2w-51515/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 443.7,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 38.0,
+    "sideways_tilt_to_tip_deg": 36.3
+   },
+   "ground_clearance_mm": 16.5,
+   "top_speed_no_load_m_s": 0.248,
+   "power": "a 5 V source for the Pi and a separate 4.8 to 6 V pack for the wheel drives",
+   "signals": "one servo pulse output per wheel",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "pi-servo360-solidhornd56-skid-back",
+     "mass_g": 443.7,
+     "static_margin_mm": 38.0,
+     "speed_m_s": 0.234,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 133.3,
+     "model": "robot/lego/wheeled/pi-servo360-solidhornd56-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "pi-servo360-solidhornd56-skid-front",
+     "mass_g": 443.7,
+     "static_margin_mm": 37.5,
+     "speed_m_s": 0.234,
+     "max_slope_deg": 14,
+     "max_step_mm": 4,
+     "spin_deg_s": 134.0,
+     "model": "robot/lego/wheeled/pi-servo360-solidhornd56-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "pi-servo360-solidhornd56-ball-back",
+     "mass_g": 446.5,
+     "static_margin_mm": 38.4,
+     "speed_m_s": 0.238,
+     "max_slope_deg": 28,
+     "max_step_mm": 4,
+     "spin_deg_s": 137.9,
+     "model": "robot/lego/wheeled/pi-servo360-solidhornd56-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "pi-servo360-solidhornd56-ball-front",
+     "mass_g": 446.5,
+     "static_margin_mm": 38.0,
+     "speed_m_s": 0.238,
+     "max_slope_deg": 20,
+     "max_step_mm": 4,
+     "spin_deg_s": 138.3,
+     "model": "robot/lego/wheeled/pi-servo360-solidhornd56-ball-front.xml"
+    }
+   },
+   "controller_sketch": "walkers/controllers/pi_servo_drive.py, walkers/controllers/pi_tt_drive.py",
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
+  },
+  {
+   "id": "pi-tt-wheeled",
+   "base": "Raspberry Pi without a LEGO HAT",
+   "locomotion": "wheeled",
+   "drive": "Yellow TT gear motor, 1:48",
+   "drive_mount": "printed tt_cradle on the outside of each panel, wheel on the outer shaft",
+   "feedback": "none: open-loop speed (an encoder version exists)",
+   "wheels": [
+    "TT stock",
+    "printed solid with O-ring or band",
+    "printed hub with TPU tyre"
+   ],
+   "default_wheel": "Stock TT wheel, 65 mm",
+   "third_support": [
+    "drag skid",
+    "ball in a printed cup",
+    "printed idler (analysed for drag only)"
+   ],
+   "wheels_at": [
+    "back",
+    "front"
+   ],
+   "recommended_wheels_at": "back",
+   "chassis": "stl/lego/pi-zero-2w-51515/chassis.stl",
+   "extra_printed_parts": "stl/lego/wheeled/",
+   "mass_g": 543.1,
+   "balance": {
+    "verdict": "centre of mass inside the wheel and support triangle",
+    "static_margin_mm": 33.3,
+    "sideways_tilt_to_tip_deg": 32.4
+   },
+   "ground_clearance_mm": 20.5,
+   "top_speed_no_load_m_s": 0.681,
+   "power": "a 5 V source for the Pi and a separate 4.8 to 6 V pack for the wheel drives",
+   "signals": "an H-bridge channel per wheel: one PWM and one or two direction lines",
+   "options": {
+    "skid, wheels at the back": {
+     "id": "pi-tt-tt65-skid-back",
+     "mass_g": 543.1,
+     "static_margin_mm": 33.3,
+     "speed_m_s": 0.593,
+     "max_slope_deg": 28,
+     "max_step_mm": 8,
+     "spin_deg_s": 291.7,
+     "model": "robot/lego/wheeled/pi-tt-tt65-skid-back.xml"
+    },
+    "skid, wheels at the front": {
+     "id": "pi-tt-tt65-skid-front",
+     "mass_g": 543.1,
+     "static_margin_mm": 32.9,
+     "speed_m_s": 0.594,
+     "max_slope_deg": 12,
+     "max_step_mm": 8,
+     "spin_deg_s": 292.4,
+     "model": "robot/lego/wheeled/pi-tt-tt65-skid-front.xml"
+    },
+    "ball, wheels at the back": {
+     "id": "pi-tt-tt65-ball-back",
+     "mass_g": 545.8,
+     "static_margin_mm": 33.6,
+     "speed_m_s": 0.615,
+     "max_slope_deg": 26,
+     "max_step_mm": 4,
+     "spin_deg_s": 310.7,
+     "model": "robot/lego/wheeled/pi-tt-tt65-ball-back.xml"
+    },
+    "ball, wheels at the front": {
+     "id": "pi-tt-tt65-ball-front",
+     "mass_g": 545.8,
+     "static_margin_mm": 33.3,
+     "speed_m_s": 0.615,
+     "max_slope_deg": 14,
+     "max_step_mm": 8,
+     "spin_deg_s": 311.0,
+     "model": "robot/lego/wheeled/pi-tt-tt65-ball-front.xml"
+    }
+   },
+   "controller_sketch": "walkers/controllers/pi_servo_drive.py, walkers/controllers/pi_tt_drive.py",
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/wheeled-variants.md",
+   "reports": [
+    "reports/wheeled/analysis.json",
+    "reports/wheeled/sim.json"
+   ]
   }
+ ],
+ "wheel_options": [
+  "LEGO",
+  "TT stock",
+  "printed solid with O-ring or band",
+  "printed hub with TPU tyre"
+ ],
+ "locomotion_types": [
+  "biped",
+  "crank walker",
+  "wheeled"
+ ],
+ "notes": [
+  "The biped entries belong to the biped's own reports; this file covers the crank walkers and the wheeled variants.",
+  "reports/lego/summary.json was the name first planned for this file; it is reports/variants/summary.json because the wheeled variants include bases that are not LEGO."
  ]
 }

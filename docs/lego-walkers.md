@@ -431,7 +431,9 @@ Both are documentation with code: syntax-checked by the tests, never run on hard
 
 ## Printing
 
-The STLs are in `stl/lego/` with `stl/lego/manifest.json` (purpose, quantity, triangle count, volume, bounding box, SHA-256 and the design commit of each): 15 files, 5.12 MB. Print the fit coupon first.
+The STLs are in `stl/lego/` with `stl/lego/manifest.json` (purpose, quantity, triangle count, volume, bounding box, SHA-256 and the design commit of each): 47 files, 8.07 MB. Print the fit coupon first.
+
+The `wheeled` folder belongs to the wheeled variants: see docs/wheeled-variants.md.
 
 | File | Print | Purpose | Volume (cm3) | Box (mm) |
 |---|---|---|---|---|
@@ -450,6 +452,38 @@ The STLs are in `stl/lego/` with `stl/lego/manifest.json` (purpose, quantity, tr
 | `pi-zero-2w-51515/crank_print_4.stl` | 4 | crank, 12 mm radius, cross-axle bore and pin bore | 1.725 | 24 x 12 x 7.8 |
 | `pi-zero-2w-51515/gear_16t_print_6.stl` | 6 | 16-tooth module 1 spur gear, 5 mm thick, cross-axle bore | 0.854 | 17.79 x 17.79 x 5 |
 | `pi-zero-2w-51515/fit_coupon.stl` | 1 | fit test: cross-axle hole, 4.95 mm pin hole, 5.35 mm bearing hole; print first | 3.291 | 40 x 12 x 7.8 |
+| `wheeled/post_d43.stl` | 1 | support post for the 43.2 mm wheel class: two pins up into the shelf holes, socket for a tip | 5.52 | 16 x 24 x 35.6 |
+| `wheeled/post_d56.stl` | 1 | support post for the 56 mm wheel class: two pins up into the shelf holes, socket for a tip | 6.441 | 16 x 24 x 42 |
+| `wheeled/post_d65.stl` | 1 | support post for the 65 mm wheel class: two pins up into the shelf holes, socket for a tip | 7.089 | 16 x 24 x 46.5 |
+| `wheeled/tip_skid.stl` | 1 | drag skid tip for the support post | 4.277 | 25.29 x 25.29 x 29.99 |
+| `wheeled/tip_ball_16p5.stl` | 1 | snap-in cup tip for a LEGO 16.5 mm ball (part 54821) | 5.314 | 21.7 x 21.7 x 24.21 |
+| `wheeled/tip_ball_12p7.stl` | 1 | snap-in cup tip for a 12.7 mm steel ball | 4.466 | 17.9 x 17.9 x 25.54 |
+| `wheeled/tip_idler_fork.stl` | 1 | fork tip carrying the printed idler on a Technic axle | 2.128 | 12 x 15 x 25.49 |
+| `wheeled/idler_hub.stl` | 1 | hub of the 19 mm idler, free on a Technic axle | 1.12 | 16 x 16 x 8 |
+| `wheeled/idler_tyre_tpu.stl` | 1 | tyre of the idler | 0.233 | 19 x 19 x 3.2 |
+| `wheeled/wheel_solid_cross_d43.stl` | 2 | one-piece wheel, Technic cross-axle bore; one 38 x 3 mm O-ring, rolls on 44.8 mm | 10.924 | 42.76 x 42.76 x 14 |
+| `wheeled/wheel_band_cross_d43.stl` | 2 | one-piece wheel, Technic cross-axle bore; groove 7 mm wide for a rubber band up to 6 mm wide | 9.625 | 42.2 x 42.2 x 14 |
+| `wheeled/hub_tpu_cross_d43.stl` | 2 | rigid hub for the TPU tyre, Technic cross-axle bore | 8.014 | 37.2 x 37.2 x 14 |
+| `wheeled/wheel_solid_cross_d56.stl` | 2 | one-piece wheel, Technic cross-axle bore; one 50 x 3 mm O-ring, rolls on 57.0 mm | 15.517 | 55 x 55 x 14 |
+| `wheeled/wheel_band_cross_d56.stl` | 2 | one-piece wheel, Technic cross-axle bore; groove 7 mm wide for a rubber band up to 6 mm wide | 13.956 | 55 x 55 x 14 |
+| `wheeled/hub_tpu_cross_d56.stl` | 2 | rigid hub for the TPU tyre, Technic cross-axle bore | 11.984 | 50 x 50 x 14 |
+| `wheeled/wheel_solid_tt_d65.stl` | 2 | one-piece wheel, TT double-flat shaft bore with retaining screw; two 58 x 3 mm O-rings, rolls on 65.2 mm | 22.082 | 63.16 x 63.16 x 18 |
+| `wheeled/wheel_band_tt_d65.stl` | 2 | one-piece wheel, TT double-flat shaft bore with retaining screw; groove 7 mm wide for a rubber band up to 6 mm wide | 21.276 | 64 x 64 x 18 |
+| `wheeled/hub_tpu_tt_d65.stl` | 2 | rigid hub for the TPU tyre, TT double-flat shaft bore with retaining screw | 18.491 | 59 x 59 x 18 |
+| `wheeled/wheel_solid_horn_d56.stl` | 2 | one-piece wheel, plain face to screw to a servo horn; one 50 x 3 mm O-ring, rolls on 57.0 mm | 17.848 | 55 x 55 x 14 |
+| `wheeled/wheel_band_horn_d56.stl` | 2 | one-piece wheel, plain face to screw to a servo horn; groove 7 mm wide for a rubber band up to 6 mm wide | 16.288 | 55 x 55 x 14 |
+| `wheeled/hub_tpu_horn_d56.stl` | 2 | rigid hub for the TPU tyre, plain face to screw to a servo horn | 14.316 | 50 x 50 x 14 |
+| `wheeled/tyre_tpu_d43.stl` | 2 | tyre, 43.2 mm outside, 4 mm thick, 2 percent stretch, keyed | 4.305 | 43.2 x 43.2 x 9.2 |
+| `wheeled/tyre_tpu_d56.stl` | 2 | tyre, 56 mm outside, 4 mm thick, 2 percent stretch, keyed | 6.088 | 56 x 56 x 9.2 |
+| `wheeled/tyre_tpu_d65.stl` | 2 | tyre, 65 mm outside, 4 mm thick, 2 percent stretch, keyed | 10.615 | 65 x 65 x 13.2 |
+| `wheeled/tt_cradle_print_2.stl` | 2 | cradle for a yellow TT gear motor on the outside of a side panel; hole pattern assumed | 12.447 | 60 x 24 x 9.5 |
+| `wheeled/servo_cradle_print_2.stl` | 2 | cradle for a 9 g 360-degree servo on the outside of a side panel; window size assumed | 12.876 | 48 x 24 x 16.5 |
+| `wheeled/driver_plate.stl` | 1 | generic slotted plate for a small motor driver board | 7.875 | 64 x 40 x 7.8 |
+| `wheeled/fit_bore_cross.stl` | 1 | fit test: cross-axle wheel bore | 1.107 | 16 x 16 x 6 |
+| `wheeled/fit_bore_tt.stl` | 1 | fit test: TT double-flat shaft pocket and screw hole | 2.177 | 16 x 16 x 12 |
+| `wheeled/fit_bore_horn.stl` | 1 | fit test: horn face centre hole | 1.224 | 24 x 24 x 3 |
+| `wheeled/fit_tt_cradle.stl` | 1 | fit test: TT motor hole pattern, 2 mm slice of the cradle | 2.62 | 60 x 24 x 2 |
+| `wheeled/fit_servo_cradle.stl` | 1 | fit test: servo window and ear holes, 2 mm slice of the cradle | 1.555 | 48 x 24 x 2 |
 
 The legs, soles, neck and head outlines started from the convex outlines of meshes in the same Microduck part pack as the biped's plates (see NOTICE). Those meshes are not in this repository.
 

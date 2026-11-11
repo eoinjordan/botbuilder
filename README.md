@@ -115,6 +115,11 @@ one for a Raspberry Pi Zero 2 W with the Build HAT: printable parts in
 crank gait and controller sketches, all under `walkers/`. Analysed and
 simulated only; never assembled. Report: [docs/lego-walkers.md](docs/lego-walkers.md).
 
+A wheeled variant of every controller base uses the same chassis: two driven
+wheels (LEGO motors, 360-degree servos or yellow TT motors), a skid or ball,
+printed wheels with an O-ring groove or a TPU tyre. Also analysed and
+simulated only: [docs/wheeled-variants.md](docs/wheeled-variants.md).
+
 ## Layout
 
 | Path | What |
