@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#087f60">
   <meta name="description" content="Build the SSH commands that install and flash the Microduck Braccio App Lab app on an Arduino UNO Q.">
   <link rel="stylesheet" href="./style.css">
-  <title>Microduck Braccio / flash</title>
+  <title>Flash / Botbuilder</title>
   <style>
     select { font: inherit; }
     main p, main li, main label, main span { overflow-wrap: anywhere; min-width: 0; }
@@ -28,9 +28,10 @@
 </head>
 <body>
   <header class="masthead">
-    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">MD</span><span>Microduck <b>Braccio</b></span></a>
-    <nav>
-      <a href="./">Overview</a><a href="./flash.html" aria-current="page">Flash</a><a href="./control.html">Control</a>
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <nav id="site-nav">
+      <a href="./">Build yours</a><a href="./biped.html">Biped</a>
+      <a href="./walkers.html" data-page="walkers.html" hidden>Walkers and wheels</a><a href="./flash.html" data-page="flash.html" hidden aria-current="page">Flash</a><a href="./control.html" data-page="control.html" hidden>Control</a>
       <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
     </nav>
   </header>
@@ -64,6 +65,7 @@
       <p id="base-note"></p>
       <p id="base-detail" class="small-note" style="margin-left:0"></p>
       <p id="unoq-link" hidden><a href="./flash.html">Show the steps for the Arduino UNO Q</a></p>
+      <p class="small-note" style="margin-left:0">Chosen in <a id="back-link" href="./">Build yours</a>, the configurator. Its recipes can link here with the controller in the address.</p>
       <form id="flash-form">
         <div class="fields">
           <label>UNO Q address<input id="host" type="text" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="off" placeholder="unoq.local or 192.168.1.42"></label>
@@ -84,7 +86,7 @@
       <div class="section-heading"><span class="step">03</span><h2 id="check-heading">After the flash</h2></div>
       <p>The status command is the line <code>S</code> on the agent's port 8766. A freshly flashed board answers with its
         mode, the age of the last command, the watchdog time and the six commanded joint angles at the stand pose:</p>
-      <pre tabindex="0" id="expected">STAT mode=RELAX age_ms=1234 wd=500 q=0.0,45.0,-45.0,0.0,45.0,-45.0</pre>
+      <pre tabindex="0" id="expected">STAT mode=RELAX age_ms=1234 wd=500 q=0.0,42.0,-42.0,0.0,42.0,-42.0</pre>
       <ul class="plain">
         <li><code>mode=RELAX</code>: no pulses. It stays that way until an <code>E</code> line.</li>
         <li><code>age_ms</code> is the time since the last joint command; on a fresh board, the time since boot.</li>
@@ -107,7 +109,7 @@
           <tr><td>M5Stack</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
         </tbody>
       </table></div>
-      <p class="small-note" style="margin-left:0">A link may carry the selection, for example <code>flash.html?base=unoq</code>. For a controller without
+      <p class="small-note" style="margin-left:0">A link may carry the selection, for example <code>flash.html?base=unoq_braccio</code>. For a controller without
         steps this page says so and shows no command.</p>
     </section>
   </main>
@@ -115,6 +117,7 @@
     <p>Code under the MIT licence. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
       No analytics, no cookies, no network requests from this page.</p>
   </footer>
+  <script type="module" src="./nav.js"></script>
   <script type="module" src="./flash.js"></script>
 </body>
 </html>

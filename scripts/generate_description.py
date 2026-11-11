@@ -11,7 +11,7 @@ from microduck import describe, firmware_table, model  # noqa: E402
 
 if __name__ == "__main__":
     if not model.have_stls():
-        sys.exit("STLs not found in build/stl: run scripts/fetch_stls.py first")
+        sys.exit("STLs not found in stl: run scripts/fetch_stls.py first")
     result = describe.generate()
     print("collision boxes per link:", result["boxes"])
     print("stand pose (deg):", result["table"]["stand_pose_deg"])

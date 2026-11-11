@@ -17,7 +17,7 @@ manifold3d, mujoco, pillow and pytest.
 
 | Input | What it holds |
 |---|---|
-| the design directory's `stl/` | the seven printable STLs and three fit pieces (not in this repository) |
+| the design directory's `stl/` | the printable STLs, the fit pieces and `parameters.json`, as its `build.py` wrote them; copied into `stl/` here |
 | `config/hardware.json` | servo, board and print data: published values with their source, assumed values with the reason |
 | `config/assembly.json` | placement choices the design does not state; sweep step, limit margin |
 | `config/calibration.json` | shield channel, pin, zero and direction per servo; speed limit; watchdog |
@@ -34,14 +34,16 @@ The design directory defaults to `$MICRODUCK_DESIGN_DIR`, then to
 
 | Step | Reads | Writes |
 |---|---|---|
-| `scripts/fetch_stls.py` | design directory | `build/stl/` (ignored by git) |
-| `scripts/run_assembly.py` | `build/stl`, `config/hardware.json`, `config/assembly.json` | `reports/assembly.json`, `docs/assembly.md`, `docs/images/*.png` |
-| `scripts/generate_description.py` | `build/stl`, `reports/assembly.json`, `config/calibration.json` | `robot/microduck.urdf`, `robot/microduck.xml`, `robot/joints.json`, `robot/model.json`, `app_lab/microduck_agent/sketch/DuckTable.h`, `build/microduck_visual.xml` |
+| `scripts/fetch_stls.py` | design directory | `stl/*.stl`, `stl/parameters.json`, `stl/manifest.json` |
+| `scripts/run_assembly.py` | `stl`, `config/hardware.json`, `config/assembly.json` | `reports/assembly.json`, `docs/assembly.md`, `docs/images/*.png` |
+| `scripts/generate_description.py` | `stl`, `reports/assembly.json`, `config/calibration.json` | `robot/microduck.urdf`, `robot/microduck.xml`, `robot/joints.json`, `robot/model.json`, `app_lab/microduck_agent/sketch/DuckTable.h`, `build/microduck_visual.xml` |
 | `scripts/run_sim.py` | `robot/`, `config/gait.json`, `config/calibration.json` | `reports/sim.json`, `docs/simulation.md`, `trajectories/*.csv`, `docs/images/sim-*.gif` |
-| `scripts/build_site.py` | `reports/`, `robot/`, `docs/images/`, `config/hardware.json` | `site/data/`, `site/images/` (ignored by git; the Pages workflow runs this) |
+| `scripts/build_site.py` | `reports/`, `robot/`, `docs/images/`, `stl/`, `config/hardware.json` | `site/data/`, `site/images/`, `site/stl/` (ignored by git; the Pages workflow runs this) |
 
-Only the first three steps need the STLs. `run_sim.py`, `build_site.py` and
-most of the tests run from what is committed.
+Run the design's `build.py` and commit there first: the manifest records the
+design commit the STLs came from, and a test refuses a manifest made from
+uncommitted design changes. Without a design directory `fetch_stls.py` keeps
+the committed `stl/`, so the other steps run from a plain checkout.
 
 The outputs are deterministic on one machine: regenerating without changing
 an input leaves `git status` clean. The tests check that the committed
@@ -51,7 +53,7 @@ description and firmware table match what the generator writes.
 
     python -m pytest
 
-Tests that need the STLs skip when `build/stl` is empty. The firmware control
+The firmware control
 core is compiled with the host `g++` or `clang++` if there is one.
 
 ## Previewing the site
@@ -59,6 +61,4 @@ core is compiled with the host `g++` or `clang++` if there is one.
     python scripts/build_site.py
     python -m http.server --directory site 8000
 
-Add `--with-meshes` to `build_site.py` to see the real part shapes in the 3D
-view on your own machine. Do not publish a site built that way while the
-licence of the source meshes is open (see NOTICE).
+The site serves the STLs from `stl/` as downloads and uses them in the 3D view.

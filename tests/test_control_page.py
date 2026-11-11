@@ -25,7 +25,7 @@ from conftest import ROOT
 from test_control import bridge  # noqa: F401  (fixture)
 
 SITE = ROOT / "site"
-STAND = [0.0, 45.0, -45.0, 0.0, 45.0, -45.0]
+STAND = [float(v) for v in __import__("json").loads((ROOT / "robot" / "joints.json").read_text(encoding="utf-8"))["stand_pose_deg"].values()]
 
 
 def find_chrome():
@@ -40,7 +40,7 @@ class Browser:
     def __init__(self, chrome: str, profile: Path):
         from websockets.sync.client import connect
         self.process = subprocess.Popen(
-            [chrome, "--headless=new", "--remote-debugging-port=0", f"--user-data-dir={profile}", "--no-first-run",
+            [chrome, "--headless=new", *(["--no-sandbox"] if sys.platform.startswith("linux") else []), "--remote-debugging-port=0", f"--user-data-dir={profile}", "--no-first-run",
              "--no-default-browser-check", "--disable-extensions", "--enable-unsafe-swiftshader", "--window-size=1280,900",
              "about:blank"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         port_file = profile / "DevToolsActivePort"
@@ -143,7 +143,10 @@ def browser(tmp_path_factory):
     if not chrome:
         pytest.skip("no installed Chrome or Chromium")
     pytest.importorskip("websockets", reason="the websockets package is not installed")
-    instance = Browser(chrome, tmp_path_factory.mktemp("chrome-profile"))
+    try:
+        instance = Browser(chrome, tmp_path_factory.mktemp("chrome-profile"))
+    except (RuntimeError, OSError) as error:
+        pytest.skip(f"Chrome did not start headless here: {error}")
     yield instance
     instance.close()
     time.sleep(0.5)
@@ -163,7 +166,7 @@ def test_control_page_in_simulator_target_with_a_synthetic_gamepad(browser, site
 
     # what is missing is disabled and says why
     actions = browser.js("document.getElementById('actions').textContent")
-    for reason in ("Sit: no sit trajectory", "Jump (hold): no jump trajectory", "Head pan and tilt: the head is fixed", "Turn: "):
+    for reason in ("Sit: no sit trajectory", "Jump (hold): no jump trajectory", "Head pan and tilt: ", "Turn: "):
         assert reason in actions, reason
     assert browser.js("document.querySelector('[data-hold=sit]').disabled && document.querySelector('[data-hold=jump]').disabled")
     assert browser.js("document.querySelector('[data-hold=sit]').title").startswith("no sit trajectory")

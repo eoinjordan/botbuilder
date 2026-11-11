@@ -258,7 +258,7 @@ def test_moves_need_the_token_and_a_held_enable(cal):
             app.joints(body)
     assert len(link.lines) == sent
     assert app.joints({"token": token, "held": True, "q": cal.stand_deg, "motion": "walk"})["reply"] == "OK"
-    assert link.lines[-1] == "J 0.0 45.0 -45.0 0.0 45.0 -45.0"
+    assert link.lines[-1] == protocol.format_joints(cal.stand_deg).strip()
 
 
 def test_moves_are_validated_clamped_and_rate_limited(cal):

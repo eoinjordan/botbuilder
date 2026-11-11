@@ -118,7 +118,7 @@ def test_commands_match_the_manual_steps_in_the_document(tmp_path):
 
 def test_post_flash_reply_is_what_the_protocol_answers():
     reply = protocol.Controller(protocol.load_calibration()).handle("S", 1234)
-    assert reply == "STAT mode=RELAX age_ms=1234 wd=500 q=0.0,45.0,-45.0,0.0,45.0,-45.0"
+    assert reply == "STAT mode=RELAX age_ms=1234 wd=500 q=0.0,42.0,-42.0,0.0,42.0,-42.0"
     assert reply in (ROOT / "docs" / "flash.md").read_text(encoding="utf-8")
     assert reply in (ROOT / "site" / "flash.html").read_text(encoding="utf-8")
 
@@ -186,3 +186,17 @@ def test_hostile_input_never_reaches_a_plan(tmp_path):
             plans[f"{field}-{index}"] = {"host": "unoq.local", field: text}
     out = dump(tmp_path, {"plans": plans})["plans"]
     assert all("error" in plan and "steps" not in plan for plan in out.values())
+
+
+@needs_node
+def test_every_configurator_base_resolves(tmp_path):
+    """config/bases.json ids, as a recipe link would pass them in ?base=."""
+    path = ROOT / "config" / "bases.json"
+    if not path.is_file():
+        pytest.skip("no config/bases.json on this branch")
+    bases = list(json.loads(path.read_text(encoding="utf-8"))["bases"])
+    out = dump(tmp_path, {"plans": {base: {"base": base, "host": "unoq.local"} for base in bases}})["plans"]
+    assert {base: plan["base"]["key"] for base, plan in out.items()} == {
+        "unoq_braccio": "unoq", "pi_servo": "raspberrypi", "hub51515": "lego", "ev3": "lego", "m5_basex_ev3": "m5stack",
+        "pi_buildhat_51515": "raspberrypi"}
+    assert [base for base, plan in out.items() if plan["written"]] == ["unoq_braccio"]

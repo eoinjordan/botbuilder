@@ -29,8 +29,11 @@ from manifold3d import Manifold, Mesh
 ROOT = Path(__file__).resolve().parents[1]
 JOINTS = ["left_hip_roll", "left_hip_pitch", "left_knee",
           "right_hip_roll", "right_hip_pitch", "right_knee"]
+CAMERAS = ("esp32cam", "esp_eye", "esp32_s3_eye")
+with open(ROOT / "config" / "assembly.json", encoding="utf-8") as _handle:
+    CAMERA = json.load(_handle)["camera"]["preset"]
 PART_FILES = {
-    "torso": "01_torso_unoq_fixed_head.stl",
+    "torso": f"01_torso_unoq_cam_{CAMERA}.stl",
     "left_yoke": "left_hip_roll_pitch_yoke.stl",
     "right_yoke": "right_hip_roll_pitch_yoke.stl",
     "left_thigh": "left_thigh_knee_cradle.stl",
@@ -38,9 +41,13 @@ PART_FILES = {
     "left_shin": "left_shin_fixed_foot.stl",
     "right_shin": "right_shin_fixed_foot.stl",
 }
-FIT_FILES = {"SR431": "fit_SR431.stl", "SR311": "fit_SR311.stl", "horn": "fit_horn_drill_blank.stl"}
+FIT_FILES = {"SR431": "fit_SR431.stl", "SR311": "fit_SR311.stl", "horn": "fit_horn_drill_blank.stl",
+             "lego_compatible_coupon": "fit_lego_compatible_coupon.stl",
+             **{"cam_" + name: f"fit_cam_{name}.stl" for name in CAMERAS}}
+# Torsos for the camera presets the assembly does not use.
+OTHER_FILES = [f"01_torso_unoq_cam_{name}.stl" for name in CAMERAS]
 COLORS = {"print": (236, 205, 120), "servo": (60, 66, 74), "horn": (225, 228, 230),
-          "board": (20, 120, 110), "shield": (40, 90, 160)}
+          "board": (20, 120, 110), "shield": (40, 90, 160), "camera": (150, 40, 60)}
 # From build.py: cradle plate thickness, torso cradle position, yoke cradle
 # position, thigh cradle position, knee axis height in the shin, blank thickness.
 PLATE = 4.0
@@ -61,8 +68,14 @@ def load_json(name: str) -> dict:
 
 
 def stl_dir() -> Path:
-    """Where the seven printable STLs are read from (never committed)."""
-    return Path(os.environ.get("MICRODUCK_STL_DIR", ROOT / "build" / "stl"))
+    """Where the printable STLs are read from: the committed stl/ directory."""
+    return Path(os.environ.get("MICRODUCK_STL_DIR", ROOT / "stl"))
+
+
+def design_parameters() -> dict:
+    """What the generator recorded about the parts it made."""
+    with open(stl_dir() / "parameters.json", encoding="utf-8") as handle:
+        return json.load(handle)
 
 
 def have_stls() -> bool:
@@ -117,8 +130,10 @@ def trimesh_from_manifold(solid: Manifold) -> trimesh.Trimesh:
     return trimesh.Trimesh(np.asarray(mesh.vert_properties)[:, :3], np.asarray(mesh.tri_verts), process=False)
 
 
-def load_part(name: str) -> Manifold:
+def load_part(name: str, camera: str | None = None) -> Manifold:
     files = {**PART_FILES, **{"fit_" + k: v for k, v in FIT_FILES.items()}}
+    if name == "torso" and camera:
+        files["torso"] = f"01_torso_unoq_cam_{camera}.stl"
     return manifold_from_trimesh(trimesh.load_mesh(stl_dir() / files[name]))
 
 
@@ -173,6 +188,49 @@ def servo_in_cradle(flip: bool, slide: float = 0.0) -> np.ndarray:
     return trans(slide, 0, PLATE) @ rot([0, 0, 1], 180.0 if flip else 0.0)
 
 
+# --- camera -----------------------------------------------------------------
+
+def camera_spec(name: str, hardware: dict) -> dict:
+    """Outline, mass and lens position of a camera preset. A value the maker
+    publishes wins over an assumed one."""
+    spec = hardware["cameras"][name]
+    values = {k: v["value"] for k, v in spec["assumed"].items()}
+    values.update(spec["published"])
+    return {"name": spec["name"], "width": values["width_mm"], "length": values["length_mm"],
+            "thickness": values["pcb_thickness_mm"], "mass_g": values["mass_g"],
+            "lens_v": values["lens_centre_above_lower_edge_mm"], "lens_standoff": values["lens_front_above_board_mm"],
+            "lens_diameter": values["lens_diameter_mm"]}
+
+
+def camera_pose(spec: dict, mount: dict) -> dict:
+    """Board and lens in the torso frame, from the mount parameters build.py
+    uses: the back face of the board stands at back_x and its lower edge at
+    base_z, then the mount is turned nose down by tilt about (back_x, deck top)."""
+    a = np.radians(mount["tilt_deg"])
+    forward = np.array([np.cos(a), 0.0, -np.sin(a)])
+    up = np.array([np.sin(a), 0.0, np.cos(a)])
+    origin = np.array([mount["back_x_mm"], 0.0, PLATE]) + up * (mount["base_z_mm"] - PLATE)
+    lens = origin + up * spec["lens_v"] + forward * (spec["thickness"] + spec["lens_standoff"])
+    return {"origin": origin, "forward": forward, "up": up, "lens": lens,
+            "to_torso": frame(forward, [0.0, 1.0, 0.0], up, origin)}
+
+
+def camera_solid(spec: dict, pose: dict) -> Manifold:
+    """PCB and lens barrel. Local frame: x out of the camera face, y to the
+    left of the robot, z up the board from its lower edge; origin on the back face."""
+    w, l, t = spec["width"], spec["length"], spec["thickness"]
+    lens = (Manifold.cylinder(spec["lens_standoff"], spec["lens_diameter"] / 2, spec["lens_diameter"] / 2, 32)
+            .rotate([0, 90, 0]).translate([t, 0, spec["lens_v"]]))
+    return apply(box([0, -w / 2, 0], [t, w / 2, l]) + lens, pose["to_torso"])
+
+
+def view_cone(pose: dict, half_angle_deg: float, length: float = 400.0) -> Manifold:
+    """The cone kept clear in front of the lens, apex at the lens front."""
+    r = length * np.tan(np.radians(half_angle_deg))
+    cone = Manifold.cylinder(length, 0.0, r, 64).rotate([0, 90, 0])
+    return apply(cone, frame(pose["forward"], [0.0, 1.0, 0.0], pose["up"], pose["lens"]))
+
+
 # --- robot ------------------------------------------------------------------
 
 @dataclass
@@ -214,6 +272,7 @@ class Robot:
     assumptions: dict
     hardware: dict
     envelope: Manifold | None = None    # plug clearance volume above the shield, torso frame
+    camera: dict | None = None          # preset, spec and pose of the camera board
 
     def subtree(self, link: str) -> list:
         names = [link]
@@ -262,7 +321,7 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
     def printed(name: str, part: str, to_link: np.ndarray) -> Solid:
         if not load_meshes:
             return Solid(name, "print", Manifold(), 0.0, part, to_link)
-        raw = load_part(part)
+        raw = load_part(part, assembly["camera"]["preset"])
         mass = raw.volume() / 1000.0 * printing["density_g_cm3"] * printing["solid_fraction"]
         return Solid(name, "print", apply(raw, to_link), mass, part, to_link)
 
@@ -286,6 +345,14 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
                               box([bx - half[0], -half[1], zs], [bx + half[0], half[1], zs + ba["pcb_thickness_mm"]]),
                               sa["mass_g"]))
     envelope = box([bx - half[0], -half[1], z1], [bx + half[0], half[1], z1 + sa["stack_height_mm"]])
+
+    # Camera board in the mount at the front edge of the deck.
+    mount = assembly["camera"]
+    cam = camera_spec(mount["preset"], hardware)
+    pose = camera_pose(cam, mount)
+    torso.solids.append(Solid("camera_board", "camera", camera_solid(cam, pose), cam["mass_g"]))
+    camera = {"preset": mount["preset"], "spec": cam, "pose": pose,
+              "cone_half_angle_deg": hardware["camera_optics"]["assumed"]["clear_cone_half_angle_deg"]["value"]}
 
     for side, s in (("left", 1.0), ("right", -1.0)):
         # Hip roll servo on the torso cradle. build.py: cradle rotated 90
@@ -344,7 +411,7 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
         shin.solids.append(Solid(f"{side}_knee_horn", "horn", apply(small.horn, trans(*-p_knee) @ s_knee), 0.0))
         links[shin.name] = shin
 
-    return Robot(links, cradles, assembly, hardware, envelope)
+    return Robot(links, cradles, assembly, hardware, envelope, camera)
 
 
 def servo_for_joint(joint: str) -> str:

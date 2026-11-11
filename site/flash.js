@@ -25,7 +25,9 @@ export const BASES = {
   m5stack: { label: "M5Stack", written: false },
 };
 
-// A value from the URL (?base=...) to one of the keys above. Unknown values
+// A value from the URL (?base=...) to one of the keys above. The ids of
+// config/bases.json (unoq_braccio, pi_servo, hub51515, ev3, m5_basex_ev3,
+// pi_buildhat_51515) all resolve; tests/test_flash.py checks that. Unknown values
 // are kept as "other" and shown as not written; nothing is invented for them.
 export function resolveBase(value) {
   const raw = String(value ?? "").trim();
@@ -35,9 +37,9 @@ export function resolveBase(value) {
   let key = "other";
   if (/^(arduino)?unoq/.test(id)) key = "unoq";
   else if (id.includes("esp32cam")) key = "esp32cam";
-  else if (id.includes("raspberry") || /^(rpi|pi[0-9]*|pizero.*)$/.test(id)) key = "raspberrypi";
+  else if (id.includes("raspberry") || /^r?pi/.test(id)) key = "raspberrypi";
   else if (id.includes("m5")) key = "m5stack";
-  else if (/lego|spike|ev3|nxt|wedo|poweredup/.test(id)) key = "lego";
+  else if (/lego|spike|ev3|nxt|wedo|poweredup|^hub|51515/.test(id)) key = "lego";
   if (key === "other") return { key, label: "This controller", written: false, given };
   return { key, ...BASES[key], given };
 }
@@ -156,6 +158,8 @@ function start() {
   byId("base-detail").textContent = base.written ? "" : (base.note || "No firmware and no flash steps exist for it in this repository. No command is shown rather than a made-up one.");
   byId("flash-form").hidden = !base.written;
   byId("unoq-link").hidden = base.written;
+  // Back to the configurator with the same selection, if it was a known id.
+  if (/^[a-z0-9_]{1,40}$/.test(base.given)) byId("back-link").href = `./?base=${base.given}`;
 
   async function copy(text, button) {
     try { await navigator.clipboard.writeText(text); button.textContent = "Copied"; }

@@ -1,4 +1,4 @@
-microduck-braccio-unoq-sim
+botbuilder
 Copyright (c) 2026 Eoin Jordan. Code and documentation under the MIT licence
 (LICENSE), except as noted below.
 
@@ -17,9 +17,10 @@ its part names match the Microduck by Pollen Robotics
 None of those meshes, and nothing of their surfaces, joints or mechanisms, is
 in this repository or in the printable parts. The owner compared the result
 with the original and judged it a different design; this note records where
-the outlines came from. The STLs themselves are not committed:
-scripts/fetch_stls.py copies them from the local design directory into
-build/stl, which git ignores.
+the outlines came from. The generated printable STLs are committed in stl/
+with a manifest; scripts/fetch_stls.py copies them from the local design
+directory when they are regenerated. The 15 source meshes are not in this
+repository.
 
 Nothing was copied from microduck_rl. Its joint names and ranges were read for
 comparison only.

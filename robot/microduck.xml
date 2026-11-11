@@ -17,7 +17,7 @@
     <geom name="floor" type="plane" size="2 2 0.05" material="grid" contype="1" conaffinity="1" friction="0.6 0.005 0.0001"/>
     <body name="torso" pos="0 0 0.1834">
       <freejoint name="root"/>
-      <inertial pos="0.0108339 -5.27361e-08 -0.00347323" mass="0.237295" fullinertia="0.000648889 0.000270997 0.000617123 -7.65236e-10 7.14433e-05 6.84921e-11"/>
+      <inertial pos="0.0154673 -8.91436e-06 -0.00457458" mass="0.238988" fullinertia="0.000613136 0.000221558 0.000609529 7.68434e-08 6.18894e-06 1.60384e-07"/>
       <geom name="torso_0" type="box" pos="0.002 -0.057 -0.0415" size="0.0019996 0.0182464 0.0014997" rgba="0.93 0.80 0.47 1"/>
       <geom name="torso_1" type="box" pos="0.002 0.057 -0.0415" size="0.0019996 0.0182464 0.0014997" rgba="0.93 0.80 0.47 1"/>
       <geom name="torso_2" type="box" pos="0.00439859 -0.057 -0.03606" size="0.00439812 0.0182457 0.00393921" rgba="0.93 0.80 0.47 1"/>
@@ -30,15 +30,17 @@
       <geom name="torso_9" type="box" pos="0.0043989 0.057 -0.00808" size="0.00439841 0.0143465 0.00219956" rgba="0.93 0.80 0.47 1"/>
       <geom name="torso_10" type="box" pos="0.00439859 -0.057 -0.00294" size="0.00439812 0.0182457 0.00293941" rgba="0.93 0.80 0.47 1"/>
       <geom name="torso_11" type="box" pos="0.00439859 0.057 -0.00294" size="0.00439812 0.0182457 0.00293941" rgba="0.93 0.80 0.47 1"/>
-      <geom name="torso_12" type="box" pos="-0.000900424 -2.98369e-09 0.002" size="0.0458831 0.0749794 0.0019996" rgba="0.93 0.80 0.47 1"/>
-      <geom name="torso_13" type="box" pos="-0.00750368 -2.40142e-09 0.0058999" size="0.039487 0.0752055 0.00189964" rgba="0.93 0.80 0.47 1"/>
-      <geom name="torso_14" type="box" pos="-0.0250268 1.53479e-10 0.053807" size="0.0423222 0.00792758 0.045998" rgba="0.93 0.80 0.47 1"/>
-      <geom name="torso_15" type="box" pos="0 0 0.0073" size="0.03429 0.02667 0.0008" rgba="0.08 0.47 0.43 1"/>
-      <geom name="torso_16" type="box" pos="0 0 0.0199" size="0.03429 0.02667 0.0008" rgba="0.16 0.35 0.63 1"/>
-      <geom name="torso_17" type="box" pos="0.02375 0.057 -0.019" size="0.01975 0.01025 0.021" rgba="0.24 0.26 0.29 1"/>
-      <geom name="torso_18" type="box" pos="0.03225 0.057 -0.019" size="0.00125 0.01025 0.0275" rgba="0.24 0.26 0.29 1"/>
-      <geom name="torso_19" type="box" pos="0.02375 -0.057 -0.019" size="0.01975 0.01025 0.021" rgba="0.24 0.26 0.29 1"/>
-      <geom name="torso_20" type="box" pos="0.03225 -0.057 -0.019" size="0.00125 0.01025 0.0275" rgba="0.24 0.26 0.29 1"/>
+      <geom name="torso_12" type="box" pos="3.35503e-06 5.92815e-10 0.002" size="0.0449795 0.0749824 0.0019996" rgba="0.93 0.80 0.47 1"/>
+      <geom name="torso_13" type="box" pos="-0.000716782 -6.51005e-10 0.00549987" size="0.0442808 0.0751779 0.00149966" rgba="0.93 0.80 0.47 1"/>
+      <geom name="torso_14" type="box" pos="-0.041 4.96595e-11 0.0074" size="0.0039996 0.019998 0.00039992" rgba="0.93 0.80 0.47 1"/>
+      <geom name="torso_15" type="box" pos="0.045515 -1.4116e-09 0.0415543" size="0.00999446 0.0259425 0.0345511" rgba="0.93 0.80 0.47 1"/>
+      <geom name="torso_16" type="box" pos="0 0 0.0073" size="0.03429 0.02667 0.0008" rgba="0.08 0.47 0.43 1"/>
+      <geom name="torso_17" type="box" pos="0 0 0.0199" size="0.03429 0.02667 0.0008" rgba="0.16 0.35 0.63 1"/>
+      <geom name="torso_18" type="box" pos="0.0519329 0 0.0513781" size="0.00707073 0.0135 0.0200813" rgba="0.59 0.16 0.24 1"/>
+      <geom name="torso_19" type="box" pos="0.02375 0.057 -0.019" size="0.01975 0.01025 0.021" rgba="0.24 0.26 0.29 1"/>
+      <geom name="torso_20" type="box" pos="0.03225 0.057 -0.019" size="0.00125 0.01025 0.0275" rgba="0.24 0.26 0.29 1"/>
+      <geom name="torso_21" type="box" pos="0.02375 -0.057 -0.019" size="0.01975 0.01025 0.021" rgba="0.24 0.26 0.29 1"/>
+      <geom name="torso_22" type="box" pos="0.03225 -0.057 -0.019" size="0.00125 0.01025 0.0275" rgba="0.24 0.26 0.29 1"/>
       <body name="left_hip" pos="0.049 0.057 -0.00825">
         <joint name="left_hip_roll" type="hinge" axis="1 0 0" range="-0.907571 1.5708" damping="0.2285" armature="0.003" frictionloss="0.02"/>
         <inertial pos="0.0375765 0.0346439 -4.52555e-05" mass="0.0741031" fullinertia="2.76319e-05 1.97238e-05 2.47365e-05 -5.32292e-06 1.94174e-08 9.86584e-08"/>
@@ -54,19 +56,22 @@
         <geom name="left_hip_9" type="box" pos="0.04 0.04725 0" size="0.01025 0.00125 0.0275" rgba="0.24 0.26 0.29 1"/>
         <body name="left_thigh" pos="0.04 0.064 -0.01075">
           <joint name="left_hip_pitch" type="hinge" axis="0 1 0" range="-1.5708 1.5708" damping="0.2285" armature="0.003" frictionloss="0.02"/>
-          <inertial pos="0.000151197 -0.0102716 -0.0665045" mass="0.0365424" fullinertia="2.37514e-05 2.13406e-05 5.05698e-06 -6.7802e-08 -1.32321e-07 -3.84836e-06"/>
-          <geom name="left_thigh_0" type="box" pos="-3.90927e-10 0.002 -0.0383906" size="0.0168595 0.0019996 0.0552501" rgba="0.93 0.80 0.47 1"/>
-          <geom name="left_thigh_1" type="box" pos="3.22385e-10 -0.0024 -0.075" size="0.0113495 0.00239952 0.0156469" rgba="0.93 0.80 0.47 1"/>
-          <geom name="left_thigh_2" class="visual" type="cylinder" fromto="-2.77556e-19 -0.0025 -0 0 0 0" size="0.0105" rgba="0.88 0.89 0.90 1"/>
-          <geom name="left_thigh_3" type="box" pos="-1.73472e-18 -0.0143 -0.075" size="0.00825 0.0143 0.01565" rgba="0.24 0.26 0.29 1"/>
-          <geom name="left_thigh_4" type="box" pos="-1.73472e-18 -0.0205 -0.075" size="0.00825 0.001 0.02015" rgba="0.24 0.26 0.29 1"/>
+          <inertial pos="0.000150334 -0.0102518 -0.0663304" mass="0.0367522" fullinertia="2.39585e-05 2.15573e-05 5.05314e-06 -6.76925e-08 -1.31359e-07 -3.87044e-06"/>
+          <geom name="left_thigh_0" type="box" pos="-8.46579e-10 0.002 -0.0383897" size="0.0168616 0.0019996 0.0552513" rgba="0.93 0.80 0.47 1"/>
+          <geom name="left_thigh_1" type="box" pos="-2.36461e-10 -0.00189993 -0.036" size="0.00399948 0.00189957 0.0159979" rgba="0.93 0.80 0.47 1"/>
+          <geom name="left_thigh_2" type="box" pos="3.22385e-10 -0.0024 -0.075" size="0.0113495 0.00239952 0.0156469" rgba="0.93 0.80 0.47 1"/>
+          <geom name="left_thigh_3" class="visual" type="cylinder" fromto="-2.77556e-19 -0.0025 -0 0 0 0" size="0.0105" rgba="0.88 0.89 0.90 1"/>
+          <geom name="left_thigh_4" type="box" pos="-1.73472e-18 -0.0143 -0.075" size="0.00825 0.0143 0.01565" rgba="0.24 0.26 0.29 1"/>
+          <geom name="left_thigh_5" type="box" pos="-1.73472e-18 -0.0205 -0.075" size="0.00825 0.001 0.02015" rgba="0.24 0.26 0.29 1"/>
           <body name="left_shin" pos="-0 -0.0331 -0.0824">
             <joint name="left_knee" type="hinge" axis="0 1 0" range="-1.5708 1.5708" damping="0.040639" armature="0.001" frictionloss="0.02"/>
-            <inertial pos="0.00550899 -0.00199819 -0.0619146" mass="0.0212014" fullinertia="1.947e-05 2.39058e-05 9.38907e-06 -5.36406e-12 2.05394e-06 6.73792e-10"/>
+            <inertial pos="0.00561153 -0.00210485 -0.061791" mass="0.0216424" fullinertia="1.96702e-05 2.41725e-05 9.50167e-06 -1.29506e-08 2.13513e-06 4.63482e-08"/>
             <geom name="left_shin_0" type="box" pos="0.00899948 -0.00199778 -0.0795" size="0.0374895 0.0239776 0.0024995" rgba="0.93 0.80 0.47 1"/>
-            <geom name="left_shin_1" type="box" pos="8.11681e-10 -0.002 -0.073" size="0.0134952 0.00499863 0.0039992" rgba="0.93 0.80 0.47 1"/>
-            <geom name="left_shin_2" type="box" pos="-5.89692e-11 -0.002 -0.0260573" size="0.0168768 0.0019996 0.0429341" rgba="0.93 0.80 0.47 1"/>
-            <geom name="left_shin_3" class="visual" type="cylinder" fromto="2.22045e-19 0.002 -0 0 0 0" size="0.009" rgba="0.88 0.89 0.90 1"/>
+            <geom name="left_shin_1" type="box" pos="0.00941695 -0.002 -0.0730002" size="0.0229114 0.0143026 0.00399927" rgba="0.93 0.80 0.47 1"/>
+            <geom name="left_shin_2" type="box" pos="2.10027e-09 -0.002 -0.0655" size="0.0134973 0.0019996 0.0034993" rgba="0.93 0.80 0.47 1"/>
+            <geom name="left_shin_3" type="box" pos="1.57822e-10 -0.00389879 -0.042" size="0.0134971 0.00389828 0.0199966" rgba="0.93 0.80 0.47 1"/>
+            <geom name="left_shin_4" type="box" pos="-3.31373e-10 -0.002 -0.00253945" size="0.0169172 0.0019996 0.0194567" rgba="0.93 0.80 0.47 1"/>
+            <geom name="left_shin_5" class="visual" type="cylinder" fromto="2.22045e-19 0.002 -0 0 0 0" size="0.009" rgba="0.88 0.89 0.90 1"/>
           </body>
         </body>
       </body>
@@ -85,19 +90,22 @@
         <geom name="right_hip_9" type="box" pos="0.04 -0.04725 0" size="0.01025 0.00125 0.0275" rgba="0.24 0.26 0.29 1"/>
         <body name="right_thigh" pos="0.04 -0.064 -0.01075">
           <joint name="right_hip_pitch" type="hinge" axis="0 1 0" range="-1.5708 1.5708" damping="0.2285" armature="0.003" frictionloss="0.02"/>
-          <inertial pos="-0.000151197 0.0102716 -0.0665045" mass="0.0365424" fullinertia="2.37514e-05 2.13406e-05 5.05698e-06 -6.7802e-08 1.32321e-07 3.84836e-06"/>
-          <geom name="right_thigh_0" type="box" pos="3.90927e-10 -0.002 -0.0383906" size="0.0168595 0.0019996 0.0552501" rgba="0.93 0.80 0.47 1"/>
-          <geom name="right_thigh_1" type="box" pos="-4.48727e-10 0.0024 -0.075" size="0.0113495 0.00239952 0.0156469" rgba="0.93 0.80 0.47 1"/>
-          <geom name="right_thigh_2" class="visual" type="cylinder" fromto="-2.77556e-19 0.0025 -0 0 0 0" size="0.0105" rgba="0.88 0.89 0.90 1"/>
-          <geom name="right_thigh_3" type="box" pos="-1.73472e-18 0.0143 -0.075" size="0.00825 0.0143 0.01565" rgba="0.24 0.26 0.29 1"/>
-          <geom name="right_thigh_4" type="box" pos="-1.73472e-18 0.0205 -0.075" size="0.00825 0.001 0.02015" rgba="0.24 0.26 0.29 1"/>
+          <inertial pos="-0.000150334 0.0102518 -0.0663304" mass="0.0367522" fullinertia="2.39585e-05 2.15573e-05 5.05314e-06 -6.76925e-08 1.31359e-07 3.87044e-06"/>
+          <geom name="right_thigh_0" type="box" pos="8.46579e-10 -0.002 -0.0383897" size="0.0168616 0.0019996 0.0552513" rgba="0.93 0.80 0.47 1"/>
+          <geom name="right_thigh_1" type="box" pos="5.14736e-10 0.00189993 -0.036" size="0.00399948 0.00189957 0.0159979" rgba="0.93 0.80 0.47 1"/>
+          <geom name="right_thigh_2" type="box" pos="-4.48727e-10 0.0024 -0.075" size="0.0113495 0.00239952 0.0156469" rgba="0.93 0.80 0.47 1"/>
+          <geom name="right_thigh_3" class="visual" type="cylinder" fromto="-2.77556e-19 0.0025 -0 0 0 0" size="0.0105" rgba="0.88 0.89 0.90 1"/>
+          <geom name="right_thigh_4" type="box" pos="-1.73472e-18 0.0143 -0.075" size="0.00825 0.0143 0.01565" rgba="0.24 0.26 0.29 1"/>
+          <geom name="right_thigh_5" type="box" pos="-1.73472e-18 0.0205 -0.075" size="0.00825 0.001 0.02015" rgba="0.24 0.26 0.29 1"/>
           <body name="right_shin" pos="-0 0.0331 -0.0824">
             <joint name="right_knee" type="hinge" axis="0 1 0" range="-1.5708 1.5708" damping="0.040639" armature="0.001" frictionloss="0.02"/>
-            <inertial pos="0.00550923 0.00199791 -0.0619148" mass="0.0212016" fullinertia="1.94702e-05 2.3906e-05 9.38932e-06 1.23607e-10 2.05403e-06 -7.77726e-10"/>
+            <inertial pos="0.00561176 0.00210458 -0.0617911" mass="0.0216426" fullinertia="1.96704e-05 2.41727e-05 9.50192e-06 1.30688e-08 2.13522e-06 -4.64533e-08"/>
             <geom name="right_shin_0" type="box" pos="0.00899948 0.00199735 -0.0795" size="0.0374895 0.023978 0.0024995" rgba="0.93 0.80 0.47 1"/>
-            <geom name="right_shin_1" type="box" pos="-1.61477e-09 0.002 -0.073" size="0.0134952 0.00499863 0.0039992" rgba="0.93 0.80 0.47 1"/>
-            <geom name="right_shin_2" type="box" pos="-5.89692e-11 0.002 -0.0260573" size="0.0168768 0.0019996 0.0429341" rgba="0.93 0.80 0.47 1"/>
-            <geom name="right_shin_3" class="visual" type="cylinder" fromto="2.22045e-19 -0.002 -0 0 0 0" size="0.009" rgba="0.88 0.89 0.90 1"/>
+            <geom name="right_shin_1" type="box" pos="0.00941694 0.002 -0.0730002" size="0.0229114 0.0143026 0.00399927" rgba="0.93 0.80 0.47 1"/>
+            <geom name="right_shin_2" type="box" pos="-1.13395e-09 0.002 -0.0655" size="0.0134973 0.0019996 0.0034993" rgba="0.93 0.80 0.47 1"/>
+            <geom name="right_shin_3" type="box" pos="1.57822e-10 0.00389879 -0.042" size="0.0134971 0.00389828 0.0199966" rgba="0.93 0.80 0.47 1"/>
+            <geom name="right_shin_4" type="box" pos="-3.31373e-10 0.002 -0.00253945" size="0.0169172 0.0019996 0.0194567" rgba="0.93 0.80 0.47 1"/>
+            <geom name="right_shin_5" class="visual" type="cylinder" fromto="2.22045e-19 -0.002 -0 0 0 0" size="0.009" rgba="0.88 0.89 0.90 1"/>
           </body>
         </body>
       </body>
@@ -121,6 +129,6 @@
   </sensor>
   <keyframe>
     <key name="neutral" qpos="0 0 0.1834 1 0 0 0 0 0 0 0 0 0" ctrl="0 0 0 0 0 0"/>
-    <key name="stand" qpos="0 0 0.15927 1 0 0 0 0 0.785398 -0.785398 0 0.785398 -0.785398" ctrl="0 0.785398 -0.785398 0 0.785398 -0.785398"/>
+    <key name="stand" qpos="0 0 0.16224 1 0 0 0 0 0.733038 -0.733038 0 0.733038 -0.733038" ctrl="0 0.733038 -0.733038 0 0.733038 -0.733038"/>
   </keyframe>
 </mujoco>

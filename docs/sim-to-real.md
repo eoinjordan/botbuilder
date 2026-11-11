@@ -115,7 +115,7 @@ Python reference line for line. The glue in `sketch.ino` and
    between the rails, the tie paths (the assembly test expects one tie per
    servo to cross the output shaft) and the horn on the blank.
 2. Read `docs/assembly.md`. Two things collide as drawn: the hip roll servos
-   with the deck, and the board with the neck root. Decide what to change.
+   with the deck. Decide what to change.
 3. Rehearse without hardware: `python scripts/virtual_robot.py` in one
    terminal, then `play.py --tcp 127.0.0.1:8766` and `calibrate.py --tcp
    127.0.0.1:8766` in another.

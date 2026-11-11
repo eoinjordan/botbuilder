@@ -36,7 +36,7 @@ from . import gait, protocol
 ROOT = protocol.ROOT
 MANIFEST = Path("trajectories") / "manifest.json"
 ACTIONS = ("stand", "sit", "jump")
-HEAD_REASON = "the head is fixed: this robot has no head joints"
+HEAD_REASON = "no head joints: this robot has six leg joints and a fixed camera mount"
 
 
 def builtin_manifest() -> dict:

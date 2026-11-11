@@ -1,0 +1,391 @@
+{
+ "generated_by": "scripts/fetch_stls.py",
+ "status": "generated geometry; never printed",
+ "design": {
+  "repository": "eoinjordan/3d-print-designs",
+  "directory": "microduck-braccio-unoq",
+  "generator": "build.py",
+  "commit": "2362e25b3a5d6db5f99d1e1fbd1fef3fe7d730ee",
+  "uncommitted_changes": false
+ },
+ "generator_parameters_file": "parameters.json",
+ "generator_parameters_sha256": "164cd0741302eb6e5dff08fcc7c7138a532acc66448e5d420a73d2e3d3bf5735",
+ "camera_default": "esp32cam",
+ "total_bytes": 2660044,
+ "files": [
+  {
+   "file": "01_torso_unoq_cam_esp32_s3_eye.stl",
+   "what": "torso with the UNO Q deck and the camera mount for the esp32_s3_eye preset",
+   "options": {
+    "part": "torso",
+    "camera": "esp32_s3_eye"
+   },
+   "triangles": 8920,
+   "volume_mm3": 65182.8,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -43.0
+    ],
+    [
+     59.12,
+     75.25,
+     95.53
+    ]
+   ],
+   "bytes": 446084,
+   "sha256": "52cfebe20b04a8eed4691b7f3ffd97ca7b99ea5f21d422af98fd2255fe27dae3"
+  },
+  {
+   "file": "01_torso_unoq_cam_esp32cam.stl",
+   "what": "torso with the UNO Q deck and the camera mount for the esp32cam preset",
+   "options": {
+    "part": "torso",
+    "camera": "esp32cam"
+   },
+   "triangles": 8932,
+   "volume_mm3": 67188.4,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -43.0
+    ],
+    [
+     55.73,
+     75.25,
+     76.33
+    ]
+   ],
+   "bytes": 446684,
+   "sha256": "054ca5eafffd4d52b8cb6a60bfc2de2d3dba52a7acedb16b017cbc0c3001c09e"
+  },
+  {
+   "file": "01_torso_unoq_cam_esp_eye.stl",
+   "what": "torso with the UNO Q deck and the camera mount for the esp_eye preset",
+   "options": {
+    "part": "torso",
+    "camera": "esp_eye"
+   },
+   "triangles": 8948,
+   "volume_mm3": 64243.8,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -43.0
+    ],
+    [
+     55.82,
+     75.25,
+     76.82
+    ]
+   ],
+   "bytes": 447484,
+   "sha256": "7d11bf5545d8c65616576b7df6b6c5bce35d8f9c83aa1e8ef6d2d8f94c62e3a5"
+  },
+  {
+   "file": "fit_cam_esp32_s3_eye.stl",
+   "what": "fit piece for the esp32_s3_eye camera mount",
+   "options": {
+    "fit_piece": true,
+    "camera": "esp32_s3_eye"
+   },
+   "triangles": 244,
+   "volume_mm3": 11615.4,
+   "bounding_box_mm": [
+    [
+     -12.0,
+     -33.0,
+     0.0
+    ],
+    [
+     12.0,
+     33.0,
+     96.5
+    ]
+   ],
+   "bytes": 12284,
+   "sha256": "f2918fe4dd30985f1a7963869f6c44e73b5f3d147167d83edfe6425e46a79f65"
+  },
+  {
+   "file": "fit_cam_esp32cam.stl",
+   "what": "fit piece for the esp32cam camera mount",
+   "options": {
+    "fit_piece": true,
+    "camera": "esp32cam"
+   },
+   "triangles": 260,
+   "volume_mm3": 9509.1,
+   "bounding_box_mm": [
+    [
+     -12.0,
+     -31.5,
+     0.0
+    ],
+    [
+     12.0,
+     31.5,
+     55.0
+    ]
+   ],
+   "bytes": 13084,
+   "sha256": "fb6095a8da4e7867bced0d17cb7832f3842c5d16a191358e31e13d006b84db92"
+  },
+  {
+   "file": "fit_cam_esp_eye.stl",
+   "what": "fit piece for the esp_eye camera mount",
+   "options": {
+    "fit_piece": true,
+    "camera": "esp_eye"
+   },
+   "triangles": 272,
+   "volume_mm3": 9812.4,
+   "bounding_box_mm": [
+    [
+     -12.0,
+     -28.5,
+     0.0
+    ],
+    [
+     12.0,
+     28.5,
+     77.5
+    ]
+   ],
+   "bytes": 13684,
+   "sha256": "7cb410f716efaac6501a84b9cc2793b90edc066094fbd25310c449c9fb78ec14"
+  },
+  {
+   "file": "fit_horn_drill_blank.stl",
+   "what": "horn drilling blank",
+   "options": {
+    "fit_piece": true
+   },
+   "triangles": 384,
+   "volume_mm3": 3420.8,
+   "bounding_box_mm": [
+    [
+     -17.0,
+     -17.0,
+     0.0
+    ],
+    [
+     17.0,
+     17.0,
+     4.0
+    ]
+   ],
+   "bytes": 19284,
+   "sha256": "e49ec681e71308779f1cde48d7926a78a730d96a37e90f879ba79b4ac0b9b365"
+  },
+  {
+   "file": "fit_lego_compatible_coupon.stl",
+   "what": "fit coupon for pin holes and studs compatible with LEGO elements",
+   "options": {
+    "fit_piece": true
+   },
+   "triangles": 4842,
+   "volume_mm3": 5074.2,
+   "bounding_box_mm": [
+    [
+     -4.0,
+     -4.0,
+     0.0
+    ],
+    [
+     92.0,
+     4.0,
+     9.5
+    ]
+   ],
+   "bytes": 242184,
+   "sha256": "2695d9b21b84c3ca104e956c0b2e6e57d87795894268ca77e5e33b5a1dcd3d75"
+  },
+  {
+   "file": "fit_SR311.stl",
+   "what": "fit piece for an SR311 servo cradle",
+   "options": {
+    "fit_piece": true
+   },
+   "triangles": 124,
+   "volume_mm3": 5433.1,
+   "bounding_box_mm": [
+    [
+     -18.65,
+     -16.25,
+     0.0
+    ],
+    [
+     18.65,
+     16.25,
+     8.8
+    ]
+   ],
+   "bytes": 6284,
+   "sha256": "1ae18b3fa90ceb951c0f25b11ed2c0b91bbfda3d2a6c0355ac7edbcaad16e0fa"
+  },
+  {
+   "file": "fit_SR431.stl",
+   "what": "fit piece for an SR431 servo cradle",
+   "options": {
+    "fit_piece": true
+   },
+   "triangles": 124,
+   "volume_mm3": 7859.2,
+   "bounding_box_mm": [
+    [
+     -24.0,
+     -18.25,
+     0.0
+    ],
+    [
+     24.0,
+     18.25,
+     8.8
+    ]
+   ],
+   "bytes": 6284,
+   "sha256": "5ae6a519326addb31b68cef066acd19a9f3d7386321c4bc4a51317f5b7bb8419"
+  },
+  {
+   "file": "left_hip_roll_pitch_yoke.stl",
+   "what": "left hip yoke",
+   "options": {
+    "part": "left_hip"
+   },
+   "triangles": 964,
+   "volume_mm3": 16267.6,
+   "bounding_box_mm": [
+    [
+     -24.0,
+     -23.8,
+     -2.0
+    ],
+    [
+     24.0,
+     17.0,
+     58.25
+    ]
+   ],
+   "bytes": 48284,
+   "sha256": "5d809beed8db17d549e6eda75e554b550faeb14ee9ea475848f8bef399d19020"
+  },
+  {
+   "file": "left_shin_fixed_foot.stl",
+   "what": "left shin with fixed foot",
+   "options": {
+    "part": "left_shin"
+   },
+   "triangles": 5740,
+   "volume_mm3": 29089.2,
+   "bounding_box_mm": [
+    [
+     -28.5,
+     -24.0,
+     0.0
+    ],
+    [
+     46.5,
+     24.0,
+     99.0
+    ]
+   ],
+   "bytes": 287084,
+   "sha256": "dbab835a1440485f367ee976652806cf00cf3bfc5a6c69e1b4e368fab77b8cb9"
+  },
+  {
+   "file": "left_thigh_knee_cradle.stl",
+   "what": "left thigh with the knee servo cradle",
+   "options": {
+    "part": "left_thigh"
+   },
+   "triangles": 3280,
+   "volume_mm3": 13107.8,
+   "bounding_box_mm": [
+    [
+     -17.0,
+     -17.0,
+     0.0
+    ],
+    [
+     93.65,
+     17.0,
+     8.8
+    ]
+   ],
+   "bytes": 164084,
+   "sha256": "bf83748eefba429b242cb19316ce43c2f2a00f258b1d370fca47e3233e1620dd"
+  },
+  {
+   "file": "right_hip_roll_pitch_yoke.stl",
+   "what": "right hip yoke",
+   "options": {
+    "part": "right_hip"
+   },
+   "triangles": 964,
+   "volume_mm3": 16267.6,
+   "bounding_box_mm": [
+    [
+     -24.0,
+     -17.0,
+     -2.0
+    ],
+    [
+     24.0,
+     23.8,
+     58.25
+    ]
+   ],
+   "bytes": 48284,
+   "sha256": "b24f8eae11d42b2c70bc3dd7b7f6c2c2316bd28c34371911dbf5acde1030445d"
+  },
+  {
+   "file": "right_shin_fixed_foot.stl",
+   "what": "right shin with fixed foot",
+   "options": {
+    "part": "right_shin"
+   },
+   "triangles": 5896,
+   "volume_mm3": 29089.5,
+   "bounding_box_mm": [
+    [
+     -28.5,
+     -24.0,
+     0.0
+    ],
+    [
+     46.5,
+     24.0,
+     99.0
+    ]
+   ],
+   "bytes": 294884,
+   "sha256": "1dd97910be3c125978fccfaf365c8cdae86c0cd36f615919f7c05df14f886691"
+  },
+  {
+   "file": "right_thigh_knee_cradle.stl",
+   "what": "right thigh with the knee servo cradle",
+   "options": {
+    "part": "right_thigh"
+   },
+   "triangles": 3280,
+   "volume_mm3": 13107.8,
+   "bounding_box_mm": [
+    [
+     -17.0,
+     -17.0,
+     0.0
+    ],
+    [
+     93.65,
+     17.0,
+     8.8
+    ]
+   ],
+   "bytes": 164084,
+   "sha256": "01d06e26dfd38c6c396beb69dae63f3561b191f2557073a9539c6b504e76f882"
+  }
+ ]
+}

@@ -67,7 +67,7 @@ What they do:
 The status command is the line `S` on port 8766. A freshly flashed board
 answers:
 
-    STAT mode=RELAX age_ms=1234 wd=500 q=0.0,45.0,-45.0,0.0,45.0,-45.0
+    STAT mode=RELAX age_ms=1234 wd=500 q=0.0,42.0,-42.0,0.0,42.0,-42.0
 
 `mode=RELAX` means no pulses, until an `E` line. `age_ms` is the time since
 the last joint command (on a fresh board, since boot). `wd=500` is the
@@ -130,7 +130,7 @@ Upload); neither its site nor its SSH commands flash it. So there is no
 command to give, and the page gives none.
 
 The page accepts the selection in the address, for example
-`flash.html?base=unoq`. For a controller without steps it says "not written"
+`flash.html?base=unoq_braccio`. For a controller without steps it says "not written"
 and shows no command.
 
 ## Reused from unoq-braccio-sketchbot

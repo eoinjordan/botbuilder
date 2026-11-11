@@ -5,121 +5,65 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#087f60">
-  <meta name="description" content="A printed biped on six Braccio servos and an Arduino UNO Q: digital assembly test, MuJoCo emulation and the path to the real robot.">
+  <meta name="description" content="Build your own bot from the parts you have: pick the controller, drive and camera you own and read what this project can honestly say about that robot, with files to print and a parts list.">
   <link rel="stylesheet" href="./style.css">
-  <title>Microduck Braccio / sim to real</title>
-  <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
+  <link rel="stylesheet" href="./recipe.css">
+  <title>Botbuilder: build your own bot from the parts you have</title>
 </head>
 <body>
   <header class="masthead">
-    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">MD</span><span>Microduck <b>Braccio</b></span></a>
-    <nav>
-      <a href="#assembly">Assembly</a><a href="#viewer">3D view</a><a href="#simulation">Simulation</a><a href="#real">Sim to real</a><a href="./flash.html">Flash</a><a href="./control.html">Control</a>
-      <a href="https://github.com/eoinjordan/microduck-braccio-unoq-sim" rel="noopener noreferrer">Source</a>
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <nav id="site-nav">
+      <a href="./" aria-current="page">Build yours</a><a href="./biped.html">Biped</a>
+      <a href="./walkers.html" data-page="walkers.html" hidden>Walkers and wheels</a><a href="./flash.html" data-page="flash.html" hidden>Flash</a><a href="./control.html" data-page="control.html" hidden>Control</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
     </nav>
   </header>
   <main>
     <div class="title-row">
-      <div><p class="eyebrow">ARDUINO UNO Q / TINKERKIT BRACCIO SERVOS</p><h1>A printed biped, from simulation to the bench</h1></div>
-      <span class="release-tag">Bench prototype</span>
+      <div><p class="eyebrow">PRINTED ROBOTS FOR THE CONTROLLERS, MOTORS AND CAMERAS YOU ALREADY OWN</p><h1>Build your own bot from the parts you have</h1></div>
+      <span class="release-tag">Nothing here has been built</span>
     </div>
 
-    <section class="status" aria-labelledby="status-heading">
-      <h2 id="status-heading">Status: verified in simulation only</h2>
-      <p>This robot has never been assembled or powered. The parts have not been printed as a set, no servo has been
-        fitted, and the firmware has not been built or flashed. Everything on this page comes from the mesh files,
-        the makers' published servo and board data, and a MuJoCo model. Dimensions the makers do not publish are
-        assumed and listed.</p>
+    <section class="status no-print" aria-labelledby="status-heading">
+      <h2 id="status-heading">Read the status line first</h2>
+      <p>Select the parts you have. The page answers with what this project can honestly say about that combination.
+        One combination has been analysed in simulation, and two more camera boards were checked in the digital
+        assembly. The LEGO-motor walkers and the wheeled variants are being analysed. Others are only defined, and
+        many are not possible. No robot has been assembled or powered, so no
+        recipe on this page is a tested build.</p>
     </section>
 
-    <section id="what" class="two-col">
-      <div>
-        <div class="section-heading"><span class="step">01</span><h2>What it is</h2></div>
-        <p>A Microduck-style biped rebuilt around the six servos of a stock TinkerKit Braccio kit and an Arduino UNO Q.
-          Four SR431 servos sit at the hips: two on the torso for hip roll, one on each yoke for hip pitch. Two SR311
-          servos at the far end of each thigh turn the knees. The shin carries a fixed foot; the head, neck and ankles
-          do not move. The UNO Q and the Braccio shield are strapped to a deck on the torso. Servos are held by cable ties.</p>
-        <p>Seven printed parts, three fit-test pieces, six actuated joints: left and right hip roll, hip pitch and knee pitch.</p>
-        <dl class="facts" id="facts"></dl>
-      </div>
-      <figure><img src="./images/assembly-iso.png" width="900" height="700" alt="Rendered view of the assembled robot at the neutral pose with interfering volumes in red"><figcaption>Neutral pose. Red marks where parts overlap.</figcaption></figure>
-    </section>
-
-    <section id="assembly">
-      <div class="section-heading"><span class="step">02</span><h2>Digital assembly test</h2><a href="https://github.com/eoinjordan/microduck-braccio-unoq-sim/blob/main/docs/assembly.md" rel="noopener noreferrer">Full report</a></div>
-      <p>The seven STLs and a parametric model of the servos are placed by the joint chain and checked with exact mesh
-        booleans: interference at the neutral pose and through each joint's sweep, servo fit in the cradles, horn screw
-        access, board clearance, mass, centre of mass and static balance.</p>
-      <ul class="findings" id="findings"></ul>
-      <h3>Joint ranges</h3>
-      <div class="table-wrap"><table id="limits"><thead><tr><th>Joint</th><th>Collision free (deg)</th><th>Limit used (deg)</th><th>Set by</th><th>Servo</th><th>Torque limit (N m)</th><th>Speed limit (deg/s)</th></tr></thead><tbody></tbody></table></div>
-      <div class="gallery">
-        <figure><img loading="lazy" src="./images/assembly-front.png" width="900" height="700" alt="Front view of the assembled robot"><figcaption>Front</figcaption></figure>
-        <figure><img loading="lazy" src="./images/assembly-left.png" width="900" height="700" alt="Left view of the assembled robot"><figcaption>Left</figcaption></figure>
-        <figure><img loading="lazy" src="./images/interference-roll-servo-deck.png" width="760" height="560" alt="Hip roll servo overlapping the torso deck"><figcaption>Hip roll servo and the deck</figcaption></figure>
-        <figure><img loading="lazy" src="./images/interference-board-neck.png" width="760" height="560" alt="UNO Q overlapping the neck root"><figcaption>UNO Q and the neck root</figcaption></figure>
-        <figure><img loading="lazy" src="./images/assumption-cradle-SR431.png" width="1120" height="460" alt="SR431 in its cradle with horn, drill blank and the two cable ties"><figcaption>Assumed: how a servo lies in its cradle</figcaption></figure>
-        <figure><img loading="lazy" src="./images/assumption-thigh-face.png" width="1280" height="520" alt="The two possible thigh mountings side by side"><figcaption>Assumed: which thigh face meets the hip horn</figcaption></figure>
-        <figure><img loading="lazy" src="./images/balance.png" width="920" height="520" alt="Support polygon and centre of mass at the neutral and stand poses"><figcaption>Balance on two feet</figcaption></figure>
-        <figure><img loading="lazy" src="./images/stand-pose.png" width="1140" height="620" alt="The stand pose"><figcaption>Stand pose</figcaption></figure>
-      </div>
-    </section>
-
-    <section id="viewer">
-      <div class="section-heading"><span class="step">03</span><h2>Move the joints</h2></div>
-      <div class="viewer-layout">
-        <div class="viewer-stage"><canvas id="view" aria-label="Interactive 3D view of the robot"></canvas><p id="view-note" class="small-note">Drag to turn, scroll to zoom.</p></div>
-        <div class="viewer-controls">
-          <div id="sliders"></div>
-          <div class="form-actions"><button id="pose-neutral" class="secondary" type="button">Neutral</button><button id="pose-stand" class="primary" type="button">Stand pose</button></div>
-          <p class="small-note">Sliders stop at the collision-free limits from the assembly test. Printed parts are shown as the
-            boxes the simulator uses for contact; servos, horns and boards are to size.</p>
+    <div class="build-layout">
+      <section class="no-print" aria-labelledby="pick-heading">
+        <div class="section-heading"><span class="step">01</span><h2 id="pick-heading">What you have</h2></div>
+        <form id="picker" class="picker" autocomplete="off"></form>
+        <div class="form-actions">
+          <button id="reset" class="secondary" type="button">Reset to the analysed design</button>
         </div>
-      </div>
-    </section>
+        <p class="small-note flush">The selection is kept in the page address, so a recipe can be linked, and remembered in this browser.</p>
+      </section>
 
-    <section id="simulation">
-      <div class="section-heading"><span class="step">04</span><h2>Emulation in MuJoCo</h2><a href="https://github.com/eoinjordan/microduck-braccio-unoq-sim/blob/main/docs/simulation.md" rel="noopener noreferrer">Full results</a></div>
-      <div class="two-col">
-        <div>
-          <ul class="findings" id="verdict"></ul>
-          <h3>Torque needed to stand</h3>
-          <div class="table-wrap"><table id="torque"><thead><tr><th>Joint</th><th>Mean (N m)</th><th>Peak (N m)</th><th>Limit (N m)</th><th>Peak / limit</th></tr></thead><tbody></tbody></table></div>
+      <section aria-labelledby="recipe-heading">
+        <div class="section-heading"><span class="step">02</span><h2 id="recipe-heading">Recipe</h2></div>
+        <div class="form-actions no-print">
+          <button id="copy-link" class="secondary" type="button">Copy link</button>
+          <button id="download" class="secondary" type="button">Download JSON</button>
+          <button id="print" class="primary" type="button">Print</button>
+          <span id="action-note" class="small-note" role="status"></span>
         </div>
-        <figure><img loading="lazy" src="./images/sim-gait.gif" width="400" height="300" alt="Recording of the simulated robot playing the open-loop gait"><figcaption>The default open-loop gait in simulation</figcaption></figure>
-      </div>
-      <h3>What the simulation suggests changing</h3>
-      <p class="small-note">Suggestions only. None of this has been done.</p>
-      <ul class="plain" id="suggestions"></ul>
-    </section>
-
-    <section id="real">
-      <div class="section-heading"><span class="step">05</span><h2>From simulation to the robot</h2><a href="https://github.com/eoinjordan/microduck-braccio-unoq-sim/blob/main/docs/sim-to-real.md" rel="noopener noreferrer">Details</a></div>
-      <p>The simulator and the board take the same command lines: six joint angles in degrees, in the robot's own
-        convention. A calibration table maps each joint to a shield channel, a zero and a direction. The same
-        trajectory file plays on either.</p>
-      <ol class="checklist" id="checklist">
-        <li><label><input type="checkbox" data-key="fit"> Print the three fit pieces. Check a servo of each size between the rails, both tie paths, the horn on the drill blank.</label></li>
-        <li><label><input type="checkbox" data-key="findings"> Read the assembly findings and decide what to change in the parts before printing the set.</label></li>
-        <li><label><input type="checkbox" data-key="rehearse"> Rehearse on the virtual robot: stand, calibrate, gait, over the same socket the board uses.</label></li>
-        <li><label><input type="checkbox" data-key="power"> Size the supply for stall currents and wire a switch within reach.</label></li>
-        <li><label><input type="checkbox" data-key="build"> Build the sketch in App Lab and review it. It has not been built yet.</label></li>
-        <li><label><input type="checkbox" data-key="horns"> Centre each servo with the horns off, then fit the horns with the joints at neutral.</label></li>
-        <li><label><input type="checkbox" data-key="calibrate"> Calibrate one joint at a time, robot held off the bench. Write the zeros and directions into the table.</label></li>
-        <li><label><input type="checkbox" data-key="stand"> Play the stand trajectory with a hand on the robot and a hand on the switch.</label></li>
-        <li><label><input type="checkbox" data-key="gait"> Only then try the gait. Expect a shuffle at best.</label></li>
-      </ol>
-      <div class="status warn">
-        <h3>Power</h3>
-        <p id="power"></p>
-      </div>
-    </section>
+        <div id="recipe" aria-live="polite">Loading the recipe data.</div>
+        <noscript><p>This page needs JavaScript to work out a recipe. The same rules are in config/compat.json and
+          microduck/recipe.py in the repository.</p></noscript>
+      </section>
+    </div>
   </main>
   <footer>
-    <p>Code under the MIT licence. The printable parts are flat plates whose outlines started from Microduck meshes; they are not in the repository;
-      see NOTICE. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
-      No analytics, no cookies; the checklist ticks stay in this browser.</p>
+    <p id="trademarks">LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd.</p>
+    <p>Maker figures and their sources are in config/bases.json; what is not verified is marked there. Code under the MIT
+      licence. No analytics, no cookies; the selection stays in this browser.</p>
   </footer>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./build.js"></script>
 </body>
 </html>

@@ -1,0 +1,188 @@
+{
+  "_comment": "Controller bases for the Build yours configurator. Every figure carries a basis: 'published' (quoted from the maker's page at 'source'), 'assumed' (not published; the reason is given) or 'not verified' (not found in the maker's documentation when this file was written). Lengths in mm, masses in g. Nothing here has been built or measured. Which locomotion each base supports, and through which drive, is said only in config/compat.json.",
+  "checked": "2026-11-11",
+  "bases": {
+    "unoq_braccio": {
+      "name": "Arduino UNO Q with the Braccio shield and servos",
+      "status": "analysed in simulation",
+      "status_reason": "The six-servo biped on this base is the design this repository assembles digitally and simulates (reports/assembly.json, reports/sim.json): camera mount at the front of the deck, pin holes and studs on the parts. The simulation was run with the default camera preset; the other two presets were put through the digital assembly in short form. Nothing has been built.",
+      "controller": "Arduino UNO Q (ABX00162)",
+      "outline_mm": {"value": [68.58, 53.34], "basis": "published", "source": "https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf"},
+      "mass_g": {"value": 55, "basis": "assumed", "note": "30 g board plus 25 g shield, both estimates (config/hardware.json); the maker publishes neither. No battery: the robot is tethered."},
+      "mounting": {"value": "Between two low rails on the torso deck, strapped through the deck slots with nonconductive ties, on 2.5 mm insulating spacers.", "basis": "assumed", "note": "from the design README; spacer height assumed"},
+      "actuates": {"value": "Six hobby servos (four SR431, two SR311) through the Braccio shield.", "basis": "published", "source": "https://store-usa.arduino.cc/products/tinkerkit-braccio-robot"},
+      "channels": {"value": 6, "basis": "published", "note": "six servo outputs on the shield, one per kit servo", "source": "https://store-usa.arduino.cc/products/tinkerkit-braccio-robot"},
+      "spare_pwm_pins": {"value": "D2, D7, D8, D13, D20, D21 are reported free of the shield and PWM capable", "basis": "not verified", "note": "read by another contributor from the Zephyr core overlay; not checked here"},
+      "power": {"value": "Board: USB-C 5 V up to 3 A, or VIN 7 to 24 V. Servos: the Braccio kit supply, regulated 5 V 4 A, through the shield.", "basis": "published", "source": "https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf"},
+      "cameras": {
+        "esp32cam": "Stands in the mount at the front of the torso deck; own torso file and fit piece in stl/. 5 V on its header pins; UART or Wi-Fi link, not written.",
+        "esp_eye": "Own torso file and fit piece in stl/; checked in the digital assembly in short form. Powered and read through its Micro-USB socket.",
+        "esp32_s3_eye": "Own torso file and fit piece in stl/; checked in the digital assembly in short form. Powered and read through its Micro-USB socket.",
+        "none": "The mount is part of the torso and is left empty.",
+        "pixy2": "Not possible on the biped: no torso is generated for it. Elsewhere on a UNO Q: Charmed Labs says an Arduino needs the general (non-LEGO) firmware; the Pixy2 Arduino library on the UNO Q is not verified, and the LEGO cable is not used.",
+        "picam2": "Not possible: the Camera Module needs a CSI connector on a Raspberry Pi."
+      },
+      "robot_creator": {"family": null, "code_targets": [], "note": "The Robot Creator profile schema has no family for an Arduino board."},
+      "software": "app_lab/microduck_agent in this repository. Not built, not flashed.",
+      "sources": ["https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf", "https://store-usa.arduino.cc/products/tinkerkit-braccio-robot"]
+    },
+    "pi_servo": {
+      "name": "Raspberry Pi Zero 2 W with a 16-channel servo driver",
+      "status": "defined, not designed",
+      "status_reason": "The legs and servos are the analysed ones, but no deck, mount, wiring or software exists for a Raspberry Pi, and the analysis used the UNO Q stack's mass and position.",
+      "controller": "Raspberry Pi Zero 2 W (the model in the owner's LEGO prototype)",
+      "outline_mm": {"value": [65.0, 30.0], "basis": "published", "source": "https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/"},
+      "mass_g": {"value": null, "basis": "not verified", "note": "the product page gives no mass. No battery assumed: tethered."},
+      "mounting": {"value": "Four M2.5 holes on 58 x 23 mm centres.", "basis": "not verified", "note": "figure from the owner's microduck-lego README; not checked against Raspberry Pi's mechanical drawing. The 40-pin header footprint is unpopulated (published): a header must be soldered."},
+      "actuates": {"value": "Six hobby servos through an I2C PWM driver board (a PCA9685 16-channel board is the usual choice).", "basis": "not verified", "note": "no specific driver board was checked against its maker's documentation"},
+      "channels": {"value": 16, "basis": "not verified", "note": "channel count of a PCA9685 board; six used by the legs"},
+      "power": {"value": "Board: micro USB power, official supply recommended; the page states no current. Servos: a separate 5 V supply into the driver board, never the Pi's 5 V pin.", "basis": "published", "source": "https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/"},
+      "cameras": {
+        "picam2": "CSI-2 camera connector on the board (published); Zero-series ribbon.",
+        "esp32cam": "UART or Wi-Fi; not written, not verified.",
+        "pixy2": "USB to the Pi with Charmed Labs' software; not verified here. The LEGO cable is not used."
+      },
+      "robot_creator": {"family": null, "code_targets": [], "note": "The Robot Creator profile schema has no Raspberry Pi family."},
+      "software": "Not written.",
+      "sources": ["https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/"]
+    },
+    "hub51515": {
+      "name": "LEGO MINDSTORMS Robot Inventor 51515 hub",
+      "status": "being analysed",
+      "status_reason": "No chassis has been drawn for this hub. The crank walker and wheeled variants are being analysed on another branch; their numbers are read from its summary file when it exists.",
+      "controller": "LEGO Technic Large Hub as sold in set 51515",
+      "outline_mm": {"value": [88.0, 56.0, 32.0], "basis": "published", "note": "LEGO Education's figures for the SPIKE Prime Large Hub 45601; that the 51515 hub has the same body is assumed", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Large_Hub_45601.pdf"},
+      "mass_g": {"value": 63, "basis": "published", "note": "without the battery (LEGO Education fact sheet, reseller-hosted copy). The mass of the rechargeable battery is not verified, so the working mass is not known.", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Large_Hub_45601.pdf"},
+      "mounting": {"value": "Technic build geometry on the hub body (pin holes).", "basis": "published", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Large_Hub_45601.pdf"},
+      "actuates": {"value": "LEGO Powered Up (LPF2) motors and sensors. No hobby servo output is documented.", "basis": "published", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Large_Hub_45601.pdf"},
+      "channels": {"value": 6, "basis": "published", "note": "six LPF2 input/output ports, A to F", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Large_Hub_45601.pdf"},
+      "power": {"value": "The hub's own rechargeable battery, charged in the hub over micro USB. Current available per port is not verified.", "basis": "published", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Large_Hub_45601.pdf"},
+      "cameras": {
+        "pixy2": "Not possible with the Pixy's LEGO cable: it is for NXT and EV3 sensor ports, and this hub's ports are LPF2. Charmed Labs documents Pixy2 for the EV3 only.",
+        "esp32cam": "Not possible as a camera the hub can read: no connection to an LPF2 port is documented.",
+        "picam2": "Not possible: needs a Raspberry Pi."
+      },
+      "robot_creator": {"family": "robot-inventor", "code_targets": ["lego-stock-python", "pybricks-python"]},
+      "software": "Robot Creator generates beep, probe, drive and wave programs for these targets. No walking controller exists.",
+      "sources": ["https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Large_Hub_45601.pdf", "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Medium_Angular_Motor_45603.pdf"]
+    },
+    "ev3": {
+      "name": "LEGO MINDSTORMS EV3 brick",
+      "status": "being analysed",
+      "status_reason": "The owner's ev3-pixy2 prototype has printable parts and a geometric clearance check only: no fit test, no walking controller. It is being analysed on another branch; numbers are read from its summary file when it exists.",
+      "controller": "LEGO MINDSTORMS EV3 Intelligent Brick (45500)",
+      "outline_mm": {"value": null, "basis": "not verified", "note": "no LEGO-published dimensions found"},
+      "mass_g": {"value": null, "basis": "not verified", "note": "no LEGO-published mass found. Runs on six AA cells or the LEGO rechargeable pack; either adds to the mass, by an amount not verified."},
+      "mounting": {"value": "Strapped across the 130 x 116 mm deck of the prototype chassis through four slots.", "basis": "assumed", "note": "from the owner's microduck-lego README and generator; not fit-tested"},
+      "actuates": {"value": "LEGO EV3 and NXT motors on four output ports, A to D. The Linux drivers list tacho-motor, dc-motor and led modes for the outputs; no hobby servo output.", "basis": "published", "note": "ev3dev driver documentation, not a LEGO document", "source": "https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/ev3.html"},
+      "channels": {"value": 4, "basis": "published", "note": "four output ports and four input ports", "source": "https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/ev3.html"},
+      "power": {"value": "Six AA cells or the LEGO rechargeable battery pack inside the brick. Motor stall current is not verified.", "basis": "not verified"},
+      "cameras": {
+        "pixy2": "Input port 1 to 4 through the Pixy LEGO cable. Charmed Labs: a regular Pixy2 works with that cable once Data out port is set to LEGO I2C in PixyMon; no firmware change is called for. Their EV3 block and Python class expose no servo control.",
+        "esp32cam": "Not possible as a camera the brick can read: no connection to an EV3 port is documented.",
+        "picam2": "Not possible: needs a Raspberry Pi."
+      },
+      "robot_creator": {"family": "ev3", "code_targets": ["pybricks-ev3", "ev3dev-python"]},
+      "software": "Robot Creator generates beep, probe, drive and wave programs for these targets. No walking controller exists.",
+      "sources": ["https://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/ev3.html", "https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:can_i_use_my_regular_pixy_with_lego_mindstorms", "https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:pixy_lego_block"]
+    },
+    "m5_basex_ev3": {
+      "name": "M5Stack Core with the BaseX base driving EV3 motors",
+      "status": "being analysed",
+      "status_reason": "No chassis or mount has been drawn for an M5Stack Core on a BaseX, and Robot Creator has no code target for it. The motor-driven variants are being analysed on another branch.",
+      "controller": "M5Stack Core (ESP32) stacked on the BaseX base",
+      "outline_mm": {"value": [54.0, 54.0, 26.0], "basis": "published", "note": "BaseX alone; the Core on top adds height by an amount not verified", "source": "https://docs.m5stack.com/en/base/basex"},
+      "mass_g": {"value": 59, "basis": "published", "note": "BaseX product weight, which the page lists with a built-in 950 mAh battery. The Core's mass depends on the model and is not verified.", "source": "https://docs.m5stack.com/en/base/basex"},
+      "mounting": {"value": null, "basis": "not verified", "note": "no mounting holes or LEGO-compatible features are stated on the BaseX page"},
+      "actuates": {"value": "Four LEGO EV3 motors with angle and speed reading from 32-bit encoder registers, and two hobby servos. I2C address 0x22, STM32F030C8T6 on the base.", "basis": "published", "source": "https://docs.m5stack.com/en/base/basex"},
+      "channels": {"value": 4, "basis": "published", "note": "four motor ports with encoders, two servo outputs, no LEGO sensor port", "source": "https://docs.m5stack.com/en/base/basex"},
+      "power": {"value": "Motors: DC 9 to 12 V on a 3.5 x 1.35 mm jack, centre positive; the jack does not charge the battery. Built-in 950 mAh battery, charged through the Core's USB-C.", "basis": "published", "source": "https://docs.m5stack.com/en/base/basex"},
+      "cameras": {
+        "pixy2": "The BaseX has no LEGO sensor port, so the LEGO cable is no use here. Pixy2 on the Core's I2C or UART with the general firmware: not verified.",
+        "esp32cam": "UART or Wi-Fi to the Core: not written, not verified.",
+        "picam2": "Not possible: needs a Raspberry Pi."
+      },
+      "robot_creator": {"family": "m5stack-basex", "code_targets": [], "note": "Robot Creator runs simulated probes for this family; its server refuses firmware generation: a code target is not implemented."},
+      "software": "Not written.",
+      "sources": ["https://docs.m5stack.com/en/base/basex"]
+    },
+    "pi_buildhat_51515": {
+      "name": "Raspberry Pi Zero 2 W with the Build HAT driving 51515 motors",
+      "status": "being analysed",
+      "status_reason": "The owner's pi-zero-2w-51515 prototype has printable parts and a geometric clearance check only: no fit test, no walking controller. It is being analysed on another branch; numbers are read from its summary file when it exists.",
+      "controller": "Raspberry Pi Zero 2 W under a Raspberry Pi Build HAT",
+      "outline_mm": {"value": [65.0, 30.0], "basis": "published", "note": "the Pi Zero 2 W. The Build HAT is larger and overhangs it; its page gives the outline only as a drawing, so the HAT's size is not verified here.", "source": "https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/"},
+      "mass_g": {"value": null, "basis": "not verified", "note": "neither the Pi Zero 2 W page nor the Build HAT page gives a mass. No battery assumed: the 8 V supply is a mains adapter, so the robot is tethered."},
+      "mounting": {"value": "Pi on four M2.5 posts at 58 x 23 mm centres on the prototype deck; the HAT above on 9 mm spacers (Raspberry Pi's figure) with a soldered 40-pin header.", "basis": "assumed", "note": "post positions from the owner's generator; not fit-tested", "source": "https://www.raspberrypi.com/documentation/accessories/build-hat.html"},
+      "actuates": {"value": "LEGO Technic motors and sensors of the SPIKE portfolio and of the Robot Inventor kit, among them the 51515 Medium Angular Motor. EV3 and NXT devices are not mentioned.", "basis": "published", "source": "https://www.raspberrypi.com/documentation/accessories/build-hat.html"},
+      "channels": {"value": 4, "basis": "published", "note": "four LPF2 connectors", "source": "https://www.raspberrypi.com/documentation/accessories/build-hat.html"},
+      "power": {"value": "One 8 V +/-10 percent supply able to give 48 W on a 5.5 x 2.1 mm centre-positive barrel jack powers the HAT, the Pi and the motors. Bookworm is required: Raspberry Pi says the HAT is not yet supported by Raspberry Pi OS Trixie.", "basis": "published", "source": "https://www.raspberrypi.com/documentation/accessories/build-hat.html"},
+      "cameras": {
+        "picam2": "CSI-2 connector on the Pi with the Zero-series ribbon, as in the owner's prototype. Ribbon clearance under the HAT is not stated by Raspberry Pi.",
+        "esp32cam": "UART or Wi-Fi; not written, not verified.",
+        "pixy2": "USB to the Pi with Charmed Labs' software; not verified here. The LEGO cable is not used."
+      },
+      "robot_creator": {"family": null, "code_targets": [], "note": "The Robot Creator profile schema has no Raspberry Pi family. Raspberry Pi's python3-build-hat library drives the motors."},
+      "software": "Not written.",
+      "sources": ["https://www.raspberrypi.com/documentation/accessories/build-hat.html", "https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/"]
+    }
+  },
+  "actuators": {
+    "braccio_servos": {"name": "TinkerKit Braccio SR431 and SR311", "note": "see config/hardware.json", "source": "https://store-usa.arduino.cc/products/tinkerkit-braccio-robot"},
+    "medium_angular_motor": {
+      "name": "LEGO Technic Medium Angular Motor (51515, 45603)",
+      "published": {"stall_torque_ncm": 18, "stall_current_ma": 800, "no_load_rpm": 185, "test_voltage_v": 7.2, "voltage_min_v": 5, "voltage_max_v": 9, "sensor_counts_per_rev": 360, "sensor_accuracy_deg": 3},
+      "note": "LEGO Education fact sheet for 45603 (reseller-hosted copy); speed and current are +/-15 percent. Mass not on the sheet: not verified.",
+      "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Medium_Angular_Motor_45603.pdf"
+    },
+    "ev3_large_motor": {"name": "LEGO EV3 Large Servo Motor (45502)", "note": "Third-party pages give 20 N cm running and 40 N cm stall; not verified against a LEGO document. Stall current not verified."},
+    "ev3_medium_motor": {"name": "LEGO EV3 Medium Servo Motor (45503)", "note": "Torque and current not verified against a LEGO document."},
+    "m5_servo_360": {
+      "name": "M5Stack 360 degree servo (Servo Kit 360; BALA-C)",
+      "published": {"voltage_min_v": 4.8, "voltage_max_v": 6.0, "torque_kgcm_4v8": 1.6, "torque_kgcm_6v0": 1.8, "stall_current_ma": 750, "no_load_current_ma": 60, "pwm_hz": 50, "pulse_ms": [0.5, 2.5], "servo_mass_g": 9.0, "kit_wheel_mm": 24},
+      "note": "Servo Kit 360 page: 'speed and direction controlled by adjusting the PWM duty cycle', so it turns continuously and holds no angle; LEGO-compatible mounting bracket. The BALA-C page lists two 9 g servos, rotation angle 360 degrees, 0.12 s per 60 degrees at 4.8 V, an L9110S driver and I2C address 0x38 in its base; it does not say the servos are the same part as the kit's, nor that they accept a PWM signal directly: not verified.",
+      "source": "https://docs.m5stack.com/en/accessory/Servo_Kit_360",
+      "source_bala_c": "https://docs.m5stack.com/en/app/balac"
+    },
+    "tt_motor": {"name": "Yellow TT DC gear motor", "note": "A generic part with no single maker. Voltage, gear ratio, speed, torque and stall current are not verified. Without the encoder version, speed is open loop."},
+    "h_bridge": {"name": "H-bridge driver board: TB6612FNG, DRV8833 or L298N", "note": "Pin names follow the chip makers' datasheets, which were not re-read for this file: TB6612FNG AIN1 AIN2 PWMA BIN1 BIN2 PWMB STBY; DRV8833 AIN1 AIN2 BIN1 BIN2 nSLEEP; L298N IN1 IN2 IN3 IN4 ENA ENB. Current ratings and voltage drop are not verified."}
+  },
+  "cameras": {
+    "pixy2": {
+      "name": "Pixy2 (standard, non-LEGO) with the pan-tilt kit and the LEGO cable",
+      "published": {"size_in": [1.5, 1.65, 0.6], "mass_g": 10, "current_ma_typical": 140, "input": "USB 5 V or unregulated 6 to 10 V", "outputs": "UART serial, SPI, I2C, USB, digital, analog"},
+      "note": "Which Pixy the owner has is not confirmed; Pixy2 is assumed. Pan-tilt kit mass and servo current are not published.",
+      "source": "https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:overview"
+    },
+    "esp32cam": {
+      "name": "AI-Thinker ESP32-CAM",
+      "note": "Dimensions, mass, supply and current are in config/hardware.json (cameras.esp32cam), from AI-Thinker's specification V1.0 read from a mirror: 40.5 x 27 x 4.5 mm, 10 g, 5 V, 180 mA with the flash LED off, 310 mA at maximum.",
+      "source": "https://iarduino.ru/lib/78eba891fa500cedb3b7a5641d82ce74.pdf"
+    },
+    "esp_eye": {
+      "name": "Espressif ESP-EYE",
+      "note": "See config/hardware.json (cameras.esp_eye). Espressif publishes no dimensions or mass: 41 x 21 mm is a reseller's figure and 8 g an estimate.",
+      "source": "https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP-EYE_Getting_Started_Guide.md"
+    },
+    "esp32_s3_eye": {
+      "name": "Espressif ESP32-S3-EYE",
+      "note": "See config/hardware.json (cameras.esp32_s3_eye). 60 x 30 mm from Espressif's board drawing; 25 g is an estimate.",
+      "source": "https://dl.espressif.com/dl/schematics/DXF_ESP32-S3-EYE_MB_top_V2.2_20211207.pdf"
+    },
+    "picam2": {"name": "Raspberry Pi Camera Module 2", "note": "Mounting holes 21 x 12.5 mm per the owner's generator; not checked against Raspberry Pi's drawing.", "source": "https://www.raspberrypi.com/documentation/accessories/camera.html"}
+  },
+  "pixy_findings": [
+    "The Pixy LEGO cable connects a Pixy2 to an NXT or EV3 sensor port (EV3 input ports 1 to 4). Source: Charmed Labs, Pixy2 EV3 block page.",
+    "A regular Pixy2 can be used with LEGO Mindstorms: it needs the Pixy2-to-LEGO cable and Data out port set to LEGO I2C in PixyMon's Interface tab. Charmed Labs does not call for a firmware change; Pixy2 for LEGO only ships with the LEGO firmware already loaded. PixyMon's About box says which firmware is on the camera, LEGO or general.",
+    "The Interface tab exists only under the stock (general) firmware. An Arduino needs the general firmware. Charmed Labs' Python class for the EV3 also asks for the stock firmware, I2C address 0x54.",
+    "Pan-tilt servos plug into the Pixy2's two RC servo connectors. The general API sets them with setServos(s0, s1), values 0 to 1000. The EV3 block (colour connected components, line tracking, RGB, signature compare, lamp) and the EV3 Python class have no servo call. Whether Pixy2's own pan-tilt demo runs while it answers an EV3 is not stated: not verified.",
+    "The 51515 hub's ports are LEGO Power Functions 2.0 (LPF2), a different connector from the NXT/EV3 port the cable fits. Charmed Labs documents no LPF2 connection."
+  ],
+  "joint_count_findings": [
+    "The analysed biped has six position joints, one hobby servo each, and no head: its torso carries a fixed camera mount.",
+    "The EV3 brick has four output ports, the Build HAT four connectors, the BaseX four motor ports. The 51515 hub has six ports.",
+    "The owner's LEGO prototypes (microduck-lego) do not try to drive six joints. Each is a two-motor parallel-crank walker: one motor per side turns two cranks through three 16-tooth gears, and each leg hangs from the two crank tips. A third motor may pan the head; on four-port controllers one port is then spare.",
+    "So the LEGO-motor bases are a different mechanism from the six-servo biped, and are presented as such."
+  ],
+  "trademarks": "LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. M5Stack and Pixy are names of their makers' products. No affiliation with any of them."
+}

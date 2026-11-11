@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#087f60">
   <meta name="description" content="Drive the Microduck Braccio biped from a USB or Bluetooth game controller: in-page playback by default, the real robot through its own server.">
   <link rel="stylesheet" href="./style.css">
-  <title>Microduck Braccio / control</title>
+  <title>Control / Botbuilder</title>
   <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
   <style>
     select { font: inherit; }
@@ -41,9 +41,10 @@
 </head>
 <body>
   <header class="masthead">
-    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">MD</span><span>Microduck <b>Braccio</b></span></a>
-    <nav>
-      <a href="./">Overview</a><a href="./flash.html">Flash</a><a href="./control.html" aria-current="page">Control</a>
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <nav id="site-nav">
+      <a href="./">Build yours</a><a href="./biped.html">Biped</a>
+      <a href="./walkers.html" data-page="walkers.html" hidden>Walkers and wheels</a><a href="./flash.html" data-page="flash.html" hidden>Flash</a><a href="./control.html" data-page="control.html" hidden aria-current="page">Control</a>
       <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
     </nav>
   </header>
@@ -123,6 +124,7 @@
 
     <section aria-labelledby="actions-heading">
       <div class="section-heading"><span class="step">03</span><h2 id="actions-heading">What it can do now</h2></div>
+      <p>This page drives the six-servo biped on the UNO Q, the robot <a href="./">Build yours</a> lists as analysed in simulation; its findings are on the <a href="./biped.html">Biped</a> page.</p>
       <p>Motions come from the repository's motion manifest: named trajectories in the joint-command format and the
         limits of the parametric gait. A motion that does not exist yet is disabled here, with the reason. Nothing is faked.</p>
       <ul class="findings" id="actions"></ul>
@@ -181,6 +183,7 @@
     <p>Code under the MIT licence. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
       No analytics, no cookies. This page sends nothing anywhere unless it is served by the robot's own server, and then only to that server.</p>
   </footer>
+  <script type="module" src="./nav.js"></script>
   <script type="module" src="./control.js"></script>
 </body>
 </html>

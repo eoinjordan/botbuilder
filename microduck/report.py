@@ -87,7 +87,7 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
 
     # Close-ups of the interferences at the neutral pose.
     close = {"interference_roll_servo_deck": ("torso_print", "left_roll_servo"),
-             "interference_board_neck": ("torso_print", "unoq")}
+             }
     for key, (a, b) in close.items():
         hit = next((f for f in rep["neutral_interferences"] if {f["a"], f["b"]} == {a, b}), None)
         if hit is None:
@@ -98,6 +98,14 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
                                 overlays=_overlaps(placed, [(a, b)] + extra), bounds=frame_box,
                                 title=f"{a} and {b}: {hit['volume_mm3']} mm3 overlap (red)")
         images[key] = _save(picture, key.replace("_", "-") + ".png")
+
+    # The camera in its mount, with the controller stack behind it.
+    names = {"torso_print", "camera_board", "unoq", "braccio_shield"}
+    lens = np.asarray(rep["camera"]["lens_mm"])
+    views = [render.render(_items(placed, names), v, (560, 520), bounds=_pad(lens - [70, 45, 62], lens + [12, 45, 22], 4.0))
+             for v in ("iso", "left", "front")]
+    images["camera_mount"] = _save(_side_by_side(views, ["camera board (red) in its mount", "left: lens looks +x", "front"]),
+                                   "camera-mount.png")
 
     # First contact of each collision-limited sweep, left leg only.
     for joint in ("left_hip_roll", "left_hip_pitch", "left_knee"):
@@ -177,14 +185,6 @@ def findings(rep: dict) -> list:
                                 f"(z {f['box_min_mm'][2]} to {f['box_max_mm'][2]} mm). The published case alone accounts for "
                                 f"{next(c['case_interference_mm3'] for c in rep['cradles'] if c['servo'] == f['b'])} mm3, "
                                 "so this does not rest on the assumed ear."})
-        elif f["b"] == "unoq":
-            out.append({"id": "board-neck", "level": "interference",
-                        "text": f"The UNO Q centred between the deck rails overlaps the neck root by {f['volume_mm3']} mm3 "
-                                f"({round(f['box_max_mm'][0] - f['box_min_mm'][0], 2)} mm along x). Moving the board "
-                                f"{rep['board']['forward_shift_to_clear_mm']} mm forward clears it and keeps it on the deck."})
-        elif f["b"] == "braccio_shield":
-            out.append({"id": "shield-neck", "level": "interference",
-                        "text": f"The Braccio shield above the board overlaps the neck by {f['volume_mm3']} mm3 at the same position."})
         else:
             out.append({"id": f"{f['a']}-{f['b']}", "level": "interference",
                         "text": f"{f['a']} and {f['b']} overlap by {f['volume_mm3']} mm3 at the neutral pose."})
@@ -203,6 +203,40 @@ def findings(rep: dict) -> list:
     if all(h["hole_on_shaft_axis"] and h["driver_path_clear"] for h in rep["horns"]):
         out.append({"id": "horn-access", "level": "ok",
                     "text": "All six horn screw holes are on their shaft axes and a screwdriver has a free path to each at the neutral pose."})
+    c = rep["camera"]
+    g = c["gaps"]
+    fits = (c["board_overlap_with_mount_mm3"] < 0.5 and c["seated_on_the_corner_seats"] and c["clearance_each_side_mm"] > 0)
+    out.append({"id": "camera-fit", "level": "ok" if fits else "fit",
+                "text": f"The {c['name']} stands in its mount with {c['clearance_each_side_mm']} mm each side and "
+                        f"{c['play_towards_the_lips_mm']} mm of play under the snap lips, on the corner seats, "
+                        f"overlapping the print by {c['board_overlap_with_mount_mm3']} mm3. The mount is "
+                        f"{g['unoq']['to_mount_mm']} mm from the UNO Q and {g['stack_envelope']['to_mount_mm']} mm from the "
+                        "space kept for the shield and its plugs."})
+    swept = {j: v for j, v in c["cone_sweeps"].items() if v["from_neutral"]["angles_in_cone_deg"] or v["from_stand"]["angles_in_cone_deg"]}
+    clear = not c["cone_blocked_at_neutral"] and not c["cone_blocked_at_stand"]
+    text = (f"The lens looks along +x, the way the toes point, {c['tilt_below_level_deg']} degrees below level, "
+            f"{c['lens_height_above_floor_at_stand_mm']} mm above the floor at the stand pose. A cone of "
+            f"{c['cone_half_angle_deg']} degrees half angle in front of it is "
+            + ("clear at the neutral and stand poses." if clear else "NOT clear at the neutral or stand pose."))
+    if swept:
+        parts = []
+        for j, v in swept.items():
+            a = v["from_stand"]["angles_in_cone_deg"] or v["from_neutral"]["angles_in_cone_deg"]
+            parts.append(f"{j} between {a[0]} and {a[1]} degrees")
+        text += " A leg comes into the cone with " + "; ".join(parts) + " (one joint moved, the others at the stand or neutral pose)."
+    else:
+        text += " No joint brings a leg into it anywhere inside its limits."
+    out.append({"id": "camera-view", "level": "ok" if clear else "fit", "text": text})
+    lg = rep["lego_compatible"]
+    good = (all(h["open_for_a_nominal_pin"] and h["wall_fill_fraction"] > 0.99 for h in lg["holes"])
+            and all(s["present"] for s in lg["studs"]) and not lg["features_in_the_camera_cone_at_neutral"])
+    out.append({"id": "lego-compatible", "level": "ok" if good else "fit",
+                "text": f"{len(lg['holes'])} pin holes and {len(lg['studs'])} studs compatible with LEGO Technic and System elements: "
+                        f"every hole is open for a {lg['nominal_mm']['pin_hole']} mm pin over {lg['nominal_mm']['beam']} mm with wall all round, "
+                        f"none is nearer than {min(x['from_nearest_joint_axis_mm'] for x in lg['holes'] + lg['studs'])} mm to a joint axis "
+                        f"or {min(x['gap_to_it_mm'] for x in lg['holes'] + lg['studs'])} mm to another part at the neutral pose, "
+                        "and none is in the camera's clear cone. Whether a real pin or brick holds in a printed one is not known."
+                        if good else "A pin hole or stud is blocked, thin-walled, missing or in the camera cone: see the table."})
     b = rep["balance"]
     n, s = b["neutral_two_feet"], b["stand_pose"]
     out.append({"id": "balance-neutral", "level": "ok" if n["inside"] else "balance",
@@ -239,7 +273,7 @@ def markdown(report: dict) -> str:
     rep = report["variants"][sel]
     img = report["images"]
     md = ["# Digital assembly test", "",
-          "Generated by `scripts/run_assembly.py` from the seven printable STLs, the parametric servo model and",
+          "Generated by `scripts/run_assembly.py` from the seven printable STLs, the parametric servo and board models and",
           "`config/`. Do not edit by hand. The numbers are also in `reports/assembly.json`.", "",
           "Status: geometry only. Nothing here has been printed, assembled or powered.", "",
           "## Findings", ""]
@@ -280,7 +314,7 @@ def markdown(report: dict) -> str:
                       [(f["a"], f["b"], f["volume_mm3"], f["depth_mm"], f["box_min_mm"], f["box_max_mm"]) for f in rep["neutral_interferences"]]), ""]
     else:
         md += ["None.", ""]
-    for key in ("interference_roll_servo_deck", "interference_board_neck"):
+    for key in ("interference_roll_servo_deck",):
         if key in img:
             md += [f"![{key}]({img[key]})", ""]
 
@@ -315,14 +349,96 @@ def markdown(report: dict) -> str:
                ("overlap with the torso, shield (mm3)", b["shield_interference_mm3"]),
                ("forward shift that clears both (mm)", b["forward_shift_to_clear_mm"]),
                ("overhang past the deck front after the shift (mm)", b["front_overhang_after_shift_mm"]),
-               ("lowest torso material above the stack, after the shift (mm)", b["head_above_stack_top_after_shift_mm"]),
            ]), ""]
+
+    c = rep["camera"]
+    g = c["gaps"]
+    md += ["## Camera mount", "",
+           "The torso has no head or neck. Two posts at the front edge of the deck hold a camera board by its long edges,",
+           "lens forward. Forward is the way the toes point: the foot plates reach "
+           f"{c['toes_ahead_of_shin_mm']} mm ahead of the shin and {c['heel_behind_shin_mm']} mm behind it. The hip cradles open",
+           "towards +x, so the hips stand ahead of the deck and the mount looks out between the legs.", "",
+           f"![camera mount]({img['camera_mount']})", "",
+           _table(["check", "value"], [
+               ("camera preset", f"{c['preset']} ({c['name']})"),
+               ("board as modelled: width, length, thickness (mm)", c["board_mm"]),
+               ("board mass (g)", c["mass_g"]),
+               ("clearance to each post (mm)", c["clearance_each_side_mm"]),
+               ("play towards the snap lips (mm)", c["play_towards_the_lips_mm"]),
+               ("play towards the back ledges (mm)", c["play_towards_the_ledges_mm"]),
+               ("lower edge on the corner seats", c["seated_on_the_corner_seats"]),
+               ("play upwards to the catch over the upper edge (mm)", c["play_upwards_to_the_catch_mm"]),
+               ("overlap of board and print (mm3)", c["board_overlap_with_mount_mm3"]),
+               ("mount to UNO Q (mm)", g["unoq"]["to_mount_mm"]),
+               ("mount to Braccio shield (mm)", g["braccio_shield"]["to_mount_mm"]),
+               ("mount to the space kept for shield plugs (mm)", g["stack_envelope"]["to_mount_mm"]),
+               ("camera board to the space kept for shield plugs (mm)", g["stack_envelope"]["to_camera_board_mm"]),
+               ("lens front in the torso frame (mm)", c["lens_mm"]),
+               ("tilt below level (deg)", c["tilt_below_level_deg"]),
+               ("lens above the floor at the stand pose (mm)", c["lens_height_above_floor_at_stand_mm"]),
+               ("clear cone, half angle (deg)", c["cone_half_angle_deg"]),
+               ("parts in the cone at neutral", ", ".join(h["solid"] for h in c["cone_blocked_at_neutral"]) or "none"),
+               ("parts in the cone at the stand pose", ", ".join(h["solid"] for h in c["cone_blocked_at_stand"]) or "none"),
+           ]), "",
+           "Joint angles inside the limits at which a leg is in the cone, one joint moved at a time:", "",
+           _table(["joint", "others at neutral (deg)", "others at the stand pose (deg)"],
+                  [(j, v["from_neutral"]["angles_in_cone_deg"] or "never", v["from_stand"]["angles_in_cone_deg"] or "never")
+                   for j, v in c["cone_sweeps"].items()]), "",
+           "The other camera presets, each with its own torso file, checked in short form (same deck, legs and stand search):", "",
+           _table(["preset", "board (mm)", "each side (mm)", "under the lips (mm)", "up to the catch (mm)", "on the seats",
+                   "overlap with print (mm3)", "mount to UNO Q (mm)", "cone clear at neutral and stand", "total mass (g)",
+                   "centre of mass at neutral (mm)", "stand margin (mm)"],
+                  [(k, p["board_mm"], p["clearance_each_side_mm"], p["play_towards_the_lips_mm"], p["play_upwards_to_the_catch_mm"],
+                    p["seated_on_the_corner_seats"], p["board_overlap_with_mount_mm3"], p["gaps"]["unoq"]["to_mount_mm"],
+                    not p["cone_blocked_at_neutral"] and not p["cone_blocked_at_stand"], p["total_g"], p["com_neutral_mm"],
+                    p["stand_margin_mm"]) for k, p in report["camera_presets"].items()]), "",
+           "The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are",
+           "and what is assumed about them is in `config/hardware.json` and the design README.", ""]
+
+    lg = rep["lego_compatible"]
+
+    def spread(rows, key):
+        values = [r[key] for r in rows]
+        return f"{min(values)} to {max(values)}" if values else "-"
+
+    parts = sorted(lg["counts"])
+    md += ["## Pin holes and studs", "",
+           "Attachment features compatible with LEGO Technic and System elements. LEGO, Technic, Mindstorms and SPIKE are",
+           "trademarks of the LEGO Group, which does not sponsor or endorse this. Geometry only: no printed hole or stud has been",
+           "tried with a real element.", "",
+           f"Nominal: pitch {lg['nominal_mm']['pitch']} mm, pin hole {lg['nominal_mm']['pin_hole']} mm with a counterbore of "
+           f"{lg['nominal_mm']['pin_counterbore'][0]} x {lg['nominal_mm']['pin_counterbore'][1]} mm at each end, hole length "
+           f"{lg['nominal_mm']['beam']} mm, stud {lg['nominal_mm']['stud'][0]} x {lg['nominal_mm']['stud'][1]} mm. Print allowance: "
+           f"holes {lg['print_allowance_mm']['hole_extra']} mm larger, studs {lg['print_allowance_mm']['stud_under']} mm smaller.", "",
+           _table(["part", "pin holes", "open for a nominal pin", "wall around the hole", "hole to nearest joint axis (mm)",
+                   "hole pad to nearest other part (mm)", "studs", "present", "pointing up at neutral", "stud to nearest other part (mm)"],
+                  [(p, lg["counts"][p]["holes"],
+                    all(h["open_for_a_nominal_pin"] for h in lg["holes"] if h["part"] == p),
+                    all(h["wall_fill_fraction"] > 0.99 for h in lg["holes"] if h["part"] == p),
+                    spread([h for h in lg["holes"] if h["part"] == p], "from_nearest_joint_axis_mm"),
+                    spread([h for h in lg["holes"] if h["part"] == p], "gap_to_it_mm"),
+                    lg["counts"][p]["studs"],
+                    all(s["present"] for s in lg["studs"] if s["part"] == p),
+                    all(s["points_up_at_neutral"] for s in lg["studs"] if s["part"] == p),
+                    spread([s for s in lg["studs"] if s["part"] == p], "gap_to_it_mm")) for p in parts]), "",
+           f"Features inside the camera's clear cone at the neutral pose: {lg['features_in_the_camera_cone_at_neutral']}.",
+           "The joint sweeps above were run with the pads and studs in place.", "",
+           "### How much decoration the stand pose carries", "",
+           "Extra mass placed at one spot, robot at the stand pose on two feet. Static balance only: the mass at which the centre of",
+           "mass reaches the edge of the support polygon. Servo torque, walking and the stiffness of the plates are not in it, and",
+           "the gait was not rerun with added mass.", "",
+           _table(["where", "margin with 50 g (mm)", "with 100 g (mm)", "with 200 g (mm)", "mass that uses up the margin (g)"],
+                  [(d["where"], d["margin_with_50_g_mm"], d["margin_with_100_g_mm"], d["margin_with_200_g_mm"],
+                    "more than 3000" if d["mass_that_uses_up_the_margin_g"] is None else d["mass_that_uses_up_the_margin_g"])
+                   for d in rep["decoration_budget"]]), "",
+           f"The margin with nothing added is {rep['balance']['stand_pose']['margin_mm']} mm.", ""]
 
     m = rep["mass"]
     md += ["## Mass and centre of mass", "",
            f"Total {m['total_g']} g: servos {m['by_kind_g']['servo']} g, printed parts {m['by_kind_g']['print']} g "
            f"({m['print_material']} at {m['print_density_g_cm3']} g/cm3, {int(m['print_solid_fraction'] * 100)} percent of solid; "
-           f"{m['total_if_printed_solid_g']} g in total if printed solid), board {m['by_kind_g']['board']} g and shield {m['by_kind_g']['shield']} g (both assumed).",
+           f"{m['total_if_printed_solid_g']} g in total if printed solid), board {m['by_kind_g']['board']} g and shield {m['by_kind_g']['shield']} g (both assumed), "
+           f"camera {m['by_kind_g']['camera']} g.",
            f"Centre of mass at the neutral pose: {m['com_neutral_mm']} mm in the torso frame.", "",
            _table(["link", "mass (g)", "centre of mass in the link frame (mm)"], [(k, v["mass_g"], v["com_link_mm"]) for k, v in m["links"].items()]), ""]
 
@@ -351,6 +467,13 @@ def run(progress=print) -> dict:
     for variant in ("rail", "flat"):
         robots[variant] = build_robot(variant, hardware, config)
         reports[variant] = assembly.analyse(robots[variant], lambda text, v=variant: progress(f"[{variant}] {text}"))
+    presets = {}
+    for name in model.CAMERAS:
+        if name == config["camera"]["preset"]:
+            continue
+        progress(f"camera preset {name}")
+        other = dict(config, camera=dict(config["camera"], preset=name))
+        presets[name] = assembly.camera_preset_summary(build_robot(selected, hardware, other))
     progress("rendering")
     images = render_images(robots, reports, selected)
     assumed = []
@@ -360,6 +483,10 @@ def run(progress=print) -> dict:
     for name in ("board", "shield", "print", "driver"):
         assumed += [{"item": hardware[name].get("name", name), "quantity": k, "value": v["value"], "why": v["why"]}
                     for k, v in hardware[name]["assumed"].items()]
+    camera = hardware["cameras"][config["camera"]["preset"]]
+    assumed += [{"item": camera["name"], "quantity": k, "value": v["value"], "why": v["why"]} for k, v in camera["assumed"].items()]
+    assumed += [{"item": "camera", "quantity": k, "value": v["value"], "why": v["why"]}
+                for k, v in hardware["camera_optics"]["assumed"].items()]
     sums = {}
     for name in sorted(model.PART_FILES.values()):
         sums[name] = hashlib.sha256((model.stl_dir() / name).read_bytes()).hexdigest()
@@ -372,8 +499,10 @@ def run(progress=print) -> dict:
                         "limit_margin_deg": config["limit_margin_deg"], "sweep_step_deg": config["sweep_step_deg"]},
         "sources": {"SR431 and SR311 servos, supply": hardware["servos"]["SR431"]["source"],
                     "Arduino UNO Q outline and power": hardware["board"]["source"],
-                    "Braccio shield outline": hardware["shield"]["source"]},
+                    "Braccio shield outline": hardware["shield"]["source"],
+                    camera["name"]: camera["source"]},
         "findings": findings(reports[selected]),
+        "camera_presets": presets,
         "images": images,
         "variants": reports,
     }

@@ -63,7 +63,7 @@ commit that is:
 | Walk back | disabled: only the forward gait has been simulated |
 | Turn | disabled: the default gait has no turn parameter and the robot has no hip yaw |
 | Sit, jump | disabled: no trajectory yet |
-| Head pan and tilt | disabled: the head is fixed, the robot has six leg joints |
+| Head pan and tilt | disabled: no head joints; the robot has six leg joints and a fixed camera mount |
 | Stop | always |
 
 Expert mode jogs one joint at 15 deg/s inside its soft limits.
@@ -181,8 +181,11 @@ and it does not cut servo power: keep the switch.
   and the HTTP server against `scripts/virtual_robot.py`.
 - `tests/test_control_page.py`: both pages in headless Chrome over the
   DevTools protocol with a synthetic gamepad, in the simulator target and,
-  served by the control server, against the virtual robot. Skipped when
-  Chrome or the `websockets` package is missing.
+  served by the control server, against the virtual robot. `websockets` is
+  in `requirements-dev.txt`; no browser is downloaded. The tests skip when no
+  Chrome is installed or it does not start. They have run on Windows with
+  the installed Chrome; whether the workflow runner's Chrome starts them has
+  not been observed yet.
 
 No test opens a serial port or a connection to another machine.
 

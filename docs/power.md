@@ -46,5 +46,8 @@ SR431 and 1.0 A for an SR311.
 - Size the supply and wiring for the stall figure, or fuse it, and put a
   switch in the servo supply within reach. A software stop or the watchdog
   does not cut power.
+- The camera board adds about 0.3 A at 5 V (ESP32-CAM, maker's figure with
+  the flash LED on). Feed it from the controller side, not the servo rail.
+  See [camera.md](camera.md).
 - The robot is tethered. No battery, regulator or charger is part of this
   design, and the mass and balance figures do not include one.

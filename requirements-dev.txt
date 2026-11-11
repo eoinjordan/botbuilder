@@ -1,2 +1,4 @@
 -r requirements.txt
 pytest>=8.0
+# Drives an installed Chrome for tests/test_control_page.py. Pure Python, no dependencies; no browser is downloaded.
+websockets>=13

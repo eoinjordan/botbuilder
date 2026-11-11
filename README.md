@@ -1,4 +1,17 @@
-# Microduck on Braccio servos and an Arduino UNO Q: simulation to real
+# Botbuilder: build your own bot from the parts you have
+
+Printed robots for the controllers, motors and cameras you already own. The
+site's first page is a configurator: pick a controller (Arduino UNO Q,
+Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack Core), a locomotion
+(six-servo biped, two-motor crank walker, two driven wheels), a drive and a
+camera, and it answers with what can honestly be said about that robot:
+status first, then the files to print, parts, wiring, power and software.
+See [Build yours](#build-yours).
+
+The biped is the one design analysed so far, and most of this README is about
+it. Site: https://eoinjordan.github.io/botbuilder/.
+
+## The biped: Microduck on Braccio servos and an Arduino UNO Q
 
 A small printed biped, checked digitally before anything is printed:
 assembled from its STL files and a model of the servos, tested for fit and
@@ -17,9 +30,15 @@ firmware and tools to play the same joint commands on the real robot.
 A Microduck-style biped rebuilt around the six servos of a stock TinkerKit
 Braccio kit. Four SR431 servos at the hips (two on the torso for hip roll,
 one on each yoke for hip pitch), two SR311 servos at the far end of the
-thighs for knee pitch, shins with fixed feet, a fixed head, an Arduino UNO Q
-and the Braccio shield strapped to a deck, servos held by cable ties. Seven
-printed parts and three fit-test pieces.
+thighs for knee pitch, shins with fixed feet, an Arduino UNO Q and the
+Braccio shield strapped to a deck, a camera board in a mount at the front
+edge of the deck, servos held by cable ties. Seven printed parts and seven
+fit-test pieces. The torso, thighs, shins and feet carry pin holes and studs
+compatible with LEGO Technic and System elements, for decoration. LEGO,
+Technic, Mindstorms and SPIKE are trademarks of the LEGO Group, which does
+not sponsor or endorse this. There is no head: the torso carries the camera mount
+instead, with presets for the AI-Thinker ESP32-CAM (the default), the
+Espressif ESP-EYE and the ESP32-S3-EYE. See [docs/camera.md](docs/camera.md).
 
 Six actuated joints: left and right hip roll, hip pitch, knee pitch. No yaw,
 no ankles.
@@ -27,7 +46,7 @@ no ankles.
 For comparison, Pollen Robotics' Microduck has five joints per leg (hip yaw,
 roll, pitch, knee, ankle) and four in the neck and head, weighs about 800 g
 and stands about 25 cm tall. This one has three per leg, weighs about 500 g
-by the model and stands 283 mm.
+by the model and stands 260 mm.
 
 ## What the digital assembly test found
 
@@ -36,8 +55,13 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
 
 - **Interference.** Each hip roll servo, centred in its torso cradle, runs
   into the deck: 1055 mm3 of overlap. The case end reaches 2 mm into the 4 mm
-  plate and the mounting ear goes through the rest. The UNO Q centred between the deck rails
-  overlaps the neck root by 3.3 mm; moving it 3.25 mm forward clears it.
+  plate and the mounting ear goes through the rest. Nothing else overlaps:
+  the neck that the UNO Q ran into is gone with the head.
+- **Camera mount.** The ESP32-CAM stands between two posts with 0.5 mm each
+  side, 1.1 mm ahead of the UNO Q. The lens looks the way the toes point,
+  10 degrees below level, 223 mm above the floor at the stand pose. A cone
+  of 40 degrees half angle in front of it is clear at the neutral and stand
+  poses; a thigh swung more than 21 degrees forward comes into it.
 - **Cable ties.** On every cradle one of the two ties is in line with the
   output shaft (slot pair 10.9 mm from the cradle centre, shaft 10.75 mm on
   the assumed SR431). Only the tie at the far end can pass over the case.
@@ -50,11 +74,16 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   the right): inward, the shins meet. The knee is free from -137 to +115
   degrees. With 3 degrees of margin and the servos' 180 degrees of travel the
   limits are hip roll -52 to +90, hip pitch and knee -90 to +90.
-- **Mass.** 501 g: servos 302 g (published), printed parts 144 g (PLA at 60
-  percent of solid, assumed), board 30 g and shield 25 g (assumed). 597 g if
-  printed solid.
-- **Balance.** With the legs straight down the centre of mass is 8.8 mm
-  behind the heels: it falls backward. With the thighs swung 45 degrees back
+- **Pin holes and studs.** 23 pin holes in pads of beam thickness and 40
+  studs. Every hole is open for a 4.8 mm pin over 7.8 mm, at least 24 mm
+  from a joint axis; none cost any joint range. At the stand pose, static
+  balance carries about 400 g of decoration on the rear of the deck before
+  the margin is gone; 100 g there leaves 23 mm of the 37 mm.
+- **Mass.** 504 g: servos 302 g (published), printed parts 137 g (PLA at 60
+  percent of solid, assumed), board 30 g and shield 25 g (assumed), camera
+  10 g (published). 595 g if printed solid.
+- **Balance.** With the legs straight down the centre of mass is 6.6 mm
+  behind the heels: it falls backward. With the thighs swung 42 degrees back
   and the knees turned to keep the soles level it is 37 mm inside the support
   polygon. That is the stand pose. On one foot it is 62 mm outside, and still
   38 mm outside with the stance hip rolled 30 degrees. It cannot stand on one
@@ -74,9 +103,9 @@ Full results: [docs/simulation.md](docs/simulation.md). Numbers:
 - **Straight legs fall.** At the neutral pose it tips backward in 0.4 s, as
   the assembly test predicted.
 - **The gait shuffles.** The open-loop weight shift and step keeps the robot
-  up for the whole run and moves it 41 mm in 11 s. Both feet stay on the
+  up for the whole run and moves it 45 mm in 11 s. Both feet stay on the
   floor the whole time. The best of 54 parameter sets inside the speed limit
-  manages 101 mm in 11 s (9 mm/s). None fell. With no ankle and feet 172 mm
+  manages 110 mm in 11 s (10 mm/s). None fell. With no ankle and feet 172 mm
   apart the weight never gets onto one foot, so there is no step.
 - **Watchdog.** Commands cut in mid gait: the controller holds and the robot
   stays up. Relaxed instead, it falls in 0.3 s.
@@ -107,6 +136,19 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 10 A (assumed stall currents; the maker publishes none) against the kit's
 5 V 4 A supply, and the UNO Q needs its own 5 V 3 A.
 
+## Build yours
+
+The site's landing page, `site/index.html`, is a configurator: pick a
+controller (UNO Q, Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack
+Core), a locomotion (the six-servo biped, the two-motor crank walker of the
+LEGO prototypes, or two driven wheels), drive, camera and head, and read what
+can honestly be said about that combination: analysed in simulation, checked
+in the digital assembly only, being analysed, defined but not designed, or
+not possible with the reason. Only the UNO Q biped with its default camera
+has been simulated; nothing has been built. The biped's findings are on
+`site/biped.html`. Data and sources:
+[docs/build-yours.md](docs/build-yours.md).
+
 ## Flash and control
 
 The site has a Flash page that writes the SSH commands to install and flash
@@ -122,6 +164,7 @@ hardware. See [docs/flash.md](docs/flash.md) and
 
 | Path | What |
 |---|---|
+| `stl/` | the printable parts of the biped as generated, with a manifest |
 | `config/` | bought-part data with sources, placement assumptions, calibration, gait |
 | `microduck/` | model, assembly test, renderer, description generator, simulator, protocol, player |
 | `scripts/` | fetch the STLs, run each stage, regenerate everything, play, calibrate, virtual robot |
@@ -140,9 +183,8 @@ hardware. See [docs/flash.md](docs/flash.md) and
     .venv/Scripts/python -m pytest
     .venv/Scripts/python scripts/play.py trajectories/gait.csv
 
-The simulation, the player and most tests run from what is committed. The
-assembly test and the description generator need the printable STLs, which
-are not in this repository:
+Everything runs from what is committed, the printable STLs in `stl/`
+included. To regenerate after changing the design or a configuration file:
 
     python scripts/regenerate.py --design-dir /path/to/microduck-braccio-unoq
 
@@ -158,12 +200,21 @@ does not look like the original (see the pictures in
 [docs/assembly.md](docs/assembly.md)). The idea of a small duck-like biped is
 owed to the [Microduck by Pollen Robotics](https://github.com/pollen-robotics/microduck_rl).
 
-The STLs are not committed; `scripts/fetch_stls.py` reads them from the local
-design directory.
+The generated STLs are in `stl/`, listed in `stl/manifest.json` with what
+each is, its size, checksum and the design commit it came from. They are the
+files the assembly test read. `scripts/fetch_stls.py` copies them from the
+local design directory after its generator has run. None has been printed.
 
 ## Unverified
 
-- Physical fit of anything: no part has been printed against a servo.
+- Physical fit of anything: no part has been printed against a servo or a
+  camera board.
+- The pin holes and studs: no printed one has been tried with a real pin,
+  beam or brick. Their nominal dimensions are from secondary sources.
+- The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
+  outline are the makers' figures. Lens, button, connector and pin positions,
+  board thickness and the other masses are assumed or scaled from pictures.
+- The camera firmware on an ESP32-CAM: see [docs/camera.md](docs/camera.md).
 - Every assumed dimension: servo ears, shaft position, horn size, board and
   shield mass, print density and infill.
 - Holding torque, backlash, tie slip, flex of the 4 mm plates.
@@ -175,11 +226,11 @@ design directory.
 
 ## Publishing
 
-1. Create the repository `eoinjordan/microduck-braccio-unoq-sim` on GitHub and
+1. Create the repository `eoinjordan/botbuilder` on GitHub and
    push `main`.
 2. In the repository settings, under Pages, set the source to GitHub Actions.
 3. Run the "Publish Site" workflow, or push a change under `site/`. The site
-   appears at https://eoinjordan.github.io/microduck-braccio-unoq-sim/.
+   appears at https://eoinjordan.github.io/botbuilder/.
 
 ## Licence
 

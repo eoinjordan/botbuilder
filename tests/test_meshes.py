@@ -2,6 +2,7 @@
 """The printable STLs: present, closed, one body each, and the ones the
 committed report was made from."""
 import hashlib
+import json
 
 import numpy as np
 import pytest
@@ -29,6 +30,26 @@ def test_manifold_kernel_accepts_and_agrees_on_volume(name):
     mesh = trimesh.load_mesh(model.stl_dir() / model.PART_FILES[name])
     solid = model.load_part(name)
     assert solid.volume() == pytest.approx(mesh.volume, rel=1e-4)
+
+
+def test_manifest_matches_the_files():
+    with open(model.stl_dir() / "manifest.json", encoding="utf-8") as handle:
+        manifest = json.load(handle)
+    on_disk = {p.name for p in model.stl_dir().glob("*.stl")}
+    assert {entry["file"] for entry in manifest["files"]} == on_disk
+    assert set(ALL.values()) | set(model.OTHER_FILES) <= on_disk
+    for entry in manifest["files"]:
+        path = model.stl_dir() / entry["file"]
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"], entry["file"]
+        assert path.stat().st_size == entry["bytes"]
+        mesh = trimesh.load_mesh(path)
+        assert len(mesh.faces) == entry["triangles"]
+        assert mesh.volume == pytest.approx(entry["volume_mm3"], abs=0.2)
+        assert entry["what"] != "printable part", entry["file"]
+    assert manifest["total_bytes"] == sum(entry["bytes"] for entry in manifest["files"])
+    assert hashlib.sha256((model.stl_dir() / "parameters.json").read_bytes()).hexdigest() == manifest["generator_parameters_sha256"]
+    assert manifest["design"]["commit"] and manifest["design"]["uncommitted_changes"] is False
+    assert manifest["camera_default"] == model.CAMERA
 
 
 @needs_stls

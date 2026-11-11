@@ -25,7 +25,8 @@ FLOOR_FRICTION = 0.6            # assumed: printed PLA sole on a table top
 JOINT_FRICTIONLOSS = 0.02       # assumed dry friction of the gear train, N m
 KP_SATURATION_DEG = 4.0         # assumed: the servo reaches full torque at this error
 RGBA = {"print": "0.93 0.80 0.47 1", "servo": "0.24 0.26 0.29 1", "horn": "0.88 0.89 0.90 1",
-        "board": "0.08 0.47 0.43 1", "shield": "0.16 0.35 0.63 1"}
+        "board": "0.08 0.47 0.43 1", "shield": "0.16 0.35 0.63 1",
+        "camera": "0.59 0.16 0.24 1"}
 
 
 def _f(values, digits=6) -> str:
