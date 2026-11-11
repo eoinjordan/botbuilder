@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 """Recordings of the motion study as small GIFs (MuJoCo offscreen renderer,
-primitive shapes; the changed soles of a variant are drawn in orange)."""
+collision boxes; the flat soles of the comparison preset are drawn in orange)."""
 from __future__ import annotations
 
 from dataclasses import replace
@@ -9,7 +9,7 @@ import mujoco
 from PIL import Image
 
 from . import motion_experiments as mx
-from . import motions, motionsim, variant
+from . import motiongen, motionsim, variant
 from .protocol import ROOT
 
 SIZE = (288, 216)
@@ -50,16 +50,18 @@ def record_all(gaits: dict, firmware: dict) -> dict:
     for preset in mx.PRESETS:
         g = gaits[preset]
         tag = preset.replace("_", "-")
-        for label, turn in (("walk", 0.0), ("turn", 1.0)):
+        for label, turn in ((("walk", 0.0), ("turn", 1.0)) if preset == mx.DEFAULT else (("walk", 0.0),)):
             sim = motionsim.MotionSim(preset)
             rec = Recorder(sim, 6)
-            motionsim.run(sim, mx.walk_trajectory(sim.cal, g["walk"], 6.0, 1.0, turn)[0], on_tick=rec)
+            motionsim.run(sim, mx.walk_trajectory(sim.cal, g["walk"], 7.0, 1.0, turn)[0], on_tick=rec)
             out[f"{preset}_{label}"] = rec.save(f"motion-{tag}-{label}.gif", 120)
+        if preset != mx.DEFAULT:
+            continue            # the comparison preset: its walk only
         # the jump at one fifth speed: every 20 ms tick shown for 100 ms
         speed = firmware["jump_max_speed_deg_s"]["value"]
         cal = replace(variant.calibration(preset), max_speed_deg_s=float(speed))
         sim = motionsim.MotionSim(preset, cal=cal)
-        trajectory, t_push = motions.jump(cal.stand_deg, g["jump"]["params"], speed, cal=cal)
+        trajectory, t_push = motiongen.jump(cal.stand_deg, g["jump"]["params"], speed, cal=cal)
         rec = Recorder(sim, 1, azimuth=100.0)
         window = [(t, q) for t, q in trajectory if t <= (t_push + 0.9) * 1000]
         start = int((t_push - 0.3) * 1000)

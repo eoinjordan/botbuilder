@@ -1,19 +1,28 @@
 # SPDX-License-Identifier: MIT
-"""Presets of the robot for the motion study, built from robot/microduck.xml.
+"""The robot for the motion study, built from robot/microduck.xml, and the
+presets it is compared with.
 
-A preset is the generated model plus a short list of overrides
-(config/presets.json). "drawn" has none: it is the published geometry.
-Every other preset is a design variant explored in simulation only and is
-never the owner's original design.
+"comb" is the robot as generated: no overrides. Another preset is the
+generated model plus a short list of overrides (config/presets.json), used
+for comparison only; "flat_feet" puts back the sole plates as first drawn.
 
 build() edits the generated MJCF in memory:
 
   * the servo model of microduck/motionsim.py: torque motors in place of the
     position actuators and a series spring between each horn and its link,
-  * the overrides of the preset: head mass, sole plates, hip position.
+  * joint ranges opened to the servo travel: the soft limits act on the
+    commands, as on the robot, and a relaxed joint runs to its travel stop,
+  * the overrides of the preset: head mass, sole plates.
 
-Nothing here needs the STLs. Lengths in the overrides are millimetres in the
-left leg's frames; the right leg is the mirror image.
+As in the generated model, parts of the robot collide with the floor only.
+The generated collision boxes are bounding boxes of slices of the parts; the
+comb soles pass each other with a few millimetres to spare and their boxes
+do not, so leg against leg and leg against torso are checked on the exact
+meshes after a run (motionsim.run, motion_experiments) instead of being
+simulated on the boxes.
+
+Lengths in the overrides are millimetres in the left leg's frames; the right
+leg is the mirror image.
 """
 from __future__ import annotations
 
@@ -28,8 +37,9 @@ from . import protocol
 from .protocol import JOINTS, ROOT
 
 SIDES = (("left", 1.0), ("right", -1.0))
-FOOT_RGBA = "0.93 0.80 0.47 1"
 VARIANT_RGBA = "0.85 0.45 0.25 1"      # changed parts are drawn in another colour
+SOLE_ZONE_M = 0.014                    # the sole and its ribs are within this of the underside
+SERVO_TRAVEL_RAD = 1.5708
 
 
 def load_json(name: str) -> dict:
@@ -99,77 +109,46 @@ def _parent_map(root: ET.Element) -> dict:
     return {child: parent for parent in root.iter() for child in parent}
 
 
-def _sole_geom(shin: ET.Element) -> ET.Element:
+def _sole_boxes(shin: ET.Element) -> tuple:
+    """The boxes of a shin that make up its sole (everything within the sole
+    zone of the underside), and the height of the underside."""
     boxes = [g for g in shin.findall("geom") if g.get("type") == "box"]
-    return min(boxes, key=lambda g: _vec(g.get("pos"))[2])
+    bottom = min(_vec(g.get("pos"))[2] - _vec(g.get("size"))[2] for g in boxes)
+    sole = [g for g in boxes if _vec(g.get("pos"))[2] + _vec(g.get("size"))[2] <= bottom + SOLE_ZONE_M]
+    return sole, bottom
 
 
-def print_density_kg_m3() -> float:
-    printing = load_json("hardware.json")["print"]["assumed"]
-    return printing["density_g_cm3"]["value"] * 1000.0 * printing["solid_fraction"]["value"]
-
-
-def _rocker_vertices(lo, hi, bottom, edge, radius, centre_y, n=13) -> np.ndarray:
-    """Points of a sole whose underside is an arc of the given radius across
-    the foot (about an axis along x above y = centre_y), flat along the foot.
-    The lowest point of the arc is at 'bottom'; the flat top is 'edge' above
-    the highest point of the underside. Metres."""
-    ys = np.unique(np.r_[np.linspace(lo[1], hi[1], n), np.clip(centre_y, lo[1], hi[1])])
-    rise = radius - np.sqrt(radius ** 2 - (ys - centre_y) ** 2)
-    top = bottom + rise.max() + edge
-    pts = [[x, y, z] for x in (lo[0], hi[0]) for y, r in zip(ys, rise) for z in (bottom + r, top)]
-    return np.array(pts)
-
-
-def _apply_foot(root: ET.Element, foot: dict, info: dict) -> None:
-    """Replace the sole plate of each shin. foot["plates"] are rectangles
-    (min, max in mm, x forward, y outboard, in the shin frame) for both feet,
-    or left_plates and right_plates when the feet differ. A plate is a
-    flat box thickness_mm thick, or with rocker_radius_mm a sole curved
-    across the foot whose lowest line is at rocker_centre_y_mm."""
-    from scipy.spatial import ConvexHull
-    density = print_density_kg_m3()
-    asset = root.find("asset")
+def _apply_foot(root: ET.Element, foot: dict) -> None:
+    """Replace the sole of each shin by flat plates. foot["plates"] are
+    rectangles (min, max in mm, x forward, y outboard, in the shin frame),
+    thickness_mm thick, underside where the generated sole's is. The shin's
+    mass and inertia are rebuilt from its boxes at the density the generated
+    shin has over its own boxes."""
+    thickness = foot.get("thickness_mm", 5.0) / 1000.0
     for side, sign in SIDES:
         shin = _body(root, f"{side}_shin")
-        old = _sole_geom(shin)
-        pos, half = _vec(old.get("pos")), _vec(old.get("size"))
-        bottom = pos[2] - half[2]
-        thickness = foot.get("thickness_mm", 2000.0 * half[2]) / 1000.0
-        parts = [_read_inertial(shin)]
-        old_mass = density * 8.0 * np.prod(half)
-        parts.append((-old_mass, pos, -_box_inertia(old_mass, half)))
-        index = list(shin).index(old)
-        shin.remove(old)
-        names = []
-        for i, plate in enumerate(foot.get(f"{side}_plates", foot.get("plates"))):
+        old, bottom = _sole_boxes(shin)
+        boxes = [g for g in shin.findall("geom") if g.get("type") == "box"]
+        density = _read_inertial(shin)[0] / sum(8.0 * np.prod(_vec(g.get("size"))) for g in boxes)
+        index = list(shin).index(old[0])
+        for geom in old:
+            shin.remove(geom)
+        for i, plate in enumerate(foot["plates"]):
             lo = np.array([plate["min"][0], plate["min"][1]]) / 1000.0
             hi = np.array([plate["max"][0], plate["max"][1]]) / 1000.0
             if sign < 0:
                 lo, hi = np.array([lo[0], -hi[1]]), np.array([hi[0], -lo[1]])
-            name = f"{side}_sole_{i}"
-            if plate.get("rocker_radius_mm"):
-                centre_y = sign * plate.get("rocker_centre_y_mm", 0.5 * (plate["min"][1] + plate["max"][1])) / 1000.0
-                verts = _rocker_vertices(lo, hi, bottom, thickness, plate["rocker_radius_mm"] / 1000.0, centre_y)
-                hull = ConvexHull(verts)
-                mass = density * hull.volume
-                mean_t = hull.volume / np.prod(hi - lo)
-                centre = np.array([0.5 * (lo[0] + hi[0]), 0.5 * (lo[1] + hi[1]), verts[:, 2].max() - 0.5 * mean_t])
-                h = np.array([0.5 * (hi[0] - lo[0]), 0.5 * (hi[1] - lo[1]), 0.5 * mean_t])
-                ET.SubElement(asset, "mesh", {"name": name, "vertex": _fmt(verts)})
-                geom = ET.Element("geom", {"name": name, "type": "mesh", "mesh": name, "rgba": VARIANT_RGBA})
-            else:
-                low = bottom + plate.get("raise_mm", 0.0) / 1000.0
-                centre = np.array([0.5 * (lo[0] + hi[0]), 0.5 * (lo[1] + hi[1]), low + 0.5 * thickness])
-                h = np.array([0.5 * (hi[0] - lo[0]), 0.5 * (hi[1] - lo[1]), 0.5 * thickness])
-                mass = density * 8.0 * np.prod(h)
-                geom = ET.Element("geom", {"name": name, "type": "box", "pos": _fmt(centre), "size": _fmt(h), "rgba": VARIANT_RGBA})
-            shin.insert(index + i, geom)
-            parts.append((mass, centre, _box_inertia(mass, h)))
-            names.append(name)
-            info.setdefault("sole_mass_g", {})[name] = round(float(mass) * 1000.0, 1)
+            centre = np.array([0.5 * (lo[0] + hi[0]), 0.5 * (lo[1] + hi[1]), bottom + 0.5 * thickness])
+            half = np.array([0.5 * (hi[0] - lo[0]), 0.5 * (hi[1] - lo[1]), 0.5 * thickness])
+            shin.insert(index + i, ET.Element("geom", {"name": f"{side}_sole_{i}", "type": "box", "pos": _fmt(centre),
+                                                       "size": _fmt(half), "rgba": VARIANT_RGBA}))
+        parts = []
+        for geom in shin.findall("geom"):
+            if geom.get("type") == "box":
+                half = _vec(geom.get("size"))
+                mass = density * 8.0 * np.prod(half)
+                parts.append((mass, _vec(geom.get("pos")), _box_inertia(mass, half)))
         _write_inertial(shin, *combine(parts))
-        info["foot_geoms"][side] = names
 
 
 def _apply_head(root: ET.Element, head: dict) -> None:
@@ -180,71 +159,41 @@ def _apply_head(root: ET.Element, head: dict) -> None:
     _write_inertial(torso, *combine([_read_inertial(torso), (mass, np.array(head["position_mm"]) / 1000.0, np.zeros((3, 3)))]))
 
 
-def _apply_hips(root: ET.Element, shift_mm, info: dict) -> None:
-    """Move both hip roll cradles (servo, cradle and everything below) by
-    shift_mm = [dx, dy outboard] on the torso. The deck is unchanged."""
-    dx, dy = shift_mm[0] / 1000.0, shift_mm[1] / 1000.0
-    torso = _body(root, "torso")
-    parts = [_read_inertial(torso)]
-    for side, sign in SIDES:
-        hip = _body(root, f"{side}_hip")
-        delta = np.array([dx, sign * dy, 0.0])
-        hip.set("pos", _fmt(_vec(hip.get("pos")) + delta))
-        y0 = _vec(hip.get("pos"))[1] - sign * dy
-        for geom in torso.findall("geom"):
-            pos, half = _vec(geom.get("pos")), _vec(geom.get("size"))
-            # the cradle and its servo hang below the deck at the hip's y
-            if geom.get("type") == "box" and abs(pos[1] - y0) < 1e-3 and pos[2] < 0.0:
-                geom.set("pos", _fmt(pos + delta))
-                servo = geom.get("rgba", "").startswith("0.24")
-                mass = info["roll_servo_kg"] * 8.0 * np.prod(half) / info["roll_servo_box_volume"] if servo \
-                    else print_density_kg_m3() * 8.0 * np.prod(half)
-                parts.append((-mass, pos, -_box_inertia(mass, half)))
-                parts.append((mass, pos + delta, _box_inertia(mass, half)))
-    _write_inertial(torso, *combine(parts))
-
-
-def build(preset="drawn", physics: dict | None = None, head: dict | None = None) -> tuple:
+def build(preset="comb", physics: dict | None = None, head: dict | None = None) -> tuple:
     """MJCF text and facts about it for a preset name or an overrides dict."""
     phys = {**physics_defaults(), **(physics or {})}
     overrides = preset_overrides(preset)
     motion = load_json("motion.json")
     root = ET.parse(ROOT / "robot" / "microduck.xml").getroot()
-    info = {"foot_geoms": {}, "overrides": overrides, "physics": phys}
+    info = {"overrides": overrides, "physics": phys}
     root.find("option").set("timestep", f"{phys['timestep_s']:g}")
     solref = f"{phys['contact_timeconst_s']:g} 1"
     root.find("default").find("geom").set("solref", solref)
     for geom in root.iter("geom"):
         if geom.get("name") == "floor":
             geom.set("solref", solref)
-    key = root.find("keyframe")
-    if key is not None:
-        root.remove(key)
-    sensor = root.find("sensor")
-    if sensor is not None:
-        root.remove(sensor)
+    for tag in ("keyframe", "sensor"):
+        node = root.find(tag)
+        if node is not None:
+            root.remove(node)
 
-    hardware = load_json("hardware.json")
-    big = hardware["servos"]["SR431"]["published"]
-    info["roll_servo_kg"] = big["mass_g"] / 1000.0
-    # the generated servo is two boxes (case and ears); mass is spread over both
-    torso = _body(root, "torso")
-    servo_boxes = [g for g in torso.findall("geom") if g.get("rgba", "").startswith("0.24") and _vec(g.get("pos"))[1] > 0]
-    info["roll_servo_box_volume"] = sum(8.0 * np.prod(_vec(g.get("size"))) for g in servo_boxes)
-
-    for side, _ in SIDES:
-        info["foot_geoms"][side] = [_sole_geom(_body(root, f"{side}_shin")).get("name")]
-    if "hip_shift_mm" in overrides:
-        _apply_hips(root, overrides["hip_shift_mm"], info)
     if "foot" in overrides:
-        _apply_foot(root, overrides["foot"], info)
+        _apply_foot(root, overrides["foot"])
     _apply_head(root, {**motion["head"], **overrides.get("head", {}), **(head or {})})
 
-    # Series spring between each horn and its link.
+    info["sole_geoms"], info["foot_geoms"] = {}, {}
+    for side, _ in SIDES:
+        sole, bottom = _sole_boxes(_body(root, f"{side}_shin"))
+        info["sole_geoms"][side] = [g.get("name") for g in sole]
+        info["foot_geoms"][side] = [g.get("name") for g in sole
+                                    if _vec(g.get("pos"))[2] - _vec(g.get("size"))[2] <= bottom + 0.0005]
+
+    # Series spring between each horn and its link; joints free over the servo travel.
     parents = _parent_map(root)
     for joint_name in JOINTS:
         body = next(b for b in root.iter("body") if b.find("joint") is not None and b.find("joint").get("name") == joint_name)
         joint = body.find("joint")
+        joint.set("range", f"{-SERVO_TRAVEL_RAD} {SERVO_TRAVEL_RAD}")
         servo = "SR311" if joint_name.endswith("knee") else "SR431"
         parent = parents[body]
         horn = ET.Element("body", {"name": f"{joint_name}_horn", "pos": body.get("pos")})
@@ -261,14 +210,6 @@ def build(preset="drawn", physics: dict | None = None, head: dict | None = None)
                                             "range": "-0.15 0.15"}))
         horn.append(body)
 
-    # The legs can hit each other; everything else only meets the floor.
-    for side, contype, conaffinity in (("left", "3", "0"), ("right", "1", "2")):
-        for part in ("thigh", "shin"):
-            for geom in _body(root, f"{side}_{part}").findall("geom"):
-                if geom.get("class") != "visual":
-                    geom.set("contype", contype)
-                    geom.set("conaffinity", conaffinity)
-
     actuators = root.find("actuator")
     for node in list(actuators):
         limit = node.get("forcerange").split()[1]
@@ -278,8 +219,10 @@ def build(preset="drawn", physics: dict | None = None, head: dict | None = None)
     return ET.tostring(root, encoding="unicode"), info
 
 
-def calibration(preset="drawn") -> protocol.Calibration:
-    """The firmware calibration with the preset's joint limits and stand pose."""
+def calibration(preset="comb") -> protocol.Calibration:
+    """The firmware calibration with the preset's joint limits and stand
+    pose. A preset that changes the soles has no clearance table: the leg
+    clearance rule belongs to the soles the robot is built with."""
     cal = protocol.load_calibration()
     overrides = preset_overrides(preset)
     joints = list(cal.joints)
@@ -287,4 +230,5 @@ def calibration(preset="drawn") -> protocol.Calibration:
         i = JOINTS.index(name)
         joints[i] = replace(joints[i], min_deg=float(lo), max_deg=float(hi))
     stand = overrides.get("stand_pose_deg")
-    return replace(cal, joints=joints, stand_deg=[float(v) for v in stand] if stand else list(cal.stand_deg))
+    return replace(cal, joints=joints, stand_deg=[float(v) for v in stand] if stand else list(cal.stand_deg),
+                   clearance=None if "foot" in overrides else cal.clearance)

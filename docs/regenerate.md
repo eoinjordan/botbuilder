@@ -36,10 +36,11 @@ The design directory defaults to `$MICRODUCK_DESIGN_DIR`, then to
 |---|---|---|
 | `scripts/fetch_stls.py` | design directory | `stl/*.stl`, `stl/parameters.json`, `stl/manifest.json` |
 | `scripts/run_assembly.py` | `stl`, `config/hardware.json`, `config/assembly.json` | `reports/assembly.json`, `docs/assembly.md`, `docs/images/*.png` |
-| `scripts/generate_description.py` | `stl`, `reports/assembly.json`, `config/calibration.json` | `robot/microduck.urdf`, `robot/microduck.xml`, `robot/joints.json`, `robot/model.json`, `app_lab/microduck_agent/sketch/DuckTable.h`, `build/microduck_visual.xml` |
+| `scripts/generate_description.py` | `stl`, `reports/assembly.json`, `config/calibration.json` | `robot/microduck.urdf`, `robot/microduck.xml`, `robot/joints.json`, `robot/model.json`, `robot/clearance.json`, `app_lab/microduck_agent/sketch/DuckTable.h`, `build/microduck_visual.xml` |
 | `scripts/run_sim.py` | `robot/`, `config/gait.json`, `config/calibration.json` | `reports/sim.json`, `docs/simulation.md`, `trajectories/*.csv`, `docs/images/sim-*.gif` |
-| `scripts/optimise_motion.py` | `robot/`, `config/motion.json`, `config/presets.json` | `config/gaits.json` (seeded search, about 20 minutes on eight cores; not part of `regenerate.py`) |
-| `scripts/run_motion.py` | `robot/`, `config/motion.json`, `config/presets.json`, `config/gaits.json` | `reports/motion.json`, `docs/motion.md`, `trajectories/<preset>_*.csv`, `trajectories/manifest.json`, `trajectories/gait_params.json`, `docs/images/motion-*.gif` |
+| `scripts/validate_clearance.py` | `stl/`, `robot/clearance.json` | `reports/clearance.json` (the leg clearance rule against the meshes, about five minutes; not part of `regenerate.py`) |
+| `scripts/optimise_motion.py` | `robot/`, `config/motion.json`, `config/presets.json`, `config/gait.json` | `config/gaits.json`, `config/gait_motion.json` (seeded search, about 25 minutes on eight cores; not part of `regenerate.py`) |
+| `scripts/run_motion.py` | `robot/`, `stl/`, `config/motion.json`, `config/presets.json`, `config/gaits.json`, `reports/clearance.json` | `reports/motion.json`, `docs/motion.md`, `trajectories/{walk,turn_left,turn_right,sit,stand_up}.csv`, `trajectories/restricted/jump.csv`, `trajectories/manifest.json`, `trajectories/gait_params.json`, `docs/images/motion-*.gif` |
 | `scripts/build_site.py` | `reports/`, `robot/`, `docs/images/`, `stl/`, `config/hardware.json` | `site/data/`, `site/images/`, `site/stl/` (ignored by git; the Pages workflow runs this) |
 
 Run the design's `build.py` and commit there first: the manifest records the

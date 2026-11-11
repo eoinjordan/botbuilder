@@ -95,17 +95,18 @@
     </section>
 
     <section id="motion">
-      <div class="section-heading"><span class="step">04b</span><h2>Walk, jump, sit</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/motion.md" rel="noopener noreferrer">Motion study</a></div>
-      <p>A fuller servo model (dead band, gear play, compliance, command delay, the 4 A supply) and a seeded search for
-        open-loop motions. As drawn the robot does not truly step: the best gait found stamps along at 11.7 mm/s.
-        Its jump is a hop, 0.08 s off the floor with the centre of mass rising 5.02 mm. It sits by squatting on to the
-        servo travel stops and stands up again. A variant with interleaved comb soles, a proposal of the study and not the
-        owner's design, steps at 38.1 mm/s. Simulation only.</p>
+      <div class="section-heading"><span class="step">04b</span><h2>Walk, turn, jump, sit</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/motion.md" rel="noopener noreferrer">Motion study</a></div>
+      <p>The model with a fuller servo (dead band, gear play, compliance, command delay, the 4 A supply) and a seeded search
+        over the gait's parameters. On the comb soles it steps: 41.9 mm/s, a sole 3.86 mm clear of the floor,
+        peak torque 0.658 of the limit, upright in all 30 perturbed runs. The heading drifts about 1.31 deg/s and the
+        step difference does not steer it reliably. The jump is a hop of 0.06 s and stays locked: it can strip gears or
+        break parts. Switched off, the robot sinks on to the servo travel stops and stays on its soles. The control core
+        refuses a command that would swing one comb sole into the other.</p>
       <div class="gallery">
-        <figure><img loading="lazy" src="./images/motion-drawn-walk.gif" width="288" height="216" alt="Simulated robot stamping forward on the drawn geometry"><figcaption>As drawn: best gait found</figcaption></figure>
-        <figure><img loading="lazy" src="./images/motion-comb-feet-walk.gif" width="288" height="216" alt="Simulated robot stepping on the comb-feet variant"><figcaption>Variant with comb soles: steps</figcaption></figure>
-        <figure><img loading="lazy" src="./images/motion-drawn-jump.gif" width="288" height="216" alt="Simulated hop at one fifth speed"><figcaption>The hop, one fifth speed</figcaption></figure>
-        <figure><img loading="lazy" src="./images/motion-drawn-sit.gif" width="288" height="216" alt="Simulated robot squatting, relaxing its servos and standing up"><figcaption>Sit, servos off, stand up</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-comb-walk.gif" width="288" height="216" alt="Simulated robot stepping forward on comb soles"><figcaption>Tuned gait on the comb soles</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-flat-feet-walk.gif" width="288" height="216" alt="Simulated robot shuffling on flat soles"><figcaption>Flat soles, for comparison</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-comb-jump.gif" width="288" height="216" alt="Simulated hop at one fifth speed"><figcaption>The hop, one fifth speed</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-comb-sit.gif" width="288" height="216" alt="Simulated robot squatting, losing power and standing up"><figcaption>Sit, power off, stand up</figcaption></figure>
       </div>
     </section>
 

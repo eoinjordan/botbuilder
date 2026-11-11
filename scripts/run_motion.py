@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: MIT
-"""Run the motion study: walk, turn, jump, sit and stand up on both presets.
+"""Run the motion study: walk, turn, jump, sit, stand up, stop and power off.
 
-Writes reports/motion.json, docs/motion.md, trajectories/<preset>_*.csv with
-trajectories/manifest.json and trajectories/gait_params.json and, when
-offscreen rendering works, docs/images/motion-*.gif. Needs only the committed
-robot/ and config/ files (the searched motions are in config/gaits.json; run
-scripts/optimise_motion.py to search again). Takes about six minutes on one
+On the robot as generated (comb soles) and, for comparison, with flat soles.
+Writes reports/motion.json, docs/motion.md, the trajectories for the robot as
+built with trajectories/manifest.json (in the shape the control page reads)
+and trajectories/gait_params.json and, when offscreen rendering works,
+docs/images/motion-*.gif. The searched motions are in config/gaits.json (run
+scripts/optimise_motion.py to search again). Takes about ten minutes on one
 core; pass --no-record to skip the GIFs.
 """
 import argparse
@@ -24,6 +25,7 @@ if __name__ == "__main__":
     for preset, r in result["presets"].items():
         walk, jump, sit = r["walk"], r["jump"]["result"], r["sit"]
         print(f"{preset}: steps {walk['truly_steps']}, {walk['nominal'].get('speed_mm_s')} mm/s, "
-              f"jump is a {jump['verdict']} ({jump['feet_rise_mm']} mm, {jump['flight_s']} s), "
-              f"sits {sit['sat_down']}, rest stable {sit['relaxed_rest_stable']}, stands up {sit['stood_up']}")
+              f"peak torque {walk['nominal'].get('peak_torque_fraction')} of the limit, "
+              f"envelope forward {walk['envelope']['forward_range']} turn {walk['envelope']['turn_range']}, "
+              f"jump is a {jump['verdict']}, sits {sit['sat_down']}, power-off rest holds {sit['relaxed_rest_holds']}, stands up {sit['stood_up']}")
     print("offscreen rendering:", result.get("offscreen_rendering", "not attempted"))

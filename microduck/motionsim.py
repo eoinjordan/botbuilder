@@ -18,6 +18,8 @@ from __future__ import annotations
 import mujoco
 import numpy as np
 
+import json
+
 from . import protocol, variant
 from .protocol import JOINTS, TICK_MS
 
@@ -27,9 +29,10 @@ OFF_FLOOR_M = 0.0005        # a foot counts as off the floor when all of it is t
 
 
 class MotionSim:
-    def __init__(self, preset="drawn", physics: dict | None = None, head: dict | None = None,
+    def __init__(self, preset="comb", physics: dict | None = None, head: dict | None = None,
                  cal: protocol.Calibration | None = None, mass_scale: float = 1.0):
         xml, self.info = variant.build(preset, physics, head)
+        self.preset = preset
         self.xml = xml
         self.phys = self.info["physics"]
         self.model = mujoco.MjModel.from_xml_string(xml)
@@ -57,9 +60,13 @@ class MotionSim:
                                  for j in JOINTS])
         self.supply_a = float(self.phys["supply_current_a"])
         self.floor = name2id(mujoco.mjtObj.mjOBJ_GEOM, "floor")
+        # feet: the boxes of the underside (for clearance); soles: every box of the sole (for load)
         self.feet = {side: [name2id(mujoco.mjtObj.mjOBJ_GEOM, g) for g in names]
                      for side, names in self.info["foot_geoms"].items()}
+        self.soles = {side: [name2id(mujoco.mjtObj.mjOBJ_GEOM, g) for g in names]
+                      for side, names in self.info["sole_geoms"].items()}
         self.geom_kind = self._classify()
+        self.mesh = None            # an object with overlap_mm3(q_deg) for the exact leg meshes, if attached
         self.mass = float(m.body_subtreemass[self.torso])
         self.set_floor_friction(self.phys["floor_friction"])
         self.reset()
@@ -68,24 +75,27 @@ class MotionSim:
     def _classify(self) -> dict:
         """What each collision geom is, for contact reports."""
         m, out = self.model, {}
+        with open(variant.ROOT / "robot" / "model.json", encoding="utf-8") as handle:
+            links = {link["name"]: [s["kind"] for s in link["shapes"]] for link in json.load(handle)["links"]}
+        named = {"board": "controller board", "shield": "shield", "battery": "battery", "display": "display", "camera": "camera"}
         for g in range(m.ngeom):
             if g == self.floor or m.geom_contype[g] == 0:
                 continue
             body = m.body(m.geom_bodyid[g]).name
-            rgba = tuple(np.round(m.geom_rgba[g][:3], 2))
-            if any(g in ids for ids in self.feet.values()):
+            name = m.geom(g).name
+            if any(g in ids for ids in self.soles.values()):
                 kind = "sole"
-            elif rgba == (0.08, 0.47, 0.43):
-                kind = "controller board"
-            elif rgba == (0.16, 0.35, 0.63):
-                kind = "shield"
-            elif rgba == (0.24, 0.26, 0.29):
-                kind = {"torso": "hip roll servo", "left_hip": "hip pitch servo", "right_hip": "hip pitch servo"}.get(body, "knee servo")
-            elif body == "torso":
-                top = m.geom_pos[g][2] + m.geom_size[g][2]
-                kind = "head and neck" if top > 0.02 else ("deck" if m.geom_pos[g][2] > 0 else "hip cradle")
             else:
-                kind = {"hip": "yoke", "thigh": "thigh plate", "shin": "shin plate"}[body.split("_")[1]]
+                generated = links[body][int(name.rsplit("_", 1)[1])]
+                if generated in named:
+                    kind = named[generated]
+                elif generated == "servo":
+                    kind = {"torso": "hip roll servo", "left_hip": "hip pitch servo", "right_hip": "hip pitch servo"}.get(body, "knee servo")
+                elif body == "torso":
+                    top = m.geom_pos[g][2] + m.geom_size[g][2]
+                    kind = "head and camera mount" if top > 0.012 else ("deck" if m.geom_pos[g][2] > 0 else "hip cradle")
+                else:
+                    kind = {"hip": "yoke", "thigh": "thigh plate", "shin": "shin plate"}[body.split("_")[1]]
             out[g] = kind
         return out
 
@@ -212,25 +222,33 @@ class MotionSim:
     def contacts(self) -> dict:
         """Normal force on the floor by kind of part (N), and per foot."""
         d, m = self.data, self.model
-        kinds, feet = {}, {"left": 0.0, "right": 0.0}
+        kinds, feet, parts = {}, {"left": 0.0, "right": 0.0}, {}
         wrench = np.zeros(6)
         for i in range(d.ncon):
             c = d.contact[i]
+            mujoco.mj_contactForce(m, d, i, wrench)
+            if wrench[0] <= 0.0:
+                continue
             if c.geom1 == self.floor:
                 other = c.geom2
             elif c.geom2 == self.floor:
                 other = c.geom1
             else:
-                continue
-            mujoco.mj_contactForce(m, d, i, wrench)
-            if wrench[0] <= 0.0:
+                # one part of the robot pressing on another
+                pair = " on ".join(sorted((self._where(c.geom1), self._where(c.geom2))))
+                parts[pair] = parts.get(pair, 0.0) + float(wrench[0])
                 continue
             kind = self.geom_kind.get(other, "other")
             kinds[kind] = kinds.get(kind, 0.0) + float(wrench[0])
-            for side, ids in self.feet.items():
+            for side, ids in self.soles.items():
                 if other in ids:
                     feet[side] += float(wrench[0])
-        return {"by_kind": kinds, "feet": feet}
+        return {"by_kind": kinds, "feet": feet, "part_on_part": parts}
+
+    def _where(self, geom: int) -> str:
+        body = self.model.body(self.model.geom_bodyid[geom]).name
+        kind = self.geom_kind.get(geom, "part")
+        return kind if body == "torso" else f"{body.split('_')[0]} {kind}"
 
     def foot_clearance(self) -> dict:
         """Height of the lowest point of each sole above the floor (m)."""
@@ -258,7 +276,7 @@ def run(sim: MotionSim, trajectory: list, on_tick=None, tail_s: float = 0.0, rel
     keys = ("t", "pos", "com", "tilt", "yaw", "pitch", "torque", "speed", "joint", "servo", "command",
             "force_left", "force_right", "clear_left", "clear_right", "foot_left", "foot_right", "current", "force_total")
     log = {k: [] for k in keys}
-    kinds = {}
+    kinds, parts = {}, {}
     relaxed = False
     while sim.now_ms < end_ms:
         while index < len(trajectory) and trajectory[index][0] <= sim.now_ms:
@@ -277,6 +295,8 @@ def run(sim: MotionSim, trajectory: list, on_tick=None, tail_s: float = 0.0, rel
         xy = sim.foot_xy()
         for kind, force in c["by_kind"].items():
             kinds.setdefault(kind, []).append((sim.now_ms / 1000.0, force))
+        for pair, force in c["part_on_part"].items():
+            parts.setdefault(pair, []).append((sim.now_ms / 1000.0, force))
         row = (sim.now_ms / 1000.0, sim.data.xpos[sim.torso].copy(), sim.com(), sim.tilt_deg(), sim.yaw_deg(), sim.pitch_deg(),
                sim.data.actuator_force.copy(), sim.joint_speed_deg_s(), sim.joint_deg(), sim.servo_deg(),
                np.array(sim.controller.current), c["feet"]["left"], c["feet"]["right"], clear["left"], clear["right"],
@@ -287,6 +307,24 @@ def run(sim: MotionSim, trajectory: list, on_tick=None, tail_s: float = 0.0, rel
             on_tick(sim)
     out = {k: np.array(v) for k, v in log.items()}
     out["contact_kinds"] = kinds
+    # Leg against leg, from the joint angles the simulation reached. "near":
+    # the boxes of the leg clearance rule (which carry its margin) touch.
+    # With the exact meshes attached, a near tick is checked on them and
+    # only a real overlap counts; without them every near tick counts.
+    table = sim.cal.clearance
+    near = np.zeros(len(out["t"]), bool)
+    if table is not None:
+        for i, q in enumerate(out["joint"]):
+            near[i] = not protocol.legs_clear(table, [round(float(v), 1) for v in q])
+    out["near"] = near
+    for i in np.flatnonzero(near):
+        if sim.mesh is None:
+            parts.setdefault("legs within the clearance margin", []).append((float(out["t"][i]), 0.0))
+        else:
+            volume = sim.mesh.overlap_mm3([round(float(v), 1) for v in out["joint"][i]])
+            if volume > 0.5:
+                parts.setdefault("left leg on right leg", []).append((float(out["t"][i]), round(volume, 1)))
+    out["part_on_part"] = parts
     out["fell_at"], out["fell_how"] = sim.fell_at, sim.fell_how
     out["current_limited_fraction"] = sim.current_limited_steps / max(sim.steps, 1)
     return out

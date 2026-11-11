@@ -1,327 +1,183 @@
 {
- "generated_by": "scripts/run_motion.py",
- "status": "simulation only; the robot has never been assembled or powered",
- "format": "CSV, header t_ms and the six joint names, joint angles in degrees at 50 Hz (microduck/gait.py)",
- "joint_order": [
-  "left_hip_roll",
-  "left_hip_pitch",
-  "left_knee",
-  "right_hip_roll",
-  "right_hip_pitch",
-  "right_knee"
- ],
- "gait_parameters": "gait_params.json",
- "trajectories": [
-  {
-   "name": "drawn_walk",
-   "file": "drawn_walk.csv",
-   "preset": "drawn",
-   "duration_s": 12.0,
-   "what": "walk forward, 11.7 mm/s in simulation (does not truly step)",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": {
-     "poses_checked": 14,
-     "collisions": 0,
-     "first": []
-    }
-   },
-   "allowed_on_real_hardware_by_default": false,
-   "tested_in_simulation": {
-    "stayed_up": true,
-    "speed_mm_s": 11.7,
-    "peak_torque_fraction": 1.0
-   },
-   "loop": {
-    "from_ms": 1460,
-    "period_ms": 960,
-    "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
-   },
-   "note": "Not allowed by default: it runs a servo at its stall torque on every beat."
+ "version": 1,
+ "gait": {
+  "params": "config/gait_motion.json",
+  "forward": [
+   0.0,
+   1.0
+  ],
+  "turn": [
+   0.0,
+   0.0
+  ]
+ },
+ "motions": {
+  "stand": {
+   "file": "trajectories/stand.csv",
+   "label": "Stand"
   },
-  {
-   "name": "drawn_turn_left",
-   "file": "drawn_turn_left.csv",
-   "preset": "drawn",
-   "duration_s": 12.0,
-   "what": "walk with the turn input at +1: -3.38 deg/s in simulation (heading not reliably controlled)",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": {
-     "poses_checked": 13,
-     "collisions": 0,
-     "first": []
-    }
-   },
-   "allowed_on_real_hardware_by_default": false,
-   "tested_in_simulation": {
-    "stayed_up": false,
-    "yaw_rate_deg_s": -3.38
-   },
-   "loop": {
-    "from_ms": 1460,
-    "period_ms": 960,
-    "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
-   },
-   "note": "Not allowed by default: it runs a servo at its stall torque on every beat."
-  },
-  {
-   "name": "drawn_turn_right",
-   "file": "drawn_turn_right.csv",
-   "preset": "drawn",
-   "duration_s": 12.0,
-   "what": "walk with the turn input at -1: 1.33 deg/s in simulation (heading not reliably controlled)",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": {
-     "poses_checked": 13,
-     "collisions": 0,
-     "first": []
-    }
-   },
-   "allowed_on_real_hardware_by_default": false,
-   "tested_in_simulation": {
-    "stayed_up": false,
-    "yaw_rate_deg_s": 1.33
-   },
-   "loop": {
-    "from_ms": 1460,
-    "period_ms": 960,
-    "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
-   },
-   "note": "Not allowed by default: it runs a servo at its stall torque on every beat."
-  },
-  {
-   "name": "drawn_jump",
-   "file": "restricted/drawn_jump.csv",
-   "preset": "drawn",
-   "duration_s": 3.3,
-   "what": "crouch and push off: a hop in simulation, soles 10.1 mm off the floor for 0.08 s, centre of mass rising 5.02 mm in flight",
-   "limits": {
-    "max_speed_deg_s": 430.0,
-    "needs_speed_limit_raised": true,
-    "soft_limits": "robot/joints.json",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": {
-     "poses_checked": 11,
-     "collisions": 0,
-     "first": []
-    }
-   },
-   "allowed_on_real_hardware_by_default": false,
-   "tested_in_simulation": {
-    "landed_upright": true,
-    "verdict": "hop"
-   },
-   "note": "Untested on real servos and printed plates; it runs the servos at stall torque and can strip gears or break parts. Needs the firmware speed limit raised; at the default limit it does not leave the floor."
-  },
-  {
-   "name": "drawn_sit",
-   "file": "drawn_sit.csv",
-   "preset": "drawn",
-   "duration_s": 2.6,
-   "what": "lower from the stand pose to the squat at the travel stops; the rest pose with the servos relaxed",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": {
-     "poses_checked": 9,
-     "collisions": 0,
-     "first": []
-    }
-   },
-   "allowed_on_real_hardware_by_default": true,
-   "tested_in_simulation": {
-    "sat_down": true,
-    "relaxed_rest_stable": true
-   }
-  },
-  {
-   "name": "drawn_stand_up",
-   "file": "drawn_stand_up.csv",
-   "preset": "drawn",
-   "duration_s": 3.0,
-   "what": "rise from the squat to the stand pose",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": {
-     "poses_checked": 9,
-     "collisions": 0,
-     "first": []
-    }
-   },
-   "allowed_on_real_hardware_by_default": true,
-   "tested_in_simulation": {
-    "stood_up": true
-   }
-  },
-  {
-   "name": "comb_feet_walk",
-   "file": "comb_feet_walk.csv",
-   "preset": "comb_feet",
-   "duration_s": 12.0,
-   "what": "walk forward, 38.1 mm/s in simulation (steps)",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json with the preset's overrides",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": "not run: the variant's soles exist only as boxes"
-   },
-   "allowed_on_real_hardware_by_default": true,
-   "tested_in_simulation": {
-    "stayed_up": true,
-    "speed_mm_s": 38.1,
-    "peak_torque_fraction": 0.681
-   },
-   "loop": {
-    "from_ms": 1800,
-    "period_ms": 800,
-    "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
-   }
-  },
-  {
-   "name": "comb_feet_turn_left",
-   "file": "comb_feet_turn_left.csv",
-   "preset": "comb_feet",
-   "duration_s": 12.0,
-   "what": "walk with the turn input at +1: 3.54 deg/s in simulation (turns the right way at every tested friction)",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json with the preset's overrides",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": "not run: the variant's soles exist only as boxes"
-   },
-   "allowed_on_real_hardware_by_default": true,
-   "tested_in_simulation": {
-    "stayed_up": true,
-    "yaw_rate_deg_s": 3.54
-   },
-   "loop": {
-    "from_ms": 1800,
-    "period_ms": 800,
-    "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
-   }
-  },
-  {
-   "name": "comb_feet_turn_right",
-   "file": "comb_feet_turn_right.csv",
-   "preset": "comb_feet",
-   "duration_s": 12.0,
-   "what": "walk with the turn input at -1: -3.14 deg/s in simulation (turns the right way at every tested friction)",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json with the preset's overrides",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": "not run: the variant's soles exist only as boxes"
-   },
-   "allowed_on_real_hardware_by_default": true,
-   "tested_in_simulation": {
-    "stayed_up": true,
-    "yaw_rate_deg_s": -3.14
-   },
-   "loop": {
-    "from_ms": 1800,
-    "period_ms": 800,
-    "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
-   }
-  },
-  {
-   "name": "comb_feet_jump",
-   "file": "restricted/comb_feet_jump.csv",
-   "preset": "comb_feet",
-   "duration_s": 3.36,
-   "what": "crouch and push off: a hop in simulation, soles 11.65 mm off the floor for 0.08 s, centre of mass rising 4.65 mm in flight",
-   "limits": {
-    "max_speed_deg_s": 430.0,
-    "needs_speed_limit_raised": true,
-    "soft_limits": "robot/joints.json with the preset's overrides",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": "not run: the variant's soles exist only as boxes"
-   },
-   "allowed_on_real_hardware_by_default": false,
-   "tested_in_simulation": {
-    "landed_upright": true,
-    "verdict": "hop"
-   },
-   "note": "Untested on real servos and printed plates; it runs the servos at stall torque and can strip gears or break parts. Needs the firmware speed limit raised; at the default limit it does not leave the floor."
-  },
-  {
-   "name": "comb_feet_sit",
-   "file": "comb_feet_sit.csv",
-   "preset": "comb_feet",
-   "duration_s": 2.6,
-   "what": "lower from the stand pose to the squat at the travel stops; the rest pose with the servos relaxed",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json with the preset's overrides",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": "not run: the variant's soles exist only as boxes"
-   },
-   "allowed_on_real_hardware_by_default": true,
-   "tested_in_simulation": {
-    "sat_down": true,
-    "relaxed_rest_stable": true
-   }
-  },
-  {
-   "name": "comb_feet_stand_up",
-   "file": "comb_feet_stand_up.csv",
-   "preset": "comb_feet",
-   "duration_s": 3.0,
-   "what": "rise from the squat to the stand pose",
-   "limits": {
-    "max_speed_deg_s": 120.0,
-    "needs_speed_limit_raised": false,
-    "soft_limits": "robot/joints.json with the preset's overrides",
-    "limit_problems": 0,
-    "clamped_commands": 0,
-    "max_lag_behind_command_deg": 0.0,
-    "mesh_collision_check": "not run: the variant's soles exist only as boxes"
-   },
-   "allowed_on_real_hardware_by_default": true,
-   "tested_in_simulation": {
-    "stood_up": true
-   }
+  "sit": {
+   "file": "trajectories/sit.csv",
+   "label": "Sit"
   }
- ]
+ },
+ "unavailable": {
+  "jump": "locked: the jump runs four servos at stall torque from a supply that cannot feed them and can strip gears or break parts; it needs the firmware speed limit raised, and in simulation it is a hop of a few millimetres. The file is trajectories/restricted/jump.csv",
+  "back": "walking backward did not stay inside the tested envelope",
+  "turn": "the step difference does not steer reliably in simulation: the yaw rate does not follow the turn input at every floor friction, and there is no hip yaw joint"
+ },
+ "study": {
+  "generated_by": "scripts/run_motion.py",
+  "robot": "comb soles, default head",
+  "format": "CSV, header t_ms and the six joint names, joint angles in degrees at 50 Hz (microduck/gait.py)",
+  "gait_parameters_and_envelope": "trajectories/gait_params.json",
+  "files": [
+   {
+    "name": "walk",
+    "file": "trajectories/walk.csv",
+    "duration_s": 12.0,
+    "what": "walk forward, 41.9 mm/s in simulation",
+    "max_speed_deg_s": 120.0,
+    "needs_speed_limit_raised": false,
+    "checks": {
+     "limit_problems": 0,
+     "clamped_commands": 0,
+     "refused_by_the_leg_clearance_rule": 0,
+     "max_lag_behind_command_deg": 0.0,
+     "least_gap_between_leg_boxes_mm": 3.2,
+     "rows_checked_against_the_leg_meshes": 601,
+     "worst_leg_mesh_overlap_mm3": 0.0
+    },
+    "passes_checks": true,
+    "tested_in_simulation": {
+     "stayed_up": true,
+     "speed_mm_s": 41.9,
+     "peak_torque_fraction": 0.658
+    },
+    "loop": {
+     "from_ms": 1500,
+     "period_ms": 500,
+     "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
+    }
+   },
+   {
+    "name": "turn_left",
+    "file": "trajectories/turn_left.csv",
+    "duration_s": 12.0,
+    "what": "walk with the turn input at +1: -5.37 deg/s in simulation",
+    "max_speed_deg_s": 120.0,
+    "needs_speed_limit_raised": false,
+    "checks": {
+     "limit_problems": 0,
+     "clamped_commands": 0,
+     "refused_by_the_leg_clearance_rule": 0,
+     "max_lag_behind_command_deg": 0.0,
+     "least_gap_between_leg_boxes_mm": 3.7,
+     "rows_checked_against_the_leg_meshes": 601,
+     "worst_leg_mesh_overlap_mm3": 0.0
+    },
+    "passes_checks": true,
+    "tested_in_simulation": {
+     "ok_at_every_friction": true,
+     "yaw_rate_deg_s": -5.37
+    },
+    "loop": {
+     "from_ms": 1500,
+     "period_ms": 500,
+     "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
+    }
+   },
+   {
+    "name": "turn_right",
+    "file": "trajectories/turn_right.csv",
+    "duration_s": 12.0,
+    "what": "walk with the turn input at -1: 1.29 deg/s in simulation",
+    "max_speed_deg_s": 120.0,
+    "needs_speed_limit_raised": false,
+    "checks": {
+     "limit_problems": 0,
+     "clamped_commands": 0,
+     "refused_by_the_leg_clearance_rule": 0,
+     "max_lag_behind_command_deg": 0.0,
+     "least_gap_between_leg_boxes_mm": 3.7,
+     "rows_checked_against_the_leg_meshes": 601,
+     "worst_leg_mesh_overlap_mm3": 0.0
+    },
+    "passes_checks": true,
+    "tested_in_simulation": {
+     "ok_at_every_friction": true,
+     "yaw_rate_deg_s": 1.29
+    },
+    "loop": {
+     "from_ms": 1500,
+     "period_ms": 500,
+     "how": "after from_ms the file repeats every period_ms; a player may loop that stretch"
+    }
+   },
+   {
+    "name": "sit",
+    "file": "trajectories/sit.csv",
+    "duration_s": 1.64,
+    "what": "lower from the stand pose to the squat at the hip pitch limit",
+    "max_speed_deg_s": 120.0,
+    "needs_speed_limit_raised": false,
+    "checks": {
+     "limit_problems": 0,
+     "clamped_commands": 0,
+     "refused_by_the_leg_clearance_rule": 0,
+     "max_lag_behind_command_deg": 0.0,
+     "least_gap_between_leg_boxes_mm": 4.2,
+     "rows_checked_against_the_leg_meshes": 83,
+     "worst_leg_mesh_overlap_mm3": 0.0
+    },
+    "passes_checks": true,
+    "tested_in_simulation": {
+     "sat_down": true
+    }
+   },
+   {
+    "name": "stand_up",
+    "file": "trajectories/stand_up.csv",
+    "duration_s": 2.74,
+    "what": "rise from the squat to the stand pose",
+    "max_speed_deg_s": 120.0,
+    "needs_speed_limit_raised": false,
+    "checks": {
+     "limit_problems": 0,
+     "clamped_commands": 0,
+     "refused_by_the_leg_clearance_rule": 0,
+     "max_lag_behind_command_deg": 0.0,
+     "least_gap_between_leg_boxes_mm": 4.2,
+     "rows_checked_against_the_leg_meshes": 138,
+     "worst_leg_mesh_overlap_mm3": 0.0
+    },
+    "passes_checks": true,
+    "tested_in_simulation": {
+     "stood_up": true
+    }
+   },
+   {
+    "name": "jump",
+    "file": "trajectories/restricted/jump.csv",
+    "duration_s": 3.38,
+    "what": "crouch and push off: a hop in simulation, soles 3.89 mm off the floor for 0.06 s, centre of mass rising 0.39 mm in flight",
+    "max_speed_deg_s": 430.0,
+    "needs_speed_limit_raised": true,
+    "checks": {
+     "limit_problems": 0,
+     "clamped_commands": 0,
+     "refused_by_the_leg_clearance_rule": 0,
+     "max_lag_behind_command_deg": 0.0,
+     "least_gap_between_leg_boxes_mm": 4.2,
+     "rows_checked_against_the_leg_meshes": 170,
+     "worst_leg_mesh_overlap_mm3": 0.0
+    },
+    "passes_checks": true,
+    "tested_in_simulation": {
+     "landed_upright": true,
+     "verdict": "hop"
+    }
+   }
+  ]
+ }
 }

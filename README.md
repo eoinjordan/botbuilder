@@ -143,30 +143,39 @@ What the simulation suggests changing is listed at the end of
 [docs/simulation.md](docs/simulation.md). Those are suggestions; the parts
 are the owner's and were not edited.
 
-## Walk, jump, sit: the motion study
+## Walk, turn, jump, sit: the motion study
 
-Full results: [docs/motion.md](docs/motion.md). The servo model gains a dead
-band, gear play, a series spring, the command delay and the 4 A supply limit,
-and a seeded search looks for open-loop motions on the geometry as drawn and
-on one variant. Simulation only.
+Full results: [docs/motion.md](docs/motion.md). The MuJoCo model with a
+fuller servo (dead band, gear play, a series spring, the command delay, the
+4 A supply limit) and a seeded search over the parameters of the gait in
+`microduck/gait.py`.
 
-- As drawn it does not truly step. The best gait found stamps along at
-  11.7 mm/s: a sole clears the floor by 2.53 mm for 0.06 s while the
-  standing foot slips further than the lifted foot advances, and the turn
-  input does not steer it.
-- The jump is a hop: nothing touches the floor for 0.08 s and the centre of
-  mass rises 5.02 mm in that time. It needs the firmware speed limit raised and
-  is not allowed on real hardware by default.
-- Sitting is a squat on the servo travel stops, 58.2 mm lower. It holds
-  with the servos relaxed, only the soles touch the floor, and standing up
-  again takes 0.402 of the knee torque limit.
-- Variant `comb_feet`, a proposal of the study and not the owner's design:
-  new soles whose fingers cross the centreline and interleave. It steps at
-  38.1 mm/s with 12.97 mm of clearance and turns at about 3.54 and -3.14 deg/s.
-  The part change is specified in [docs/generator-changes.md](docs/generator-changes.md).
+- **It steps.** On the comb soles the tuned gait
+  (`config/gait_motion.json`) walks at 41.9 mm/s with a sole
+  clear of the floor by 3.86 mm on 97 percent of its steps and a
+  peak torque of 0.658 of the limit. It stayed up in all 30 runs over
+  floor friction 0.3 to 1.0, mass 0.9 to 1.1 times and disturbed starts,
+  worst peak torque 0.716. With flat soles the same search gives
+  1.3 mm/s and no steps.
+- **It drifts and does not steer.** Walking straight the heading turns by
+  about 1.31 deg/s, more with a heavier head (113.0 degrees in 30 s with
+  57 g at the head, at 23.6 mm/s); the step difference does not steer it reliably, so turning is not offered to the control page.
+  Tested envelope: forward [0.0, 1.0], turn [0.0, 0.0].
+- **The jump is a hop** and stays locked: 0.06 s off the floor with the
+  centre of mass rising 0.39 mm. It runs four servos at stall torque from
+  a supply that cannot feed them and can strip gears or break parts.
+- **Sit and power off.** The sit is a squat to the hip pitch limit. With the
+  pulses stopped, in the squat or at the stand pose, the robot sinks on to
+  the servo travel stops and stays on its soles; enabled again it stands up
+  at 1.0 of the torque limit. Switched off in mid stride the legs fold
+  together and one sole comes down against the other.
+- **Leg clearance rule.** One joint inside its own limits can swing a comb
+  sole into the other. The control core now refuses such a command
+  (`ERR CLEAR`) and does not take such a step. Against the meshes over
+  42400 poses: 0 accepted collisions, 11.5 percent of free poses refused.
 
-Motion files for both, with what each is allowed to do, are listed in
-`trajectories/manifest.json`; `python scripts/run_motion.py` regenerates them.
+Motions and the tested envelope for the control page:
+`trajectories/manifest.json`. `python scripts/run_motion.py` regenerates them.
 
 ## Simulation to real
 

@@ -48,12 +48,6 @@ def main() -> int:
         if name == "model.json":
             content["meshes_published"] = True
         (data / name).write_text(json.dumps(content, separators=(",", ":")), encoding="utf-8", newline="\n")
-    # The motion files the manifest lists, next to it.
-    (data / "trajectories").mkdir()
-    with open(DATA["manifest.json"], encoding="utf-8") as handle:
-        for entry in json.load(handle)["trajectories"]:
-            (data / "trajectories" / entry["file"]).parent.mkdir(exist_ok=True)
-            shutil.copyfile(ROOT / "trajectories" / entry["file"], data / "trajectories" / entry["file"])
     count = 0
     for picture in sorted((ROOT / "docs" / "images").iterdir()):
         if picture.suffix in (".png", ".gif"):
