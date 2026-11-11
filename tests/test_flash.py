@@ -128,7 +128,9 @@ def test_page_has_no_secret_fields_and_makes_no_requests():
     script = (ROOT / "site" / "flash.js").read_text(encoding="utf-8")
     assert not re.search(r'type="password"', html)
     assert not re.search(r'<input[^>]*(name|id)="[^"]*(pass|key|token|secret)', html, re.I)
-    for needle in ("fetch(", "XMLHttpRequest", "WebSocket", "sendBeacon", "navigator.serial", "navigator.usb", "localStorage", "<form action"):
+    # The one request is for this site's own data file, to list the programs written for a controller.
+    assert script.count("fetch(") == 1 and 'fetch("./data/recipe.json")' in script and "fetch(" not in html
+    for needle in ("XMLHttpRequest", "WebSocket", "sendBeacon", "navigator.serial", "navigator.usb", "localStorage", "<form action"):
         assert needle not in script and needle not in html, needle
     for item in ("servo supply is physically disconnected", "on a stand or lying down", "before calibration", "starts relaxed"):
         assert item in html, item

@@ -36,9 +36,10 @@ def test_manifest_matches_the_files():
     with open(model.stl_dir() / "manifest.json", encoding="utf-8") as handle:
         manifest = json.load(handle)
     on_disk = {p.name for p in model.stl_dir().glob("*.stl")}
-    assert {entry["file"] for entry in manifest["files"]} == on_disk
+    # The biped's parts are the files directly in stl/; the walkers' and wheeled parts are in stl/lego/.
+    assert {entry["file"] for entry in manifest["files"] if "/" not in entry["file"]} == on_disk
     assert set(ALL.values()) | set(model.OTHER_FILES) <= on_disk
-    for entry in manifest["files"]:
+    for entry in [e for e in manifest["files"] if "/" not in e["file"]]:
         path = model.stl_dir() / entry["file"]
         assert hashlib.sha256(path.read_bytes()).hexdigest() == entry["sha256"], entry["file"]
         assert path.stat().st_size == entry["bytes"]

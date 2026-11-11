@@ -48,25 +48,33 @@ def test_source_files_carry_an_spdx_line():
             assert "SPDX-License-Identifier: MIT" in head, path.relative_to(ROOT).as_posix()
 
 
+def under_stl(path) -> bool:
+    return path.relative_to(ROOT).parts[0] == "stl"
+
+
 def test_only_the_generated_printable_parts_are_tracked_as_meshes():
-    """The derived printable STLs are committed under stl/, each listed in the
-    manifest. The third-party source meshes are not in the repository."""
+    """The derived printable STLs are committed under stl/ and its folders,
+    each listed in the manifest by its path. The third-party source meshes
+    are not in the repository."""
     with open(ROOT / "stl" / "manifest.json", encoding="utf-8") as handle:
         listed = {entry["file"] for entry in json.load(handle)["files"]}
     meshes = [path for path in tracked() if path.suffix.lower() in (".stl", ".obj", ".step", ".3mf")]
-    assert {path.name for path in meshes} == listed
     for path in meshes:
-        assert path.parent == ROOT / "stl" and path.suffix == ".stl", path.name
+        assert under_stl(path) and path.suffix == ".stl", path.relative_to(ROOT).as_posix()
         assert not re.match(r"\d\d_[^t]", path.name), "source meshes are numbered 01 to 15; only the torso starts with 01_"
+    assert {path.relative_to(ROOT / "stl").as_posix() for path in meshes} == listed
 
 
 def test_repository_stays_small():
-    total = sum(path.stat().st_size for path in tracked())
-    assert total < 16_000_000
-    stls = sum(path.stat().st_size for path in tracked() if path.suffix == ".stl")
-    assert stls < 8_000_000
-    for path in tracked():
+    # Printable files and their pictures under stl/ have their own budget.
+    rest = [path for path in tracked() if not under_stl(path)]
+    assert sum(path.stat().st_size for path in rest) < 8_000_000
+    for path in rest:
         assert path.stat().st_size < 1_000_000, path.name
+    meshes = [path for path in tracked() if under_stl(path)]
+    assert sum(path.stat().st_size for path in meshes) < 20_000_000
+    for path in meshes:
+        assert path.stat().st_size < 3_000_000, path.name
 
 
 def test_generated_documents_say_their_status():

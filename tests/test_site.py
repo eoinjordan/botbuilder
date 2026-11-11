@@ -30,7 +30,8 @@ def test_site_builds_with_data_and_pictures(built, assembly_report):
 
 def test_the_printable_stls_are_published_as_listed(built):
     manifest = json.loads((built / "stl" / "manifest.json").read_text(encoding="utf-8"))
-    assert {p.name for p in built.rglob("*.stl")} == {entry["file"] for entry in manifest["files"]}
+    published = {p.relative_to(built / "stl").as_posix() for p in built.rglob("*.stl")}
+    assert published == {entry["file"] for entry in manifest["files"]}, "every listed part, in its folder, and nothing else"
     for entry in manifest["files"]:
         assert (built / "stl" / entry["file"]).stat().st_size == entry["bytes"]
     model_data = json.loads((built / "data" / "model.json").read_text(encoding="utf-8"))
@@ -54,7 +55,7 @@ def test_three_is_pinned_and_is_the_only_external_script():
     scripts = re.findall(r"<script[^>]*src=\"([^\"]+)\"", html)
     assert scripts == ["./nav.js", "./app.js"]
     external = set(re.findall(r'https://[a-z0-9.-]+', html + (SITE / "app.js").read_text(encoding="utf-8")))
-    assert external <= {"https://cdn.jsdelivr.net", "https://github.com"}
+    assert external <= {"https://cdn.jsdelivr.net", "https://github.com", "https://eoinjordan.github.io"}
 
 
 def test_no_trackers():

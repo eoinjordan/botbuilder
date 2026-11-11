@@ -1,0 +1,480 @@
+{
+ "build": "ev3-pixy2",
+ "options": {
+  "motor_direction": "rear",
+  "camera": "pantilt",
+  "brick_x": 0.0,
+  "battery": "six AA"
+ },
+ "mass_kg": 0.8115,
+ "start_phase_deg": 90.0,
+ "start_height_m": 0.096,
+ "crank_radius_m": 0.012,
+ "stride_per_turn_m": 0.048,
+ "motor": {
+  "name": "EV3 Large Servo Motor 45502",
+  "stall_torque_nm": 0.4,
+  "running_torque_nm": 0.2,
+  "no_load_rpm": 165,
+  "gear_ratio_motor_to_crank": 1.0,
+  "rotor_inertia_kgm2": 0.0002,
+  "joint_friction_nm": 0.004
+ },
+ "floor_friction": 0.4,
+ "closed_loop": "connect constraint at the front crank tip plus a joint constraint for the gear train, per side",
+ "viewer": {
+  "printed": [
+   {
+    "name": "chassis",
+    "file": "lego/ev3-pixy2/chassis.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "head",
+    "file": "lego/ev3-pixy2/camera_head_pantilt.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     84.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     45.8,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "left leg",
+    "file": "lego/ev3-pixy2/left_leg.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     75.0,
+     0.0,
+     0.0,
+     1.0,
+     -84.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "leg",
+     "left"
+    ]
+   },
+   {
+    "name": "left rear gear",
+    "file": "lego/ev3-pixy2/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     -16.0,
+     0.0,
+     0.0,
+     -1.0,
+     49.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "left centre gear",
+    "file": "lego/ev3-pixy2/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     -1.0,
+     49.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "left front gear",
+    "file": "lego/ev3-pixy2/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     16.0,
+     0.0,
+     0.0,
+     -1.0,
+     49.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "left rear crank",
+    "file": "lego/ev3-pixy2/crank_print_4.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "crank",
+     "left",
+     -16.0,
+     73.8
+    ]
+   },
+   {
+    "name": "left front crank",
+    "file": "lego/ev3-pixy2/crank_print_4.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "crank",
+     "left",
+     16.0,
+     73.8
+    ]
+   },
+   {
+    "name": "right leg",
+    "file": "lego/ev3-pixy2/right_leg.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -75.0,
+     0.0,
+     0.0,
+     1.0,
+     -84.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "leg",
+     "right"
+    ]
+   },
+   {
+    "name": "right rear gear",
+    "file": "lego/ev3-pixy2/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     -16.0,
+     0.0,
+     0.0,
+     -1.0,
+     -44.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "right centre gear",
+    "file": "lego/ev3-pixy2/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     -1.0,
+     -44.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "right front gear",
+    "file": "lego/ev3-pixy2/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     16.0,
+     0.0,
+     0.0,
+     -1.0,
+     -44.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "right rear crank",
+    "file": "lego/ev3-pixy2/crank_print_4.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "crank",
+     "right",
+     -16.0,
+     -66.0
+    ]
+   },
+   {
+    "name": "right front crank",
+    "file": "lego/ev3-pixy2/crank_print_4.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "crank",
+     "right",
+     16.0,
+     -66.0
+    ]
+   }
+  ],
+  "boxes": [
+   {
+    "name": "left motor",
+    "kind": "motor",
+    "min": [
+     -28.0,
+     18.0,
+     -12.0
+    ],
+    "max": [
+     -4.0,
+     42.0,
+     12.0
+    ]
+   },
+   {
+    "name": "left motor",
+    "kind": "motor",
+    "min": [
+     -112.0,
+     10.5,
+     -12.0
+    ],
+    "max": [
+     -28.0,
+     49.5,
+     35.0
+    ]
+   },
+   {
+    "name": "right motor",
+    "kind": "motor",
+    "min": [
+     -28.0,
+     -42.0,
+     -12.0
+    ],
+    "max": [
+     -4.0,
+     -18.0,
+     12.0
+    ]
+   },
+   {
+    "name": "right motor",
+    "kind": "motor",
+    "min": [
+     -112.0,
+     -49.5,
+     -12.0
+    ],
+    "max": [
+     -28.0,
+     -10.5,
+     35.0
+    ]
+   },
+   {
+    "name": "EV3 brick",
+    "kind": "controller",
+    "min": [
+     -55.0,
+     -35.5,
+     42.0
+    ],
+    "max": [
+     55.0,
+     35.5,
+     86.0
+    ]
+   },
+   {
+    "name": "pan-tilt kit",
+    "kind": "camera",
+    "min": [
+     57.0,
+     -27.0,
+     115.8
+    ],
+    "max": [
+     127.0,
+     27.0,
+     155.8
+    ]
+   },
+   {
+    "name": "Pixy2",
+    "kind": "camera",
+    "min": [
+     104.0,
+     -19.12,
+     155.8
+    ],
+    "max": [
+     119.0,
+     19.12,
+     197.8
+    ]
+   }
+  ],
+  "crank_radius_mm": 12.0,
+  "leg_drop_mm": 84.0,
+  "stride_per_turn_mm": 48.0
+ }
+}

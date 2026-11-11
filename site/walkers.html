@@ -1,0 +1,123 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087f60">
+  <meta name="description" content="Crank walkers on LEGO motors for the EV3 brick, the 51515 hub and a Raspberry Pi with the Build HAT: parts to print, balance, walking limits and programs.">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./walkers.css">
+  <title>Walkers / Botbuilder</title>
+  <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <nav id="site-nav" aria-label="Site">
+      <a href="./">Build yours</a><a href="./biped.html">Biped</a><a href="./wheeled.html">Two-wheeled</a><a href="./walkers.html" aria-current="page">Walkers</a><a href="./flash.html">Flash</a><a href="./control.html">Control</a>
+      <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+    </nav>
+  </header>
+  <main>
+    <div class="title-row">
+      <div><p class="eyebrow">LEGO MOTORS / EV3 BRICK / 51515 HUB / RASPBERRY PI BUILD HAT</p><h1>Crank walkers</h1></div>
+    </div>
+    <p class="lead"><a href="./?locomotion=crank">Build a crank walker from the parts you have</a>: the configurator lists the files, parts and wiring for your controller.</p>
+
+    <section id="builds">
+      <div class="section-heading"><span class="step">01</span><h2>Three builds, one mechanism</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/lego-walkers.md" rel="noopener noreferrer">Full report</a></div>
+      <p>On each side three axles sit 16 mm apart with a 16-tooth gear on each; the middle gear idles. A 12 mm crank on
+        each outer axle carries the leg on two pins 32 mm apart, so the leg does not rotate: the flat foot stays level
+        and moves on a circle. The legs are half a turn apart and one motor drives each side. One crank turn moves the
+        robot 48 mm. The same chassis on wheels is on the <a href="./wheeled.html">two-wheeled page</a>.</p>
+      <div class="build-cards" id="build-cards"></div>
+    </section>
+
+    <section id="viewer">
+      <div class="section-heading"><span class="step">02</span><h2>The crank cycle</h2></div>
+      <div class="viewer-layout">
+        <div class="viewer-stage"><canvas id="view" tabindex="0" aria-label="3D view of the walker. Arrow keys turn the view, plus and minus zoom."></canvas><p id="view-note" class="small-note">Loading the printable parts.</p></div>
+        <div class="viewer-controls">
+          <div class="form-actions" role="group" aria-label="Build">
+            <button id="pick-ev3-pixy2" class="primary" type="button" aria-pressed="true">EV3</button>
+            <button id="pick-hub-51515" class="secondary" type="button" aria-pressed="false">51515 hub</button>
+            <button id="pick-pi-zero-2w-51515" class="secondary" type="button" aria-pressed="false">Pi Zero 2 W</button>
+          </div>
+          <div class="slider">
+            <label for="phase">Crank phase</label><output id="phase-out">90 deg</output>
+            <input id="phase" type="range" min="0" max="359" step="1" value="90">
+          </div>
+          <div class="form-actions"><button id="play" class="primary" type="button" aria-pressed="false">Play</button><button id="follow" class="secondary" type="button" aria-pressed="true">Walk along the floor</button></div>
+          <dl class="facts" id="phase-facts"></dl>
+          <p class="small-note">The parts are the STLs offered below. Motors, controller and camera are drawn as boxes.
+            The motion is the kinematics of the cranks.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="assembly">
+      <div class="section-heading"><span class="step">03</span><h2>Assembly and balance</h2></div>
+      <ul class="plain">
+        <li><b>Print the fit coupon first:</b> a cross axle in the keyed hole, a pin in the 4.95 mm hole, an axle turning freely in the 5.35 mm hole. Millimetres, 100 percent scale.</li>
+        <li><b>Point the motors backward.</b> Pointing forward they move the centre of mass toward the front edge of the feet.</li>
+        <li><b>Use a half bush on the outboard end of each idler axle.</b> The cranks sweep past it and a full bush leaves 0.2 mm.</li>
+        <li><b>Keep the controller centred side to side.</b> Each foot reaches only 10.5 mm past the centreline.</li>
+        <li><b>The walkers cannot turn.</b> A leg on parallel cranks only moves the body straight forward or back.</li>
+        <li><b>Stay at or below 90 crank rpm.</b> Faster, the feet leave the floor and the heading wanders.</li>
+        <li><b>Keep fingers and cables clear of the cranks and gears</b> and turn each side by hand through a full turn before powering it.</li>
+      </ul>
+      <ul class="findings" id="findings"></ul>
+      <h3>Balance through the cycle</h3>
+      <p>The lower foot carries the robot. It is balanced while the centre of mass is over that foot's outline; the
+        margin is the distance to the nearest edge.</p>
+      <div class="table-wrap"><table id="balance"><thead><tr><th>Build</th><th>Mass (g)</th><th>Smallest margin (mm)</th><th>Lean that uses it up (deg)</th><th>Centre of mass window, fore and aft (mm)</th><th>Sideways (mm)</th></tr></thead><tbody></tbody></table></div>
+      <p id="brick" class="small-note wide"></p>
+      <div class="gallery" id="assembly-gallery"></div>
+    </section>
+
+    <section id="simulation">
+      <div class="section-heading"><span class="step">04</span><h2>Walking in simulation</h2></div>
+      <p>A MuJoCo model per build with the crank linkage as a closed loop and motors that follow LEGO's stall torque
+        and speed figures.</p>
+      <div class="two-col">
+        <ul class="findings" id="sim-findings"></ul>
+        <div class="gallery tight" id="recordings"></div>
+      </div>
+      <h3>Straight ahead</h3>
+      <div class="table-wrap"><table id="forward"><thead><tr><th>Build</th><th>Crank rpm</th><th>Speed (mm/s)</th><th>Slip</th><th>Max tilt (deg)</th><th>Heading change (deg)</th><th>Peak torque (N m)</th><th>Stall (N m)</th></tr></thead><tbody></tbody></table></div>
+      <h3>Limits</h3>
+      <div class="table-wrap"><table id="limits"><thead><tr><th>Build</th><th>Steady up to (mm/s)</th><th>Uphill (deg)</th><th>Downhill (deg)</th><th>Cross slope (deg)</th><th>Step (mm)</th><th>Phase error tolerated (deg)</th><th>Turns</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section id="print">
+      <div class="section-heading"><span class="step">05</span><h2>Parts and programs</h2><a href="https://github.com/eoinjordan/botbuilder/tree/main/stl/lego" rel="noopener noreferrer">Folder</a></div>
+      <p>Each build's files to print, the other parts, and programs to load. For the LEGO controllers the first route
+        is <a href="https://eoinjordan.github.io/mindstorms-robot-creator/" rel="noopener noreferrer">Mindstorms Robot Creator</a>:
+        paste the program into its editor under "Custom (edit below)". It runs the program on a 51515 hub with
+        Pybricks firmware over Bluetooth, saves a project for the LEGO app for stock firmware, and saves a file for the
+        EV3 to copy to the brick.</p>
+      <div id="downloads"></div>
+    </section>
+
+    <section id="control">
+      <div class="section-heading"><span class="step">06</span><h2>Camera, phase and power</h2></div>
+      <ul class="plain">
+        <li><b>EV3 phase:</b> the EV3 motor encoders count from power-up, so set the legs by hand at the start: left foot down, right foot up, then press the centre button. Mark the cranks.</li>
+        <li><b>51515 phase:</b> these motors have absolute encoders, so the programs home themselves once the two zero angles are measured and entered.</li>
+        <li><b>Pixy2 with the pan-tilt kit:</b> print <code>camera_head_pantilt</code> in place of <code>camera_head</code> and measure the kit's base plate against the 72 x 56 mm platform. A standard Pixy2 needs the LEGO firmware and the EV3 cable to work with the EV3 blocks. The pan-tilt servos are driven by the Pixy2 itself.</li>
+        <li><b>51515 hub camera:</b> the Pixy2 cannot plug into the hub's ports. The head is a plate with seven pin holes for a self-contained Wi-Fi camera or a LEGO sensor.</li>
+        <li><b>Pi power:</b> the Build HAT's 8 V adapter means a tether; a 7.2 to 8.5 V battery on its barrel jack frees the robot.</li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <p>Code and the walker parts under the MIT licence. LEGO, Mindstorms and Technic are trademarks of the LEGO Group,
+      which does not sponsor or endorse this. Raspberry Pi is a trademark of Raspberry Pi Ltd. Fonts: Space Grotesk,
+      SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>). No analytics, no cookies. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./admin.html">Admin</a>.</p>
+  </footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./walkers.js"></script>
+</body>
+</html>

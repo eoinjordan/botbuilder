@@ -143,6 +143,25 @@ export function flashPlan(options = {}) {
   return { base, written: true, steps, mode, where: wrap ? "computer" : "session", target, message: "" };
 }
 
+// The program files for the controller a link names, from the data the
+// configurator uses (data/recipe.json): [{ build, lines }]. given is the
+// base id or controller id from the address. Empty when none are written.
+export function programsFor(data, given) {
+  const rows = data.compat.support.filter((row) => row.base === given || row.controller === given);
+  const controllers = [...new Set(rows.map((row) => row.controller))];
+  const text = (dimId, optionId) => {
+    const dim = data.compat.dimensions.find((item) => item.id === dimId);
+    const option = dim.options.find((item) => item.id === optionId);
+    return option ? option.label : optionId;
+  };
+  return data.programs
+    .filter((entry) => controllers.includes(entry.match.controller))
+    .map((entry) => ({
+      build: [entry.match.locomotion, entry.match.drive].filter(Boolean).map((id, i) => text(i ? "drive" : "locomotion", id)).join(", "),
+      lines: entry.lines,
+    }));
+}
+
 // ---- page wiring (browser only) ----
 
 function start() {
@@ -157,6 +176,40 @@ function start() {
     : `Controller: ${base.label}${base.given ? ` (base=${base.given})` : ""}. Not written.`;
   byId("base-detail").textContent = base.written ? "" : (base.note || "No firmware and no flash steps exist for it in this repository. No command is shown rather than a made-up one.");
   byId("flash-form").hidden = !base.written;
+  // Programs written for this controller's builds, with how each is loaded.
+  fetch("./data/recipe.json").then((reply) => (reply.ok ? reply.json() : null)).then((data) => {
+    const found = data ? programsFor(data, base.given) : [];
+    if (!found.length) return;
+    const box = byId("programs");
+    const title = document.createElement("h3");
+    title.textContent = "Programs for this controller";
+    box.append(title);
+    for (const program of found) {
+      const list = document.createElement("ul");
+      list.className = "plain";
+      const head = document.createElement("p");
+      head.textContent = program.build;
+      head.style.fontWeight = "600";
+      for (const line of program.lines) {
+        const item = document.createElement("li");
+        line.split(/(https:\/\/[^\s]+[^\s.,;:)])/).forEach((piece, i) => {
+          if (i % 2 === 0) { item.append(document.createTextNode(piece)); return; }
+          const link = document.createElement("a");
+          link.href = piece;
+          link.textContent = piece;
+          link.target = "_blank";
+          link.rel = "noopener";
+          link.setAttribute("aria-label", `${piece}, opens in a new tab`);
+          item.append(link);
+        });
+        list.append(item);
+      }
+      box.append(head, list);
+    }
+    box.hidden = false;
+    baseNote.textContent = `Controller: ${base.label}${base.given ? ` (base=${base.given})` : ""}.`;
+    byId("base-detail").textContent = "The UNO Q agent is not ported to this controller; its builds have the programs below.";
+  }).catch(() => {});
   byId("unoq-link").hidden = base.written;
   // Back to the configurator with the same selection, if it was a known id.
   if (/^[a-z0-9_]{1,40}$/.test(base.given)) byId("back-link").href = `./?base=${base.given}`;

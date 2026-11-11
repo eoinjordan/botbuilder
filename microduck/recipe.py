@@ -16,7 +16,9 @@ so scripts/build_site.py can import it in the Pages workflow.
 from __future__ import annotations
 
 import json
+import re
 import sys
+from urllib.parse import quote
 from itertools import product
 from pathlib import Path
 
@@ -182,7 +184,8 @@ def manifest(compat: dict, root: Path = ROOT) -> dict:
                     files.append({"file": entry["file"], "what": str(entry.get("what", "")),
                                   "fit": bool(options.get("fit_piece")), "part": part,
                                   "controller": options.get("controller", home if part == "torso" else None),
-                                  "head": options.get("head"), "camera": options.get("camera")})
+                                  "head": options.get("head"), "camera": options.get("camera"),
+                                  "locomotion": options.get("locomotion")})
             found: list[str] = []
             _collect_stl_names(content, found)
             # Picture, size and print note of every part, by its path under stl/.
@@ -198,7 +201,7 @@ def manifest(compat: dict, root: Path = ROOT) -> dict:
                 if isinstance(box, list) and len(box) == 2:
                     size = " x ".join(f"{hi - lo:.0f}" for lo, hi in zip(box[0], box[1])) + " mm"
                 info[name] = {"thumb": "./stl/" + picture["file"] if isinstance(picture.get("file"), str) else None,
-                              "size": size, "note": str(entry.get("print_note", ""))}
+                              "size": size, "note": str(entry.get("print_note") or entry.get("material") or "")}
             return {"present": True, "paths": sorted(set(found)), "served": [item["file"] for item in files],
                     "files": files, "info": info, "camera_default": default, "controller_default": home}
     return {"present": False, "paths": [], "served": [], "files": [], "info": {}, "camera_default": default,
@@ -232,8 +235,30 @@ def variants(compat: dict, root: Path = ROOT) -> list[dict]:
         if path.is_file():
             entries: list[dict] = []
             _walk_summary(_load(path), [], compat, entries)
-            return entries
+            return entries + _idler_entries(compat, entries)
     return []
+
+
+def _idler_entries(compat: dict, entries: list[dict]) -> list[dict]:
+    """The printed idler is a third support the summary names in its notes
+    only. Each roller entry gives an idler entry: the same build with the
+    ball tip swapped for the idler parts, tagged Designed, with no numbers
+    of its own."""
+    swap = compat.get("idler", {})
+    if not swap:
+        return []
+    out = []
+    for entry in entries:
+        if entry["match"].get("support") != swap["from"]:
+            continue
+        files = [item for item in entry["files"] if not any(item["file"].endswith(name) or name in item["file"] for name in swap["drop"])]
+        files += [dict(item) for item in swap["files"]]
+        parts = [item for item in entry["parts"] if not any(word in item["name"].lower() for word in swap["drop_parts"])]
+        # The advice carries over; the figures, which are the ball's, do not.
+        advice = [line for line in entry["lines"] if not any(ch.isdigit() for ch in line)]
+        out.append({"match": dict(entry["match"], support=swap["to"]), "status": "defined", "status_text": "designed",
+                    "lines": [swap["line"]] + advice, "files": files, "parts": parts})
+    return out
 
 
 def _walk_summary(node, hints: list[str], compat: dict, entries: list[dict]) -> None:
@@ -326,65 +351,44 @@ def _summary_entry(node: dict, hints: list[str], compat: dict) -> dict | None:
             "files": files, "parts": parts}
 
 
-PROGRAM_KEYS = ("files", "file", "program", "load_with")
-
-
 def programs(compat: dict, root: Path = ROOT) -> list[dict]:
-    """Program files for a controller and build, from programs/index.json
-    when another branch has written it. Any nesting; an object with a files,
-    file, program or load_with key is an entry, matched to a controller and
-    locomotion the same way as a summary entry."""
+    """The program files of programs/index.json, one entry per file, with the
+    lines a recipe shows for it. Its shape: {"programs": [{"controller",
+    "locomotion", "drive", "language", "file", "ports", "what", "load_with":
+    {"name", "url", "code_target"}, "alternative"}]}. The site serves each
+    file at <site>/programs/<controller>/<build>/<file>.py, which is the
+    address Robot Creator's program link needs."""
     for name in PROGRAM_PATHS:
         path = root / name
-        if path.is_file():
-            found: list[dict] = []
-            _walk_programs(_load(path), [], compat, found)
-            return found
+        if not path.is_file():
+            continue
+        content = _load(path)
+        listed = content.get("programs", []) if isinstance(content, dict) else []
+        known = {dim["id"]: [option["id"] for option in dim["options"]] for dim in compat["dimensions"]}
+        out = []
+        for item in listed:
+            if not isinstance(item, dict) or item.get("controller") not in known["controller"]:
+                continue
+            file = str(item.get("file", "")).replace("\\", "/")
+            if not re.fullmatch(r"programs/[a-z0-9_/-]+\.py", file) or not (root / file).is_file():
+                continue
+            match = {key: item[key] for key in ("controller", "locomotion", "drive") if item.get(key) in known[key]}
+            address = compat["site_url"] + file
+            lines = [f"Program, {item.get('language', 'Python')}: {address} {str(item.get('what', '')).strip()}".strip()]
+            ports = item.get("ports")
+            if isinstance(ports, dict) and ports:
+                lines.append("Ports: " + "; ".join(f"{key}: {value}" for key, value in ports.items()) + ".")
+            load = item.get("load_with")
+            target = load.get("code_target") if isinstance(load, dict) else None
+            if target in compat["program_targets"]:
+                lines.append("Open it in Robot Creator: " + compat["robot_creator"] + "?program=" + quote(address, safe="")
+                             + "&target=" + target + " . If the program is not shown there, download the file above and load it from Robot Creator's file or paste box.")
+                lines.append(compat["program_targets"][target])
+            if isinstance(item.get("alternative"), str) and item["alternative"].strip():
+                lines.append(("Without Robot Creator: " if target in compat["program_targets"] else "To run it: ") + item["alternative"].strip())
+            out.append({"match": match, "file": file, "lines": lines})
+        return out
     return []
-
-
-def _walk_programs(node, hints: list[str], compat: dict, found: list[dict]) -> None:
-    if isinstance(node, list):
-        for item in node:
-            _walk_programs(item, hints, compat, found)
-    elif isinstance(node, dict):
-        if any(key in node for key in PROGRAM_KEYS):
-            tokens: list[str] = []
-            for text in hints + [node[key] for key in NAME_KEYS + ("build",) if isinstance(node.get(key), str)]:
-                for part in str(text).lower().replace(":", "/").replace("__", "/").split("/"):
-                    tokens.append(part.strip())
-            match = {}
-            for dim in ("controller", "locomotion", "drive"):
-                named = str(node.get(dim, "")).lower()
-                for token in ([named] if named else []) + tokens:
-                    hit = [option for option, names in compat["summary_aliases"][dim].items() if token in names]
-                    if hit:
-                        match[dim] = hit[0]
-                        break
-            if "controller" not in match:
-                return
-            listed = node.get("files", node.get("file", node.get("program", [])))
-            files = []
-            for item in listed if isinstance(listed, list) else [listed]:
-                if isinstance(item, dict):
-                    item = item.get("path", item.get("file", ""))
-                raw = str(item)
-                item = raw.replace("\\", "/").lstrip("./")
-                if item and "." not in item.split("/")[0][:1] and ".." not in raw and " " not in item:
-                    files.append(item if item.startswith("programs/") else "programs/" + item)
-            load = node.get("load_with")
-            if isinstance(load, str):
-                load = {"name": "Robot Creator", "url": compat["robot_creator"]} if "robot" in load.lower() else {"name": load, "url": ""}
-            elif isinstance(load, dict) and str(load.get("url", "")).startswith("https://"):
-                load = {"name": str(load.get("name", "the loader")), "url": load["url"]}
-            else:
-                load = None
-            steps = [str(step) for step in node.get("steps", []) if isinstance(step, str)] if isinstance(node.get("steps"), list) else []
-            if files:
-                found.append({"match": match, "files": files, "steps": steps, "load_with": load})
-            return
-        for key, value in node.items():
-            _walk_programs(value, hints + [str(key)], compat, found)
 
 
 def validated(root: Path = ROOT) -> list[dict]:
@@ -514,15 +518,13 @@ def _unsupported(data: dict, sel: dict) -> dict:
             "needs": bool(matched) and all(item.get("needs") for item in matched)}
 
 
-def _pass(data: dict, sel: dict) -> dict:
-    """One evaluation of a normalised selection, without the search for a
-    possible neighbour."""
+def _refusal(data: dict, sel: dict):
+    """Why a normalised selection is refused, or None if it is possible.
+    Cheap: the search for a neighbour calls it for every candidate."""
     compat = data["compat"]
-    row = _find_row(compat, sel)
-    if row is None:
+    if _find_row(compat, sel) is None:
         return _unsupported(data, sel)
-    matched = [rule for rule in compat["rules"] if _matches(rule["when"], sel)]
-    blocks = [rule for rule in matched if "block" in rule]
+    blocks = [rule for rule in compat["rules"] if "block" in rule and _matches(rule["when"], sel)]
     if blocks:
         alternatives = []
         for rule in blocks:
@@ -531,6 +533,18 @@ def _pass(data: dict, sel: dict) -> dict:
                 "codes": [rule["code"] for rule in blocks], "short": blocks[0]["short"],
                 "details": [{"dims": list(rule["when"]), "short": rule["short"]} for rule in blocks],
                 "needs": all(rule.get("needs") for rule in blocks)}
+    return None
+
+
+def _pass(data: dict, sel: dict) -> dict:
+    """One evaluation of a normalised selection, without the search for a
+    possible neighbour."""
+    compat = data["compat"]
+    refused = _refusal(data, sel)
+    if refused is not None:
+        return refused
+    row = _find_row(compat, sel)
+    matched = [rule for rule in compat["rules"] if _matches(rule["when"], sel)]
 
     variant = None
     reasons = [row["reason"]]
@@ -559,15 +573,12 @@ def _pass(data: dict, sel: dict) -> dict:
     else:
         status = row["status"]
         lead.append("No analysis numbers for this selection.")
-    program = _most_specific(data["programs"], sel)
+    written = [entry for entry in data["programs"] if all(sel[key] == value for key, value in entry["match"].items())]
+    program = written[0] if written else None
     sections = {name: [] for name in compat["sections"]}
     sections["analysis"].extend(lead)
-    if program is not None:
-        for path in program["files"]:
-            sections["firmware"].append("Program for this build: " + compat["repo_blob"] + path)
-        sections["firmware"].extend(program["steps"])
-        if program["load_with"] is not None and program["load_with"]["url"]:
-            sections["firmware"].append("Load it with " + program["load_with"]["name"] + ": " + program["load_with"]["url"])
+    for entry in written:
+        sections["firmware"].extend(entry["lines"])
     settings = {"mechanism": "", "preset": ""}
     rails = {}
     loads = []
@@ -583,6 +594,10 @@ def _pass(data: dict, sel: dict) -> dict:
                 rails[key] = value
         loads.extend(rule.get("loads", []))
         for name, items in rule.get("add", {}).items():
+            # A summary entry lists the whole build; the rules then add only what it does not
+            # know about (the camera and head chosen here).
+            if variant is not None and name in ("print", "parts") and not rule.get("extra"):
+                continue
             sections[name].extend(items)
         if program is None:
             for name, items in rule.get("without_program", {}).items():
@@ -633,9 +648,11 @@ def _pass(data: dict, sel: dict) -> dict:
         maps = compat["manifest_map"]
         controller = maps["controller"].get(sel["controller"])
         head = maps["head"].get(sel["head"])
-        torsos = [entry for entry in listing["files"]
+        # The biped's files are those with no locomotion option; the walkers' and wheeled parts have one.
+        own_files = [entry for entry in listing["files"] if entry["locomotion"] is None]
+        torsos = [entry for entry in own_files
                   if entry["part"] == "torso" and entry["controller"] == controller and entry["head"] == head]
-        known = [entry["camera"] for entry in listing["files"] if entry["part"] == "torso" and entry["camera"] is not None]
+        known = [entry["camera"] for entry in own_files if entry["part"] == "torso" and entry["camera"] is not None]
         own = False
         torso = None
         if head is None:
@@ -651,7 +668,7 @@ def _pass(data: dict, sel: dict) -> dict:
             torso = torsos[0]["file"]
         if torso is None:
             no_torso = True
-        for entry in listing["files"]:
+        for entry in own_files:
             general = entry["controller"] is None and entry["head"] is None
             if entry["part"] == "torso":
                 take = entry["file"] == torso
@@ -731,8 +748,8 @@ def search(data: dict, selection: dict, pinned: list) -> dict | None:
     seen = set()
 
     def walk(current: dict, depth: int):
-        result = _pass(data, current)
-        if not result["blocked"]:
+        result = _refusal(data, current)
+        if result is None:
             return current
         if depth == 0:
             return None

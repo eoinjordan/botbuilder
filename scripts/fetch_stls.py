@@ -129,6 +129,11 @@ def main() -> int:
         shutil.copyfile(source / name, TARGET / name)
     record = manifest(TARGET, design_commit(args.design_dir))
     (TARGET / "manifest.json").write_text(json.dumps(record, indent=1) + "\n", encoding="utf-8", newline="\n")
+    lego = TARGET / "lego" / "manifest.json"
+    if lego.is_file():                                                 # the walkers' and wheeled parts stay listed
+        from walkers import manifest as walkers_manifest
+        with open(lego, encoding="utf-8") as handle:
+            walkers_manifest.merge(json.load(handle))
     thumbs.update(TARGET, redraw_all=True, log=lambda line: None)      # a picture of every part, recorded in the manifest
     print(f"copied {len(names) - 1} STLs ({record['total_bytes'] / 1e6:.2f} MB) to {TARGET}")
     return 0

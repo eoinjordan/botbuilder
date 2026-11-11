@@ -64,25 +64,18 @@ def options(compat):
 
 
 def rich_bundle(data):
-    """The real data plus walker paths in the manifest, a variants summary, a
-    program index and validation records, so the comparison with the
-    JavaScript covers them."""
+    """The real data plus paths the manifest names outside its files list, a
+    summary entry of another shape and validation records, so the comparison
+    with the JavaScript covers them."""
     rich = copy.deepcopy(data)
-    extra = ["lego/ev3-pixy2/chassis.stl", "lego/ev3-pixy2/fit_coupon.stl", "wheeled/wheel_hub_cross.stl"]
-    rich["manifest"]["paths"] = sorted(set(rich["manifest"]["paths"] + extra))
-    rich["manifest"]["info"]["lego/ev3-pixy2/chassis.stl"] = {"thumb": "./stl/thumbs/lego/ev3-pixy2/chassis.png", "size": "130 x 116 x 60 mm", "note": "print flat"}
+    rich["manifest"]["paths"] = sorted(set(rich["manifest"]["paths"] + ["elsewhere/wheel_hub_cross.stl"]))
+    rich["manifest"]["info"]["elsewhere/wheel_hub_cross.stl"] = {"thumb": None, "size": "50 x 50 x 20 mm", "note": "print flat"}
     rich["variants"] = rich["variants"] + [
-        {"match": {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors", "camera": "none"}, "status": "analysed",
-         "status_text": "analysed", "lines": ["Mass 900 g by the model.", "Stability: stands on both feet."],
-         "files": [], "parts": []},
-        {"match": {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge", "wheel": "printed_tpu"},
+        {"match": {"controller": "pi_full", "locomotion": "wheeled", "drive": "tt_hbridge", "wheel": "printed_tpu"},
          "status": "defined", "status_text": "defined", "lines": ["Mass 310 g by the model."],
-         "files": [{"file": "wheeled/wheel_hub_cross.stl", "qty": 2, "role": "wheel hub", "fit": False}],
+         "files": [{"file": "elsewhere/wheel_hub_cross.stl", "qty": 2, "role": "wheel hub", "fit": False}],
          "parts": [{"name": "O-ring 50 x 3 mm", "qty": 2, "note": "from the variants summary"}]},
     ]
-    rich["programs"] = rich["programs"] + [
-        {"match": {"controller": "ev3", "locomotion": "crank"}, "files": ["programs/ev3/crank/walk.py"],
-         "steps": ["Save the file to the brick."], "load_with": {"name": "Robot Creator", "url": data["compat"]["robot_creator"]}}]
     rich["validated"] = rich["validated"] + [
         {"id": "unoq-biped-braccio_shield", "part": "", "date": "2026-12-01", "checked": "stands", "photo": "docs/validated/a.jpg", "mark": True},
         {"id": "unoq-biped-braccio_shield", "part": "fit_SR431.stl", "date": "2026-11-30", "checked": "", "photo": "", "mark": True},
@@ -152,7 +145,7 @@ def test_compat_refers_only_to_known_options_and_bases(compat, data):
     for rule in compat["rules"]:
         check(rule["when"])
         assert set(rule) <= {"id", "when", "set", "add", "without_program", "rails", "loads", "block", "alternatives", "code",
-                             "short", "downgrade", "reason"}, rule["id"]
+                             "short", "downgrade", "reason", "extra"}, rule["id"]
         if "block" in rule:
             assert rule["block"] and rule["alternatives"] and rule["code"] in REFUSAL_CODES, rule["id"]
             assert rule["short"] and len(rule["short"]) < 70, rule["id"]
@@ -238,9 +231,13 @@ def test_no_recipe_contradicts_itself(compat, recipes):
     for rec in recipes:
         sel = rec["selection"]
         where = rec["query"]
-        if rec["status"] == "analysed":
+        if rec["status"] == "analysed" and sel["locomotion"] == "biped":
             assert sel == baseline, where
             assert any("Stands" in text for text in rec["analysis"]), where
+        elif rec["status"] == "analysed":
+            # A walker or two-wheeled build: the tag and the numbers are the summary's.
+            assert rec["analysis"][0] == "From the variants summary, status as written there: analysed in simulation.", where
+            assert any(text.startswith("Mass ") for text in rec["analysis"]), where
         elif rec["status"] == "assembly_only":
             assert sel["locomotion"] == "biped" and sel["lego"] == baseline["lego"], where
             assert not any("Stands for" in text for text in rec["analysis"]), where
@@ -249,27 +246,29 @@ def test_no_recipe_contradicts_itself(compat, recipes):
             assert all(rec[name] == [] for name in TEXT_SECTIONS), where
             continue
         names = " | ".join(part["name"] for part in rec["parts"])
+        everything = names + " " + " ".join(part["note"] for part in rec["parts"]) + " " + " ".join(rec["wiring"] + rec["analysis"])
+        files = " ".join(item["file"] for item in rec["print"]["files"])
         servos = sum(part["qty"] for part in rec["parts"] if part["name"].startswith(("SR431", "SR311")))
         if sel["locomotion"] == "biped":
             assert sel["drive"] in servo_drives and servos == 6, where
         else:
             assert sel["drive"] not in servo_drives and servos == 0, where
         if sel["drive"] == "tt_hbridge":
-            assert "H-bridge driver board" in names, where
+            assert "H-bridge" in everything or "TB6612" in everything, where
             assert any("open loop" in text for text in rec["wiring"]), where
         if sel["locomotion"] == "wheeled" and sel["wheel"] == "printed_tpu":
-            assert "TPU filament" in names, where
+            assert "TPU" in everything or "tpu" in files, where
         if sel["locomotion"] == "wheeled" and sel["wheel"] == "printed_ring":
-            assert any("slips on smooth floors" in part["note"] for part in rec["parts"]), where
+            assert "slips on" in everything, where
         if sel["camera"] == "none":
-            assert "Pixy2 camera" not in names and "ESP32-CAM" not in names and "XIAO" not in names, where
+            assert "ESP32-CAM" not in names and "XIAO" not in names, where
         firmware = " ".join(rec["firmware"])
         if sel["controller"] == "unoq" and sel["locomotion"] == "biped":
             assert "app_lab/microduck_agent" in firmware, where
         elif sel["controller"] in ("ev3", "hub51515"):
             assert "Robot Creator" in firmware and compat["robot_creator"] in firmware, where
         else:
-            assert "Not written" in firmware or "python3-build-hat" in firmware, where
+            assert "Not written" in firmware or "python3-build-hat" in firmware or "Program, " in firmware, where
 
 
 def test_only_physical_impossibilities_are_refused(data, compat, recipes):
@@ -311,25 +310,42 @@ def test_the_owners_designs_and_a_wheeled_build_for_every_controller_resolve(dat
     designs = {
         "ev3-pixy2": dict(controller="ev3", locomotion="crank", drive="ev3_motors", camera="pixy2"),
         "pi-zero-2w-51515": dict(controller="pi", locomotion="crank", drive="buildhat_51515", camera="picam2"),
+        "hub-51515": dict(controller="hub51515", locomotion="crank", drive="hub_motors", camera="none"),
         "servo biped": dict(controller="unoq", locomotion="biped", drive="braccio_shield"),
     }
     for name, selection in designs.items():
         rec = run(**selection)
-        assert rec["status"] not in REFUSED, name
+        # Complete: simulated, every file in stl/ with its picture, parts, and a program or the agent.
+        assert rec["status"] == "analysed", name
         assert rec["print"]["files"] and rec["parts"] and all(rec[key] for key in TEXT_SECTIONS), name
+        for item in rec["print"]["files"]:
+            assert item["link"] == "./stl/" + item["file"] and (ROOT / "stl" / item["file"]).is_file(), (name, item["file"])
+            assert item["thumb"] and (ROOT / item["thumb"][2:]).is_file() and item["size"], (name, item["file"])
+        assert rec["print"]["files"][0]["fit"], name
+        assert any(text.startswith("Program, ") for text in rec["firmware"]) or "app_lab/microduck_agent" in " ".join(rec["firmware"]), name
     walker = run(**designs["ev3-pixy2"])
-    assert walker["preset"] == "ev3-pixy2" and walker["print"]["files"][0]["file"] == "ev3-pixy2/fit_coupon.stl"
+    assert walker["print"]["files"][0]["file"] == "lego/ev3-pixy2/fit_coupon.stl"
     assert any("LEGO I2C" in text for text in walker["wiring"])
     assert "Pixy2 LEGO cable" in [part["name"] for part in walker["parts"]]
-    assert "pi-zero-2w-51515/camera_head.stl" in [item["file"] for item in run(**designs["pi-zero-2w-51515"])["print"]["files"]]
+    assert "lego/pi-zero-2w-51515/camera_head.stl" in [item["file"] for item in run(**designs["pi-zero-2w-51515"])["print"]["files"]]
     for controller in options(compat)["controller"]:
         rows = [row for row in compat["support"] if row["controller"] == controller and row["locomotion"] == "wheeled"]
+        assert rows, controller
         for row in rows:
             for wheel in options(compat)["wheel"]:
                 rec = run(controller=controller, locomotion="wheeled", drive=row["drive"], camera="none", wheel=wheel)
                 assert rec["status"] not in REFUSED, (controller, row["drive"], wheel)
+    simulated = {(rec["selection"]["controller"], rec["selection"]["drive"])
+                 for rec in (run(controller=row["controller"], locomotion="wheeled", drive=row["drive"], camera="none")
+                             for row in compat["support"] if row["locomotion"] == "wheeled") if rec["status"] == "analysed"}
+    assert {controller for controller, _ in simulated} == {"unoq", "pi", "hub51515", "ev3", "m5core"}
+    idler = run(controller="ev3", locomotion="wheeled", drive="ev3_motors", camera="none", support="idler")
+    assert idler["status"] == "defined"
+    names = [item["file"] for item in idler["print"]["files"]]
+    assert {"lego/wheeled/tip_idler_fork.stl", "lego/wheeled/idler_hub.stl", "lego/wheeled/idler_tyre_tpu.stl"} <= set(names)
+    assert not [name for name in names if "tip_ball" in name] and all(item["link"] for item in idler["print"]["files"])
     adapter = run(controller="unoq", locomotion="wheeled", drive="tt_hbridge", camera="none", wheel="lego")
-    assert any("needs this part" in part["note"] for part in adapter["parts"])
+    assert adapter["status"] not in REFUSED
     # Cameras with their own power go on every controller; the Pixy on all but the 51515 hub.
     for controller in options(compat)["controller"]:
         row = [r for r in compat["support"] if r["controller"] == controller][0]
@@ -382,7 +398,7 @@ def test_named_cases(data):
         assert data["coverage"]["carried"][controller] in carried["reasons"]
         assert carried["nearest"]["selection"]["locomotion"] == "crank"
         walker = run(controller=controller, locomotion="crank", drive=drive, camera="none")
-        assert walker["status"] == "being_analysed" and not any("carrying it" in text for text in walker["reasons"])
+        assert walker["status"] == "analysed" and not any("carrying it" in text for text in walker["reasons"])
     servo_on_ev3 = run(controller="ev3", drive="braccio_shield")
     assert "no-servo-outputs" in servo_on_ev3["refusal"]
     assert any("cannot drive hobby servos" in text for text in servo_on_ev3["reasons"])
@@ -396,7 +412,8 @@ def test_named_cases(data):
     assert any("XIAO" in part["name"] for part in run(camera="xiao_eyes")["parts"])
 
     wheels = run(controller="unoq", locomotion="wheeled", drive="tt_hbridge", wheels="front", support="skid", wheel="tt65")
-    assert wheels["status"] == "being_analysed"
+    assert wheels["status"] == "analysed"
+    assert run(controller="pi_full", locomotion="wheeled", drive="tt_hbridge", camera="none")["status"] == "being_analysed"
     assert "wheels=front" in wheels["query"] and "support=skid" in wheels["query"]
     assert any("at the front" in text for text in wheels["wiring"])
 
@@ -469,20 +486,24 @@ def test_a_possible_option_brings_the_other_fields_along(data, compat):
 # --- manifest, reports, summary, programs, validation -----------------------
 
 def test_files_link_only_when_the_manifest_names_them(data):
-    rich = rich_bundle(data)
     rec = recipe.evaluate(data, {})
     assert rec["print"]["files"] and all(item["link"] == "./stl/" + item["file"] for item in rec["print"]["files"])
-    base = {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors", "camera": "none"}
-    assert all(item["link"] is None and item["thumb"] is None for item in recipe.evaluate(data, base)["print"]["files"])
-    walker = recipe.evaluate(rich, base)
-    by_name = {item["file"]: item for item in walker["print"]["files"]}
-    assert by_name["ev3-pixy2/chassis.stl"]["link"] == data["compat"]["repo_blob"] + "stl/lego/ev3-pixy2/chassis.stl"
-    assert by_name["ev3-pixy2/chassis.stl"]["size"] == "130 x 116 x 60 mm" and by_name["ev3-pixy2/chassis.stl"]["note"] == "print flat"
-    assert by_name["ev3-pixy2/left_leg.stl"]["link"] is None
+    # A build with no summary entry names its files by rule; they resolve to the manifest's paths.
+    by_rule = recipe.evaluate(data, {"controller": "m5core", "locomotion": "crank", "drive": "basex_ev3", "camera": "none"})
+    by_name = {item["file"]: item for item in by_rule["print"]["files"]}
+    assert by_name["ev3-pixy2/chassis.stl"]["link"] == "./stl/lego/ev3-pixy2/chassis.stl"
+    assert by_name["ev3-pixy2/chassis.stl"]["thumb"] == "./stl/thumbs/lego/ev3-pixy2/chassis.png"
+    rich = rich_bundle(data)
+    other = recipe.evaluate(rich, {"controller": "pi_full", "locomotion": "wheeled", "drive": "tt_hbridge", "camera": "none", "wheel": "printed_tpu"})
+    hub = other["print"]["files"][0]
+    # A path the manifest names outside its files list is linked in the repository, not on the site.
+    assert hub["link"] == data["compat"]["repo_blob"] + "stl/elsewhere/wheel_hub_cross.stl"
+    assert hub["size"] == "50 x 50 x 20 mm" and hub["note"] == "print flat" and hub["thumb"] is None
     bare = copy.deepcopy(data)
     bare["manifest"] = {"present": False, "paths": [], "served": [], "files": [], "info": {}, "camera_default": "none",
                         "controller_default": "unoq"}
     assert recipe.evaluate(bare, {})["print"]["files"] == []
+    assert all(item["link"] is None for item in recipe.evaluate(bare, by_rule["selection"])["print"]["files"])
 
 
 def test_the_real_manifest_is_read_as_it_is(data):
@@ -498,8 +519,10 @@ def test_the_real_manifest_is_read_as_it_is(data):
         assert mine["camera"] == options_.get("camera") and mine["head"] == options_.get("head")
         assert mine["part"] == options_.get("part") and mine["fit"] == bool(options_.get("fit_piece"))
         assert mine["controller"] == options_.get("controller", home if options_.get("part") == "torso" else None)
-        assert mine["what"] == entry["what"]
-    general = [e["file"] for e in listed["files"] if not {"controller", "head", "camera"} & set(e["options"]) and e["options"].get("part") != "torso"]
+        assert mine["what"] == entry["what"] and mine["locomotion"] == options_.get("locomotion")
+    assert all(entry["locomotion"] is None for entry in data["manifest"]["files"] if "/" not in entry["file"])
+    general = [e["file"] for e in listed["files"] if "/" not in e["file"]
+               and not {"controller", "head", "camera"} & set(e["options"]) and e["options"].get("part") != "torso"]
     assert len([name for name in general if not name.startswith("fit_")]) == 6           # the six leg parts
     torso_cameras = sorted(e["options"]["camera"] for e in listed["files"]
                            if e["options"].get("part") == "torso" and e["options"].get("controller") == home)
@@ -511,6 +534,7 @@ def test_the_real_manifest_is_read_as_it_is(data):
             general + [f"01_torso_{home}_cam_{camera}.stl", f"fit_cam_{camera}.stl"])
         assert len([item for item in files if not item["fit"]]) == 7
         for item in files:
+            assert "/" not in item["file"], "nothing of the walkers or the wheeled builds"
             assert (ROOT / "stl" / item["file"]).is_file()
 
 
@@ -545,7 +569,7 @@ def test_simulated_means_what_the_reports_cover(data, recipes):
                        | {("pi", "esp32cam", "fixed"), ("pi_full", "esp32cam", "fixed")}
                        | {("unoq", pan, "sg90_pan"), ("unoq", pan, "m5_360")})
     assert set(data["coverage"]["carried"]) == {"hub51515", "ev3"}
-    assert [rec["query"] for rec in recipes if rec["status"] == "analysed"] == [
+    assert [rec["query"] for rec in recipes if rec["status"] == "analysed" and rec["selection"]["locomotion"] == "biped"] == [
         f"controller=unoq&locomotion=biped&drive=braccio_shield&camera={simulated}&head=fixed&lego=on"]
     got = {(rec["selection"]["controller"], rec["selection"]["camera"], rec["selection"]["head"])
            for rec in recipes if rec["status"] == "assembly_only"}
@@ -554,21 +578,51 @@ def test_simulated_means_what_the_reports_cover(data, recipes):
 
 
 def test_status_numbers_programs_and_marks_come_from_their_files(data):
-    rich = rich_bundle(data)
+    summary = json.loads((ROOT / "reports" / "variants" / "summary.json").read_text(encoding="utf-8"))["entries"]
+    index = json.loads((ROOT / "programs" / "index.json").read_text(encoding="utf-8"))["programs"]
     base = {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors", "camera": "none"}
-    plain = recipe.evaluate(data, base)
-    assert plain["status"] == "being_analysed" and any("Not written for this build" in text for text in plain["firmware"])
-    rec = recipe.evaluate(rich, base)
-    assert rec["status"] == "analysed" and "Mass 900 g by the model." in rec["analysis"]
-    assert rec["firmware"][:3] == [
-        "Program for this build: " + data["compat"]["repo_blob"] + "programs/ev3/crank/walk.py",
-        "Save the file to the brick.", "Load it with Robot Creator: " + data["compat"]["robot_creator"]]
-    assert not any("Not written" in text for text in rec["firmware"])
-    # An addition outside the summary takes the tag back to Designed.
-    assert recipe.evaluate(rich, {**base, "head": "lego_motor"})["status"] == "defined"
-    tpu = recipe.evaluate(rich, {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge", "wheel": "printed_tpu"})
-    assert tpu["status"] == "defined" and tpu["parts"][-1]["name"] == "O-ring 50 x 3 mm"
-    assert tpu["print"]["files"][0]["link"].endswith("/blob/main/stl/wheeled/wheel_hub_cross.stl")
+    entry = [item for item in summary if item["id"] == "ev3-crank-ev3_motors"][0]
+    rec = recipe.evaluate(data, base)
+    assert rec["status"] == "analysed"
+    assert rec["analysis"][1] == f"Mass {entry['mass_g']:g} g by the model."
+    assert rec["analysis"][2] == "Stability: " + entry["stability_verdict"]
+    assert rec["analysis"][3] == "Drive: " + entry["drive_summary"]
+    assert rec["analysis"][4:] == entry["notes"]
+    assert [item["file"] for item in rec["print"]["files"]] == [item["file"] for item in entry["files"]]
+    assert [item["qty"] for item in rec["print"]["files"]] == [item["qty"] for item in entry["files"]]
+    assert [part["name"] for part in rec["parts"]] == [part["name"] for part in entry["parts"]], "no camera, so only the summary's parts"
+    # Every summary entry is used: each selection it describes gets its tag and its files.
+    for item in summary:
+        sel = {key: item[key] for key in ("controller", "locomotion", "drive", "wheels", "support", "wheel") if key in item}
+        got = recipe.evaluate(data, dict(sel, camera="none"))
+        assert got["status"] == "analysed", item["id"]
+        assert [f["file"] for f in got["print"]["files"]] == sorted((f["file"] for f in item["files"]),
+                                                                  key=lambda name: not [f for f in item["files"] if f["file"] == name][0]["fit"]), item["id"]
+        assert all(f["link"] and f["thumb"] for f in got["print"]["files"]), item["id"]
+    # An addition the summary does not cover takes the tag back to Designed.
+    assert recipe.evaluate(data, {**base, "head": "lego_motor"})["status"] == "defined"
+
+    programs = [item for item in index if item["controller"] == "ev3" and item["locomotion"] == "crank"]
+    assert len(programs) == 2
+    firmware = rec["firmware"]
+    site = data["compat"]["site_url"]
+    for item in programs:
+        assert any(text.startswith(f"Program, {item['language']}: {site}{item['file']} ") for text in firmware)
+        target = item["load_with"]["code_target"]
+        link = (data["compat"]["robot_creator"] + "?program=" + (site + item["file"]).replace(":", "%3A").replace("/", "%2F") + "&target=" + target)
+        assert any(link + " " in text for text in firmware), target
+        assert data["compat"]["program_targets"][target] in firmware
+    # An EV3 program is not sent by Robot Creator, and the recipe does not say it is.
+    assert all("no way to send a program to an EV3" in data["compat"]["program_targets"][t] for t in ("pybricks-ev3", "ev3dev-python"))
+    assert not any("Not written" in text for text in firmware)
+    hub = recipe.evaluate(data, {"controller": "hub51515", "locomotion": "wheeled", "drive": "hub_motors", "camera": "none"})
+    assert any("Run via BLE sends the program and runs it once" in text for text in hub["firmware"])
+    assert any("It cannot be sent over Bluetooth" in text for text in hub["firmware"])
+    pi = recipe.evaluate(data, {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge", "camera": "none"})
+    assert any(text.startswith("To run it: Copy to the Raspberry Pi") for text in pi["firmware"])
+    assert not any("Robot Creator" in text for text in pi["firmware"])
+
+    rich = rich_bundle(data)
     marked = recipe.evaluate(rich, {})
     assert marked["validated"] == {"date": "2026-12-01", "checked": "stands", "photo": "docs/validated/a.jpg"}
     marks = {item["file"]: item["validated"] for item in marked["print"]["files"]}
@@ -578,29 +632,59 @@ def test_status_numbers_programs_and_marks_come_from_their_files(data):
     assert recipe.evaluate(rich, {"controller": "pi", "drive": "servo_driver"})["validated"] is None
 
 
+def test_every_program_is_served_at_a_plain_address_robot_creator_accepts(data):
+    index = json.loads((ROOT / "programs" / "index.json").read_text(encoding="utf-8"))["programs"]
+    assert len(data["programs"]) == len(index) == 12
+    subprocess.run([shutil.which("python") or "python", str(ROOT / "scripts" / "build_site.py")], check=True, capture_output=True)
+    site = data["compat"]["site_url"]
+    assert site == "https://eoinjordan.github.io/botbuilder/"
+    for item, mine in zip(index, data["programs"]):
+        path = item["file"]
+        assert mine["file"] == path and mine["match"] == {key: item[key] for key in ("controller", "locomotion", "drive")}
+        # https, ends in .py, on eoinjordan.github.io, no query string, at most 64 KB, and the tree is kept.
+        address = site + path
+        assert address.startswith("https://eoinjordan.github.io/") and address.endswith(".py") and "?" not in address
+        source = ROOT / path
+        served = ROOT / "site" / path
+        assert served.is_file() and served.read_bytes() == source.read_bytes(), path
+        assert source.stat().st_size <= 64 * 1024, path
+        assert path.split("/")[1] == item["controller"] and len(path.split("/")) == 4, path
+
+
 def test_summary_program_and_validation_files_are_read_when_present(tmp_path, compat):
-    for folder in ("config", "reports"):
-        shutil.copytree(ROOT / folder, tmp_path / folder)
+    shutil.copytree(ROOT / "config", tmp_path / "config")
+    shutil.copytree(ROOT / "reports", tmp_path / "reports", ignore=shutil.ignore_patterns("variants", "lego", "wheeled"))
     (tmp_path / "config" / "validated.json").write_text('{"records": []}', encoding="utf-8")
     empty = recipe.bundle(tmp_path)
     assert empty["variants"] == [] and empty["programs"] == [] and empty["validated"] == []
     assert empty["manifest"] == {"present": False, "paths": [], "served": [], "files": [], "info": {},
                                  "camera_default": compat["defaults"]["camera"], "controller_default": "unoq"}
+    walker = {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors", "camera": "none"}
+    without = recipe.evaluate(empty, walker)
+    assert without["status"] == "being_analysed" and any("Not written for this build" in text for text in without["firmware"])
     (tmp_path / "reports" / "variants").mkdir()
-    (tmp_path / "reports" / "variants" / "summary.json").write_text(json.dumps({"variants": [
-        {"base": "ev3", "locomotion": "crank", "status": "analysed in simulation", "mass_g": 912.5,
-         "stability_verdict": "stands on both feet", "files": ["lego/ev3-pixy2/chassis.stl"]},
-        {"controller": "pi", "locomotion": "wheeled", "drive": "tt", "status": "simulated, tips on braking",
-         "mass": {"total_g": 300}, "wheel": "printed_ring", "parts": [{"name": "O-ring 60 x 3 mm", "qty": 2}]},
+    (tmp_path / "reports" / "variants" / "summary.json").write_text(json.dumps({"entries": [
+        {"id": "a", "controller": "ev3", "locomotion": "crank", "drive": "ev3_motors", "status": "analysed in simulation", "mass_g": 912.5,
+         "stability_verdict": "stands on both feet", "drive_summary": "two motors", "notes": ["One note."],
+         "files": [{"file": "lego/ev3-pixy2/chassis.stl", "qty": 1, "role": "deck", "fit": False}],
+         "parts": [{"name": "EV3 brick", "qty": 1, "note": "on the deck"}]},
+        {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge", "wheels": "back", "support": "roller", "wheel": "printed_ring",
+         "status": "simulated, tips on braking", "mass_g": 300,
+         "files": [{"file": "lego/wheeled/tip_ball_16p5.stl", "qty": 1, "role": "ball tip", "fit": False},
+                   {"file": "lego/wheeled/post_d65.stl", "qty": 1, "role": "post", "fit": False}],
+         "parts": [{"name": "16.5 mm steel ball", "qty": 1, "note": "in the tip"}, {"name": "O-ring 60 x 3 mm", "qty": 2}]},
         {"controller": "pi", "locomotion": "wheeled", "status": "analysed"},
-        {"base": "somebody-else", "locomotion": "wheeled", "status": "analysed"},
+        {"controller": "somebody-else", "locomotion": "wheeled", "status": "analysed"},
     ]}), encoding="utf-8")
-    (tmp_path / "programs").mkdir()
+    (tmp_path / "programs" / "ev3" / "crank-walker").mkdir(parents=True)
+    (tmp_path / "programs" / "ev3" / "crank-walker" / "walk.py").write_text("print(1)\n", encoding="utf-8")
     (tmp_path / "programs" / "index.json").write_text(json.dumps({"programs": [
-        {"controller": "ev3", "build": "crank", "files": ["ev3/crank/walk.py"], "load_with": "robot-creator",
-         "steps": ["Open the file in Robot Creator."]},
-        {"controller": "ev3", "build": "crank", "files": ["../../etc/passwd"]},
-        {"controller": "nobody", "files": ["x.py"]}]}), encoding="utf-8")
+        {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors", "language": "pybricks-ev3",
+         "file": "programs/ev3/crank-walker/walk.py", "ports": {"B": "left"}, "what": "Walks.",
+         "load_with": {"code_target": "pybricks-ev3"}, "alternative": "Copy it by hand."},
+        {"controller": "ev3", "locomotion": "crank", "file": "programs/../../etc/passwd.py"},
+        {"controller": "ev3", "locomotion": "crank", "file": "programs/ev3/crank-walker/missing.py"},
+        {"controller": "nobody", "file": "programs/ev3/crank-walker/walk.py"}]}), encoding="utf-8")
     (tmp_path / "config" / "validated.json").write_text(json.dumps({"records": [
         {"id": "ev3-crank-ev3_motors", "date": "2026-12-02", "checked": "walks on carpet"},
         {"id": "ev3-crank-ev3_motors", "part": "lego/ev3-pixy2/chassis.stl", "date": "2026-12-02", "mark": False},
@@ -608,42 +692,60 @@ def test_summary_program_and_validation_files_are_read_when_present(tmp_path, co
     (tmp_path / "stl").mkdir()
     (tmp_path / "stl" / "manifest.json").write_text(json.dumps({"files": [
         {"file": "fit_SR431.stl", "what": "fit piece for an SR431 servo cradle", "options": {"fit_piece": True},
-         "bounding_box_mm": [[0, 0, 0], [48, 36.5, 8.8]], "thumbnail": {"file": "thumbs/fit_SR431.png", "stl_sha256": "0", "bytes": 1}}],
-        "thumbnails": {"lego/ev3-pixy2/chassis.stl": {"file": "thumbs/lego/ev3-pixy2/chassis.png", "stl_sha256": "0", "bytes": 1,
-                                                       "bounding_box_mm": [[-65, -58, 0], [65, 58, 60]]}}}), encoding="utf-8")
+         "bounding_box_mm": [[0, 0, 0], [48, 36.5, 8.8]], "thumbnail": {"file": "thumbs/fit_SR431.png", "stl_sha256": "0", "bytes": 1}},
+        {"file": "lego/ev3-pixy2/chassis.stl", "what": "deck", "options": {"controller": "ev3", "part": "chassis"}, "material": "PLA or PETG",
+         "bounding_box_mm": [[-65, -58, 0], [65, 58, 60]]}],
+        "thumbnails": {"other/extra.stl": {"file": "thumbs/other/extra.png", "stl_sha256": "0", "bytes": 1,
+                                           "bounding_box_mm": [[0, 0, 0], [10, 10, 10]]}}}), encoding="utf-8")
     loaded = recipe.bundle(tmp_path)
-    assert loaded["manifest"]["paths"] == ["fit_SR431.stl", "lego/ev3-pixy2/chassis.stl"]
-    assert loaded["manifest"]["served"] == ["fit_SR431.stl"]
-    assert loaded["manifest"]["files"] == [
-        {"file": "fit_SR431.stl", "what": "fit piece for an SR431 servo cradle", "fit": True, "part": None,
-         "controller": None, "head": None, "camera": None}]
+    assert loaded["manifest"]["paths"] == ["fit_SR431.stl", "lego/ev3-pixy2/chassis.stl", "other/extra.stl"]
+    assert loaded["manifest"]["served"] == ["fit_SR431.stl", "lego/ev3-pixy2/chassis.stl"]
+    assert loaded["manifest"]["files"][0] == {"file": "fit_SR431.stl", "what": "fit piece for an SR431 servo cradle", "fit": True,
+                                              "part": None, "controller": None, "head": None, "camera": None, "locomotion": None}
     assert loaded["manifest"]["info"] == {
         "fit_SR431.stl": {"thumb": "./stl/thumbs/fit_SR431.png", "size": "48 x 36 x 9 mm", "note": ""},
-        "lego/ev3-pixy2/chassis.stl": {"thumb": "./stl/thumbs/lego/ev3-pixy2/chassis.png", "size": "130 x 116 x 60 mm", "note": ""}}
-    # The entry with no drive is ambiguous on the Pi and the unknown base matches nothing: both are dropped.
+        "lego/ev3-pixy2/chassis.stl": {"thumb": None, "size": "130 x 116 x 60 mm", "note": "PLA or PETG"},
+        "other/extra.stl": {"thumb": "./stl/thumbs/other/extra.png", "size": "10 x 10 x 10 mm", "note": ""}}
+    # The entry with no drive is ambiguous on the Pi and the unknown controller matches nothing: both are dropped.
+    # The roller entry also gives an idler entry.
     assert [entry["match"] for entry in loaded["variants"]] == [
         {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors"},
-        {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge", "wheel": "printed_ring"}]
+        {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge", "wheels": "back", "support": "roller", "wheel": "printed_ring"},
+        {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge", "wheels": "back", "support": "idler", "wheel": "printed_ring"}]
     assert loaded["variants"][0]["status"] == "analysed"
-    assert loaded["variants"][0]["lines"] == ["Mass 912.5 g by the model.", "Stability: stands on both feet"]
+    assert loaded["variants"][0]["lines"] == ["Mass 912.5 g by the model.", "Stability: stands on both feet", "Drive: two motors", "One note."]
     # A status this page does not know is shown as written and never promoted.
     assert loaded["variants"][1]["status"] == "being_analysed"
-    assert loaded["programs"] == [{"match": {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors"}, "files": ["programs/ev3/crank/walk.py"],
-                                   "steps": ["Open the file in Robot Creator."],
-                                   "load_with": {"name": "Robot Creator", "url": compat["robot_creator"]}}]
+    idler = loaded["variants"][2]
+    assert idler["status"] == "defined" and [part["name"] for part in idler["parts"]] == ["O-ring 60 x 3 mm"]
+    assert [item["file"] for item in idler["files"]] == ["lego/wheeled/post_d65.stl", "lego/wheeled/tip_idler_fork.stl",
+                                                           "lego/wheeled/idler_hub.stl", "lego/wheeled/idler_tyre_tpu.stl"]
+    site = compat["site_url"]
+    assert loaded["programs"] == [{"match": {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors"},
+                                   "file": "programs/ev3/crank-walker/walk.py", "lines": [
+        f"Program, pybricks-ev3: {site}programs/ev3/crank-walker/walk.py Walks.",
+        "Ports: B: left.",
+        "Open it in Robot Creator: " + compat["robot_creator"] + "?program=https%3A%2F%2Feoinjordan.github.io%2Fbotbuilder%2Fprograms%2Fev3%2Fcrank-walker%2Fwalk.py&target=pybricks-ev3"
+        " . If the program is not shown there, download the file above and load it from Robot Creator's file or paste box.",
+        compat["program_targets"]["pybricks-ev3"],
+        "Without Robot Creator: Copy it by hand."]}]
     assert loaded["validated"] == [
         {"id": "ev3-crank-ev3_motors", "part": "", "date": "2026-12-02", "checked": "walks on carpet", "photo": "", "mark": True},
         {"id": "ev3-crank-ev3_motors", "part": "lego/ev3-pixy2/chassis.stl", "date": "2026-12-02", "checked": "", "photo": "", "mark": False}]
-    rec = recipe.evaluate(loaded, {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge"})
+    rec = recipe.evaluate(loaded, {"controller": "pi", "locomotion": "wheeled", "drive": "tt_hbridge", "camera": "none"})
     assert rec["status"] == "being_analysed" and any("simulated, tips on braking" in text for text in rec["analysis"])
     assert rec["parts"][-1] == {"name": "O-ring 60 x 3 mm", "qty": 2, "note": "from the variants summary"}
-    walker = recipe.evaluate(loaded, {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors", "camera": "none"})
-    assert walker["status"] == "analysed" and walker["validated"]["date"] == "2026-12-02"
+    with_summary = recipe.evaluate(loaded, walker)
+    assert with_summary["status"] == "analysed" and with_summary["validated"]["date"] == "2026-12-02"
+    assert with_summary["firmware"][0].startswith("Program, pybricks-ev3: ")
+    assert [part["name"] for part in with_summary["parts"]] == ["EV3 brick"]
+    assert with_summary["print"]["files"][0]["link"] == "./stl/lego/ev3-pixy2/chassis.stl"
+    assert with_summary["print"]["files"][0]["validated"] == "", "a part recorded as not fitting has no mark"
 
 
 # --- the JavaScript evaluator -----------------------------------------------
 
-@pytest.mark.parametrize("kind", ["as committed", "with walker files, a summary, programs and marks"])
+@pytest.mark.parametrize("kind", ["as committed", "with other paths, another summary entry and marks"])
 def test_javascript_agrees_with_python_on_every_combination(kind, data, selections, recipes, tmp_path):
     node = shutil.which("node")
     if node is None:
@@ -653,6 +755,7 @@ def test_javascript_agrees_with_python_on_every_combination(kind, data, selectio
         used = data
     else:
         used = rich_bundle(data)
+        selections = selections[::9] + [sel for sel in selections if sel["controller"] in ("unoq", "pi_full") and sel["camera"] == "none"][::5]
         expected = [recipe.evaluate(used, sel) for sel in selections]
     known = options(used["compat"])
     probes = []

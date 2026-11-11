@@ -92,7 +92,10 @@ def test_recipes_carry_the_picture_and_size_of_each_part():
         assert re.fullmatch(r"\d+ x \d+ x \d+ mm", item["size"]), item
         assert item["note"] == ""
     walker = recipe.evaluate(data, JOBS["walker"])
-    assert all(item["thumb"] is None and item["size"] == "" for item in walker["print"]["files"])
+    assert walker["print"]["files"], "the walkers' parts are pictured too"
+    for item in walker["print"]["files"]:
+        assert item["thumb"] == "./stl/thumbs/" + item["file"][:-4] + ".png" and (ROOT / item["thumb"][2:]).is_file()
+        assert re.fullmatch(r"\d+ x \d+ x \d+ mm", item["size"]), item
 
 
 def test_site_build_serves_the_pictures():

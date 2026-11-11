@@ -40,7 +40,7 @@ def test_no_trackers_and_only_known_hosts(name):
     for needle in ("google-analytics", "googletagmanager", "gtag(", "plausible", "matomo", "facebook", "document.cookie", "fonts.googleapis"):
         assert needle not in text.lower(), needle
     hosts = set(re.findall(r"https://[a-z0-9.-]+", text))
-    assert hosts <= {"https://cdn.jsdelivr.net", "https://github.com"}
+    assert hosts <= {"https://cdn.jsdelivr.net", "https://github.com", "https://eoinjordan.github.io"}
 
 
 def test_external_scripts():
@@ -64,12 +64,12 @@ def test_status_is_said_on_both_pages():
 
 
 def test_pages_carry_the_shared_nav_and_the_build_lists_them():
-    block = re.search(r'<nav id="site-nav">.*?</nav>', read("index.html"), re.S).group(0)
+    block = re.search(r'<nav id="site-nav"[^>]*>.*?</nav>', read("index.html"), re.S).group(0)
     for name in ("flash.html", "control.html"):
-        mine = re.search(r'<nav id="site-nav">.*?</nav>', read(name), re.S).group(0)
+        mine = re.search(r'<nav id="site-nav"[^>]*>.*?</nav>', read(name), re.S).group(0)
         assert mine.replace(' aria-current="page"', "") == block.replace(' aria-current="page"', ""), name
         assert 'src="./nav.js"' in read(name) and "Bot<b>builder</b>" in read(name)
-        assert f'data-page="{name}" hidden aria-current="page"' in mine
+        assert f'<a href="./{name}" aria-current="page">' in mine
     subprocess.run([sys.executable, str(ROOT / "scripts" / "build_site.py")], check=True, capture_output=True)
     pages = json.loads((SITE / "data" / "pages.json").read_text(encoding="utf-8"))
     assert "flash.html" in pages and "control.html" in pages

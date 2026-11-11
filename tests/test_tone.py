@@ -46,10 +46,10 @@ def test_pages_carry_no_validation_caveats_and_no_claims(name):
     low = html.lower()
     for phrase in CAVEATS:
         assert phrase not in low, f"{name}: {phrase}"
-    assert not CLAIMS.search(re.sub(r"<script.*?</script>|<style.*?</style>", "", html, flags=re.S)), name
+    if name != "admin.html":                      # the admin page is where a check is recorded
+        assert not CLAIMS.search(re.sub(r"<script.*?</script>|<style.*?</style>", "", html, flags=re.S)), name
     assert 'class="status"' not in html, f"{name}: no status box"
-    if name != "admin.html":
-        assert "docs/status.md" in html and "Status and assumptions" in html, f"{name}: one link to the detail"
+    assert html.count("docs/status.md") == 1 and "Status and assumptions" in html, f"{name}: one link to the detail"
 
 
 def test_recipes_carry_no_validation_caveats_and_no_claims(recipes):
@@ -102,7 +102,7 @@ def test_safety_instructions_and_working_instructions_stay(recipes):
     assert any("measure your base" in text for text in pixy["wiring"])
     xiao = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=xiao_eyes&head=fixed&lego=on"]
     assert any("measure the space behind the display" in part["note"] for part in xiao["parts"])
-    pi = by_query["controller=pi&locomotion=wheeled&drive=tt_hbridge&camera=none&head=fixed&lego=on&wheels=back&support=roller&wheel=printed_ring"]
+    pi = by_query["controller=pi_full&locomotion=wheeled&drive=tt_hbridge&camera=none&head=fixed&lego=on&wheels=back&support=roller&wheel=printed_ring"]
     assert pi["firmware"] == ["Not written."]
 
     control = " ".join((SITE / "control.html").read_text(encoding="utf-8").split())

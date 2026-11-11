@@ -47,6 +47,17 @@ option:disabled { color: #a3b0ab; }
 .part-text h4 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
 .part-first { font-size: 11px; font-weight: 600; color: var(--green); text-transform: uppercase; }
 .part-facts { color: var(--muted); font-size: 12px; }
+.admin-tools { display: flex; gap: 10px 14px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; font-size: 13px; }
+.admin-tools input[type="search"] { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px; min-width: 0; flex: 1 1 180px; max-width: 360px; }
+.admin-toggle { display: flex; gap: 6px; align-items: center; }
+.admin-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.admin-row { display: flex; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; flex-wrap: wrap; }
+.admin-row img { width: 80px; height: auto; border: 1px solid var(--line); border-radius: 6px; }
+.admin-text { flex: 1 1 220px; min-width: 0; font-size: 13px; overflow-wrap: anywhere; }
+.admin-text p { margin: 0 0 2px; }
+.admin-name { font-weight: 600; }
+.admin-mark { text-decoration: none; white-space: nowrap; }
+.type-link { margin-top: 8px; font-size: 13px; }
 .steps { margin: 14px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: 14px; }
 #recipe .facts dd { font-size: 14px; }
 

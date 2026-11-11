@@ -174,6 +174,20 @@ is reached through `app_lab/microduck_agent/control_server.py`, which serves
 the same page next to the robot's socket. See [docs/flash.md](docs/flash.md) and
 [docs/control.md](docs/control.md).
 
+## Crank walkers and two-wheeled builds
+
+Three crank walkers of the owner's design on LEGO motors, for the EV3 brick,
+the Robot Inventor 51515 hub and a Raspberry Pi Zero 2 W with the Build HAT:
+printable parts in `stl/lego/`, programs in `programs/`, the assembly and
+balance test and the MuJoCo simulation of the crank gait under `walkers/`.
+Report: [docs/lego-walkers.md](docs/lego-walkers.md).
+
+The same chassis carries a two-wheeled build for every controller: two driven
+wheels (LEGO motors, 360-degree servos or yellow TT motors), a skid or ball,
+printed wheels with an O-ring groove or a TPU tyre. Report:
+[docs/wheeled-variants.md](docs/wheeled-variants.md). The LEGO programs load
+through [Mindstorms Robot Creator](https://github.com/eoinjordan/mindstorms-robot-creator).
+
 ## Layout
 
 | Path | What |

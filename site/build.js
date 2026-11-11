@@ -102,12 +102,12 @@ function unsupported(data, sel) {
   };
 }
 
-function pass(data, sel) {
+// Why a normalised selection is refused, or null if it is possible. Cheap:
+// the search for a neighbour calls it for every candidate.
+function refusal(data, sel) {
   const compat = data.compat;
-  const row = findRow(compat, sel);
-  if (row === null) return unsupported(data, sel);
-  const matched = compat.rules.filter((rule) => matches(rule.when, sel));
-  const blocks = matched.filter((rule) => "block" in rule);
+  if (findRow(compat, sel) === null) return unsupported(data, sel);
+  const blocks = compat.rules.filter((rule) => "block" in rule && matches(rule.when, sel));
   if (blocks.length) {
     const alternatives = [];
     for (const rule of blocks) alternatives.push(...rule.alternatives);
@@ -121,6 +121,15 @@ function pass(data, sel) {
       needs: blocks.every((rule) => Boolean(rule.needs)),
     };
   }
+  return null;
+}
+
+function pass(data, sel) {
+  const compat = data.compat;
+  const refused = refusal(data, sel);
+  if (refused !== null) return refused;
+  const row = findRow(compat, sel);
+  const matched = compat.rules.filter((rule) => matches(rule.when, sel));
 
   let variant = null;
   let status;
@@ -150,17 +159,12 @@ function pass(data, sel) {
     status = row.status;
     lead.push("No analysis numbers for this selection.");
   }
-  const program = mostSpecific(data.programs, sel);
+  const written = data.programs.filter((entry) => Object.entries(entry.match).every(([key, value]) => sel[key] === value));
+  const program = written.length ? written[0] : null;
   const sections = {};
   for (const name of compat.sections) sections[name] = [];
   sections.analysis.push(...lead);
-  if (program !== null) {
-    for (const path of program.files) sections.firmware.push(`Program for this build: ${compat.repo_blob}${path}`);
-    sections.firmware.push(...program.steps);
-    if (program.load_with !== null && program.load_with.url) {
-      sections.firmware.push(`Load it with ${program.load_with.name}: ${program.load_with.url}`);
-    }
-  }
+  for (const entry of written) sections.firmware.push(...entry.lines);
   const settings = { mechanism: "", preset: "" };
   const rails = {};
   const loads = [];
@@ -170,7 +174,12 @@ function pass(data, sel) {
     for (const [key, value] of Object.entries(rule.set || {})) settings[key] = value;
     for (const [key, value] of Object.entries(rule.rails || {})) if (!(key in rails)) rails[key] = value;
     loads.push(...(rule.loads || []));
-    for (const [name, items] of Object.entries(rule.add || {})) sections[name].push(...items);
+    for (const [name, items] of Object.entries(rule.add || {})) {
+      // A summary entry lists the whole build; the rules then add only what it does not
+      // know about (the camera and head chosen here).
+      if (variant !== null && (name === "print" || name === "parts") && !rule.extra) continue;
+      sections[name].push(...items);
+    }
     if (program === null) {
       for (const [name, items] of Object.entries(rule.without_program || {})) sections[name].push(...items);
     }
@@ -227,9 +236,11 @@ function pass(data, sel) {
     const maps = compat.manifest_map;
     const controller = sel.controller in maps.controller ? maps.controller[sel.controller] : null;
     const head = sel.head in maps.head ? maps.head[sel.head] : null;
-    const torsos = listing.files.filter(
+    // The biped's files are those with no locomotion option; the walkers' and wheeled parts have one.
+    const ownFiles = listing.files.filter((entry) => entry.locomotion === null);
+    const torsos = ownFiles.filter(
       (entry) => entry.part === "torso" && entry.controller === controller && entry.head === head);
-    const known = listing.files.filter((entry) => entry.part === "torso" && entry.camera !== null).map((entry) => entry.camera);
+    const known = ownFiles.filter((entry) => entry.part === "torso" && entry.camera !== null).map((entry) => entry.camera);
     let own = false;
     let torso = null;
     if (head === null) {
@@ -243,7 +254,7 @@ function pass(data, sel) {
       torso = torsos[0].file;
     }
     if (torso === null) noTorso = true;
-    for (const entry of listing.files) {
+    for (const entry of ownFiles) {
       const general = entry.controller === null && entry.head === null;
       let take;
       if (entry.part === "torso") take = entry.file === torso;
@@ -323,8 +334,8 @@ export function search(data, selection, pinned) {
   const order = compat.dimensions.map((dim) => dim.id);
   const seen = new Set();
   const walk = (current, depth) => {
-    const result = pass(data, current);
-    if (!result.blocked) return current;
+    const result = refusal(data, current);
+    if (result === null) return current;
     if (depth === 0) return null;
     for (const alternative of result.alternatives) {
       if (Object.entries(alternative).some(([key, value]) => pinned.includes(key) && start[key] !== value)) continue;
@@ -563,7 +574,17 @@ function render(data, recipe, target) {
   target.append(chosen);
   if (recipe.nearest) return;
 
-  target.append(block("What this is", el("p", recipe.mechanism)));
+  const what = el("div");
+  what.append(el("p", recipe.mechanism));
+  const more = data.compat.locomotion_pages[recipe.selection.locomotion];
+  if (more) {
+    const para = el("p", undefined, "type-link no-print");
+    const link = el("a", more.text);
+    link.href = `./${more.page}`;
+    para.append(link);
+    what.append(para);
+  }
+  target.append(block("What this is", what));
 
   const print = el("div");
   print.append(el("p", recipe.print.note, "small-note flush"));
@@ -669,6 +690,13 @@ async function start() {
   // A linked recipe is the address alone; the remembered one is used only without it.
   const linked = fromUrl();
   let sel = normalise(compat, Object.keys(linked).length ? linked : readStored());
+  // A link that names only some fields (a type page's "?locomotion=wheeled") keeps those and takes
+  // compatible values for the rest. A link that names a contradiction gets the plain answer.
+  const named = compat.dimensions.map((dim) => dim.id).filter((id) => id in linked);
+  if (named.length && named.length < compat.dimensions.filter((dim) => !dim.only_for).length) {
+    const fitted = search(data, sel, named);
+    if (fitted !== null) sel = fitted;
+  }
   let recipe;
 
   const show = (push) => {
@@ -813,4 +841,4 @@ async function start() {
   document.getElementById("print").addEventListener("click", () => window.print());
 }
 
-if (typeof document !== "undefined") start();
+if (typeof document !== "undefined" && document.getElementById("picker")) start();

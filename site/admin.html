@@ -1,0 +1,64 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087f60">
+  <meta name="description" content="Every build and printable part with its printed-and-checked mark, and a button that opens the form to record one.">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./recipe.css">
+  <title>Admin / Botbuilder</title>
+  <style>
+    select { font: inherit; }
+    main p, main li, main label, main span { overflow-wrap: anywhere; min-width: 0; }
+    .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 14px; margin: 14px 0; }
+    .fields label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+    .fields input, .fields select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: #fff; min-width: 0; width: 100%; }
+    .commands { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 14px; }
+    .commands li { min-width: 0; border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+    .command-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .command-head b { font-size: 14px; }
+    .where { font-size: 11px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; }
+    .copy { margin-left: auto; padding: 5px 12px; font-size: 13px; }
+    pre { font-size: 13px; background: #f7faf8; border: 1px solid var(--line); border-radius: 8px; padding: 10px; overflow-x: auto; margin: 8px 0; white-space: pre; }
+    .commands .small-note { margin: 0; }
+    .error { color: var(--red); font-size: 14px; }
+    code { font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <nav id="site-nav" aria-label="Site">
+      <a href="./">Build yours</a><a href="./biped.html">Biped</a><a href="./wheeled.html">Two-wheeled</a><a href="./walkers.html">Walkers</a><a href="./flash.html">Flash</a><a href="./control.html">Control</a>
+      <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+    </nav>
+  </header>
+  <main>
+    <div class="title-row">
+      <div><p class="eyebrow">FOR THE OWNER</p><h1>Mark what you have printed</h1></div>
+    </div>
+    <p class="lead">Marking uses your GitHub login on github.com: the button opens a form there, and only the repository
+      owner's submissions are applied. This page changes nothing by itself and holds no login.
+      <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/admin.md" rel="noopener noreferrer">How it works</a>.</p>
+    <section aria-labelledby="admin-heading">
+      <div class="section-heading"><span class="step">01</span><h2 id="admin-heading">Builds and parts</h2></div>
+      <div class="admin-tools">
+        <label for="admin-filter">Filter</label>
+        <input id="admin-filter" type="search" autocomplete="off" placeholder="ev3, torso, wheel ...">
+        <label class="admin-toggle"><input id="admin-unmarked" type="checkbox"> Show unmarked only</label>
+        <span id="admin-count" class="small-note" role="status"></span>
+      </div>
+      <ul id="admin-list" class="admin-list" aria-live="polite"><li>Loading.</li></ul>
+      <noscript><p>This page needs JavaScript to list the builds. The marks are in config/validated.json.</p></noscript>
+    </section>
+  </main>
+  <footer>
+    <p>Code under the MIT licence. No analytics, no cookies. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./admin.html">Admin</a>.</p>
+  </footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./admin.js"></script>
+</body>
+</html>
