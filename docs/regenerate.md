@@ -38,6 +38,8 @@ The design directory defaults to `$MICRODUCK_DESIGN_DIR`, then to
 | `scripts/run_assembly.py` | `build/stl`, `config/hardware.json`, `config/assembly.json` | `reports/assembly.json`, `docs/assembly.md`, `docs/images/*.png` |
 | `scripts/generate_description.py` | `build/stl`, `reports/assembly.json`, `config/calibration.json` | `robot/microduck.urdf`, `robot/microduck.xml`, `robot/joints.json`, `robot/model.json`, `app_lab/microduck_agent/sketch/DuckTable.h`, `build/microduck_visual.xml` |
 | `scripts/run_sim.py` | `robot/`, `config/gait.json`, `config/calibration.json` | `reports/sim.json`, `docs/simulation.md`, `trajectories/*.csv`, `docs/images/sim-*.gif` |
+| `scripts/optimise_motion.py` | `robot/`, `config/motion.json`, `config/presets.json` | `config/gaits.json` (seeded search, about 20 minutes on eight cores; not part of `regenerate.py`) |
+| `scripts/run_motion.py` | `robot/`, `config/motion.json`, `config/presets.json`, `config/gaits.json` | `reports/motion.json`, `docs/motion.md`, `trajectories/<preset>_*.csv`, `trajectories/manifest.json`, `trajectories/gait_params.json`, `docs/images/motion-*.gif` |
 | `scripts/build_site.py` | `reports/`, `robot/`, `docs/images/`, `config/hardware.json` | `site/data/`, `site/images/` (ignored by git; the Pages workflow runs this) |
 
 Only the first three steps need the STLs. `run_sim.py`, `build_site.py` and
