@@ -24,6 +24,7 @@ speed limit and the watchdog behave the same in simulation and on the robot.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -32,6 +33,7 @@ JOINTS = ["left_hip_roll", "left_hip_pitch", "left_knee",
           "right_hip_roll", "right_hip_pitch", "right_knee"]
 TICK_MS = 20
 RELAX, RUN, HOLD, CAL = "RELAX", "RUN", "HOLD", "CAL"
+_NUMBER = re.compile(r"[-+]?[0-9]{1,6}(\.[0-9]{0,6})?")
 
 
 @dataclass
@@ -104,18 +106,34 @@ def load_calibration(calibration_path: Path | None = None, joints_path: Path | N
                        [float(generated["stand_pose_deg"][name]) for name in JOINTS])
 
 
+def fmt1(value: float) -> str:
+    """One decimal, half away from zero, no negative zero. The firmware
+    formats the same way, so replies match character for character."""
+    tenths = int(abs(value) * 10.0 + 0.5)
+    sign = "-" if value < 0 and tenths else ""
+    return f"{sign}{tenths // 10}.{tenths % 10}"
+
+
+def parse_number(token: str) -> float:
+    """Strict decimal: optional sign, digits, optional point and digits.
+    No exponents, no inf or nan. Raises ValueError otherwise."""
+    if not _NUMBER.fullmatch(token):
+        raise ValueError(token)
+    return float(token)
+
+
 def format_joints(q_deg) -> str:
     """A J line. Tenths of a degree, as the sketchbot streams its arm."""
     if len(q_deg) != 6:
         raise ValueError("six joint angles expected")
-    return "J " + " ".join(f"{q:.1f}" for q in q_deg) + "\n"
+    return "J " + " ".join(fmt1(q) for q in q_deg) + "\n"
 
 
 def parse_joints(line: str) -> list:
     parts = line.split()
     if len(parts) != 7 or parts[0] != "J":
         raise ValueError("not a J line")
-    return [float(p) for p in parts[1:]]
+    return [parse_number(p) for p in parts[1:]]
 
 
 class Controller:
@@ -166,72 +184,89 @@ class Controller:
         if not parts:
             return "ERR EMPTY"
         cmd, args = parts[0], parts[1:]
+        arity = {"J": 6, "E": 0, "R": 0, "S": 0, "W": 2, "C": 1, "N": 1, "Z": 0, "X": 0}
+        if cmd not in arity:
+            return "ERR UNKNOWN"
+        if len(args) != arity[cmd]:
+            return "ERR ARGS"
         try:
-            if cmd == "J" and len(args) == 6:
-                values = [float(a) for a in args]
-                if any(v != v or abs(v) > 1000.0 for v in values):
-                    return "ERR ARGS"
-                if self.mode == RELAX:
-                    return "ERR DISABLED"
-                if self.mode == CAL:
-                    return "ERR CAL"
-                clamped = self.cal.clamp(values)
-                count = sum(1 for a, b in zip(values, clamped) if a != b)
-                self.target = clamped
-                self.mode, self.armed, self.last_cmd_ms = RUN, True, now_ms
-                return f"OK CLAMP {count}" if count else "OK"
-            if cmd == "E" and not args:
-                if self.mode == RELAX:
-                    self.target = list(self.current)
-                    self.mode, self.armed = RUN, False
-                return "OK"
-            if cmd == "R" and not args:
-                self.mode, self.armed, self.cal_index = RELAX, False, -1
-                return "OK"
-            if cmd == "S" and not args:
-                q = ",".join(f"{v:.1f}" for v in self.current)
-                return (f"STAT mode={self.mode} age_ms={now_ms - self.last_cmd_ms} "
-                        f"wd={self.watchdog_ms} q={q}")
-            if cmd == "W" and len(args) == 2 and args[1] in ("hold", "relax"):
-                value = int(args[0])
-                if value < 100 or value > 10000:
-                    return "ERR ARGS"
-                self.watchdog_ms, self.watchdog_relax = value, args[1] == "relax"
-                return "OK"
-            if cmd == "C" and len(args) == 1:
-                index = int(args[0])
-                if index < 0 or index > 5:
-                    return "ERR ARGS"
-                if self.mode == RELAX:
-                    return "ERR DISABLED"
-                self.target = list(self.current)
-                self.mode, self.armed, self.cal_index = CAL, False, index
-                return "OK"
-            if cmd == "N" and len(args) == 1:
-                if self.mode != CAL:
-                    return "ERR NOT CAL"
-                delta = float(args[0])
-                if delta != delta or abs(delta) > self.cal.step_max_deg:
-                    return "ERR STEP"
-                i = self.cal_index
-                joint = self.cal.joints[i]
-                servo = min(max(self.zero[i] + joint.direction * self.current[i] + delta, 0.0), 180.0)
-                self.current[i] = (servo - self.zero[i]) / joint.direction
-                self.target[i] = self.current[i]
-                return f"CAL {i} servo={servo:.1f} pulse={self.cal.pulse_us(servo)}"
-            if cmd == "Z" and not args:
-                if self.mode != CAL:
-                    return "ERR NOT CAL"
-                i = self.cal_index
-                joint = self.cal.joints[i]
-                servo = min(max(self.zero[i] + joint.direction * self.current[i], 0.0), 180.0)
-                self.zero[i] = servo
-                self.current[i] = self.target[i] = 0.0
-                return f"ZERO {i} {servo:.1f}"
-            if cmd == "X" and not args:
-                if self.mode == CAL:
-                    self.mode, self.cal_index = HOLD, -1
-                return "OK"
+            return getattr(self, "_cmd_" + cmd)(args, now_ms)
         except ValueError:
             return "ERR ARGS"
-        return "ERR UNKNOWN"
+
+    def _cmd_J(self, args, now_ms):
+        values = [parse_number(a) for a in args]
+        if any(abs(v) > 1000.0 for v in values):
+            return "ERR ARGS"
+        if self.mode == RELAX:
+            return "ERR DISABLED"
+        if self.mode == CAL:
+            return "ERR CAL"
+        clamped = self.cal.clamp(values)
+        count = sum(1 for a, b in zip(values, clamped) if a != b)
+        self.target = clamped
+        self.mode, self.armed, self.last_cmd_ms = RUN, True, now_ms
+        return f"OK CLAMP {count}" if count else "OK"
+
+    def _cmd_E(self, args, now_ms):
+        if self.mode == RELAX:
+            self.target = list(self.current)
+            self.mode, self.armed = RUN, False
+        return "OK"
+
+    def _cmd_R(self, args, now_ms):
+        self.mode, self.armed, self.cal_index = RELAX, False, -1
+        return "OK"
+
+    def _cmd_S(self, args, now_ms):
+        q = ",".join(fmt1(v) for v in self.current)
+        return f"STAT mode={self.mode} age_ms={now_ms - self.last_cmd_ms} wd={self.watchdog_ms} q={q}"
+
+    def _cmd_W(self, args, now_ms):
+        if not args[0].isdigit() or len(args[0]) > 6 or args[1] not in ("hold", "relax"):
+            return "ERR ARGS"
+        value = int(args[0])
+        if value < 100 or value > 10000:
+            return "ERR ARGS"
+        self.watchdog_ms, self.watchdog_relax = value, args[1] == "relax"
+        return "OK"
+
+    def _cmd_C(self, args, now_ms):
+        if args[0] not in ("0", "1", "2", "3", "4", "5"):
+            return "ERR ARGS"
+        if self.mode == RELAX:
+            return "ERR DISABLED"
+        self.target = list(self.current)
+        self.mode, self.armed, self.cal_index = CAL, False, int(args[0])
+        return "OK"
+
+    def _cal_servo(self, delta: float) -> float:
+        i = self.cal_index
+        joint = self.cal.joints[i]
+        return min(max(self.zero[i] + joint.direction * self.current[i] + delta, 0.0), 180.0)
+
+    def _cmd_N(self, args, now_ms):
+        delta = parse_number(args[0])
+        if self.mode != CAL:
+            return "ERR NOT CAL"
+        if abs(delta) > self.cal.step_max_deg:
+            return "ERR STEP"
+        i = self.cal_index
+        servo = self._cal_servo(delta)
+        self.current[i] = (servo - self.zero[i]) / self.cal.joints[i].direction
+        self.target[i] = self.current[i]
+        return f"CAL {i} servo={fmt1(servo)} pulse={self.cal.pulse_us(servo)}"
+
+    def _cmd_Z(self, args, now_ms):
+        if self.mode != CAL:
+            return "ERR NOT CAL"
+        i = self.cal_index
+        servo = self._cal_servo(0.0)
+        self.zero[i] = servo
+        self.current[i] = self.target[i] = 0.0
+        return f"ZERO {i} {fmt1(servo)}"
+
+    def _cmd_X(self, args, now_ms):
+        if self.mode == CAL:
+            self.mode, self.cal_index = HOLD, -1
+        return "OK"

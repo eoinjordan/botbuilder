@@ -1,0 +1,7 @@
+name: Microduck Braccio Agent
+description: "Joint command bridge for the six-servo biped on a Braccio shield (line protocol on :8766)"
+icon:
+version: "0.1.0"
+ports:
+  - 8766
+bricks: []

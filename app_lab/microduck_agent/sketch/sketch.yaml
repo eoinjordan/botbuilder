@@ -1,0 +1,12 @@
+profiles:
+  default:
+    fqbn: arduino:zephyr:unoq
+    platforms:
+      - platform: arduino:zephyr
+    # Same driver library and pin as unoq-braccio-sketchbot: RoboServo supports
+    # the UNO Q, the classic Servo and Braccio libraries have no arduino:zephyr
+    # build, and App Lab needs the version pinned. Arduino_RouterBridge is
+    # bundled in the platform and must not be listed.
+    libraries:
+      - RoboServo (1.2.0)
+default_profile: default
