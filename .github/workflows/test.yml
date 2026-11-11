@@ -1,0 +1,33 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install Python dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r requirements-dev.txt
+      # The printable STLs are not in the repository (see NOTICE), so the
+      # tests that need them skip here; everything else runs from the
+      # committed reports, robot description and trajectories. No display or
+      # GPU is used: the tests step MuJoCo without rendering.
+      - name: Headless tests
+        run: .venv/bin/python -m pytest -q -rs

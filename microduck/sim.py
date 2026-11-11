@@ -22,11 +22,14 @@ FALL_HEIGHT_FRACTION = 0.6
 
 
 class DuckSim:
-    def __init__(self, xml: Path | None = None, cal: protocol.Calibration | None = None):
+    def __init__(self, xml: Path | None = None, cal: protocol.Calibration | None = None, mount_error_deg=None):
         self.model = mujoco.MjModel.from_xml_path(str(xml or ROOT / "robot" / "microduck.xml"))
         self.data = mujoco.MjData(self.model)
         self.cal = cal or protocol.load_calibration()
         self.controller = protocol.Controller(self.cal)
+        # Where each horn really sits: the table's zero plus a mounting error
+        # the controller does not know about (zero unless a test injects one).
+        self.true_zero = [j.zero_deg + e for j, e in zip(self.cal.joints, mount_error_deg or [0.0] * 6)]
         self.torso = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "torso")
         self.qadr = [self.model.jnt_qposadr[mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, j)] for j in JOINTS]
         self.steps_per_tick = int(round(TICK_MS / 1000.0 / self.model.opt.timestep))
@@ -82,7 +85,10 @@ class DuckSim:
             self.model.actuator_gainprm[:, 0] = self.kp
             self.model.actuator_biasprm[:, 1] = -self.kp
             self.model.dof_damping[:] = self.damping
-            self.data.ctrl[:] = np.radians(self.controller.current)
+            # The controller's output is a servo angle; the mechanism turns
+            # that into a joint angle through the real horn position.
+            servo = self.controller.servo_deg()
+            self.data.ctrl[:] = np.radians([(a - z) / j.direction for a, z, j in zip(servo, self.true_zero, self.cal.joints)])
         for _ in range(self.steps_per_tick):
             mujoco.mj_step(self.model, self.data)
         if self.fell_at is None:

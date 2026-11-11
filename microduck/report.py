@@ -376,6 +376,6 @@ def run(progress=print) -> dict:
         "variants": reports,
     }
     (ROOT / "reports").mkdir(exist_ok=True)
-    (ROOT / "reports" / "assembly.json").write_text(json.dumps(report, indent=1) + "\n", encoding="utf-8")
-    (ROOT / "docs" / "assembly.md").write_text(markdown(report), encoding="utf-8")
+    (ROOT / "reports" / "assembly.json").write_text(json.dumps(report, indent=1) + "\n", encoding="utf-8", newline="\n")
+    (ROOT / "docs" / "assembly.md").write_text(markdown(report), encoding="utf-8", newline="\n")
     return report

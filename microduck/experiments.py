@@ -101,15 +101,18 @@ def run(progress=print, record: bool = True) -> dict:
     for values in itertools.product(*SWEEP.values()):
         p = dict(params, **dict(zip(keys, values)))
         r = _run_gait(s, p)
-        rows.append({**{k: p[k] for k in keys}, "fell": r["fell"], "fell_at_s": r["fell_at_s"], "fell_how": r["fell_how"],
+        playable = not gait.check_limits(gait.gait(stand_deg, p, 3.0 * p["period_s"] + p["lead_in_s"]), s.cal)
+        rows.append({**{k: p[k] for k in keys}, "within_speed_limit": playable, "fell": r["fell"], "fell_at_s": r["fell_at_s"], "fell_how": r["fell_how"],
                      "distance_forward_m": r["distance_forward_m"], "drift_left_m": r["drift_left_m"],
                      "speed_mm_s": r["speed_mm_s"], "max_tilt_deg": r["max_tilt_deg_while_upright"],
                      "single_support_fraction": r["feet"]["single_support_fraction"],
                      "max_sole_lift_mm": max(r["feet"]["max_whole_sole_lift_mm"].values()),
                      "peak_torque_fraction": max(t["peak_fraction_of_limit"] for t in r["torque"].values())})
     upright = [r for r in rows if not r["fell"]]
-    best = max(upright, key=lambda r: r["distance_forward_m"]) if upright else None
+    candidates = [r for r in upright if r["within_speed_limit"]]
+    best = max(candidates, key=lambda r: r["distance_forward_m"]) if candidates else None
     out["gait_sweep"] = {"runs": len(rows), "fell": len(rows) - len(upright), "seconds_each": GAIT_SECONDS,
+                         "over_speed_limit": sum(1 for r in rows if not r["within_speed_limit"]),
                          "best": best, "rows": rows}
 
     if best:
@@ -138,8 +141,8 @@ def run(progress=print, record: bool = True) -> dict:
     (ROOT / "reports").mkdir(exist_ok=True)
     out["suggestions"] = suggestions()
     out["verdict"] = verdict(out)
-    (ROOT / "reports" / "sim.json").write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
-    (ROOT / "docs" / "simulation.md").write_text(markdown(out), encoding="utf-8")
+    (ROOT / "reports" / "sim.json").write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8", newline="\n")
+    (ROOT / "docs" / "simulation.md").write_text(markdown(out), encoding="utf-8", newline="\n")
     return out
 
 
@@ -173,8 +176,10 @@ def verdict(out: dict) -> dict:
                         f"({gd['speed_mm_s']} mm/s). It is a shuffle, not a walk: a whole sole is never more than {lift} mm off the floor, "
                         f"and one foot carries all the weight {round(gd['feet']['single_support_fraction'] * 100)} percent of the time.")
     if best:
-        text["best"] = (f"Best of {out['gait_sweep']['runs']} parameter sets: {round(best['distance_forward_m'] * 1000)} mm in "
-                        f"{out['gait_sweep']['seconds_each']} s ({best['speed_mm_s']} mm/s); {out['gait_sweep']['fell']} sets fell.")
+        sweep = out["gait_sweep"]
+        text["best"] = (f"Best of {sweep['runs']} parameter sets that stay inside the speed limit as written: "
+                        f"{round(best['distance_forward_m'] * 1000)} mm in {sweep['seconds_each']} s ({best['speed_mm_s']} mm/s). "
+                        f"{sweep['fell']} sets fell; {sweep['over_speed_limit']} ask for more than the speed limit and are slowed by the controller.")
     return text
 
 
@@ -217,9 +222,9 @@ def markdown(out: dict) -> str:
         md += [f"![gait]({out['recordings']['gait']})", ""]
     sweep = out["gait_sweep"]
     md += ["## Parameter sweep", "", v.get("best", "Every parameter set fell."), "",
-           _table(["period (s)", "roll (deg)", "step (deg)", "lift (deg)", "fell", "forward (mm)", "left (mm)", "max tilt (deg)",
+           _table(["period (s)", "roll (deg)", "step (deg)", "lift (deg)", "inside speed limit", "fell", "forward (mm)", "left (mm)", "max tilt (deg)",
                    "one-foot time", "sole lift (mm)", "peak torque / limit"],
-                  [(r["period_s"], r["roll_amplitude_deg"], r["step_amplitude_deg"], r["lift_deg"],
+                  [(r["period_s"], r["roll_amplitude_deg"], r["step_amplitude_deg"], r["lift_deg"], "yes" if r["within_speed_limit"] else "no",
                     f"{r['fell_how']} at {r['fell_at_s']} s" if r["fell"] else "no",
                     round(r["distance_forward_m"] * 1000), round(r["drift_left_m"] * 1000), r["max_tilt_deg"],
                     r["single_support_fraction"], r["max_sole_lift_mm"], r["peak_torque_fraction"]) for r in sweep["rows"]]), ""]

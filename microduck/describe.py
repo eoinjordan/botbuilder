@@ -311,11 +311,11 @@ def generate(write_visual: bool = True) -> dict:
     shapes = link_shapes(robot)
     target = ROOT / "robot"
     target.mkdir(exist_ok=True)
-    (target / "joints.json").write_text(json.dumps(table, indent=1) + "\n", encoding="utf-8")
-    (target / "microduck.xml").write_text(mjcf(robot, table, shapes), encoding="utf-8")
-    (target / "microduck.urdf").write_text(urdf(robot, table, shapes), encoding="utf-8")
-    (target / "model.json").write_text(json.dumps(viewer_model(robot, table, shapes), indent=1) + "\n", encoding="utf-8")
+    (target / "joints.json").write_text(json.dumps(table, indent=1) + "\n", encoding="utf-8", newline="\n")
+    (target / "microduck.xml").write_text(mjcf(robot, table, shapes), encoding="utf-8", newline="\n")
+    (target / "microduck.urdf").write_text(urdf(robot, table, shapes), encoding="utf-8", newline="\n")
+    (target / "model.json").write_text(json.dumps(viewer_model(robot, table, shapes), indent=1) + "\n", encoding="utf-8", newline="\n")
     if write_visual:
         (ROOT / "build").mkdir(exist_ok=True)
-        (ROOT / "build" / "microduck_visual.xml").write_text(mjcf(robot, table, shapes, mesh_dir="stl"), encoding="utf-8")
+        (ROOT / "build" / "microduck_visual.xml").write_text(mjcf(robot, table, shapes, mesh_dir="stl"), encoding="utf-8", newline="\n")
     return {"boxes": {k: len(v) for k, v in shapes.items()}, "table": table}

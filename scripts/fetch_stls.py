@@ -44,7 +44,7 @@ def main() -> int:
             return 1
         shutil.copyfile(source / name, target / name)
         sums[name] = hashlib.sha256((target / name).read_bytes()).hexdigest()
-    (target / "SHA256SUMS.json").write_text(json.dumps(sums, indent=2) + "\n", encoding="utf-8")
+    (target / "SHA256SUMS.json").write_text(json.dumps(sums, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"copied {len(sums)} STLs to {target}")
     return 0
 
