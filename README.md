@@ -1,4 +1,17 @@
-# Microduck on Braccio servos and an Arduino UNO Q: simulation to real
+# Botbuilder: build your own bot from the parts you have
+
+Printed robots for the controllers, motors and cameras you already own. The
+site's first page is a configurator: pick a controller (Arduino UNO Q,
+Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack Core), a locomotion
+(six-servo biped, two-motor crank walker, two driven wheels), a drive and a
+camera, and it answers with what can honestly be said about that robot:
+status first, then the files to print, parts, wiring, power and software.
+See [Build yours](#build-yours).
+
+The biped is the one design analysed so far, and most of this README is about
+it. Site: https://eoinjordan.github.io/botbuilder/.
+
+## The biped: Microduck on Braccio servos and an Arduino UNO Q
 
 A small printed biped, checked digitally before anything is printed:
 assembled from its STL files and a model of the servos, tested for fit and
@@ -125,13 +138,15 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 
 ## Build yours
 
-The site has a configurator, `site/build.html`: pick a controller (UNO Q,
-Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack Core), a locomotion
-(the six-servo biped, the two-motor crank walker of the LEGO prototypes, or
-two driven wheels), drive, camera and head, and read what can honestly be
-said about that combination: analysed in simulation, being analysed, defined
-but not designed, or not possible with the reason. Only the UNO Q biped has
-been analysed; nothing has been built. Data and sources:
+The site's landing page, `site/index.html`, is a configurator: pick a
+controller (UNO Q, Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack
+Core), a locomotion (the six-servo biped, the two-motor crank walker of the
+LEGO prototypes, or two driven wheels), drive, camera and head, and read what
+can honestly be said about that combination: analysed in simulation, checked
+in the digital assembly only, being analysed, defined but not designed, or
+not possible with the reason. Only the UNO Q biped with its default camera
+has been simulated; nothing has been built. The biped's findings are on
+`site/biped.html`. Data and sources:
 [docs/build-yours.md](docs/build-yours.md).
 
 ## Layout
@@ -200,11 +215,11 @@ local design directory after its generator has run. None has been printed.
 
 ## Publishing
 
-1. Create the repository `eoinjordan/microduck-braccio-unoq-sim` on GitHub and
+1. Create the repository `eoinjordan/botbuilder` on GitHub and
    push `main`.
 2. In the repository settings, under Pages, set the source to GitHub Actions.
 3. Run the "Publish Site" workflow, or push a change under `site/`. The site
-   appears at https://eoinjordan.github.io/microduck-braccio-unoq-sim/.
+   appears at https://eoinjordan.github.io/botbuilder/.
 
 ## Licence
 

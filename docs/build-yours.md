@@ -1,20 +1,26 @@
 # Build yours: the configurator
 
-`site/build.html` asks what parts you have and answers with a recipe for that
-duckbot. The answer starts with a status, because most combinations are not
-buildable from what this project knows.
+The site's landing page, `site/index.html`, asks what parts you have and
+answers with a recipe for that robot. The answer starts with a status,
+because most combinations are not buildable from what this project knows.
 
-Nothing here has been printed, assembled or powered. Only one combination has
-been analysed, and only in simulation.
+Nothing here has been printed, assembled or powered. One combination has been
+simulated, and only in simulation.
 
 ## Status
 
 | Status | Meaning |
 |---|---|
-| Analysed, stands in simulation | In `reports/assembly.json` and `reports/sim.json`. Today: the UNO Q biped with the Braccio shield, no camera, fixed head. |
+| Analysed, stands in simulation | Covered by `reports/assembly.json` and `reports/sim.json`: the UNO Q biped with the Braccio shield, the camera preset the reports were generated for, the camera mount with nothing moving, and the pin holes and studs on the parts. |
+| Assembly checked, not simulated | The same biped with one of the other camera presets, each with its own torso. `reports/assembly.json` holds a short-form check for each (fit in the mount, view cone, mass, static balance at the stand pose). No simulation was run with those torsos. |
 | Being analysed | A crank walker or wheeled variant whose design and analysis are in progress on another branch. No mass, stability or speed figure is shown until its summary file exists. |
-| Defined, not designed | The parts are named, but no complete design or analysis exists. Also what an analysed base becomes when a camera, a moving head or LEGO-compatible features are added. |
+| Defined, not designed | The parts are named, but no complete design or analysis exists. Also what a covered biped becomes when the mount is left empty, a moving head is added or the pin holes and studs are taken off. |
 | Not possible | With the reason, and the nearest selection that is possible for the same controller. |
+
+Which camera presets are "analysed" and which "assembly checked" is read from
+the reports each time the site is built, not written in the configurator's
+data: the preset of the selected assembly variant is the simulated one, and
+the entries under `camera_presets` are the short-form ones.
 
 ## What can be selected
 
@@ -25,15 +31,27 @@ been analysed, and only in simulation.
   servo driver; 51515 motors on the Build HAT or on the hub; EV3 motors on
   the brick or on the M5Stack BaseX; M5Stack 360 degree servos or yellow TT
   gear motors on an H-bridge board as wheel drives.
-- Camera: none, a standard Pixy2 with its pan-tilt kit and LEGO cable, an
-  AI-Thinker ESP32-CAM, a Raspberry Pi Camera Module 2.
-- Head: fixed, the Pixy pan-tilt servos, an M5Stack 360 degree servo, a LEGO
-  motor.
-- LEGO-compatible features on or off.
+- Camera: none, AI-Thinker ESP32-CAM, Espressif ESP-EYE, Espressif
+  ESP32-S3-EYE, a standard Pixy2 with its pan-tilt kit and LEGO cable, a
+  Raspberry Pi Camera Module 2. On the biped the camera is one of the three
+  ESP32 boards or none. "None" there means the mount is left empty: the
+  mount is part of the torso, and the torso listed is the default preset's.
+- Head: the camera mount with nothing moving, the Pixy pan-tilt servos, an
+  M5Stack 360 degree servo, a LEGO motor. The biped has no head any more.
+- Pin holes and studs compatible with LEGO elements, on or off. The committed
+  biped parts have them; "off" means regenerating the parts with the design
+  generator's `LEGO` switches (torso, thigh, shin, foot) set to False, and
+  that set is not in the repository and was not analysed. The LEGO-motor
+  bases need them on.
 - For wheels only: driven wheels at the front or back, a roller or a drag
   skid as third support, and the wheel: printed solid with an O-ring or
   rubber band (the default), printed hub with a TPU tyre, stock LEGO wheels,
   or the stock 65 mm TT wheel.
+
+The default camera is not written in the configurator's data. It is read
+from `config/assembly.json` (`camera.preset`), the same value the assembly
+test uses, so one switch changes both. The verdict still follows the reports:
+after changing the preset, regenerate them.
 
 ## Which locomotion each controller supports
 
@@ -41,7 +59,7 @@ The `support` table in `config/compat.json` is the only place that says this.
 
 | Controller | Locomotion | Drive | Status source |
 |---|---|---|---|
-| UNO Q | biped | Braccio shield | analysed (reports/) |
+| UNO Q | biped | Braccio shield | reports/, per camera preset |
 | UNO Q | wheeled | 360 degree servos, or TT motors on an H-bridge | variants summary |
 | Raspberry Pi Zero 2 W | biped | I2C servo driver | defined, not designed |
 | Raspberry Pi Zero 2 W | crank walker, wheeled | 51515 motors on the Build HAT | variants summary |
@@ -78,7 +96,8 @@ From Charmed Labs' documentation (docs.pixycam.com):
 - The 51515 hub's ports are LEGO Power Functions 2.0, a different connector.
   No connection is documented, so the configurator refuses that pairing.
 
-Which Pixy the owner has is not confirmed; Pixy2 is assumed.
+Which Pixy the owner has is not confirmed; Pixy2 is assumed. The biped has no
+torso for a Pixy, so that pairing is refused too.
 
 ## Where the data is
 
@@ -86,9 +105,11 @@ Which Pixy the owner has is not confirmed; Pixy2 is assumed.
 |---|---|
 | `config/bases.json` | The six bases: outline, mass and its battery assumption, mounting, what it actuates, ports, power, cameras, Robot Creator family and code targets, status. Every figure is marked published (with the maker's URL), assumed (with the reason) or not verified. |
 | `config/compat.json` | The options, the support table, the reasons for unsupported rows, and the rules that add recipe content or block a selection. |
+| `config/assembly.json` | `camera.preset`: the default camera. |
+| `stl/manifest.json` | The committed printable files. The biped's print list is taken from it: every file with no camera option, plus the torso and fit piece of the selected camera. |
 | `microduck/recipe.py` | `evaluate(bundle, selection)`: a pure function that walks that data. Standard library only. |
 | `site/build.js` | The same walk in JavaScript, and the page. It holds no combination of its own. |
-| `site/data/recipe.json` | Written by `scripts/build_site.py`: both JSON files, the report figures, the STL manifest and the variants summary in one file for the page. |
+| `site/data/recipe.json` | Written by `scripts/build_site.py`: the data above, what the reports cover per camera, and the variants summary, in one file for the page. |
 
 `tests/test_recipe.py` evaluates every combination in Python, checks that
 none is empty or contradicts itself and that impossible ones give a reason,
@@ -96,28 +117,38 @@ then runs `site/build.js` under Node over the same combinations and compares
 the two results. The repository had no headless route for JavaScript; Node is
 used when installed and the comparison is skipped when it is not.
 
-    python -m microduck.recipe controller=ev3 locomotion=crank drive=ev3_motors lego=on
+    python -m microduck.recipe controller=ev3 locomotion=crank drive=ev3_motors camera=none
+
+## The site's pages
+
+`index.html` is the configurator and `biped.html` the biped's findings.
+Every page carries the same navigation block. Links to pages that other
+branches add (`walkers.html`, `flash.html`, `control.html`) are in it but
+hidden; `scripts/build_site.py` lists the ones that exist in
+`data/pages.json` and `nav.js` shows only those, so there is no dead link.
+A new page copies the `<nav id="site-nav">` block and loads `nav.js`.
 
 ## Files from other branches
 
-Both are optional. Without them the recipes show file names only and the
-status "being analysed".
-
-- `stl/manifest.json`: any JSON; every string in it ending in `.stl` is taken
-  as a path under `stl/`. A recipe file is linked when a path equals its name
-  or ends with `/` plus its name (for example `ev3-pixy2/chassis.stl`).
-- `reports/variants/summary.json` or `reports/lego/summary.json`: any nesting
-  of objects and lists. An object with a `status`, `mass_g`, `mass`,
-  `verdict`, `stability` or `stability_verdict` key is an entry. Its
-  controller, locomotion and drive are read from the fields `controller` or
-  `base`, `locomotion` or `type`, and `drive` or `wheel_drive`, or from the
-  keys on the path to it, using the names in `summary_aliases` in
-  `config/compat.json`. Optional fields: `wheels`, `support`, `wheel` (to
-  narrow an entry), `files` (STL names), `parts` (name, qty, note), `notes`.
-  Only the statuses "analysed" and "analysed in simulation" give the
-  analysed verdict; "defined..." gives defined; anything else is shown as
-  written under "being analysed". An entry without a drive is used only
-  where the controller has one drive for that locomotion.
+- `stl/manifest.json`: read in its real shape, `files[]` with `file`, `what`
+  and `options` (`part` or `fit_piece`, and `camera`). Those files are copied
+  into the site and linked there. Any other string in the manifest ending in
+  `.stl` is also taken as a path under `stl/` and linked in the repository,
+  so walker and wheeled files listed differently still resolve. A recipe file
+  is linked when a path equals its name or ends with `/` plus its name (for
+  example `ev3-pixy2/chassis.stl`).
+- `reports/variants/summary.json` or `reports/lego/summary.json` (neither
+  exists yet): any nesting of objects and lists. An object with a `status`,
+  `mass_g`, `mass`, `verdict`, `stability` or `stability_verdict` key is an
+  entry. Its controller, locomotion and drive are read from the fields
+  `controller` or `base`, `locomotion` or `type`, and `drive` or
+  `wheel_drive`, or from the keys on the path to it, using the names in
+  `summary_aliases` in `config/compat.json`. Optional fields: `wheels`,
+  `support`, `wheel` (to narrow an entry), `files` (STL names), `parts`
+  (name, qty, note), `notes`. Only the statuses "analysed" and "analysed in
+  simulation" give the analysed verdict; "defined..." gives defined; anything
+  else is shown as written under "being analysed". An entry without a drive
+  is used only where the controller has one drive for that locomotion.
 
 ## Not verified
 
@@ -132,9 +163,9 @@ Marked in the data, and repeated in the recipes that depend on them:
 - Any specific I2C servo driver board, H-bridge board or TT motor.
 - Whether the BALA-C's servos are the Servo Kit 360 part and take a PWM
   signal directly: the BALA-C base drives them through an L9110S driver.
-- AI-Thinker ESP32-CAM figures against AI-Thinker's own page.
 - Free PWM pins on the UNO Q under the Braccio shield.
 - Pixy2 libraries on the UNO Q, the Raspberry Pi and an M5Stack Core.
+- The camera boards: see `config/hardware.json` and `docs/camera.md`.
 
 LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not
 sponsor, authorise or endorse this project. Raspberry Pi is a trademark of
