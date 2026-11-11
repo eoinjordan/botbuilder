@@ -35,6 +35,13 @@ CONTROL_DT = 0.005
 POST_CLASS = {"d43": 43.2, "d56": 56.0, "d65": 65.0}
 ENDS = ("back", "front")
 SUPPORTS = ("skid", "ball")
+# Option ids the configurator uses (config/compat.json).
+CONTROLLER_ID = {"ev3": "ev3", "pi_buildhat": "pi", "hub51515": "hub51515", "m5_basex": "m5core", "unoq": "unoq", "pi": "pi"}
+DRIVE_ID = {("ev3", "ev3_large"): "ev3_motors", ("pi_buildhat", "angular"): "buildhat_51515", ("hub51515", "angular"): "hub_motors",
+            ("m5_basex", "ev3_large"): "basex_ev3", ("m5_basex", "servo360"): "m5_360_wheels", ("unoq", "servo360"): "m5_360_wheels",
+            ("unoq", "tt"): "tt_hbridge", ("pi", "servo360"): "m5_360_wheels", ("pi", "tt"): "tt_hbridge"}
+WHEEL_ID = {"LEGO": "lego", "TT stock": "tt65", "printed solid with O-ring or band": "printed_ring", "printed hub with TPU tyre": "printed_tpu"}
+SUPPORT_ID = {"skid": "skid", "ball": "roller"}
 
 
 def config() -> dict:
@@ -266,6 +273,8 @@ def analyse(v: Variant) -> dict:
         groups[kind] = groups.get(kind, 0.0) + mass
     return {
         "id": v.id, "base": v.base, "drive": v.drive, "wheel": v.wheel, "support": v.support, "wheels_at": v.end,
+        "ids": {"controller": CONTROLLER_ID[v.base], "locomotion": "wheeled", "drive": DRIVE_ID[(v.base, v.drive)],
+                "wheels": v.end, "support": SUPPORT_ID[v.support], "wheel": WHEEL_ID[cfg["wheels"][v.wheel]["kind"]]},
         "tyre": v.tyre, "mass_g": round(v.mass(), 1), "mass_by_kind_g": {k: round(m, 1) for k, m in groups.items()},
         "com_mm": [round(float(x), 1) for x in com], "com_height_above_floor_mm": round(h * 1000, 1),
         "com_ahead_of_axle_mm": round(a * 1000, 1), "wheelbase_mm": round(wheelbase * 1000, 1),
@@ -568,15 +577,67 @@ def record(v: Variant, name: str, command, duration: float, step_mm: float = 0.0
     return f"images/{name}"
 
 
-def default_variants() -> list:
+def default_variants(all_wheels: bool = False) -> list:
+    """Every base and drive with each support and each end, on its default
+    wheel or on every wheel offered for it."""
     cfg = config()
     out = []
     for base, b in cfg["bases"].items():
         for d in b["drives"]:
-            for support in SUPPORTS:
-                for end in ENDS:
-                    out.append(build(base, d, None, support, end))
+            for wheel in (b["wheels"][d] if all_wheels else b["wheels"][d][:1]):
+                for support in SUPPORTS:
+                    for end in ENDS:
+                        out.append(build(base, d, wheel, support, end))
     return out
+
+
+def viewer(v: Variant) -> dict:
+    """What the site's 3D view needs for one variant: STLs with their
+    placement, bought parts as boxes, stock wheels as cylinders. Lengths in
+    mm, matrices row-major, robot frame."""
+    cfg = config()
+    b, w, geo = cfg["bases"][v.base], cfg["wheels"][v.wheel], cfg["geometry"]
+    ax, sx = geo["axle_x_mm"], geo["support_x_mm"]
+
+    def flat(matrix):
+        return [round(float(x), 4) for x in np.asarray(matrix).flatten()]
+    head = model.trans(model.HEAD_X, 0.0, model.SHELF_TOP) @ model.rot("z", 180.0 if v.end == "front" else 0.0)
+    size = post_size(w["diameter_mm"])
+    r_class = POST_CLASS[size] / 2.0
+    post_h = geo["shelf_underside_mm"] + r_class - 24.0
+    tip = cfg["supports"][v.support]["stl"][0]
+    stl = [{"file": f"lego/{b['chassis']}/chassis.stl", "matrix": flat(np.eye(4)), "kind": "print"},
+           {"file": f"lego/{b['chassis']}/{b['head']}.stl", "matrix": flat(head), "kind": "print"},
+           {"file": f"lego/wheeled/post_{size}.stl", "matrix": flat(model.trans(sx, 0.0, geo["shelf_underside_mm"] - post_h)), "kind": "print"},
+           {"file": f"lego/wheeled/{tip}.stl", "matrix": flat(model.trans(sx, 0.0, -r_class)), "kind": "print"}]
+    wheels, boxes = [], []
+    for sign in (1.0, -1.0):
+        y = sign * v.half_track
+        if "stl" in w:
+            turn = model.rot("x", 90.0 * sign)
+            place = model.trans(ax, y + sign * v.width / 2.0, 0.0) @ turn
+            parts = [(w["stl"][0], 0.0)] + ([(w["stl"][1], 2.4)] if w["friction"] == "tpu" else [])
+            for name, lift in parts:
+                wheels.append({"file": f"lego/wheeled/{name}.stl", "matrix": flat(place @ model.trans(0.0, 0.0, lift)),
+                               "centre": [ax, y, 0.0], "kind": "tyre" if "tyre" in name else "wheel"})
+        else:
+            wheels.append({"cylinder": True, "centre": [ax, y, 0.0], "radius": v.radius, "width": v.width, "kind": "tyre"})
+        if v.drive == "servo360":
+            boxes.append({"kind": "motor", "min": [ax - 5.4, min(sign * 58.0, sign * 85.0), -6.1], "max": [ax + 17.3, max(sign * 58.0, sign * 85.0), 6.1]})
+        elif v.drive == "tt":
+            boxes.append({"kind": "motor", "min": [ax - 11.25, min(sign * 67.5, sign * 86.3), -11.25], "max": [ax + 58.75, max(sign * 67.5, sign * 86.3), 11.25]})
+        else:
+            comp = model.load_json("components.json")[cfg["drives"][v.drive]["components_key"]]
+            yc = sign * cfg["drives"][v.drive]["y_centre_mm"]
+            for lo, hi in (comp["envelope"]["hub"], comp["envelope"]["body"]):
+                boxes.append({"kind": "motor", "min": [ax + lo[0], yc + lo[1], lo[2]], "max": [ax + hi[0], yc + hi[1], hi[2]]})
+    ctrl = b["controller"]["size_mm"]
+    z0 = 47.0 if b["chassis"].startswith("pi") else model.DECK_TOP
+    boxes.append({"kind": "controller", "min": [-ctrl[0] / 2, -ctrl[1] / 2, z0], "max": [ctrl[0] / 2, ctrl[1] / 2, z0 + ctrl[2]]})
+    for extra in b["extra"]:
+        p = extra["at_mm"]
+        boxes.append({"kind": "battery", "min": [p[0] - 18, p[1] - 28, p[2] - 9], "max": [p[0] + 18, p[1] + 28, p[2] + 9]})
+    return {"id": v.id, "radius_mm": v.radius, "stl": stl, "wheels": wheels, "boxes": boxes}
 
 
 def tyre_variants() -> list:
@@ -600,9 +661,10 @@ def main() -> int:
     for old in MODELS.glob("*.xml"):
         old.unlink()
     variants = default_variants()
-    seen = {v.id for v in variants}
+    full = default_variants(all_wheels=True)
+    seen = {v.id for v in full}
     tyres = tyre_variants()
-    everything = variants + [v for v in tyres if v.id not in seen]
+    everything = full + [v for v in tyres if v.id not in seen]
     analysis, sims = {}, {}
     for v in everything:
         analysis[v.id] = analyse(v)
@@ -612,8 +674,11 @@ def main() -> int:
               sims[v.id]["step"]["highest_climbed_mm"], flush=True)
     doc = {"_comment": "Generated by python -m walkers.wheeled. Lengths in mm unless a key says otherwise.",
            "status": "Analysed only. No wheeled variant has been built.",
-           "defaults": [v.id for v in variants], "tyre_comparison": [v.id for v in tyres], "variants": analysis}
+           "defaults": [v.id for v in variants], "all": [v.id for v in full], "tyre_comparison": [v.id for v in tyres],
+           "variants": analysis}
     (REPORTS / "analysis.json").write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8", newline="\n")
+    views = {v.id: viewer(v) for v in full}
+    (MODELS / "viewer.json").write_text(json.dumps(views, separators=(",", ":")) + "\n", encoding="utf-8", newline="\n")
     simdoc = {"_comment": "Generated by python -m walkers.wheeled. MuJoCo, 1 ms step, control every 5 ms. Full drive in every run.",
               "status": "Simulation only. No wheeled variant has been built.", "variants": sims}
     if not args.no_recordings:

@@ -39,6 +39,104 @@
   "pi-tt-tt65-ball-back",
   "pi-tt-tt65-ball-front"
  ],
+ "all": [
+  "ev3-ev3large-lego43-skid-back",
+  "ev3-ev3large-lego43-skid-front",
+  "ev3-ev3large-lego43-ball-back",
+  "ev3-ev3large-lego43-ball-front",
+  "ev3-ev3large-solidd43-skid-back",
+  "ev3-ev3large-solidd43-skid-front",
+  "ev3-ev3large-solidd43-ball-back",
+  "ev3-ev3large-solidd43-ball-front",
+  "ev3-ev3large-tpud43-skid-back",
+  "ev3-ev3large-tpud43-skid-front",
+  "ev3-ev3large-tpud43-ball-back",
+  "ev3-ev3large-tpud43-ball-front",
+  "pibuildhat-angular-lego56-skid-back",
+  "pibuildhat-angular-lego56-skid-front",
+  "pibuildhat-angular-lego56-ball-back",
+  "pibuildhat-angular-lego56-ball-front",
+  "pibuildhat-angular-solidd56-skid-back",
+  "pibuildhat-angular-solidd56-skid-front",
+  "pibuildhat-angular-solidd56-ball-back",
+  "pibuildhat-angular-solidd56-ball-front",
+  "pibuildhat-angular-tpud56-skid-back",
+  "pibuildhat-angular-tpud56-skid-front",
+  "pibuildhat-angular-tpud56-ball-back",
+  "pibuildhat-angular-tpud56-ball-front",
+  "hub51515-angular-lego56-skid-back",
+  "hub51515-angular-lego56-skid-front",
+  "hub51515-angular-lego56-ball-back",
+  "hub51515-angular-lego56-ball-front",
+  "hub51515-angular-solidd56-skid-back",
+  "hub51515-angular-solidd56-skid-front",
+  "hub51515-angular-solidd56-ball-back",
+  "hub51515-angular-solidd56-ball-front",
+  "hub51515-angular-tpud56-skid-back",
+  "hub51515-angular-tpud56-skid-front",
+  "hub51515-angular-tpud56-ball-back",
+  "hub51515-angular-tpud56-ball-front",
+  "m5basex-ev3large-lego43-skid-back",
+  "m5basex-ev3large-lego43-skid-front",
+  "m5basex-ev3large-lego43-ball-back",
+  "m5basex-ev3large-lego43-ball-front",
+  "m5basex-ev3large-solidd43-skid-back",
+  "m5basex-ev3large-solidd43-skid-front",
+  "m5basex-ev3large-solidd43-ball-back",
+  "m5basex-ev3large-solidd43-ball-front",
+  "m5basex-ev3large-tpud43-skid-back",
+  "m5basex-ev3large-tpud43-skid-front",
+  "m5basex-ev3large-tpud43-ball-back",
+  "m5basex-ev3large-tpud43-ball-front",
+  "m5basex-servo360-solidhornd56-skid-back",
+  "m5basex-servo360-solidhornd56-skid-front",
+  "m5basex-servo360-solidhornd56-ball-back",
+  "m5basex-servo360-solidhornd56-ball-front",
+  "m5basex-servo360-tpuhornd56-skid-back",
+  "m5basex-servo360-tpuhornd56-skid-front",
+  "m5basex-servo360-tpuhornd56-ball-back",
+  "m5basex-servo360-tpuhornd56-ball-front",
+  "unoq-servo360-solidhornd56-skid-back",
+  "unoq-servo360-solidhornd56-skid-front",
+  "unoq-servo360-solidhornd56-ball-back",
+  "unoq-servo360-solidhornd56-ball-front",
+  "unoq-servo360-tpuhornd56-skid-back",
+  "unoq-servo360-tpuhornd56-skid-front",
+  "unoq-servo360-tpuhornd56-ball-back",
+  "unoq-servo360-tpuhornd56-ball-front",
+  "unoq-tt-tt65-skid-back",
+  "unoq-tt-tt65-skid-front",
+  "unoq-tt-tt65-ball-back",
+  "unoq-tt-tt65-ball-front",
+  "unoq-tt-solidttd65-skid-back",
+  "unoq-tt-solidttd65-skid-front",
+  "unoq-tt-solidttd65-ball-back",
+  "unoq-tt-solidttd65-ball-front",
+  "unoq-tt-tputtd65-skid-back",
+  "unoq-tt-tputtd65-skid-front",
+  "unoq-tt-tputtd65-ball-back",
+  "unoq-tt-tputtd65-ball-front",
+  "pi-servo360-solidhornd56-skid-back",
+  "pi-servo360-solidhornd56-skid-front",
+  "pi-servo360-solidhornd56-ball-back",
+  "pi-servo360-solidhornd56-ball-front",
+  "pi-servo360-tpuhornd56-skid-back",
+  "pi-servo360-tpuhornd56-skid-front",
+  "pi-servo360-tpuhornd56-ball-back",
+  "pi-servo360-tpuhornd56-ball-front",
+  "pi-tt-tt65-skid-back",
+  "pi-tt-tt65-skid-front",
+  "pi-tt-tt65-ball-back",
+  "pi-tt-tt65-ball-front",
+  "pi-tt-solidttd65-skid-back",
+  "pi-tt-solidttd65-skid-front",
+  "pi-tt-solidttd65-ball-back",
+  "pi-tt-solidttd65-ball-front",
+  "pi-tt-tputtd65-skid-back",
+  "pi-tt-tputtd65-skid-front",
+  "pi-tt-tputtd65-ball-back",
+  "pi-tt-tputtd65-ball-front"
+ ],
  "tyre_comparison": [
   "ev3-ev3large-lego43-skid-back",
   "ev3-ev3large-solidd43-skid-back",
@@ -60,6 +158,14 @@
    "wheel": "lego_43",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 748.9,
    "mass_by_kind_g": {
@@ -135,6 +241,14 @@
    "wheel": "lego_43",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 748.9,
    "mass_by_kind_g": {
@@ -210,6 +324,14 @@
    "wheel": "lego_43",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 751.7,
    "mass_by_kind_g": {
@@ -285,6 +407,14 @@
    "wheel": "lego_43",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 751.7,
    "mass_by_kind_g": {
@@ -353,6 +483,670 @@
    "slope_tips_at_deg": 44.3,
    "slope_limit_deg": 16.4
   },
+  "ev3-ev3large-solidd43-skid-back": {
+   "id": "ev3-ev3large-solidd43-skid-back",
+   "base": "ev3",
+   "drive": "ev3_large",
+   "wheel": "solid_d43",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 740.4,
+   "mass_by_kind_g": {
+    "print": 134.9,
+    "camera": 70.0,
+    "controller": 348.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 19.5
+   },
+   "com_mm": [
+    21.8,
+    0.0,
+    53.5
+   ],
+   "com_height_above_floor_mm": 75.9,
+   "com_ahead_of_axle_mm": 37.8,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.35,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 44.76,
+   "static_margin_mm": 37.4,
+   "stable": true,
+   "margin_to_axle_line_mm": 37.8,
+   "margin_to_support_mm": 70.2,
+   "sideways_tilt_to_tip_deg": 26.2,
+   "ground_clearance_mm": 10.4,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 35.75
+   },
+   "top_speed_no_load_m_s": 0.387,
+   "cruise_speed_estimate_m_s": 0.377,
+   "current_estimate_cruise_a": 0.09,
+   "wheel_load_fraction": 0.65,
+   "support_load_n": 2.54,
+   "drag_n": 0.857,
+   "torque_per_wheel_level_nm": 0.0096,
+   "torque_fraction_of_stall_level": 0.024,
+   "accel_limit_traction_m_s2": 11.66,
+   "accel_limit_motor_m_s2": 47.12,
+   "brake_limit_traction_m_s2": 4.54,
+   "support_lifts_accelerating_m_s2": 4.88,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 9.07,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 26.4,
+   "slope_limit_traction_deg": 26.4,
+   "slope_tips_at_deg": 26.5,
+   "slope_limit_deg": 26.4
+  },
+  "ev3-ev3large-solidd43-skid-front": {
+   "id": "ev3-ev3large-solidd43-skid-front",
+   "base": "ev3",
+   "drive": "ev3_large",
+   "wheel": "solid_d43",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 740.4,
+   "mass_by_kind_g": {
+    "print": 134.9,
+    "camera": 70.0,
+    "controller": 348.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 19.5
+   },
+   "com_mm": [
+    19.6,
+    -0.0,
+    53.5
+   ],
+   "com_height_above_floor_mm": 75.9,
+   "com_ahead_of_axle_mm": 35.6,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.33,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 44.76,
+   "static_margin_mm": 35.6,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.6,
+   "margin_to_support_mm": 72.4,
+   "sideways_tilt_to_tip_deg": 25.1,
+   "ground_clearance_mm": 10.4,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 35.75
+   },
+   "top_speed_no_load_m_s": 0.387,
+   "cruise_speed_estimate_m_s": 0.378,
+   "current_estimate_cruise_a": 0.08,
+   "wheel_load_fraction": 0.67,
+   "support_load_n": 2.39,
+   "drag_n": 0.815,
+   "torque_per_wheel_level_nm": 0.0091,
+   "torque_fraction_of_stall_level": 0.023,
+   "accel_limit_traction_m_s2": 2.42,
+   "accel_limit_motor_m_s2": 47.18,
+   "brake_limit_traction_m_s2": 12.02,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 4.6,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 9.36,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 43.6,
+   "slope_limit_traction_deg": 13.8,
+   "slope_tips_at_deg": 43.6,
+   "slope_limit_deg": 13.8
+  },
+  "ev3-ev3large-solidd43-ball-back": {
+   "id": "ev3-ev3large-solidd43-ball-back",
+   "base": "ev3",
+   "drive": "ev3_large",
+   "wheel": "solid_d43",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 743.2,
+   "mass_by_kind_g": {
+    "print": 137.7,
+    "camera": 70.0,
+    "controller": 348.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 19.5
+   },
+   "com_mm": [
+    22.0,
+    0.0,
+    53.3
+   ],
+   "com_height_above_floor_mm": 75.7,
+   "com_ahead_of_axle_mm": 38.0,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.352,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 44.76,
+   "static_margin_mm": 37.3,
+   "stable": true,
+   "margin_to_axle_line_mm": 38.0,
+   "margin_to_support_mm": 70.0,
+   "sideways_tilt_to_tip_deg": 26.2,
+   "ground_clearance_mm": 10.4,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 35.75
+   },
+   "top_speed_no_load_m_s": 0.387,
+   "cruise_speed_estimate_m_s": 0.382,
+   "current_estimate_cruise_a": 0.05,
+   "wheel_load_fraction": 0.648,
+   "support_load_n": 2.57,
+   "drag_n": 0.48,
+   "torque_per_wheel_level_nm": 0.0054,
+   "torque_fraction_of_stall_level": 0.013,
+   "accel_limit_traction_m_s2": 11.57,
+   "accel_limit_motor_m_s2": 47.45,
+   "brake_limit_traction_m_s2": 3.85,
+   "support_lifts_accelerating_m_s2": 4.93,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 9.07,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 26.6,
+   "slope_limit_traction_deg": 26.6,
+   "slope_tips_at_deg": 26.7,
+   "slope_limit_deg": 26.6
+  },
+  "ev3-ev3large-solidd43-ball-front": {
+   "id": "ev3-ev3large-solidd43-ball-front",
+   "base": "ev3",
+   "drive": "ev3_large",
+   "wheel": "solid_d43",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 743.2,
+   "mass_by_kind_g": {
+    "print": 137.7,
+    "camera": 70.0,
+    "controller": 348.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 19.5
+   },
+   "com_mm": [
+    19.9,
+    -0.0,
+    53.3
+   ],
+   "com_height_above_floor_mm": 75.7,
+   "com_ahead_of_axle_mm": 35.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.332,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 44.76,
+   "static_margin_mm": 35.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.9,
+   "margin_to_support_mm": 72.1,
+   "sideways_tilt_to_tip_deg": 25.4,
+   "ground_clearance_mm": 10.4,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 35.75
+   },
+   "top_speed_no_load_m_s": 0.387,
+   "cruise_speed_estimate_m_s": 0.382,
+   "current_estimate_cruise_a": 0.05,
+   "wheel_load_fraction": 0.668,
+   "support_load_n": 2.42,
+   "drag_n": 0.461,
+   "torque_per_wheel_level_nm": 0.0052,
+   "torque_fraction_of_stall_level": 0.013,
+   "accel_limit_traction_m_s2": 2.85,
+   "accel_limit_motor_m_s2": 47.48,
+   "brake_limit_traction_m_s2": 11.93,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 4.65,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 9.35,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 43.6,
+   "slope_limit_traction_deg": 16.2,
+   "slope_tips_at_deg": 43.6,
+   "slope_limit_deg": 16.2
+  },
+  "ev3-ev3large-tpud43-skid-back": {
+   "id": "ev3-ev3large-tpud43-skid-back",
+   "base": "ev3",
+   "drive": "ev3_large",
+   "wheel": "tpu_d43",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 743.4,
+   "mass_by_kind_g": {
+    "print": 134.9,
+    "camera": 70.0,
+    "controller": 348.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 22.4
+   },
+   "com_mm": [
+    21.6,
+    0.0,
+    53.3
+   ],
+   "com_height_above_floor_mm": 74.9,
+   "com_ahead_of_axle_mm": 37.6,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.348,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 43.2,
+   "static_margin_mm": 37.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 37.6,
+   "margin_to_support_mm": 70.4,
+   "sideways_tilt_to_tip_deg": 26.6,
+   "ground_clearance_mm": 9.6,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 37.04
+   },
+   "top_speed_no_load_m_s": 0.373,
+   "cruise_speed_estimate_m_s": 0.365,
+   "current_estimate_cruise_a": 0.08,
+   "wheel_load_fraction": 0.652,
+   "support_load_n": 2.54,
+   "drag_n": 0.857,
+   "torque_per_wheel_level_nm": 0.0093,
+   "torque_fraction_of_stall_level": 0.023,
+   "accel_limit_traction_m_s2": 8.7,
+   "accel_limit_motor_m_s2": 48.67,
+   "brake_limit_traction_m_s2": 4.31,
+   "support_lifts_accelerating_m_s2": 4.93,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 9.21,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 26.6,
+   "slope_limit_traction_deg": 26.6,
+   "slope_tips_at_deg": 26.7,
+   "slope_limit_deg": 26.6
+  },
+  "ev3-ev3large-tpud43-skid-front": {
+   "id": "ev3-ev3large-tpud43-skid-front",
+   "base": "ev3",
+   "drive": "ev3_large",
+   "wheel": "tpu_d43",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 743.4,
+   "mass_by_kind_g": {
+    "print": 134.9,
+    "camera": 70.0,
+    "controller": 348.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 22.4
+   },
+   "com_mm": [
+    19.4,
+    -0.0,
+    53.3
+   ],
+   "com_height_above_floor_mm": 74.9,
+   "com_ahead_of_axle_mm": 35.4,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.328,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 43.2,
+   "static_margin_mm": 35.4,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.4,
+   "margin_to_support_mm": 72.6,
+   "sideways_tilt_to_tip_deg": 25.3,
+   "ground_clearance_mm": 9.6,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 37.04
+   },
+   "top_speed_no_load_m_s": 0.373,
+   "cruise_speed_estimate_m_s": 0.365,
+   "current_estimate_cruise_a": 0.08,
+   "wheel_load_fraction": 0.672,
+   "support_load_n": 2.39,
+   "drag_n": 0.816,
+   "torque_per_wheel_level_nm": 0.0088,
+   "torque_fraction_of_stall_level": 0.022,
+   "accel_limit_traction_m_s2": 2.15,
+   "accel_limit_motor_m_s2": 48.72,
+   "brake_limit_traction_m_s2": 8.97,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 4.64,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 9.5,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 44.0,
+   "slope_limit_traction_deg": 12.3,
+   "slope_tips_at_deg": 44.1,
+   "slope_limit_deg": 12.3
+  },
+  "ev3-ev3large-tpud43-ball-back": {
+   "id": "ev3-ev3large-tpud43-ball-back",
+   "base": "ev3",
+   "drive": "ev3_large",
+   "wheel": "tpu_d43",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 746.1,
+   "mass_by_kind_g": {
+    "print": 137.7,
+    "camera": 70.0,
+    "controller": 348.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 22.4
+   },
+   "com_mm": [
+    21.9,
+    0.0,
+    53.1
+   ],
+   "com_height_above_floor_mm": 74.7,
+   "com_ahead_of_axle_mm": 37.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.351,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 43.2,
+   "static_margin_mm": 37.4,
+   "stable": true,
+   "margin_to_axle_line_mm": 37.9,
+   "margin_to_support_mm": 70.1,
+   "sideways_tilt_to_tip_deg": 26.6,
+   "ground_clearance_mm": 9.6,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 37.04
+   },
+   "top_speed_no_load_m_s": 0.373,
+   "cruise_speed_estimate_m_s": 0.368,
+   "current_estimate_cruise_a": 0.05,
+   "wheel_load_fraction": 0.649,
+   "support_load_n": 2.57,
+   "drag_n": 0.48,
+   "torque_per_wheel_level_nm": 0.0052,
+   "torque_fraction_of_stall_level": 0.013,
+   "accel_limit_traction_m_s2": 8.64,
+   "accel_limit_motor_m_s2": 48.99,
+   "brake_limit_traction_m_s2": 3.6,
+   "support_lifts_accelerating_m_s2": 4.97,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 9.21,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 26.8,
+   "slope_limit_traction_deg": 26.8,
+   "slope_tips_at_deg": 26.9,
+   "slope_limit_deg": 26.8
+  },
+  "ev3-ev3large-tpud43-ball-front": {
+   "id": "ev3-ev3large-tpud43-ball-front",
+   "base": "ev3",
+   "drive": "ev3_large",
+   "wheel": "tpu_d43",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 746.1,
+   "mass_by_kind_g": {
+    "print": 137.7,
+    "camera": 70.0,
+    "controller": 348.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 22.4
+   },
+   "com_mm": [
+    19.7,
+    -0.0,
+    53.1
+   ],
+   "com_height_above_floor_mm": 74.7,
+   "com_ahead_of_axle_mm": 35.7,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.331,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 43.2,
+   "static_margin_mm": 35.7,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.7,
+   "margin_to_support_mm": 72.3,
+   "sideways_tilt_to_tip_deg": 25.6,
+   "ground_clearance_mm": 9.6,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 37.04
+   },
+   "top_speed_no_load_m_s": 0.373,
+   "cruise_speed_estimate_m_s": 0.369,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.669,
+   "support_load_n": 2.42,
+   "drag_n": 0.461,
+   "torque_per_wheel_level_nm": 0.005,
+   "torque_fraction_of_stall_level": 0.012,
+   "accel_limit_traction_m_s2": 2.59,
+   "accel_limit_motor_m_s2": 49.02,
+   "brake_limit_traction_m_s2": 8.91,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 4.69,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 9.49,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 44.0,
+   "slope_limit_traction_deg": 14.7,
+   "slope_tips_at_deg": 44.1,
+   "slope_limit_deg": 14.7
+  },
   "pibuildhat-angular-lego56-skid-back": {
    "id": "pibuildhat-angular-lego56-skid-back",
    "base": "pi_buildhat",
@@ -360,6 +1154,14 @@
    "wheel": "lego_56",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 502.0,
    "mass_by_kind_g": {
@@ -436,6 +1238,14 @@
    "wheel": "lego_56",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 502.0,
    "mass_by_kind_g": {
@@ -512,6 +1322,14 @@
    "wheel": "lego_56",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 504.8,
    "mass_by_kind_g": {
@@ -588,6 +1406,14 @@
    "wheel": "lego_56",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 504.8,
    "mass_by_kind_g": {
@@ -657,6 +1483,678 @@
    "slope_tips_at_deg": 52.2,
    "slope_limit_deg": 16.1
   },
+  "pibuildhat-angular-solidd56-skid-back": {
+   "id": "pibuildhat-angular-solidd56-skid-back",
+   "base": "pi_buildhat",
+   "drive": "angular",
+   "wheel": "solid_d56",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 505.1,
+   "mass_by_kind_g": {
+    "print": 127.0,
+    "camera": 3.0,
+    "controller": 42.0,
+    "battery": 190.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 27.1
+   },
+   "com_mm": [
+    27.1,
+    0.0,
+    22.2
+   ],
+   "com_height_above_floor_mm": 50.7,
+   "com_ahead_of_axle_mm": 43.1,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.399,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 57.0,
+   "static_margin_mm": 34.6,
+   "stable": true,
+   "margin_to_axle_line_mm": 43.1,
+   "margin_to_support_mm": 64.9,
+   "sideways_tilt_to_tip_deg": 34.3,
+   "ground_clearance_mm": 12.5,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.63
+   },
+   "top_speed_no_load_m_s": 0.552,
+   "cruise_speed_estimate_m_s": 0.523,
+   "current_estimate_cruise_a": 0.08,
+   "wheel_load_fraction": 0.601,
+   "support_load_n": 1.98,
+   "drag_n": 0.653,
+   "torque_per_wheel_level_nm": 0.0093,
+   "torque_fraction_of_stall_level": 0.052,
+   "accel_limit_traction_m_s2": 7.32,
+   "accel_limit_motor_m_s2": 23.71,
+   "brake_limit_traction_m_s2": 4.77,
+   "support_lifts_accelerating_m_s2": 8.34,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.55,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 40.3,
+   "slope_limit_traction_deg": 36.7,
+   "slope_tips_at_deg": 40.4,
+   "slope_limit_deg": 36.7
+  },
+  "pibuildhat-angular-solidd56-skid-front": {
+   "id": "pibuildhat-angular-solidd56-skid-front",
+   "base": "pi_buildhat",
+   "drive": "angular",
+   "wheel": "solid_d56",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 505.1,
+   "mass_by_kind_g": {
+    "print": 127.0,
+    "camera": 3.0,
+    "controller": 42.0,
+    "battery": 190.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 27.1
+   },
+   "com_mm": [
+    26.7,
+    -0.0,
+    22.2
+   ],
+   "com_height_above_floor_mm": 50.7,
+   "com_ahead_of_axle_mm": 42.7,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.396,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 57.0,
+   "static_margin_mm": 34.8,
+   "stable": true,
+   "margin_to_axle_line_mm": 42.7,
+   "margin_to_support_mm": 65.3,
+   "sideways_tilt_to_tip_deg": 34.4,
+   "ground_clearance_mm": 12.5,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.63
+   },
+   "top_speed_no_load_m_s": 0.552,
+   "cruise_speed_estimate_m_s": 0.524,
+   "current_estimate_cruise_a": 0.08,
+   "wheel_load_fraction": 0.604,
+   "support_load_n": 1.96,
+   "drag_n": 0.648,
+   "torque_per_wheel_level_nm": 0.0092,
+   "torque_fraction_of_stall_level": 0.051,
+   "accel_limit_traction_m_s2": 2.36,
+   "accel_limit_motor_m_s2": 23.72,
+   "brake_limit_traction_m_s2": 7.72,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 8.27,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 12.62,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 52.1,
+   "slope_limit_traction_deg": 13.5,
+   "slope_tips_at_deg": 52.1,
+   "slope_limit_deg": 13.5
+  },
+  "pibuildhat-angular-solidd56-ball-back": {
+   "id": "pibuildhat-angular-solidd56-ball-back",
+   "base": "pi_buildhat",
+   "drive": "angular",
+   "wheel": "solid_d56",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 507.9,
+   "mass_by_kind_g": {
+    "print": 129.8,
+    "camera": 3.0,
+    "controller": 42.0,
+    "battery": 190.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 27.1
+   },
+   "com_mm": [
+    27.5,
+    0.0,
+    22.0
+   ],
+   "com_height_above_floor_mm": 50.5,
+   "com_ahead_of_axle_mm": 43.5,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.403,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 57.0,
+   "static_margin_mm": 34.4,
+   "stable": true,
+   "margin_to_axle_line_mm": 43.5,
+   "margin_to_support_mm": 64.5,
+   "sideways_tilt_to_tip_deg": 34.2,
+   "ground_clearance_mm": 12.5,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.63
+   },
+   "top_speed_no_load_m_s": 0.552,
+   "cruise_speed_estimate_m_s": 0.536,
+   "current_estimate_cruise_a": 0.05,
+   "wheel_load_fraction": 0.597,
+   "support_load_n": 2.01,
+   "drag_n": 0.36,
+   "torque_per_wheel_level_nm": 0.0051,
+   "torque_fraction_of_stall_level": 0.029,
+   "accel_limit_traction_m_s2": 7.37,
+   "accel_limit_motor_m_s2": 24.16,
+   "brake_limit_traction_m_s2": 4.05,
+   "support_lifts_accelerating_m_s2": 8.44,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.53,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 40.7,
+   "slope_limit_traction_deg": 36.9,
+   "slope_tips_at_deg": 40.7,
+   "slope_limit_deg": 36.9
+  },
+  "pibuildhat-angular-solidd56-ball-front": {
+   "id": "pibuildhat-angular-solidd56-ball-front",
+   "base": "pi_buildhat",
+   "drive": "angular",
+   "wheel": "solid_d56",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 507.9,
+   "mass_by_kind_g": {
+    "print": 129.8,
+    "camera": 3.0,
+    "controller": 42.0,
+    "battery": 190.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 27.1
+   },
+   "com_mm": [
+    27.1,
+    -0.0,
+    22.0
+   ],
+   "com_height_above_floor_mm": 50.5,
+   "com_ahead_of_axle_mm": 43.1,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.399,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 57.0,
+   "static_margin_mm": 34.6,
+   "stable": true,
+   "margin_to_axle_line_mm": 43.1,
+   "margin_to_support_mm": 64.9,
+   "sideways_tilt_to_tip_deg": 34.4,
+   "ground_clearance_mm": 12.5,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.63
+   },
+   "top_speed_no_load_m_s": 0.552,
+   "cruise_speed_estimate_m_s": 0.537,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.601,
+   "support_load_n": 1.99,
+   "drag_n": 0.358,
+   "torque_per_wheel_level_nm": 0.0051,
+   "torque_fraction_of_stall_level": 0.028,
+   "accel_limit_traction_m_s2": 2.86,
+   "accel_limit_motor_m_s2": 24.17,
+   "brake_limit_traction_m_s2": 7.62,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 8.37,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 12.6,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 52.1,
+   "slope_limit_traction_deg": 16.2,
+   "slope_tips_at_deg": 52.1,
+   "slope_limit_deg": 16.2
+  },
+  "pibuildhat-angular-tpud56-skid-back": {
+   "id": "pibuildhat-angular-tpud56-skid-back",
+   "base": "pi_buildhat",
+   "drive": "angular",
+   "wheel": "tpu_d56",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 510.7,
+   "mass_by_kind_g": {
+    "print": 127.0,
+    "camera": 3.0,
+    "controller": 42.0,
+    "battery": 190.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 32.7
+   },
+   "com_mm": [
+    26.6,
+    0.0,
+    22.0
+   ],
+   "com_height_above_floor_mm": 50.0,
+   "com_ahead_of_axle_mm": 42.6,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.395,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 34.8,
+   "stable": true,
+   "margin_to_axle_line_mm": 42.6,
+   "margin_to_support_mm": 65.4,
+   "sideways_tilt_to_tip_deg": 34.9,
+   "ground_clearance_mm": 12.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.86
+   },
+   "top_speed_no_load_m_s": 0.542,
+   "cruise_speed_estimate_m_s": 0.515,
+   "current_estimate_cruise_a": 0.08,
+   "wheel_load_fraction": 0.605,
+   "support_load_n": 1.98,
+   "drag_n": 0.654,
+   "torque_per_wheel_level_nm": 0.0092,
+   "torque_fraction_of_stall_level": 0.051,
+   "accel_limit_traction_m_s2": 5.57,
+   "accel_limit_motor_m_s2": 23.89,
+   "brake_limit_traction_m_s2": 4.49,
+   "support_lifts_accelerating_m_s2": 8.37,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.83,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 40.4,
+   "slope_limit_traction_deg": 29.5,
+   "slope_tips_at_deg": 40.5,
+   "slope_limit_deg": 29.5
+  },
+  "pibuildhat-angular-tpud56-skid-front": {
+   "id": "pibuildhat-angular-tpud56-skid-front",
+   "base": "pi_buildhat",
+   "drive": "angular",
+   "wheel": "tpu_d56",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 510.7,
+   "mass_by_kind_g": {
+    "print": 127.0,
+    "camera": 3.0,
+    "controller": 42.0,
+    "battery": 190.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 32.7
+   },
+   "com_mm": [
+    26.3,
+    -0.0,
+    22.0
+   ],
+   "com_height_above_floor_mm": 50.0,
+   "com_ahead_of_axle_mm": 42.3,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.391,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 35.0,
+   "stable": true,
+   "margin_to_axle_line_mm": 42.3,
+   "margin_to_support_mm": 65.7,
+   "sideways_tilt_to_tip_deg": 35.0,
+   "ground_clearance_mm": 12.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.86
+   },
+   "top_speed_no_load_m_s": 0.542,
+   "cruise_speed_estimate_m_s": 0.515,
+   "current_estimate_cruise_a": 0.08,
+   "wheel_load_fraction": 0.609,
+   "support_load_n": 1.96,
+   "drag_n": 0.649,
+   "torque_per_wheel_level_nm": 0.0091,
+   "torque_fraction_of_stall_level": 0.05,
+   "accel_limit_traction_m_s2": 2.07,
+   "accel_limit_motor_m_s2": 23.9,
+   "brake_limit_traction_m_s2": 6.54,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 8.3,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 12.9,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 52.7,
+   "slope_limit_traction_deg": 11.9,
+   "slope_tips_at_deg": 52.8,
+   "slope_limit_deg": 11.9
+  },
+  "pibuildhat-angular-tpud56-ball-back": {
+   "id": "pibuildhat-angular-tpud56-ball-back",
+   "base": "pi_buildhat",
+   "drive": "angular",
+   "wheel": "tpu_d56",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 513.5,
+   "mass_by_kind_g": {
+    "print": 129.8,
+    "camera": 3.0,
+    "controller": 42.0,
+    "battery": 190.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 32.7
+   },
+   "com_mm": [
+    27.0,
+    0.0,
+    21.8
+   ],
+   "com_height_above_floor_mm": 49.8,
+   "com_ahead_of_axle_mm": 43.0,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.398,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 34.6,
+   "stable": true,
+   "margin_to_axle_line_mm": 43.0,
+   "margin_to_support_mm": 65.0,
+   "sideways_tilt_to_tip_deg": 34.8,
+   "ground_clearance_mm": 12.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.86
+   },
+   "top_speed_no_load_m_s": 0.542,
+   "cruise_speed_estimate_m_s": 0.527,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.602,
+   "support_load_n": 2.01,
+   "drag_n": 0.361,
+   "torque_per_wheel_level_nm": 0.0051,
+   "torque_fraction_of_stall_level": 0.028,
+   "accel_limit_traction_m_s2": 5.83,
+   "accel_limit_motor_m_s2": 24.34,
+   "brake_limit_traction_m_s2": 3.76,
+   "support_lifts_accelerating_m_s2": 8.47,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.81,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 40.8,
+   "slope_limit_traction_deg": 30.7,
+   "slope_tips_at_deg": 40.8,
+   "slope_limit_deg": 30.7
+  },
+  "pibuildhat-angular-tpud56-ball-front": {
+   "id": "pibuildhat-angular-tpud56-ball-front",
+   "base": "pi_buildhat",
+   "drive": "angular",
+   "wheel": "tpu_d56",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "buildhat_51515",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 513.5,
+   "mass_by_kind_g": {
+    "print": 129.8,
+    "camera": 3.0,
+    "controller": 42.0,
+    "battery": 190.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 32.7
+   },
+   "com_mm": [
+    26.6,
+    -0.0,
+    21.8
+   ],
+   "com_height_above_floor_mm": 49.8,
+   "com_ahead_of_axle_mm": 42.6,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.395,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 34.8,
+   "stable": true,
+   "margin_to_axle_line_mm": 42.6,
+   "margin_to_support_mm": 65.4,
+   "sideways_tilt_to_tip_deg": 35.0,
+   "ground_clearance_mm": 12.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.86
+   },
+   "top_speed_no_load_m_s": 0.542,
+   "cruise_speed_estimate_m_s": 0.527,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.605,
+   "support_load_n": 1.99,
+   "drag_n": 0.359,
+   "torque_per_wheel_level_nm": 0.005,
+   "torque_fraction_of_stall_level": 0.028,
+   "accel_limit_traction_m_s2": 2.57,
+   "accel_limit_motor_m_s2": 24.34,
+   "brake_limit_traction_m_s2": 6.35,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 8.4,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 12.88,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 52.7,
+   "slope_limit_traction_deg": 14.6,
+   "slope_tips_at_deg": 52.7,
+   "slope_limit_deg": 14.6
+  },
   "hub51515-angular-lego56-skid-back": {
    "id": "hub51515-angular-lego56-skid-back",
    "base": "hub51515",
@@ -664,6 +2162,14 @@
    "wheel": "lego_56",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 412.0,
    "mass_by_kind_g": {
@@ -738,6 +2244,14 @@
    "wheel": "lego_56",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 412.0,
    "mass_by_kind_g": {
@@ -812,6 +2326,14 @@
    "wheel": "lego_56",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 414.8,
    "mass_by_kind_g": {
@@ -886,6 +2408,14 @@
    "wheel": "lego_56",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 414.8,
    "mass_by_kind_g": {
@@ -953,6 +2483,662 @@
    "slope_tips_at_deg": 53.0,
    "slope_limit_deg": 19.7
   },
+  "hub51515-angular-solidd56-skid-back": {
+   "id": "hub51515-angular-solidd56-skid-back",
+   "base": "hub51515",
+   "drive": "angular",
+   "wheel": "solid_d56",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 415.1,
+   "mass_by_kind_g": {
+    "print": 129.0,
+    "controller": 143.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 27.1
+   },
+   "com_mm": [
+    12.4,
+    -0.0,
+    31.7
+   ],
+   "com_height_above_floor_mm": 60.2,
+   "com_ahead_of_axle_mm": 28.4,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.263,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 57.0,
+   "static_margin_mm": 28.4,
+   "stable": true,
+   "margin_to_axle_line_mm": 28.4,
+   "margin_to_support_mm": 79.6,
+   "sideways_tilt_to_tip_deg": 25.2,
+   "ground_clearance_mm": 12.5,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.63
+   },
+   "top_speed_no_load_m_s": 0.552,
+   "cruise_speed_estimate_m_s": 0.536,
+   "current_estimate_cruise_a": 0.05,
+   "wheel_load_fraction": 0.737,
+   "support_load_n": 1.07,
+   "drag_n": 0.381,
+   "torque_per_wheel_level_nm": 0.0054,
+   "torque_fraction_of_stall_level": 0.03,
+   "accel_limit_traction_m_s2": 10.45,
+   "accel_limit_motor_m_s2": 29.51,
+   "brake_limit_traction_m_s2": 5.13,
+   "support_lifts_accelerating_m_s2": 4.62,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.97,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 25.2,
+   "slope_limit_traction_deg": 25.2,
+   "slope_tips_at_deg": 25.2,
+   "slope_limit_deg": 25.2
+  },
+  "hub51515-angular-solidd56-skid-front": {
+   "id": "hub51515-angular-solidd56-skid-front",
+   "base": "hub51515",
+   "drive": "angular",
+   "wheel": "solid_d56",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 415.1,
+   "mass_by_kind_g": {
+    "print": 129.0,
+    "controller": 143.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 27.1
+   },
+   "com_mm": [
+    11.9,
+    0.0,
+    31.7
+   ],
+   "com_height_above_floor_mm": 60.2,
+   "com_ahead_of_axle_mm": 27.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.259,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 57.0,
+   "static_margin_mm": 27.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 27.9,
+   "margin_to_support_mm": 80.1,
+   "sideways_tilt_to_tip_deg": 24.9,
+   "ground_clearance_mm": 12.5,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.63
+   },
+   "top_speed_no_load_m_s": 0.552,
+   "cruise_speed_estimate_m_s": 0.536,
+   "current_estimate_cruise_a": 0.05,
+   "wheel_load_fraction": 0.741,
+   "support_load_n": 1.05,
+   "drag_n": 0.376,
+   "torque_per_wheel_level_nm": 0.0054,
+   "torque_fraction_of_stall_level": 0.03,
+   "accel_limit_traction_m_s2": 3.13,
+   "accel_limit_motor_m_s2": 29.52,
+   "brake_limit_traction_m_s2": 10.5,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 4.55,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.04,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 53.0,
+   "slope_limit_traction_deg": 17.7,
+   "slope_tips_at_deg": 53.0,
+   "slope_limit_deg": 17.7
+  },
+  "hub51515-angular-solidd56-ball-back": {
+   "id": "hub51515-angular-solidd56-ball-back",
+   "base": "hub51515",
+   "drive": "angular",
+   "wheel": "solid_d56",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 417.9,
+   "mass_by_kind_g": {
+    "print": 131.8,
+    "controller": 143.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 27.1
+   },
+   "com_mm": [
+    12.9,
+    -0.0,
+    31.4
+   ],
+   "com_height_above_floor_mm": 59.9,
+   "com_ahead_of_axle_mm": 28.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.267,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 57.0,
+   "static_margin_mm": 28.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 28.9,
+   "margin_to_support_mm": 79.1,
+   "sideways_tilt_to_tip_deg": 25.7,
+   "ground_clearance_mm": 12.5,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.63
+   },
+   "top_speed_no_load_m_s": 0.552,
+   "cruise_speed_estimate_m_s": 0.542,
+   "current_estimate_cruise_a": 0.03,
+   "wheel_load_fraction": 0.733,
+   "support_load_n": 1.1,
+   "drag_n": 0.225,
+   "torque_per_wheel_level_nm": 0.0032,
+   "torque_fraction_of_stall_level": 0.018,
+   "accel_limit_traction_m_s2": 10.34,
+   "accel_limit_motor_m_s2": 29.69,
+   "brake_limit_traction_m_s2": 4.51,
+   "support_lifts_accelerating_m_s2": 4.73,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.95,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 25.7,
+   "slope_limit_traction_deg": 25.7,
+   "slope_tips_at_deg": 25.7,
+   "slope_limit_deg": 25.7
+  },
+  "hub51515-angular-solidd56-ball-front": {
+   "id": "hub51515-angular-solidd56-ball-front",
+   "base": "hub51515",
+   "drive": "angular",
+   "wheel": "solid_d56",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 417.9,
+   "mass_by_kind_g": {
+    "print": 131.8,
+    "controller": 143.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 27.1
+   },
+   "com_mm": [
+    12.5,
+    0.0,
+    31.4
+   ],
+   "com_height_above_floor_mm": 59.9,
+   "com_ahead_of_axle_mm": 28.5,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.264,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 57.0,
+   "static_margin_mm": 28.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 28.5,
+   "margin_to_support_mm": 79.5,
+   "sideways_tilt_to_tip_deg": 25.4,
+   "ground_clearance_mm": 12.5,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.63
+   },
+   "top_speed_no_load_m_s": 0.552,
+   "cruise_speed_estimate_m_s": 0.542,
+   "current_estimate_cruise_a": 0.03,
+   "wheel_load_fraction": 0.736,
+   "support_load_n": 1.08,
+   "drag_n": 0.222,
+   "torque_per_wheel_level_nm": 0.0032,
+   "torque_fraction_of_stall_level": 0.018,
+   "accel_limit_traction_m_s2": 3.53,
+   "accel_limit_motor_m_s2": 29.69,
+   "brake_limit_traction_m_s2": 10.39,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 4.66,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.02,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 52.9,
+   "slope_limit_traction_deg": 19.7,
+   "slope_tips_at_deg": 53.0,
+   "slope_limit_deg": 19.7
+  },
+  "hub51515-angular-tpud56-skid-back": {
+   "id": "hub51515-angular-tpud56-skid-back",
+   "base": "hub51515",
+   "drive": "angular",
+   "wheel": "tpu_d56",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 420.7,
+   "mass_by_kind_g": {
+    "print": 129.0,
+    "controller": 143.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 32.7
+   },
+   "com_mm": [
+    12.0,
+    -0.0,
+    31.3
+   ],
+   "com_height_above_floor_mm": 59.3,
+   "com_ahead_of_axle_mm": 28.0,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.259,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 28.0,
+   "stable": true,
+   "margin_to_axle_line_mm": 28.0,
+   "margin_to_support_mm": 80.0,
+   "sideways_tilt_to_tip_deg": 25.3,
+   "ground_clearance_mm": 12.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.86
+   },
+   "top_speed_no_load_m_s": 0.542,
+   "cruise_speed_estimate_m_s": 0.526,
+   "current_estimate_cruise_a": 0.05,
+   "wheel_load_fraction": 0.741,
+   "support_load_n": 1.07,
+   "drag_n": 0.382,
+   "torque_per_wheel_level_nm": 0.0053,
+   "torque_fraction_of_stall_level": 0.03,
+   "accel_limit_traction_m_s2": 8.26,
+   "accel_limit_motor_m_s2": 29.65,
+   "brake_limit_traction_m_s2": 4.8,
+   "support_lifts_accelerating_m_s2": 4.63,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.23,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 25.2,
+   "slope_limit_traction_deg": 25.2,
+   "slope_tips_at_deg": 25.3,
+   "slope_limit_deg": 25.2
+  },
+  "hub51515-angular-tpud56-skid-front": {
+   "id": "hub51515-angular-tpud56-skid-front",
+   "base": "hub51515",
+   "drive": "angular",
+   "wheel": "tpu_d56",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 420.7,
+   "mass_by_kind_g": {
+    "print": 129.0,
+    "controller": 143.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 32.7
+   },
+   "com_mm": [
+    11.6,
+    0.0,
+    31.3
+   ],
+   "com_height_above_floor_mm": 59.3,
+   "com_ahead_of_axle_mm": 27.6,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.255,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 27.6,
+   "stable": true,
+   "margin_to_axle_line_mm": 27.6,
+   "margin_to_support_mm": 80.4,
+   "sideways_tilt_to_tip_deg": 24.9,
+   "ground_clearance_mm": 12.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.86
+   },
+   "top_speed_no_load_m_s": 0.542,
+   "cruise_speed_estimate_m_s": 0.527,
+   "current_estimate_cruise_a": 0.05,
+   "wheel_load_fraction": 0.745,
+   "support_load_n": 1.05,
+   "drag_n": 0.378,
+   "torque_per_wheel_level_nm": 0.0053,
+   "torque_fraction_of_stall_level": 0.029,
+   "accel_limit_traction_m_s2": 2.82,
+   "accel_limit_motor_m_s2": 29.66,
+   "brake_limit_traction_m_s2": 8.31,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 4.56,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.3,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 53.5,
+   "slope_limit_traction_deg": 16.0,
+   "slope_tips_at_deg": 53.6,
+   "slope_limit_deg": 16.0
+  },
+  "hub51515-angular-tpud56-ball-back": {
+   "id": "hub51515-angular-tpud56-ball-back",
+   "base": "hub51515",
+   "drive": "angular",
+   "wheel": "tpu_d56",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 423.5,
+   "mass_by_kind_g": {
+    "print": 131.8,
+    "controller": 143.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 32.7
+   },
+   "com_mm": [
+    12.5,
+    -0.0,
+    31.0
+   ],
+   "com_height_above_floor_mm": 59.0,
+   "com_ahead_of_axle_mm": 28.5,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.264,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 28.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 28.5,
+   "margin_to_support_mm": 79.5,
+   "sideways_tilt_to_tip_deg": 25.8,
+   "ground_clearance_mm": 12.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.86
+   },
+   "top_speed_no_load_m_s": 0.542,
+   "cruise_speed_estimate_m_s": 0.533,
+   "current_estimate_cruise_a": 0.03,
+   "wheel_load_fraction": 0.736,
+   "support_load_n": 1.1,
+   "drag_n": 0.226,
+   "torque_per_wheel_level_nm": 0.0032,
+   "torque_fraction_of_stall_level": 0.018,
+   "accel_limit_traction_m_s2": 8.19,
+   "accel_limit_motor_m_s2": 29.83,
+   "brake_limit_traction_m_s2": 4.19,
+   "support_lifts_accelerating_m_s2": 4.74,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.21,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 25.7,
+   "slope_limit_traction_deg": 25.7,
+   "slope_tips_at_deg": 25.8,
+   "slope_limit_deg": 25.7
+  },
+  "hub51515-angular-tpud56-ball-front": {
+   "id": "hub51515-angular-tpud56-ball-front",
+   "base": "hub51515",
+   "drive": "angular",
+   "wheel": "tpu_d56",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "hub51515",
+    "locomotion": "wheeled",
+    "drive": "hub_motors",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 423.5,
+   "mass_by_kind_g": {
+    "print": 131.8,
+    "controller": 143.0,
+    "motor": 100.0,
+    "technic": 16.0,
+    "wheel": 32.7
+   },
+   "com_mm": [
+    12.1,
+    0.0,
+    31.0
+   ],
+   "com_height_above_floor_mm": 59.0,
+   "com_ahead_of_axle_mm": 28.1,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.26,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 28.1,
+   "stable": true,
+   "margin_to_axle_line_mm": 28.1,
+   "margin_to_support_mm": 79.9,
+   "sideways_tilt_to_tip_deg": 25.5,
+   "ground_clearance_mm": 12.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.18,
+    "no_load_rpm": 185,
+    "feedback": "absolute encoder, 360 counts: closed-loop speed",
+    "stall_current_both_a": 1.6,
+    "wheel_force_at_stall_n": 12.86
+   },
+   "top_speed_no_load_m_s": 0.542,
+   "cruise_speed_estimate_m_s": 0.533,
+   "current_estimate_cruise_a": 0.03,
+   "wheel_load_fraction": 0.74,
+   "support_load_n": 1.08,
+   "drag_n": 0.224,
+   "torque_per_wheel_level_nm": 0.0031,
+   "torque_fraction_of_stall_level": 0.017,
+   "accel_limit_traction_m_s2": 3.21,
+   "accel_limit_motor_m_s2": 29.83,
+   "brake_limit_traction_m_s2": 8.23,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 4.67,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.28,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 53.5,
+   "slope_limit_traction_deg": 18.1,
+   "slope_tips_at_deg": 53.6,
+   "slope_limit_deg": 18.1
+  },
   "m5basex-ev3large-lego43-skid-back": {
    "id": "m5basex-ev3large-lego43-skid-back",
    "base": "m5_basex",
@@ -960,6 +3146,14 @@
    "wheel": "lego_43",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 522.9,
    "mass_by_kind_g": {
@@ -1035,6 +3229,14 @@
    "wheel": "lego_43",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 522.9,
    "mass_by_kind_g": {
@@ -1110,6 +3312,14 @@
    "wheel": "lego_43",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 525.6,
    "mass_by_kind_g": {
@@ -1185,6 +3395,14 @@
    "wheel": "lego_43",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "lego"
+   },
    "tyre": "rubber",
    "mass_g": 525.6,
    "mass_by_kind_g": {
@@ -1253,6 +3471,670 @@
    "slope_tips_at_deg": 53.0,
    "slope_limit_deg": 17.0
   },
+  "m5basex-ev3large-solidd43-skid-back": {
+   "id": "m5basex-ev3large-solidd43-skid-back",
+   "base": "m5_basex",
+   "drive": "ev3_large",
+   "wheel": "solid_d43",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 514.3,
+   "mass_by_kind_g": {
+    "print": 128.4,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 19.5
+   },
+   "com_mm": [
+    25.3,
+    -0.0,
+    29.8
+   ],
+   "com_height_above_floor_mm": 52.2,
+   "com_ahead_of_axle_mm": 41.3,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.382,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 44.76,
+   "static_margin_mm": 35.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 41.3,
+   "margin_to_support_mm": 66.7,
+   "sideways_tilt_to_tip_deg": 34.2,
+   "ground_clearance_mm": 10.4,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 35.75
+   },
+   "top_speed_no_load_m_s": 0.387,
+   "cruise_speed_estimate_m_s": 0.38,
+   "current_estimate_cruise_a": 0.06,
+   "wheel_load_fraction": 0.618,
+   "support_load_n": 1.93,
+   "drag_n": 0.641,
+   "torque_per_wheel_level_nm": 0.0072,
+   "torque_fraction_of_stall_level": 0.018,
+   "accel_limit_traction_m_s2": 7.9,
+   "accel_limit_motor_m_s2": 68.26,
+   "brake_limit_traction_m_s2": 4.81,
+   "support_lifts_accelerating_m_s2": 7.76,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.53,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 38.3,
+   "slope_limit_traction_deg": 38.3,
+   "slope_tips_at_deg": 38.4,
+   "slope_limit_deg": 38.3
+  },
+  "m5basex-ev3large-solidd43-skid-front": {
+   "id": "m5basex-ev3large-solidd43-skid-front",
+   "base": "m5_basex",
+   "drive": "ev3_large",
+   "wheel": "solid_d43",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 514.3,
+   "mass_by_kind_g": {
+    "print": 128.4,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 19.5
+   },
+   "com_mm": [
+    25.0,
+    0.0,
+    29.8
+   ],
+   "com_height_above_floor_mm": 52.2,
+   "com_ahead_of_axle_mm": 41.0,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.379,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 44.76,
+   "static_margin_mm": 35.7,
+   "stable": true,
+   "margin_to_axle_line_mm": 41.0,
+   "margin_to_support_mm": 67.0,
+   "sideways_tilt_to_tip_deg": 34.4,
+   "ground_clearance_mm": 10.4,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 35.75
+   },
+   "top_speed_no_load_m_s": 0.387,
+   "cruise_speed_estimate_m_s": 0.38,
+   "current_estimate_cruise_a": 0.06,
+   "wheel_load_fraction": 0.621,
+   "support_load_n": 1.91,
+   "drag_n": 0.637,
+   "torque_per_wheel_level_nm": 0.0071,
+   "torque_fraction_of_stall_level": 0.018,
+   "accel_limit_traction_m_s2": 2.45,
+   "accel_limit_motor_m_s2": 68.26,
+   "brake_limit_traction_m_s2": 7.94,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 7.7,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 12.6,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 52.0,
+   "slope_limit_traction_deg": 14.0,
+   "slope_tips_at_deg": 52.1,
+   "slope_limit_deg": 14.0
+  },
+  "m5basex-ev3large-solidd43-ball-back": {
+   "id": "m5basex-ev3large-solidd43-ball-back",
+   "base": "m5_basex",
+   "drive": "ev3_large",
+   "wheel": "solid_d43",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 517.1,
+   "mass_by_kind_g": {
+    "print": 131.1,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 19.5
+   },
+   "com_mm": [
+    25.7,
+    -0.0,
+    29.6
+   ],
+   "com_height_above_floor_mm": 52.0,
+   "com_ahead_of_axle_mm": 41.7,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.386,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 44.76,
+   "static_margin_mm": 35.3,
+   "stable": true,
+   "margin_to_axle_line_mm": 41.7,
+   "margin_to_support_mm": 66.3,
+   "sideways_tilt_to_tip_deg": 34.2,
+   "ground_clearance_mm": 10.4,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 35.75
+   },
+   "top_speed_no_load_m_s": 0.387,
+   "cruise_speed_estimate_m_s": 0.383,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.614,
+   "support_load_n": 1.96,
+   "drag_n": 0.356,
+   "torque_per_wheel_level_nm": 0.004,
+   "torque_fraction_of_stall_level": 0.01,
+   "accel_limit_traction_m_s2": 7.84,
+   "accel_limit_motor_m_s2": 68.44,
+   "brake_limit_traction_m_s2": 4.1,
+   "support_lifts_accelerating_m_s2": 7.86,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.51,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 38.7,
+   "slope_limit_traction_deg": 38.6,
+   "slope_tips_at_deg": 38.7,
+   "slope_limit_deg": 38.6
+  },
+  "m5basex-ev3large-solidd43-ball-front": {
+   "id": "m5basex-ev3large-solidd43-ball-front",
+   "base": "m5_basex",
+   "drive": "ev3_large",
+   "wheel": "solid_d43",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 517.1,
+   "mass_by_kind_g": {
+    "print": 131.1,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 19.5
+   },
+   "com_mm": [
+    25.3,
+    0.0,
+    29.6
+   ],
+   "com_height_above_floor_mm": 52.0,
+   "com_ahead_of_axle_mm": 41.3,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.383,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 44.76,
+   "static_margin_mm": 35.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 41.3,
+   "margin_to_support_mm": 66.7,
+   "sideways_tilt_to_tip_deg": 34.3,
+   "ground_clearance_mm": 10.4,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 35.75
+   },
+   "top_speed_no_load_m_s": 0.387,
+   "cruise_speed_estimate_m_s": 0.383,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.617,
+   "support_load_n": 1.94,
+   "drag_n": 0.354,
+   "torque_per_wheel_level_nm": 0.004,
+   "torque_fraction_of_stall_level": 0.01,
+   "accel_limit_traction_m_s2": 2.94,
+   "accel_limit_motor_m_s2": 68.45,
+   "brake_limit_traction_m_s2": 7.88,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 7.8,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 12.58,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 52.0,
+   "slope_limit_traction_deg": 16.6,
+   "slope_tips_at_deg": 52.0,
+   "slope_limit_deg": 16.6
+  },
+  "m5basex-ev3large-tpud43-skid-back": {
+   "id": "m5basex-ev3large-tpud43-skid-back",
+   "base": "m5_basex",
+   "drive": "ev3_large",
+   "wheel": "tpu_d43",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 517.3,
+   "mass_by_kind_g": {
+    "print": 128.4,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 22.4
+   },
+   "com_mm": [
+    25.1,
+    -0.0,
+    29.7
+   ],
+   "com_height_above_floor_mm": 51.3,
+   "com_ahead_of_axle_mm": 41.1,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.38,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 43.2,
+   "static_margin_mm": 35.7,
+   "stable": true,
+   "margin_to_axle_line_mm": 41.1,
+   "margin_to_support_mm": 66.9,
+   "sideways_tilt_to_tip_deg": 34.8,
+   "ground_clearance_mm": 9.6,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 37.04
+   },
+   "top_speed_no_load_m_s": 0.373,
+   "cruise_speed_estimate_m_s": 0.367,
+   "current_estimate_cruise_a": 0.06,
+   "wheel_load_fraction": 0.62,
+   "support_load_n": 1.93,
+   "drag_n": 0.642,
+   "torque_per_wheel_level_nm": 0.0069,
+   "torque_fraction_of_stall_level": 0.017,
+   "accel_limit_traction_m_s2": 5.97,
+   "accel_limit_motor_m_s2": 70.36,
+   "brake_limit_traction_m_s2": 4.52,
+   "support_lifts_accelerating_m_s2": 7.86,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.81,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 38.7,
+   "slope_limit_traction_deg": 31.3,
+   "slope_tips_at_deg": 38.7,
+   "slope_limit_deg": 31.3
+  },
+  "m5basex-ev3large-tpud43-skid-front": {
+   "id": "m5basex-ev3large-tpud43-skid-front",
+   "base": "m5_basex",
+   "drive": "ev3_large",
+   "wheel": "tpu_d43",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 517.3,
+   "mass_by_kind_g": {
+    "print": 128.4,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 22.4
+   },
+   "com_mm": [
+    24.7,
+    0.0,
+    29.7
+   ],
+   "com_height_above_floor_mm": 51.3,
+   "com_ahead_of_axle_mm": 40.7,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.377,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 43.2,
+   "static_margin_mm": 35.8,
+   "stable": true,
+   "margin_to_axle_line_mm": 40.7,
+   "margin_to_support_mm": 67.3,
+   "sideways_tilt_to_tip_deg": 35.0,
+   "ground_clearance_mm": 9.6,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 37.04
+   },
+   "top_speed_no_load_m_s": 0.373,
+   "cruise_speed_estimate_m_s": 0.367,
+   "current_estimate_cruise_a": 0.06,
+   "wheel_load_fraction": 0.623,
+   "support_load_n": 1.91,
+   "drag_n": 0.637,
+   "torque_per_wheel_level_nm": 0.0069,
+   "torque_fraction_of_stall_level": 0.017,
+   "accel_limit_traction_m_s2": 2.15,
+   "accel_limit_motor_m_s2": 70.37,
+   "brake_limit_traction_m_s2": 6.65,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 7.8,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 12.87,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 52.6,
+   "slope_limit_traction_deg": 12.3,
+   "slope_tips_at_deg": 52.7,
+   "slope_limit_deg": 12.3
+  },
+  "m5basex-ev3large-tpud43-ball-back": {
+   "id": "m5basex-ev3large-tpud43-ball-back",
+   "base": "m5_basex",
+   "drive": "ev3_large",
+   "wheel": "tpu_d43",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 520.1,
+   "mass_by_kind_g": {
+    "print": 131.1,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 22.4
+   },
+   "com_mm": [
+    25.4,
+    -0.0,
+    29.5
+   ],
+   "com_height_above_floor_mm": 51.1,
+   "com_ahead_of_axle_mm": 41.4,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.384,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 43.2,
+   "static_margin_mm": 35.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 41.4,
+   "margin_to_support_mm": 66.6,
+   "sideways_tilt_to_tip_deg": 34.8,
+   "ground_clearance_mm": 9.6,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 37.04
+   },
+   "top_speed_no_load_m_s": 0.373,
+   "cruise_speed_estimate_m_s": 0.369,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.616,
+   "support_load_n": 1.96,
+   "drag_n": 0.356,
+   "torque_per_wheel_level_nm": 0.0038,
+   "torque_fraction_of_stall_level": 0.01,
+   "accel_limit_traction_m_s2": 6.13,
+   "accel_limit_motor_m_s2": 70.53,
+   "brake_limit_traction_m_s2": 3.81,
+   "support_lifts_accelerating_m_s2": 7.96,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 12.79,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 39.0,
+   "slope_limit_traction_deg": 32.0,
+   "slope_tips_at_deg": 39.1,
+   "slope_limit_deg": 32.0
+  },
+  "m5basex-ev3large-tpud43-ball-front": {
+   "id": "m5basex-ev3large-tpud43-ball-front",
+   "base": "m5_basex",
+   "drive": "ev3_large",
+   "wheel": "tpu_d43",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "basex_ev3",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 520.1,
+   "mass_by_kind_g": {
+    "print": 131.1,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 152.0,
+    "technic": 16.0,
+    "wheel": 22.4
+   },
+   "com_mm": [
+    25.1,
+    0.0,
+    29.5
+   ],
+   "com_height_above_floor_mm": 51.1,
+   "com_ahead_of_axle_mm": 41.1,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.38,
+   "track_mm": 136.0,
+   "wheel_diameter_mm": 43.2,
+   "static_margin_mm": 35.6,
+   "stable": true,
+   "margin_to_axle_line_mm": 41.1,
+   "margin_to_support_mm": 66.9,
+   "sideways_tilt_to_tip_deg": 34.9,
+   "ground_clearance_mm": 9.6,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.4,
+    "no_load_rpm": 165,
+    "feedback": "encoder, 1 degree: closed-loop speed",
+    "stall_current_both_a": 3.6,
+    "wheel_force_at_stall_n": 37.04
+   },
+   "top_speed_no_load_m_s": 0.373,
+   "cruise_speed_estimate_m_s": 0.369,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.62,
+   "support_load_n": 1.94,
+   "drag_n": 0.354,
+   "torque_per_wheel_level_nm": 0.0038,
+   "torque_fraction_of_stall_level": 0.01,
+   "accel_limit_traction_m_s2": 2.64,
+   "accel_limit_motor_m_s2": 70.53,
+   "brake_limit_traction_m_s2": 6.51,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 7.9,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 12.86,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 52.6,
+   "slope_limit_traction_deg": 15.0,
+   "slope_tips_at_deg": 52.7,
+   "slope_limit_deg": 15.0
+  },
   "m5basex-servo360-solidhornd56-skid-back": {
    "id": "m5basex-servo360-solidhornd56-skid-back",
    "base": "m5_basex",
@@ -1260,6 +4142,14 @@
    "wheel": "solid_horn_d56",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 395.3,
    "mass_by_kind_g": {
@@ -1334,6 +4224,14 @@
    "wheel": "solid_horn_d56",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 395.3,
    "mass_by_kind_g": {
@@ -1408,6 +4306,14 @@
    "wheel": "solid_horn_d56",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 398.0,
    "mass_by_kind_g": {
@@ -1482,6 +4388,14 @@
    "wheel": "solid_horn_d56",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 398.0,
    "mass_by_kind_g": {
@@ -1549,6 +4463,334 @@
    "slope_tips_at_deg": 49.8,
    "slope_limit_deg": 17.9
   },
+  "m5basex-servo360-tpuhornd56-skid-back": {
+   "id": "m5basex-servo360-tpuhornd56-skid-back",
+   "base": "m5_basex",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 400.9,
+   "mass_by_kind_g": {
+    "print": 148.2,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    17.4,
+    -0.0,
+    33.9
+   ],
+   "com_height_above_floor_mm": 61.9,
+   "com_ahead_of_axle_mm": 33.4,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.31,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 33.4,
+   "stable": true,
+   "margin_to_axle_line_mm": 33.4,
+   "margin_to_support_mm": 74.6,
+   "sideways_tilt_to_tip_deg": 28.4,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.234,
+   "current_estimate_cruise_a": 0.06,
+   "wheel_load_fraction": 0.69,
+   "support_load_n": 1.22,
+   "drag_n": 0.42,
+   "torque_per_wheel_level_nm": 0.0059,
+   "torque_fraction_of_stall_level": 0.037,
+   "accel_limit_traction_m_s2": 7.91,
+   "accel_limit_motor_m_s2": 26.93,
+   "brake_limit_traction_m_s2": 4.6,
+   "support_lifts_accelerating_m_s2": 5.31,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 11.82,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 28.4,
+   "slope_limit_traction_deg": 28.4,
+   "slope_tips_at_deg": 28.4,
+   "slope_limit_deg": 28.4
+  },
+  "m5basex-servo360-tpuhornd56-skid-front": {
+   "id": "m5basex-servo360-tpuhornd56-skid-front",
+   "base": "m5_basex",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 400.9,
+   "mass_by_kind_g": {
+    "print": 148.2,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    17.0,
+    0.0,
+    33.9
+   ],
+   "com_height_above_floor_mm": 61.9,
+   "com_ahead_of_axle_mm": 33.0,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.306,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 33.0,
+   "stable": true,
+   "margin_to_axle_line_mm": 33.0,
+   "margin_to_support_mm": 75.0,
+   "sideways_tilt_to_tip_deg": 28.1,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.234,
+   "current_estimate_cruise_a": 0.06,
+   "wheel_load_fraction": 0.694,
+   "support_load_n": 1.2,
+   "drag_n": 0.415,
+   "torque_per_wheel_level_nm": 0.0058,
+   "torque_fraction_of_stall_level": 0.037,
+   "accel_limit_traction_m_s2": 2.46,
+   "accel_limit_motor_m_s2": 26.94,
+   "brake_limit_traction_m_s2": 7.96,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 5.24,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 11.89,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 50.4,
+   "slope_limit_traction_deg": 14.0,
+   "slope_tips_at_deg": 50.5,
+   "slope_limit_deg": 14.0
+  },
+  "m5basex-servo360-tpuhornd56-ball-back": {
+   "id": "m5basex-servo360-tpuhornd56-ball-back",
+   "base": "m5_basex",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 403.6,
+   "mass_by_kind_g": {
+    "print": 151.0,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    18.0,
+    -0.0,
+    33.5
+   ],
+   "com_height_above_floor_mm": 61.5,
+   "com_ahead_of_axle_mm": 34.0,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.314,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 34.0,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.0,
+   "margin_to_support_mm": 74.0,
+   "sideways_tilt_to_tip_deg": 28.9,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.238,
+   "current_estimate_cruise_a": 0.03,
+   "wheel_load_fraction": 0.686,
+   "support_load_n": 1.25,
+   "drag_n": 0.241,
+   "torque_per_wheel_level_nm": 0.0034,
+   "torque_fraction_of_stall_level": 0.021,
+   "accel_limit_traction_m_s2": 7.83,
+   "accel_limit_motor_m_s2": 27.19,
+   "brake_limit_traction_m_s2": 3.94,
+   "support_lifts_accelerating_m_s2": 5.41,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 11.81,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 28.8,
+   "slope_limit_traction_deg": 28.8,
+   "slope_tips_at_deg": 28.9,
+   "slope_limit_deg": 28.8
+  },
+  "m5basex-servo360-tpuhornd56-ball-front": {
+   "id": "m5basex-servo360-tpuhornd56-ball-front",
+   "base": "m5_basex",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "m5core",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 403.6,
+   "mass_by_kind_g": {
+    "print": 151.0,
+    "controller": 108.5,
+    "battery": 90.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    17.5,
+    0.0,
+    33.5
+   ],
+   "com_height_above_floor_mm": 61.5,
+   "com_ahead_of_axle_mm": 33.5,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.31,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 33.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 33.5,
+   "margin_to_support_mm": 74.5,
+   "sideways_tilt_to_tip_deg": 28.6,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.238,
+   "current_estimate_cruise_a": 0.03,
+   "wheel_load_fraction": 0.69,
+   "support_load_n": 1.23,
+   "drag_n": 0.239,
+   "torque_per_wheel_level_nm": 0.0033,
+   "torque_fraction_of_stall_level": 0.021,
+   "accel_limit_traction_m_s2": 2.88,
+   "accel_limit_motor_m_s2": 27.19,
+   "brake_limit_traction_m_s2": 7.88,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 5.35,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 11.88,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 50.4,
+   "slope_limit_traction_deg": 16.3,
+   "slope_tips_at_deg": 50.4,
+   "slope_limit_deg": 16.3
+  },
   "unoq-servo360-solidhornd56-skid-back": {
    "id": "unoq-servo360-solidhornd56-skid-back",
    "base": "unoq",
@@ -1556,6 +4798,14 @@
    "wheel": "solid_horn_d56",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 456.8,
    "mass_by_kind_g": {
@@ -1630,6 +4880,14 @@
    "wheel": "solid_horn_d56",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 456.8,
    "mass_by_kind_g": {
@@ -1704,6 +4962,14 @@
    "wheel": "solid_horn_d56",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 459.5,
    "mass_by_kind_g": {
@@ -1778,6 +5044,14 @@
    "wheel": "solid_horn_d56",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 459.5,
    "mass_by_kind_g": {
@@ -1845,6 +5119,334 @@
    "slope_tips_at_deg": 53.6,
    "slope_limit_deg": 17.9
   },
+  "unoq-servo360-tpuhornd56-skid-back": {
+   "id": "unoq-servo360-tpuhornd56-skid-back",
+   "base": "unoq",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 462.4,
+   "mass_by_kind_g": {
+    "print": 148.2,
+    "controller": 30.0,
+    "battery": 230.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    20.9,
+    -0.0,
+    23.6
+   ],
+   "com_height_above_floor_mm": 51.6,
+   "com_ahead_of_axle_mm": 36.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.341,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 36.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 36.9,
+   "margin_to_support_mm": 71.1,
+   "sideways_tilt_to_tip_deg": 35.5,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.232,
+   "current_estimate_cruise_a": 0.07,
+   "wheel_load_fraction": 0.659,
+   "support_load_n": 1.55,
+   "drag_n": 0.524,
+   "torque_per_wheel_level_nm": 0.0073,
+   "torque_fraction_of_stall_level": 0.047,
+   "accel_limit_traction_m_s2": 6.74,
+   "accel_limit_motor_m_s2": 23.12,
+   "brake_limit_traction_m_s2": 4.64,
+   "support_lifts_accelerating_m_s2": 7.0,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.52,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 35.5,
+   "slope_limit_traction_deg": 34.4,
+   "slope_tips_at_deg": 35.5,
+   "slope_limit_deg": 34.4
+  },
+  "unoq-servo360-tpuhornd56-skid-front": {
+   "id": "unoq-servo360-tpuhornd56-skid-front",
+   "base": "unoq",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 462.4,
+   "mass_by_kind_g": {
+    "print": 148.2,
+    "controller": 30.0,
+    "battery": 230.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    20.5,
+    0.0,
+    23.6
+   ],
+   "com_height_above_floor_mm": 51.6,
+   "com_ahead_of_axle_mm": 36.5,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.338,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 36.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 36.5,
+   "margin_to_support_mm": 71.5,
+   "sideways_tilt_to_tip_deg": 35.3,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.232,
+   "current_estimate_cruise_a": 0.07,
+   "wheel_load_fraction": 0.662,
+   "support_load_n": 1.53,
+   "drag_n": 0.52,
+   "torque_per_wheel_level_nm": 0.0073,
+   "torque_fraction_of_stall_level": 0.046,
+   "accel_limit_traction_m_s2": 2.4,
+   "accel_limit_motor_m_s2": 23.13,
+   "brake_limit_traction_m_s2": 6.85,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.93,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.59,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 54.1,
+   "slope_limit_traction_deg": 13.7,
+   "slope_tips_at_deg": 54.2,
+   "slope_limit_deg": 13.7
+  },
+  "unoq-servo360-tpuhornd56-ball-back": {
+   "id": "unoq-servo360-tpuhornd56-ball-back",
+   "base": "unoq",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 465.1,
+   "mass_by_kind_g": {
+    "print": 151.0,
+    "controller": 30.0,
+    "battery": 230.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    21.3,
+    -0.0,
+    23.4
+   ],
+   "com_height_above_floor_mm": 51.4,
+   "com_ahead_of_axle_mm": 37.3,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.345,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 37.3,
+   "stable": true,
+   "margin_to_axle_line_mm": 37.3,
+   "margin_to_support_mm": 70.7,
+   "sideways_tilt_to_tip_deg": 36.0,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.237,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.655,
+   "support_load_n": 1.58,
+   "drag_n": 0.296,
+   "torque_per_wheel_level_nm": 0.0041,
+   "torque_fraction_of_stall_level": 0.026,
+   "accel_limit_traction_m_s2": 6.7,
+   "accel_limit_motor_m_s2": 23.47,
+   "brake_limit_traction_m_s2": 3.97,
+   "support_lifts_accelerating_m_s2": 7.12,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.5,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 35.9,
+   "slope_limit_traction_deg": 34.3,
+   "slope_tips_at_deg": 36.0,
+   "slope_limit_deg": 34.3
+  },
+  "unoq-servo360-tpuhornd56-ball-front": {
+   "id": "unoq-servo360-tpuhornd56-ball-front",
+   "base": "unoq",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 465.1,
+   "mass_by_kind_g": {
+    "print": 151.0,
+    "controller": 30.0,
+    "battery": 230.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    20.9,
+    0.0,
+    23.4
+   ],
+   "com_height_above_floor_mm": 51.4,
+   "com_ahead_of_axle_mm": 36.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.342,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 36.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 36.9,
+   "margin_to_support_mm": 71.1,
+   "sideways_tilt_to_tip_deg": 35.7,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.237,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.658,
+   "support_load_n": 1.56,
+   "drag_n": 0.294,
+   "torque_per_wheel_level_nm": 0.0041,
+   "torque_fraction_of_stall_level": 0.026,
+   "accel_limit_traction_m_s2": 2.86,
+   "accel_limit_motor_m_s2": 23.48,
+   "brake_limit_traction_m_s2": 6.8,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 7.04,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.57,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 54.1,
+   "slope_limit_traction_deg": 16.2,
+   "slope_tips_at_deg": 54.1,
+   "slope_limit_deg": 16.2
+  },
   "unoq-tt-tt65-skid-back": {
    "id": "unoq-tt-tt65-skid-back",
    "base": "unoq",
@@ -1852,6 +5454,14 @@
    "wheel": "tt_65",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "tt65"
+   },
    "tyre": "tt_tyre",
    "mass_g": 556.1,
    "mass_by_kind_g": {
@@ -1926,6 +5536,14 @@
    "wheel": "tt_65",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "tt65"
+   },
    "tyre": "tt_tyre",
    "mass_g": 556.1,
    "mass_by_kind_g": {
@@ -2000,6 +5618,14 @@
    "wheel": "tt_65",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "tt65"
+   },
    "tyre": "tt_tyre",
    "mass_g": 558.9,
    "mass_by_kind_g": {
@@ -2074,6 +5700,14 @@
    "wheel": "tt_65",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "tt65"
+   },
    "tyre": "tt_tyre",
    "mass_g": 558.9,
    "mass_by_kind_g": {
@@ -2141,6 +5775,662 @@
    "slope_tips_at_deg": 54.9,
    "slope_limit_deg": 15.2
   },
+  "unoq-tt-solidttd65-skid-back": {
+   "id": "unoq-tt-solidttd65-skid-back",
+   "base": "unoq",
+   "drive": "tt",
+   "wheel": "solid_tt_d65",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 522.2,
+   "mass_by_kind_g": {
+    "print": 148.1,
+    "controller": 40.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 42.1
+   },
+   "com_mm": [
+    18.9,
+    -0.0,
+    21.8
+   ],
+   "com_height_above_floor_mm": 54.4,
+   "com_ahead_of_axle_mm": 34.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.324,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.16,
+   "static_margin_mm": 34.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.9,
+   "margin_to_support_mm": 73.1,
+   "sideways_tilt_to_tip_deg": 32.7,
+   "ground_clearance_mm": 20.6,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.79
+   },
+   "top_speed_no_load_m_s": 0.682,
+   "cruise_speed_estimate_m_s": 0.602,
+   "current_estimate_cruise_a": 0.35,
+   "wheel_load_fraction": 0.676,
+   "support_load_n": 1.66,
+   "drag_n": 0.567,
+   "torque_per_wheel_level_nm": 0.0092,
+   "torque_fraction_of_stall_level": 0.118,
+   "accel_limit_traction_m_s2": 8.89,
+   "accel_limit_motor_m_s2": 8.08,
+   "brake_limit_traction_m_s2": 5.0,
+   "support_lifts_accelerating_m_s2": 6.3,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.17,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 32.7,
+   "slope_limit_traction_deg": 32.7,
+   "slope_tips_at_deg": 32.7,
+   "slope_limit_deg": 32.7
+  },
+  "unoq-tt-solidttd65-skid-front": {
+   "id": "unoq-tt-solidttd65-skid-front",
+   "base": "unoq",
+   "drive": "tt",
+   "wheel": "solid_tt_d65",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 522.2,
+   "mass_by_kind_g": {
+    "print": 148.1,
+    "controller": 40.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 42.1
+   },
+   "com_mm": [
+    18.6,
+    0.0,
+    21.8
+   ],
+   "com_height_above_floor_mm": 54.4,
+   "com_ahead_of_axle_mm": 34.6,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.32,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.16,
+   "static_margin_mm": 34.6,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.6,
+   "margin_to_support_mm": 73.4,
+   "sideways_tilt_to_tip_deg": 32.5,
+   "ground_clearance_mm": 20.6,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.79
+   },
+   "top_speed_no_load_m_s": 0.682,
+   "cruise_speed_estimate_m_s": 0.603,
+   "current_estimate_cruise_a": 0.35,
+   "wheel_load_fraction": 0.68,
+   "support_load_n": 1.64,
+   "drag_n": 0.562,
+   "torque_per_wheel_level_nm": 0.0092,
+   "torque_fraction_of_stall_level": 0.117,
+   "accel_limit_traction_m_s2": 2.82,
+   "accel_limit_motor_m_s2": 8.09,
+   "brake_limit_traction_m_s2": 8.93,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.24,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.23,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 49.1,
+   "slope_limit_traction_deg": 16.0,
+   "slope_tips_at_deg": 53.4,
+   "slope_limit_deg": 16.0
+  },
+  "unoq-tt-solidttd65-ball-back": {
+   "id": "unoq-tt-solidttd65-ball-back",
+   "base": "unoq",
+   "drive": "tt",
+   "wheel": "solid_tt_d65",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 524.9,
+   "mass_by_kind_g": {
+    "print": 150.8,
+    "controller": 40.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 42.1
+   },
+   "com_mm": [
+    19.3,
+    -0.0,
+    21.6
+   ],
+   "com_height_above_floor_mm": 54.2,
+   "com_ahead_of_axle_mm": 35.3,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.327,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.16,
+   "static_margin_mm": 35.3,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.3,
+   "margin_to_support_mm": 72.7,
+   "sideways_tilt_to_tip_deg": 33.1,
+   "ground_clearance_mm": 20.6,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.79
+   },
+   "top_speed_no_load_m_s": 0.682,
+   "cruise_speed_estimate_m_s": 0.637,
+   "current_estimate_cruise_a": 0.2,
+   "wheel_load_fraction": 0.673,
+   "support_load_n": 1.68,
+   "drag_n": 0.322,
+   "torque_per_wheel_level_nm": 0.0052,
+   "torque_fraction_of_stall_level": 0.067,
+   "accel_limit_traction_m_s2": 8.82,
+   "accel_limit_motor_m_s2": 8.51,
+   "brake_limit_traction_m_s2": 4.34,
+   "support_lifts_accelerating_m_s2": 6.4,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.15,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 33.0,
+   "slope_limit_traction_deg": 33.0,
+   "slope_tips_at_deg": 33.1,
+   "slope_limit_deg": 33.0
+  },
+  "unoq-tt-solidttd65-ball-front": {
+   "id": "unoq-tt-solidttd65-ball-front",
+   "base": "unoq",
+   "drive": "tt",
+   "wheel": "solid_tt_d65",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 524.9,
+   "mass_by_kind_g": {
+    "print": 150.8,
+    "controller": 40.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 42.1
+   },
+   "com_mm": [
+    19.0,
+    0.0,
+    21.6
+   ],
+   "com_height_above_floor_mm": 54.2,
+   "com_ahead_of_axle_mm": 35.0,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.324,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.16,
+   "static_margin_mm": 35.0,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.0,
+   "margin_to_support_mm": 73.0,
+   "sideways_tilt_to_tip_deg": 32.9,
+   "ground_clearance_mm": 20.6,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.79
+   },
+   "top_speed_no_load_m_s": 0.682,
+   "cruise_speed_estimate_m_s": 0.637,
+   "current_estimate_cruise_a": 0.2,
+   "wheel_load_fraction": 0.676,
+   "support_load_n": 1.67,
+   "drag_n": 0.32,
+   "torque_per_wheel_level_nm": 0.0052,
+   "torque_fraction_of_stall_level": 0.067,
+   "accel_limit_traction_m_s2": 3.27,
+   "accel_limit_motor_m_s2": 8.51,
+   "brake_limit_traction_m_s2": 8.86,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.33,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.21,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 53.4,
+   "slope_limit_traction_deg": 18.4,
+   "slope_tips_at_deg": 53.4,
+   "slope_limit_deg": 18.4
+  },
+  "unoq-tt-tputtd65-skid-back": {
+   "id": "unoq-tt-tputtd65-skid-back",
+   "base": "unoq",
+   "drive": "tt",
+   "wheel": "tpu_tt_d65",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 533.5,
+   "mass_by_kind_g": {
+    "print": 148.1,
+    "controller": 40.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 53.4
+   },
+   "com_mm": [
+    18.2,
+    -0.0,
+    21.4
+   ],
+   "com_height_above_floor_mm": 53.9,
+   "com_ahead_of_axle_mm": 34.2,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.317,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.0,
+   "static_margin_mm": 34.2,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.2,
+   "margin_to_support_mm": 73.8,
+   "sideways_tilt_to_tip_deg": 32.4,
+   "ground_clearance_mm": 20.5,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.8
+   },
+   "top_speed_no_load_m_s": 0.681,
+   "cruise_speed_estimate_m_s": 0.6,
+   "current_estimate_cruise_a": 0.35,
+   "wheel_load_fraction": 0.683,
+   "support_load_n": 1.66,
+   "drag_n": 0.569,
+   "torque_per_wheel_level_nm": 0.0092,
+   "torque_fraction_of_stall_level": 0.118,
+   "accel_limit_traction_m_s2": 7.21,
+   "accel_limit_motor_m_s2": 7.93,
+   "brake_limit_traction_m_s2": 4.69,
+   "support_lifts_accelerating_m_s2": 6.23,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.44,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 32.4,
+   "slope_limit_traction_deg": 32.4,
+   "slope_tips_at_deg": 32.4,
+   "slope_limit_deg": 32.4
+  },
+  "unoq-tt-tputtd65-skid-front": {
+   "id": "unoq-tt-tputtd65-skid-front",
+   "base": "unoq",
+   "drive": "tt",
+   "wheel": "tpu_tt_d65",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 533.5,
+   "mass_by_kind_g": {
+    "print": 148.1,
+    "controller": 40.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 53.4
+   },
+   "com_mm": [
+    17.9,
+    0.0,
+    21.4
+   ],
+   "com_height_above_floor_mm": 53.9,
+   "com_ahead_of_axle_mm": 33.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.314,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.0,
+   "static_margin_mm": 33.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 33.9,
+   "margin_to_support_mm": 74.1,
+   "sideways_tilt_to_tip_deg": 32.2,
+   "ground_clearance_mm": 20.5,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.8
+   },
+   "top_speed_no_load_m_s": 0.681,
+   "cruise_speed_estimate_m_s": 0.6,
+   "current_estimate_cruise_a": 0.35,
+   "wheel_load_fraction": 0.686,
+   "support_load_n": 1.64,
+   "drag_n": 0.564,
+   "torque_per_wheel_level_nm": 0.0092,
+   "torque_fraction_of_stall_level": 0.118,
+   "accel_limit_traction_m_s2": 2.53,
+   "accel_limit_motor_m_s2": 7.94,
+   "brake_limit_traction_m_s2": 7.24,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.17,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.5,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 47.8,
+   "slope_limit_traction_deg": 14.4,
+   "slope_tips_at_deg": 54.0,
+   "slope_limit_deg": 14.4
+  },
+  "unoq-tt-tputtd65-ball-back": {
+   "id": "unoq-tt-tputtd65-ball-back",
+   "base": "unoq",
+   "drive": "tt",
+   "wheel": "tpu_tt_d65",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 536.3,
+   "mass_by_kind_g": {
+    "print": 150.8,
+    "controller": 40.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 53.4
+   },
+   "com_mm": [
+    18.6,
+    -0.0,
+    21.2
+   ],
+   "com_height_above_floor_mm": 53.7,
+   "com_ahead_of_axle_mm": 34.6,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.32,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.0,
+   "static_margin_mm": 34.6,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.6,
+   "margin_to_support_mm": 73.4,
+   "sideways_tilt_to_tip_deg": 32.8,
+   "ground_clearance_mm": 20.5,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.8
+   },
+   "top_speed_no_load_m_s": 0.681,
+   "cruise_speed_estimate_m_s": 0.634,
+   "current_estimate_cruise_a": 0.2,
+   "wheel_load_fraction": 0.68,
+   "support_load_n": 1.68,
+   "drag_n": 0.324,
+   "torque_per_wheel_level_nm": 0.0053,
+   "torque_fraction_of_stall_level": 0.068,
+   "accel_limit_traction_m_s2": 7.16,
+   "accel_limit_motor_m_s2": 8.35,
+   "brake_limit_traction_m_s2": 4.04,
+   "support_lifts_accelerating_m_s2": 6.32,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.42,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 32.8,
+   "slope_limit_traction_deg": 32.8,
+   "slope_tips_at_deg": 32.8,
+   "slope_limit_deg": 32.8
+  },
+  "unoq-tt-tputtd65-ball-front": {
+   "id": "unoq-tt-tputtd65-ball-front",
+   "base": "unoq",
+   "drive": "tt",
+   "wheel": "tpu_tt_d65",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 536.3,
+   "mass_by_kind_g": {
+    "print": 150.8,
+    "controller": 40.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 53.4
+   },
+   "com_mm": [
+    18.3,
+    0.0,
+    21.2
+   ],
+   "com_height_above_floor_mm": 53.7,
+   "com_ahead_of_axle_mm": 34.3,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.317,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.0,
+   "static_margin_mm": 34.3,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.3,
+   "margin_to_support_mm": 73.7,
+   "sideways_tilt_to_tip_deg": 32.6,
+   "ground_clearance_mm": 20.5,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.8
+   },
+   "top_speed_no_load_m_s": 0.681,
+   "cruise_speed_estimate_m_s": 0.635,
+   "current_estimate_cruise_a": 0.2,
+   "wheel_load_fraction": 0.683,
+   "support_load_n": 1.67,
+   "drag_n": 0.322,
+   "torque_per_wheel_level_nm": 0.0052,
+   "torque_fraction_of_stall_level": 0.067,
+   "accel_limit_traction_m_s2": 2.97,
+   "accel_limit_motor_m_s2": 8.35,
+   "brake_limit_traction_m_s2": 7.19,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.26,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.48,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 53.9,
+   "slope_limit_traction_deg": 16.8,
+   "slope_tips_at_deg": 54.0,
+   "slope_limit_deg": 16.8
+  },
   "pi-servo360-solidhornd56-skid-back": {
    "id": "pi-servo360-solidhornd56-skid-back",
    "base": "pi",
@@ -2148,6 +6438,14 @@
    "wheel": "solid_horn_d56",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 443.7,
    "mass_by_kind_g": {
@@ -2223,6 +6521,14 @@
    "wheel": "solid_horn_d56",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 443.7,
    "mass_by_kind_g": {
@@ -2298,6 +6604,14 @@
    "wheel": "solid_horn_d56",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 446.5,
    "mass_by_kind_g": {
@@ -2373,6 +6687,14 @@
    "wheel": "solid_horn_d56",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
    "mass_g": 446.5,
    "mass_by_kind_g": {
@@ -2441,6 +6763,338 @@
    "slope_tips_at_deg": 53.6,
    "slope_limit_deg": 17.7
   },
+  "pi-servo360-tpuhornd56-skid-back": {
+   "id": "pi-servo360-tpuhornd56-skid-back",
+   "base": "pi",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 449.3,
+   "mass_by_kind_g": {
+    "print": 146.2,
+    "camera": 3.0,
+    "controller": 16.0,
+    "battery": 230.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    21.5,
+    0.0,
+    23.0
+   ],
+   "com_height_above_floor_mm": 51.0,
+   "com_ahead_of_axle_mm": 37.5,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.347,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 37.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 37.5,
+   "margin_to_support_mm": 70.5,
+   "sideways_tilt_to_tip_deg": 36.3,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.232,
+   "current_estimate_cruise_a": 0.07,
+   "wheel_load_fraction": 0.653,
+   "support_load_n": 1.53,
+   "drag_n": 0.517,
+   "torque_per_wheel_level_nm": 0.0072,
+   "torque_fraction_of_stall_level": 0.046,
+   "accel_limit_traction_m_s2": 6.55,
+   "accel_limit_motor_m_s2": 23.81,
+   "brake_limit_traction_m_s2": 4.63,
+   "support_lifts_accelerating_m_s2": 7.22,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.57,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 36.3,
+   "slope_limit_traction_deg": 33.7,
+   "slope_tips_at_deg": 36.3,
+   "slope_limit_deg": 33.7
+  },
+  "pi-servo360-tpuhornd56-skid-front": {
+   "id": "pi-servo360-tpuhornd56-skid-front",
+   "base": "pi",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 449.3,
+   "mass_by_kind_g": {
+    "print": 146.2,
+    "camera": 3.0,
+    "controller": 16.0,
+    "battery": 230.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    21.1,
+    -0.0,
+    23.0
+   ],
+   "com_height_above_floor_mm": 51.0,
+   "com_ahead_of_axle_mm": 37.1,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.343,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 37.1,
+   "stable": true,
+   "margin_to_axle_line_mm": 37.1,
+   "margin_to_support_mm": 70.9,
+   "sideways_tilt_to_tip_deg": 36.0,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.232,
+   "current_estimate_cruise_a": 0.07,
+   "wheel_load_fraction": 0.657,
+   "support_load_n": 1.51,
+   "drag_n": 0.512,
+   "torque_per_wheel_level_nm": 0.0072,
+   "torque_fraction_of_stall_level": 0.046,
+   "accel_limit_traction_m_s2": 2.38,
+   "accel_limit_motor_m_s2": 23.82,
+   "brake_limit_traction_m_s2": 6.81,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 7.13,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.65,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 54.2,
+   "slope_limit_traction_deg": 13.6,
+   "slope_tips_at_deg": 54.3,
+   "slope_limit_deg": 13.6
+  },
+  "pi-servo360-tpuhornd56-ball-back": {
+   "id": "pi-servo360-tpuhornd56-ball-back",
+   "base": "pi",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 452.1,
+   "mass_by_kind_g": {
+    "print": 148.9,
+    "camera": 3.0,
+    "controller": 16.0,
+    "battery": 230.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    21.9,
+    0.0,
+    22.8
+   ],
+   "com_height_above_floor_mm": 50.8,
+   "com_ahead_of_axle_mm": 37.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.351,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 37.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 37.9,
+   "margin_to_support_mm": 70.1,
+   "sideways_tilt_to_tip_deg": 36.8,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.237,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.649,
+   "support_load_n": 1.56,
+   "drag_n": 0.291,
+   "torque_per_wheel_level_nm": 0.0041,
+   "torque_fraction_of_stall_level": 0.026,
+   "accel_limit_traction_m_s2": 6.56,
+   "accel_limit_motor_m_s2": 24.16,
+   "brake_limit_traction_m_s2": 3.95,
+   "support_lifts_accelerating_m_s2": 7.33,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.54,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 36.7,
+   "slope_limit_traction_deg": 33.7,
+   "slope_tips_at_deg": 36.8,
+   "slope_limit_deg": 33.7
+  },
+  "pi-servo360-tpuhornd56-ball-front": {
+   "id": "pi-servo360-tpuhornd56-ball-front",
+   "base": "pi",
+   "drive": "servo360",
+   "wheel": "tpu_horn_d56",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 452.1,
+   "mass_by_kind_g": {
+    "print": 148.9,
+    "camera": 3.0,
+    "controller": 16.0,
+    "battery": 230.0,
+    "motor": 18.0,
+    "wheel": 36.2
+   },
+   "com_mm": [
+    21.5,
+    -0.0,
+    22.8
+   ],
+   "com_height_above_floor_mm": 50.8,
+   "com_ahead_of_axle_mm": 37.5,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.347,
+   "track_mm": 187.0,
+   "wheel_diameter_mm": 56.0,
+   "static_margin_mm": 37.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 37.5,
+   "margin_to_support_mm": 70.5,
+   "sideways_tilt_to_tip_deg": 36.5,
+   "ground_clearance_mm": 16.0,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.157,
+    "no_load_rpm": 83.0,
+    "feedback": "none: open-loop speed",
+    "stall_current_both_a": 1.5,
+    "wheel_force_at_stall_n": 11.21
+   },
+   "top_speed_no_load_m_s": 0.243,
+   "cruise_speed_estimate_m_s": 0.237,
+   "current_estimate_cruise_a": 0.04,
+   "wheel_load_fraction": 0.653,
+   "support_load_n": 1.54,
+   "drag_n": 0.289,
+   "torque_per_wheel_level_nm": 0.004,
+   "torque_fraction_of_stall_level": 0.026,
+   "accel_limit_traction_m_s2": 2.84,
+   "accel_limit_motor_m_s2": 24.17,
+   "brake_limit_traction_m_s2": 6.73,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 7.25,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.63,
+   "tips_before_it_slips": false,
+   "slope_limit_torque_deg": 54.2,
+   "slope_limit_traction_deg": 16.1,
+   "slope_tips_at_deg": 54.2,
+   "slope_limit_deg": 16.1
+  },
   "pi-tt-tt65-skid-back": {
    "id": "pi-tt-tt65-skid-back",
    "base": "pi",
@@ -2448,6 +7102,14 @@
    "wheel": "tt_65",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "tt65"
+   },
    "tyre": "tt_tyre",
    "mass_g": 543.1,
    "mass_by_kind_g": {
@@ -2523,6 +7185,14 @@
    "wheel": "tt_65",
    "support": "skid",
    "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "tt65"
+   },
    "tyre": "tt_tyre",
    "mass_g": 543.1,
    "mass_by_kind_g": {
@@ -2598,6 +7268,14 @@
    "wheel": "tt_65",
    "support": "ball",
    "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "tt65"
+   },
    "tyre": "tt_tyre",
    "mass_g": 545.8,
    "mass_by_kind_g": {
@@ -2673,6 +7351,14 @@
    "wheel": "tt_65",
    "support": "ball",
    "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "tt65"
+   },
    "tyre": "tt_tyre",
    "mass_g": 545.8,
    "mass_by_kind_g": {
@@ -2741,40 +7427,48 @@
    "slope_tips_at_deg": 55.1,
    "slope_limit_deg": 15.1
   },
-  "ev3-ev3large-solidd43-skid-back": {
-   "id": "ev3-ev3large-solidd43-skid-back",
-   "base": "ev3",
-   "drive": "ev3_large",
-   "wheel": "solid_d43",
+  "pi-tt-solidttd65-skid-back": {
+   "id": "pi-tt-solidttd65-skid-back",
+   "base": "pi",
+   "drive": "tt",
+   "wheel": "solid_tt_d65",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "o_ring",
-   "mass_g": 740.4,
+   "mass_g": 509.1,
    "mass_by_kind_g": {
-    "print": 134.9,
-    "camera": 70.0,
-    "controller": 348.0,
-    "motor": 152.0,
-    "technic": 16.0,
-    "wheel": 19.5
+    "print": 146.0,
+    "camera": 3.0,
+    "controller": 26.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 42.1
    },
    "com_mm": [
-    21.8,
+    19.5,
     0.0,
-    53.5
+    21.2
    ],
-   "com_height_above_floor_mm": 75.9,
-   "com_ahead_of_axle_mm": 37.8,
+   "com_height_above_floor_mm": 53.8,
+   "com_ahead_of_axle_mm": 35.5,
    "wheelbase_mm": 108.0,
-   "com_fraction_of_wheelbase": 0.35,
-   "track_mm": 136.0,
-   "wheel_diameter_mm": 44.76,
-   "static_margin_mm": 37.4,
+   "com_fraction_of_wheelbase": 0.328,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.16,
+   "static_margin_mm": 35.5,
    "stable": true,
-   "margin_to_axle_line_mm": 37.8,
-   "margin_to_support_mm": 70.2,
-   "sideways_tilt_to_tip_deg": 26.2,
-   "ground_clearance_mm": 10.4,
+   "margin_to_axle_line_mm": 35.5,
+   "margin_to_support_mm": 72.5,
+   "sideways_tilt_to_tip_deg": 33.4,
+   "ground_clearance_mm": 20.6,
    "friction": {
     "wheel": 0.8,
     "wheel_range": [
@@ -2789,32 +7483,613 @@
     "rolling": 0.02
    },
    "motor": {
-    "stall_torque_nm": 0.4,
-    "no_load_rpm": 165,
-    "feedback": "encoder, 1 degree: closed-loop speed",
-    "stall_current_both_a": 3.6,
-    "wheel_force_at_stall_n": 35.75
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.79
    },
-   "top_speed_no_load_m_s": 0.387,
-   "cruise_speed_estimate_m_s": 0.377,
-   "current_estimate_cruise_a": 0.09,
-   "wheel_load_fraction": 0.65,
-   "support_load_n": 2.54,
-   "drag_n": 0.857,
-   "torque_per_wheel_level_nm": 0.0096,
-   "torque_fraction_of_stall_level": 0.024,
-   "accel_limit_traction_m_s2": 11.66,
-   "accel_limit_motor_m_s2": 47.12,
-   "brake_limit_traction_m_s2": 4.54,
-   "support_lifts_accelerating_m_s2": 4.88,
+   "top_speed_no_load_m_s": 0.682,
+   "cruise_speed_estimate_m_s": 0.603,
+   "current_estimate_cruise_a": 0.35,
+   "wheel_load_fraction": 0.672,
+   "support_load_n": 1.64,
+   "drag_n": 0.559,
+   "torque_per_wheel_level_nm": 0.0091,
+   "torque_fraction_of_stall_level": 0.117,
+   "accel_limit_traction_m_s2": 8.76,
+   "accel_limit_motor_m_s2": 8.31,
+   "brake_limit_traction_m_s2": 4.99,
+   "support_lifts_accelerating_m_s2": 6.47,
    "support_lifts_braking_m_s2": null,
-   "wheels_lift_braking_m_s2": 9.07,
+   "wheels_lift_braking_m_s2": 13.22,
    "wheels_lift_accelerating_m_s2": null,
    "tips_before_it_slips": true,
-   "slope_limit_torque_deg": 26.4,
-   "slope_limit_traction_deg": 26.4,
-   "slope_tips_at_deg": 26.5,
-   "slope_limit_deg": 26.4
+   "slope_limit_torque_deg": 33.3,
+   "slope_limit_traction_deg": 33.3,
+   "slope_tips_at_deg": 33.4,
+   "slope_limit_deg": 33.3
+  },
+  "pi-tt-solidttd65-skid-front": {
+   "id": "pi-tt-solidttd65-skid-front",
+   "base": "pi",
+   "drive": "tt",
+   "wheel": "solid_tt_d65",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 509.1,
+   "mass_by_kind_g": {
+    "print": 146.0,
+    "camera": 3.0,
+    "controller": 26.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 42.1
+   },
+   "com_mm": [
+    19.1,
+    -0.0,
+    21.2
+   ],
+   "com_height_above_floor_mm": 53.8,
+   "com_ahead_of_axle_mm": 35.1,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.325,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.16,
+   "static_margin_mm": 35.1,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.1,
+   "margin_to_support_mm": 72.9,
+   "sideways_tilt_to_tip_deg": 33.1,
+   "ground_clearance_mm": 20.6,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.79
+   },
+   "top_speed_no_load_m_s": 0.682,
+   "cruise_speed_estimate_m_s": 0.603,
+   "current_estimate_cruise_a": 0.35,
+   "wheel_load_fraction": 0.675,
+   "support_load_n": 1.62,
+   "drag_n": 0.554,
+   "torque_per_wheel_level_nm": 0.009,
+   "torque_fraction_of_stall_level": 0.116,
+   "accel_limit_traction_m_s2": 2.81,
+   "accel_limit_motor_m_s2": 8.32,
+   "brake_limit_traction_m_s2": 8.81,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.4,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.29,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 51.2,
+   "slope_limit_traction_deg": 15.9,
+   "slope_tips_at_deg": 53.6,
+   "slope_limit_deg": 15.9
+  },
+  "pi-tt-solidttd65-ball-back": {
+   "id": "pi-tt-solidttd65-ball-back",
+   "base": "pi",
+   "drive": "tt",
+   "wheel": "solid_tt_d65",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 511.9,
+   "mass_by_kind_g": {
+    "print": 148.8,
+    "camera": 3.0,
+    "controller": 26.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 42.1
+   },
+   "com_mm": [
+    19.9,
+    0.0,
+    21.0
+   ],
+   "com_height_above_floor_mm": 53.6,
+   "com_ahead_of_axle_mm": 35.9,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.332,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.16,
+   "static_margin_mm": 35.9,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.9,
+   "margin_to_support_mm": 72.1,
+   "sideways_tilt_to_tip_deg": 33.8,
+   "ground_clearance_mm": 20.6,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.79
+   },
+   "top_speed_no_load_m_s": 0.682,
+   "cruise_speed_estimate_m_s": 0.637,
+   "current_estimate_cruise_a": 0.2,
+   "wheel_load_fraction": 0.668,
+   "support_load_n": 1.67,
+   "drag_n": 0.317,
+   "torque_per_wheel_level_nm": 0.0052,
+   "torque_fraction_of_stall_level": 0.066,
+   "accel_limit_traction_m_s2": 8.69,
+   "accel_limit_motor_m_s2": 8.73,
+   "brake_limit_traction_m_s2": 4.33,
+   "support_lifts_accelerating_m_s2": 6.56,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.21,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 33.7,
+   "slope_limit_traction_deg": 33.7,
+   "slope_tips_at_deg": 33.8,
+   "slope_limit_deg": 33.7
+  },
+  "pi-tt-solidttd65-ball-front": {
+   "id": "pi-tt-solidttd65-ball-front",
+   "base": "pi",
+   "drive": "tt",
+   "wheel": "solid_tt_d65",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_ring"
+   },
+   "tyre": "o_ring",
+   "mass_g": 511.9,
+   "mass_by_kind_g": {
+    "print": 148.8,
+    "camera": 3.0,
+    "controller": 26.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 42.1
+   },
+   "com_mm": [
+    19.5,
+    -0.0,
+    21.0
+   ],
+   "com_height_above_floor_mm": 53.6,
+   "com_ahead_of_axle_mm": 35.5,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.329,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.16,
+   "static_margin_mm": 35.5,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.5,
+   "margin_to_support_mm": 72.5,
+   "sideways_tilt_to_tip_deg": 33.5,
+   "ground_clearance_mm": 20.6,
+   "friction": {
+    "wheel": 0.8,
+    "wheel_range": [
+     0.6,
+     0.9
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.79
+   },
+   "top_speed_no_load_m_s": 0.682,
+   "cruise_speed_estimate_m_s": 0.637,
+   "current_estimate_cruise_a": 0.2,
+   "wheel_load_fraction": 0.671,
+   "support_load_n": 1.65,
+   "drag_n": 0.315,
+   "torque_per_wheel_level_nm": 0.0051,
+   "torque_fraction_of_stall_level": 0.066,
+   "accel_limit_traction_m_s2": 3.25,
+   "accel_limit_motor_m_s2": 8.74,
+   "brake_limit_traction_m_s2": 8.74,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.49,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.27,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 53.5,
+   "slope_limit_traction_deg": 18.3,
+   "slope_tips_at_deg": 53.5,
+   "slope_limit_deg": 18.3
+  },
+  "pi-tt-tputtd65-skid-back": {
+   "id": "pi-tt-tputtd65-skid-back",
+   "base": "pi",
+   "drive": "tt",
+   "wheel": "tpu_tt_d65",
+   "support": "skid",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 520.5,
+   "mass_by_kind_g": {
+    "print": 146.0,
+    "camera": 3.0,
+    "controller": 26.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 53.4
+   },
+   "com_mm": [
+    18.7,
+    0.0,
+    20.8
+   ],
+   "com_height_above_floor_mm": 53.3,
+   "com_ahead_of_axle_mm": 34.7,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.321,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.0,
+   "static_margin_mm": 34.7,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.7,
+   "margin_to_support_mm": 73.3,
+   "sideways_tilt_to_tip_deg": 33.1,
+   "ground_clearance_mm": 20.5,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.8
+   },
+   "top_speed_no_load_m_s": 0.681,
+   "cruise_speed_estimate_m_s": 0.601,
+   "current_estimate_cruise_a": 0.35,
+   "wheel_load_fraction": 0.679,
+   "support_load_n": 1.64,
+   "drag_n": 0.561,
+   "torque_per_wheel_level_nm": 0.0091,
+   "torque_fraction_of_stall_level": 0.117,
+   "accel_limit_traction_m_s2": 7.12,
+   "accel_limit_motor_m_s2": 8.14,
+   "brake_limit_traction_m_s2": 4.68,
+   "support_lifts_accelerating_m_s2": 6.39,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.5,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 33.0,
+   "slope_limit_traction_deg": 33.0,
+   "slope_tips_at_deg": 33.1,
+   "slope_limit_deg": 33.0
+  },
+  "pi-tt-tputtd65-skid-front": {
+   "id": "pi-tt-tputtd65-skid-front",
+   "base": "pi",
+   "drive": "tt",
+   "wheel": "tpu_tt_d65",
+   "support": "skid",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "skid",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 520.5,
+   "mass_by_kind_g": {
+    "print": 146.0,
+    "camera": 3.0,
+    "controller": 26.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 53.4
+   },
+   "com_mm": [
+    18.3,
+    -0.0,
+    20.8
+   ],
+   "com_height_above_floor_mm": 53.3,
+   "com_ahead_of_axle_mm": 34.3,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.318,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.0,
+   "static_margin_mm": 34.3,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.3,
+   "margin_to_support_mm": 73.7,
+   "sideways_tilt_to_tip_deg": 32.8,
+   "ground_clearance_mm": 20.5,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.3,
+    "support_range": [
+     0.2,
+     0.4
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.8
+   },
+   "top_speed_no_load_m_s": 0.681,
+   "cruise_speed_estimate_m_s": 0.602,
+   "current_estimate_cruise_a": 0.35,
+   "wheel_load_fraction": 0.682,
+   "support_load_n": 1.62,
+   "drag_n": 0.556,
+   "torque_per_wheel_level_nm": 0.009,
+   "torque_fraction_of_stall_level": 0.116,
+   "accel_limit_traction_m_s2": 2.51,
+   "accel_limit_motor_m_s2": 8.15,
+   "brake_limit_traction_m_s2": 7.15,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.32,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.57,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 49.8,
+   "slope_limit_traction_deg": 14.3,
+   "slope_tips_at_deg": 54.1,
+   "slope_limit_deg": 14.3
+  },
+  "pi-tt-tputtd65-ball-back": {
+   "id": "pi-tt-tputtd65-ball-back",
+   "base": "pi",
+   "drive": "tt",
+   "wheel": "tpu_tt_d65",
+   "support": "ball",
+   "wheels_at": "back",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 523.3,
+   "mass_by_kind_g": {
+    "print": 148.8,
+    "camera": 3.0,
+    "controller": 26.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 53.4
+   },
+   "com_mm": [
+    19.1,
+    0.0,
+    20.6
+   ],
+   "com_height_above_floor_mm": 53.1,
+   "com_ahead_of_axle_mm": 35.1,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.325,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.0,
+   "static_margin_mm": 35.1,
+   "stable": true,
+   "margin_to_axle_line_mm": 35.1,
+   "margin_to_support_mm": 72.9,
+   "sideways_tilt_to_tip_deg": 33.5,
+   "ground_clearance_mm": 20.5,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.8
+   },
+   "top_speed_no_load_m_s": 0.681,
+   "cruise_speed_estimate_m_s": 0.635,
+   "current_estimate_cruise_a": 0.2,
+   "wheel_load_fraction": 0.675,
+   "support_load_n": 1.67,
+   "drag_n": 0.319,
+   "torque_per_wheel_level_nm": 0.0052,
+   "torque_fraction_of_stall_level": 0.067,
+   "accel_limit_traction_m_s2": 7.07,
+   "accel_limit_motor_m_s2": 8.56,
+   "brake_limit_traction_m_s2": 4.03,
+   "support_lifts_accelerating_m_s2": 6.49,
+   "support_lifts_braking_m_s2": null,
+   "wheels_lift_braking_m_s2": 13.48,
+   "wheels_lift_accelerating_m_s2": null,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 33.4,
+   "slope_limit_traction_deg": 33.4,
+   "slope_tips_at_deg": 33.5,
+   "slope_limit_deg": 33.4
+  },
+  "pi-tt-tputtd65-ball-front": {
+   "id": "pi-tt-tputtd65-ball-front",
+   "base": "pi",
+   "drive": "tt",
+   "wheel": "tpu_tt_d65",
+   "support": "ball",
+   "wheels_at": "front",
+   "ids": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "front",
+    "support": "roller",
+    "wheel": "printed_tpu"
+   },
+   "tyre": "tpu",
+   "mass_g": 523.3,
+   "mass_by_kind_g": {
+    "print": 148.8,
+    "camera": 3.0,
+    "controller": 26.9,
+    "battery": 230.0,
+    "motor": 61.2,
+    "wheel": 53.4
+   },
+   "com_mm": [
+    18.7,
+    -0.0,
+    20.6
+   ],
+   "com_height_above_floor_mm": 53.1,
+   "com_ahead_of_axle_mm": 34.7,
+   "wheelbase_mm": 108.0,
+   "com_fraction_of_wheelbase": 0.321,
+   "track_mm": 194.0,
+   "wheel_diameter_mm": 65.0,
+   "static_margin_mm": 34.7,
+   "stable": true,
+   "margin_to_axle_line_mm": 34.7,
+   "margin_to_support_mm": 73.3,
+   "sideways_tilt_to_tip_deg": 33.2,
+   "ground_clearance_mm": 20.5,
+   "friction": {
+    "wheel": 0.7,
+    "wheel_range": [
+     0.6,
+     0.8
+    ],
+    "support": 0.15,
+    "support_range": [
+     0.1,
+     0.3
+    ],
+    "rolling": 0.02
+   },
+   "motor": {
+    "stall_torque_nm": 0.078,
+    "no_load_rpm": 200.0,
+    "feedback": "none: open-loop speed (an encoder version exists)",
+    "stall_current_both_a": 3.0,
+    "wheel_force_at_stall_n": 4.8
+   },
+   "top_speed_no_load_m_s": 0.681,
+   "cruise_speed_estimate_m_s": 0.636,
+   "current_estimate_cruise_a": 0.2,
+   "wheel_load_fraction": 0.679,
+   "support_load_n": 1.65,
+   "drag_n": 0.317,
+   "torque_per_wheel_level_nm": 0.0052,
+   "torque_fraction_of_stall_level": 0.066,
+   "accel_limit_traction_m_s2": 2.95,
+   "accel_limit_motor_m_s2": 8.57,
+   "brake_limit_traction_m_s2": 7.1,
+   "support_lifts_accelerating_m_s2": null,
+   "support_lifts_braking_m_s2": 6.42,
+   "wheels_lift_braking_m_s2": null,
+   "wheels_lift_accelerating_m_s2": 13.55,
+   "tips_before_it_slips": true,
+   "slope_limit_torque_deg": 54.0,
+   "slope_limit_traction_deg": 16.7,
+   "slope_tips_at_deg": 54.1,
+   "slope_limit_deg": 16.7
   },
   "ev3-ev3large-solidd43-bare-skid-back": {
    "id": "ev3-ev3large-solidd43-bare-skid-back",
@@ -2823,6 +8098,14 @@
    "wheel": "solid_d43",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "ev3",
+    "locomotion": "wheeled",
+    "drive": "ev3_motors",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "pla",
    "mass_g": 737.2,
    "mass_by_kind_g": {
@@ -2891,155 +8174,6 @@
    "slope_tips_at_deg": 26.8,
    "slope_limit_deg": 8.7
   },
-  "ev3-ev3large-tpud43-skid-back": {
-   "id": "ev3-ev3large-tpud43-skid-back",
-   "base": "ev3",
-   "drive": "ev3_large",
-   "wheel": "tpu_d43",
-   "support": "skid",
-   "wheels_at": "back",
-   "tyre": "tpu",
-   "mass_g": 743.4,
-   "mass_by_kind_g": {
-    "print": 134.9,
-    "camera": 70.0,
-    "controller": 348.0,
-    "motor": 152.0,
-    "technic": 16.0,
-    "wheel": 22.4
-   },
-   "com_mm": [
-    21.6,
-    0.0,
-    53.3
-   ],
-   "com_height_above_floor_mm": 74.9,
-   "com_ahead_of_axle_mm": 37.6,
-   "wheelbase_mm": 108.0,
-   "com_fraction_of_wheelbase": 0.348,
-   "track_mm": 136.0,
-   "wheel_diameter_mm": 43.2,
-   "static_margin_mm": 37.5,
-   "stable": true,
-   "margin_to_axle_line_mm": 37.6,
-   "margin_to_support_mm": 70.4,
-   "sideways_tilt_to_tip_deg": 26.6,
-   "ground_clearance_mm": 9.6,
-   "friction": {
-    "wheel": 0.7,
-    "wheel_range": [
-     0.6,
-     0.8
-    ],
-    "support": 0.3,
-    "support_range": [
-     0.2,
-     0.4
-    ],
-    "rolling": 0.02
-   },
-   "motor": {
-    "stall_torque_nm": 0.4,
-    "no_load_rpm": 165,
-    "feedback": "encoder, 1 degree: closed-loop speed",
-    "stall_current_both_a": 3.6,
-    "wheel_force_at_stall_n": 37.04
-   },
-   "top_speed_no_load_m_s": 0.373,
-   "cruise_speed_estimate_m_s": 0.365,
-   "current_estimate_cruise_a": 0.08,
-   "wheel_load_fraction": 0.652,
-   "support_load_n": 2.54,
-   "drag_n": 0.857,
-   "torque_per_wheel_level_nm": 0.0093,
-   "torque_fraction_of_stall_level": 0.023,
-   "accel_limit_traction_m_s2": 8.7,
-   "accel_limit_motor_m_s2": 48.67,
-   "brake_limit_traction_m_s2": 4.31,
-   "support_lifts_accelerating_m_s2": 4.93,
-   "support_lifts_braking_m_s2": null,
-   "wheels_lift_braking_m_s2": 9.21,
-   "wheels_lift_accelerating_m_s2": null,
-   "tips_before_it_slips": true,
-   "slope_limit_torque_deg": 26.6,
-   "slope_limit_traction_deg": 26.6,
-   "slope_tips_at_deg": 26.7,
-   "slope_limit_deg": 26.6
-  },
-  "unoq-tt-solidttd65-skid-back": {
-   "id": "unoq-tt-solidttd65-skid-back",
-   "base": "unoq",
-   "drive": "tt",
-   "wheel": "solid_tt_d65",
-   "support": "skid",
-   "wheels_at": "back",
-   "tyre": "o_ring",
-   "mass_g": 522.2,
-   "mass_by_kind_g": {
-    "print": 148.1,
-    "controller": 40.9,
-    "battery": 230.0,
-    "motor": 61.2,
-    "wheel": 42.1
-   },
-   "com_mm": [
-    18.9,
-    -0.0,
-    21.8
-   ],
-   "com_height_above_floor_mm": 54.4,
-   "com_ahead_of_axle_mm": 34.9,
-   "wheelbase_mm": 108.0,
-   "com_fraction_of_wheelbase": 0.324,
-   "track_mm": 194.0,
-   "wheel_diameter_mm": 65.16,
-   "static_margin_mm": 34.9,
-   "stable": true,
-   "margin_to_axle_line_mm": 34.9,
-   "margin_to_support_mm": 73.1,
-   "sideways_tilt_to_tip_deg": 32.7,
-   "ground_clearance_mm": 20.6,
-   "friction": {
-    "wheel": 0.8,
-    "wheel_range": [
-     0.6,
-     0.9
-    ],
-    "support": 0.3,
-    "support_range": [
-     0.2,
-     0.4
-    ],
-    "rolling": 0.02
-   },
-   "motor": {
-    "stall_torque_nm": 0.078,
-    "no_load_rpm": 200.0,
-    "feedback": "none: open-loop speed (an encoder version exists)",
-    "stall_current_both_a": 3.0,
-    "wheel_force_at_stall_n": 4.79
-   },
-   "top_speed_no_load_m_s": 0.682,
-   "cruise_speed_estimate_m_s": 0.602,
-   "current_estimate_cruise_a": 0.35,
-   "wheel_load_fraction": 0.676,
-   "support_load_n": 1.66,
-   "drag_n": 0.567,
-   "torque_per_wheel_level_nm": 0.0092,
-   "torque_fraction_of_stall_level": 0.118,
-   "accel_limit_traction_m_s2": 8.89,
-   "accel_limit_motor_m_s2": 8.08,
-   "brake_limit_traction_m_s2": 5.0,
-   "support_lifts_accelerating_m_s2": 6.3,
-   "support_lifts_braking_m_s2": null,
-   "wheels_lift_braking_m_s2": 13.17,
-   "wheels_lift_accelerating_m_s2": null,
-   "tips_before_it_slips": true,
-   "slope_limit_torque_deg": 32.7,
-   "slope_limit_traction_deg": 32.7,
-   "slope_tips_at_deg": 32.7,
-   "slope_limit_deg": 32.7
-  },
   "unoq-tt-solidttd65-bare-skid-back": {
    "id": "unoq-tt-solidttd65-bare-skid-back",
    "base": "unoq",
@@ -3047,6 +8181,14 @@
    "wheel": "solid_tt_d65",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "pla",
    "mass_g": 513.0,
    "mass_by_kind_g": {
@@ -3114,80 +8256,6 @@
    "slope_tips_at_deg": 33.5,
    "slope_limit_deg": 8.3
   },
-  "unoq-tt-tputtd65-skid-back": {
-   "id": "unoq-tt-tputtd65-skid-back",
-   "base": "unoq",
-   "drive": "tt",
-   "wheel": "tpu_tt_d65",
-   "support": "skid",
-   "wheels_at": "back",
-   "tyre": "tpu",
-   "mass_g": 533.5,
-   "mass_by_kind_g": {
-    "print": 148.1,
-    "controller": 40.9,
-    "battery": 230.0,
-    "motor": 61.2,
-    "wheel": 53.4
-   },
-   "com_mm": [
-    18.2,
-    -0.0,
-    21.4
-   ],
-   "com_height_above_floor_mm": 53.9,
-   "com_ahead_of_axle_mm": 34.2,
-   "wheelbase_mm": 108.0,
-   "com_fraction_of_wheelbase": 0.317,
-   "track_mm": 194.0,
-   "wheel_diameter_mm": 65.0,
-   "static_margin_mm": 34.2,
-   "stable": true,
-   "margin_to_axle_line_mm": 34.2,
-   "margin_to_support_mm": 73.8,
-   "sideways_tilt_to_tip_deg": 32.4,
-   "ground_clearance_mm": 20.5,
-   "friction": {
-    "wheel": 0.7,
-    "wheel_range": [
-     0.6,
-     0.8
-    ],
-    "support": 0.3,
-    "support_range": [
-     0.2,
-     0.4
-    ],
-    "rolling": 0.02
-   },
-   "motor": {
-    "stall_torque_nm": 0.078,
-    "no_load_rpm": 200.0,
-    "feedback": "none: open-loop speed (an encoder version exists)",
-    "stall_current_both_a": 3.0,
-    "wheel_force_at_stall_n": 4.8
-   },
-   "top_speed_no_load_m_s": 0.681,
-   "cruise_speed_estimate_m_s": 0.6,
-   "current_estimate_cruise_a": 0.35,
-   "wheel_load_fraction": 0.683,
-   "support_load_n": 1.66,
-   "drag_n": 0.569,
-   "torque_per_wheel_level_nm": 0.0092,
-   "torque_fraction_of_stall_level": 0.118,
-   "accel_limit_traction_m_s2": 7.21,
-   "accel_limit_motor_m_s2": 7.93,
-   "brake_limit_traction_m_s2": 4.69,
-   "support_lifts_accelerating_m_s2": 6.23,
-   "support_lifts_braking_m_s2": null,
-   "wheels_lift_braking_m_s2": 13.44,
-   "wheels_lift_accelerating_m_s2": null,
-   "tips_before_it_slips": true,
-   "slope_limit_torque_deg": 32.4,
-   "slope_limit_traction_deg": 32.4,
-   "slope_tips_at_deg": 32.4,
-   "slope_limit_deg": 32.4
-  },
   "unoq-servo360-solidhornd56-bare-skid-back": {
    "id": "unoq-servo360-solidhornd56-bare-skid-back",
    "base": "unoq",
@@ -3195,6 +8263,14 @@
    "wheel": "solid_horn_d56",
    "support": "skid",
    "wheels_at": "back",
+   "ids": {
+    "controller": "unoq",
+    "locomotion": "wheeled",
+    "drive": "m5_360_wheels",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
    "tyre": "pla",
    "mass_g": 452.8,
    "mass_by_kind_g": {
@@ -3261,80 +8337,6 @@
    "slope_limit_traction_deg": 7.2,
    "slope_tips_at_deg": 36.1,
    "slope_limit_deg": 7.2
-  },
-  "unoq-servo360-tpuhornd56-skid-back": {
-   "id": "unoq-servo360-tpuhornd56-skid-back",
-   "base": "unoq",
-   "drive": "servo360",
-   "wheel": "tpu_horn_d56",
-   "support": "skid",
-   "wheels_at": "back",
-   "tyre": "tpu",
-   "mass_g": 462.4,
-   "mass_by_kind_g": {
-    "print": 148.2,
-    "controller": 30.0,
-    "battery": 230.0,
-    "motor": 18.0,
-    "wheel": 36.2
-   },
-   "com_mm": [
-    20.9,
-    -0.0,
-    23.6
-   ],
-   "com_height_above_floor_mm": 51.6,
-   "com_ahead_of_axle_mm": 36.9,
-   "wheelbase_mm": 108.0,
-   "com_fraction_of_wheelbase": 0.341,
-   "track_mm": 187.0,
-   "wheel_diameter_mm": 56.0,
-   "static_margin_mm": 36.9,
-   "stable": true,
-   "margin_to_axle_line_mm": 36.9,
-   "margin_to_support_mm": 71.1,
-   "sideways_tilt_to_tip_deg": 35.5,
-   "ground_clearance_mm": 16.0,
-   "friction": {
-    "wheel": 0.7,
-    "wheel_range": [
-     0.6,
-     0.8
-    ],
-    "support": 0.3,
-    "support_range": [
-     0.2,
-     0.4
-    ],
-    "rolling": 0.02
-   },
-   "motor": {
-    "stall_torque_nm": 0.157,
-    "no_load_rpm": 83.0,
-    "feedback": "none: open-loop speed",
-    "stall_current_both_a": 1.5,
-    "wheel_force_at_stall_n": 11.21
-   },
-   "top_speed_no_load_m_s": 0.243,
-   "cruise_speed_estimate_m_s": 0.232,
-   "current_estimate_cruise_a": 0.07,
-   "wheel_load_fraction": 0.659,
-   "support_load_n": 1.55,
-   "drag_n": 0.524,
-   "torque_per_wheel_level_nm": 0.0073,
-   "torque_fraction_of_stall_level": 0.047,
-   "accel_limit_traction_m_s2": 6.74,
-   "accel_limit_motor_m_s2": 23.12,
-   "brake_limit_traction_m_s2": 4.64,
-   "support_lifts_accelerating_m_s2": 7.0,
-   "support_lifts_braking_m_s2": null,
-   "wheels_lift_braking_m_s2": 13.52,
-   "wheels_lift_accelerating_m_s2": null,
-   "tips_before_it_slips": false,
-   "slope_limit_torque_deg": 35.5,
-   "slope_limit_traction_deg": 34.4,
-   "slope_tips_at_deg": 35.5,
-   "slope_limit_deg": 34.4
   }
  }
 }
