@@ -1,5 +1,5 @@
 {
-  "_comment": "Compatibility data for the Build yours configurator. microduck/recipe.py and site/build.js both evaluate this file with the same small algorithm; neither holds a combination of its own. 'support' is the single table that says which locomotion each controller supports and through which drive. 'why_not' explains unsupported rows. 'rules' add recipe content, or block a selection with a reason and a nearest change. The default camera is not written here: microduck/recipe.py reads it from config/assembly.json (camera.preset). Row status: 'report' (read per camera preset from reports/assembly.json and reports/sim.json), 'defined' (defined, not designed), 'summary' (read from the variants summary when it exists, otherwise being analysed). Currents are whole mA in multiples of 10.",
+  "_comment": "Compatibility data for the Build yours configurator. microduck/recipe.py and site/build.js both evaluate this file with the same small algorithm; neither holds a combination of its own. 'support' is the single table that says which locomotion each controller supports and through which drive. 'why_not' explains unsupported rows. 'rules' add recipe content, or block a selection with a reason and a nearest change. The default camera is not written here: microduck/recipe.py reads it from config/assembly.json (camera.preset). 'manifest_map' and 'report_controller' give the names stl/manifest.json and reports/assembly.json use for a controller or head. Row status: 'report' (read from reports/assembly.json and reports/sim.json for the selected controller, camera and head), 'defined' (defined, not designed), 'summary' (read from the variants summary when it exists, otherwise being analysed). Currents are whole mA in multiples of 10.",
   "not_built": "Nothing on this page has been physically built. No part has been printed against a servo or a motor, no robot has been assembled or powered.",
   "trademarks": "LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. No affiliation with any of them.",
   "repo_blob": "https://github.com/eoinjordan/botbuilder/blob/main/",
@@ -15,6 +15,7 @@
     {"id": "controller", "label": "Controller", "options": [
       {"id": "unoq", "label": "Arduino UNO Q"},
       {"id": "pi", "label": "Raspberry Pi Zero 2 W"},
+      {"id": "pi_full", "label": "Raspberry Pi, full size"},
       {"id": "hub51515", "label": "LEGO Robot Inventor 51515 hub"},
       {"id": "ev3", "label": "LEGO EV3 brick"},
       {"id": "m5core", "label": "M5Stack Core (ESP32)"}]},
@@ -41,7 +42,8 @@
     {"id": "head", "label": "Head articulation", "options": [
       {"id": "fixed", "label": "Camera mount, nothing moves"},
       {"id": "pixy_pantilt", "label": "Pixy pan-tilt kit servos"},
-      {"id": "m5_360", "label": "M5Stack 360 degree servo (pan)"},
+      {"id": "sg90_pan", "label": "SG90-class servo pans the head"},
+      {"id": "m5_360", "label": "M5Stack 360 degree servo pans the head"},
       {"id": "lego_motor", "label": "A LEGO motor pans the head"}]},
     {"id": "lego", "label": "Pin holes and studs (LEGO-compatible)", "options": [
       {"id": "off", "label": "Off"},
@@ -59,11 +61,17 @@
       {"id": "tt65", "label": "Stock 65 mm TT wheel"}]}
   ],
   "defaults": {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "camera": "", "head": "fixed", "lego": "on", "wheels": "back", "support": "roller", "wheel": "printed_ring"},
+  "manifest_map": {
+    "controller": {"unoq": "unoq", "pi": "pi_zero_2w", "pi_full": "pi"},
+    "head": {"sg90_pan": "pan", "m5_360": "pan"}
+  },
+  "report_controller": {"pi": "pi_zero_2w", "pi_full": "pi", "hub51515": "hub51515", "ev3": "ev3"},
   "support": [
     {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "base": "unoq_braccio", "status": "report", "reason": "This is the design the repository assembles digitally and simulates: the UNO Q biped with a camera mount at the front of the deck and pin holes and studs on the parts. What was run for the selected camera is listed under Analysis."},
     {"controller": "unoq", "locomotion": "wheeled", "drive": "m5_360_wheels", "base": "unoq_braccio", "status": "summary", "reason": "A wheeled UNO Q variant on two 360 degree servos is being designed and analysed on another branch."},
     {"controller": "unoq", "locomotion": "wheeled", "drive": "tt_hbridge", "base": "unoq_braccio", "status": "summary", "reason": "A wheeled UNO Q variant on two TT gear motors is being designed and analysed on another branch."},
-    {"controller": "pi", "locomotion": "biped", "drive": "servo_driver", "base": "pi_servo", "status": "defined", "reason": "The legs and servos are the analysed ones, but no deck, mount, wiring or software exists for a Raspberry Pi, and the analysis used the UNO Q stack's mass and position."},
+    {"controller": "pi", "locomotion": "biped", "drive": "servo_driver", "base": "pi_servo", "status": "report", "reason": "The biped with a torso whose deck carries a Raspberry Pi Zero 2 W and a servo driver board. The reports hold a fit and static balance check for it; no simulation, wiring or software exists for it."},
+    {"controller": "pi_full", "locomotion": "biped", "drive": "servo_driver", "base": "pi_full_servo", "status": "report", "reason": "The biped with a torso whose deck carries a full-size Raspberry Pi and a servo driver board. The reports hold a fit and static balance check for it; no simulation, wiring or software exists for it."},
     {"controller": "pi", "locomotion": "crank", "drive": "buildhat_51515", "base": "pi_buildhat_51515", "status": "summary", "reason": "The owner's pi-zero-2w-51515 prototype: printable parts and a geometric clearance check exist; fit is untested and there is no walking controller."},
     {"controller": "pi", "locomotion": "wheeled", "drive": "buildhat_51515", "base": "pi_buildhat_51515", "status": "summary", "reason": "A wheeled variant on two 51515 motors is being designed and analysed on another branch."},
     {"controller": "pi", "locomotion": "wheeled", "drive": "m5_360_wheels", "base": "pi_servo", "status": "summary", "reason": "A wheeled Raspberry Pi variant on two 360 degree servos is being designed and analysed on another branch."},
@@ -76,7 +84,7 @@
     {"controller": "m5core", "locomotion": "wheeled", "drive": "basex_ev3", "base": "m5_basex_ev3", "status": "summary", "reason": "A wheeled variant on two EV3 motors is being designed and analysed on another branch."}
   ],
   "summary_aliases": {
-    "controller": {"unoq": ["unoq", "uno_q", "uno-q", "unoq_braccio", "arduino-uno-q"], "pi": ["pi", "pi_servo", "pi-zero-2w", "pi_zero_2w", "raspberry-pi", "pi_buildhat_51515", "pi-zero-2w-51515"], "hub51515": ["hub51515", "51515", "robot-inventor", "lego-51515"], "ev3": ["ev3", "ev3-pixy2", "lego-ev3"], "m5core": ["m5core", "m5_basex_ev3", "m5stack-basex", "m5stack", "basex"]},
+    "controller": {"unoq": ["unoq", "uno_q", "uno-q", "unoq_braccio", "arduino-uno-q"], "pi": ["pi", "pi_servo", "pi-zero-2w", "pi_zero_2w", "raspberry-pi", "pi_buildhat_51515", "pi-zero-2w-51515"], "pi_full": ["pi_full", "pi_full_servo", "pi-full"], "hub51515": ["hub51515", "51515", "robot-inventor", "lego-51515"], "ev3": ["ev3", "ev3-pixy2", "lego-ev3"], "m5core": ["m5core", "m5_basex_ev3", "m5stack-basex", "m5stack", "basex"]},
     "locomotion": {"biped": ["biped"], "crank": ["crank", "crank_walker", "crank-walker", "walker"], "wheeled": ["wheeled", "wheels", "wheel"]},
     "drive": {"buildhat_51515": ["buildhat_51515", "buildhat", "build-hat", "51515"], "hub_motors": ["hub_motors", "hub", "51515-hub"], "ev3_motors": ["ev3_motors", "ev3"], "basex_ev3": ["basex_ev3", "basex"], "m5_360_wheels": ["m5_360_wheels", "m5_360", "servo360", "360-servo", "servo_360"], "tt_hbridge": ["tt_hbridge", "tt", "tt-motor", "tt_motor", "dc"], "braccio_shield": ["braccio_shield", "braccio"], "servo_driver": ["servo_driver", "pca9685"]}
   },
@@ -92,13 +100,14 @@
     {"when": {"controller": ["ev3"], "drive": ["buildhat_51515", "hub_motors"]}, "reason": "51515 motors have LEGO Power Functions 2.0 plugs; the EV3 brick's ports take EV3 and NXT plugs."},
     {"when": {"controller": ["hub51515"], "drive": ["ev3_motors", "basex_ev3"]}, "reason": "EV3 motors have EV3 plugs; the hub's ports are LEGO Power Functions 2.0. No adapter is documented by LEGO."},
     {"when": {"controller": ["unoq", "ev3", "hub51515", "m5core"], "drive": ["buildhat_51515"]}, "reason": "The Build HAT fits Raspberry Pi computers with a 40-pin GPIO header (Raspberry Pi documentation)."},
-    {"when": {"controller": ["unoq", "pi", "ev3", "hub51515"], "drive": ["basex_ev3"]}, "reason": "The BaseX is a base for an M5Stack Core and talks to it over the Core's I2C bus (M5Stack documentation)."},
-    {"when": {"controller": ["unoq", "pi", "m5core"], "drive": ["hub_motors"]}, "reason": "This drive means motors plugged into the 51515 hub's own ports; this controller has no such ports."},
-    {"when": {"controller": ["unoq", "pi", "m5core"], "drive": ["ev3_motors"]}, "reason": "This drive means motors plugged into the EV3 brick's own ports; this controller has no such ports. On an M5Stack Core the EV3 motors go on the BaseX."},
-    {"when": {"controller": ["pi", "m5core"], "drive": ["braccio_shield"]}, "reason": "The Braccio shield is an Arduino UNO format shield. No fit to this controller is documented."},
+    {"when": {"controller": ["unoq", "pi", "pi_full", "ev3", "hub51515"], "drive": ["basex_ev3"]}, "reason": "The BaseX is a base for an M5Stack Core and talks to it over the Core's I2C bus (M5Stack documentation)."},
+    {"when": {"controller": ["unoq", "pi", "pi_full", "m5core"], "drive": ["hub_motors"]}, "reason": "This drive means motors plugged into the 51515 hub's own ports; this controller has no such ports."},
+    {"when": {"controller": ["unoq", "pi", "pi_full", "m5core"], "drive": ["ev3_motors"]}, "reason": "This drive means motors plugged into the EV3 brick's own ports; this controller has no such ports. On an M5Stack Core the EV3 motors go on the BaseX."},
+    {"when": {"controller": ["pi", "pi_full", "m5core"], "drive": ["braccio_shield"]}, "reason": "The Braccio shield is an Arduino UNO format shield. No fit to this controller is documented."},
     {"when": {"controller": ["unoq"], "drive": ["servo_driver"]}, "reason": "On the UNO Q the six servos go through the Braccio shield, which is what was analysed. A separate I2C servo driver on the UNO Q has not been checked."},
     {"when": {"controller": ["m5core"], "drive": ["servo_driver", "m5_360_wheels", "tt_hbridge"]}, "reason": "The BaseX has two servo outputs (M5Stack documentation): two for six joints. Hobby servo or DC motor drives on an M5Stack Core are not among the bases defined here."},
-    {"when": {"controller": ["unoq", "pi"], "locomotion": ["crank"]}, "reason": "The crank walker is defined only with LEGO motors: on a Raspberry Pi through the Build HAT, on the EV3 brick, on the 51515 hub, or on an M5Stack Core through the BaseX."}
+    {"when": {"controller": ["pi_full"], "locomotion": ["crank", "wheeled"]}, "reason": "Only the biped's deck has a variant for a full-size Raspberry Pi. The crank walker prototype and the wheeled variants are drawn around the Pi Zero 2 W."},
+    {"when": {"controller": ["unoq", "pi", "pi_full"], "locomotion": ["crank"]}, "reason": "The crank walker is defined only with LEGO motors: on a Raspberry Pi through the Build HAT, on the EV3 brick, on the 51515 hub, or on an M5Stack Core through the BaseX."}
   ],
   "rules": [
     {"id": "biped", "when": {"locomotion": ["biped"]}, "set": {"mechanism": "Six-servo biped: left and right hip roll, hip pitch and knee pitch, one hobby servo per joint. No yaw, no ankles, no head: the torso carries a camera mount at the front edge of the deck. Four SR431 at the hips, two SR311 at the knees.", "preset": "biped-braccio-unoq"},
@@ -108,11 +117,11 @@
           {"name": "SR431 servo (TinkerKit Braccio kit)", "qty": 4, "note": "hip roll and hip pitch"},
           {"name": "SR311 servo (TinkerKit Braccio kit)", "qty": 2, "note": "knees"},
           {"name": "Servo horn with centre screw (from the kit)", "qty": 6, "note": "also the drilling jig for the printed blanks"},
-          {"name": "Small cable tie", "qty": 12, "note": "two per servo; the assembly test found only the far-end tie can pass over the case"},
+          {"name": "Small cable tie", "qty": 12, "note": "two per servo. Each cradle has four tie slot pairs; the assembly test found at least two tie paths per cradle clear of the shaft and horn, on the assumed shaft position"},
           {"name": "Horn screws for the printed blanks", "qty": 12, "note": "at least two opposed per horn; size to suit the horn, not specified by the design"}],
         "assembly": [
           "Print the fit pieces at 100 percent scale. Try a servo of each size between the rails, both tie paths, the horn on the drill blank, and the camera board in its fit piece.",
-          "Read the assembly findings on the biped page and decide what to change before printing the set: each hip roll servo overlaps the deck in the model.",
+          "Read the assembly findings on the biped page before printing the set.",
           "Print one of each of the other files. Use the horn as a drilling jig on each circular blank.",
           "Centre each servo with the horns off. Strap two SR431 to the torso for hip roll, fit each yoke to its horn with the second SR431 facing outward for hip pitch.",
           "Fit each thigh at its circular end, strap an SR311 at the far end for the knee, and fit the shin to the knee horn, toes forward.",
@@ -125,7 +134,7 @@
         "wiring": ["The camera board stands in the mount at the front edge of the deck, lower edge on the corner seats, back against the ledges, held by the snap lips, lens the way the toes point and 10 degrees below level. Each board has its own torso file and fit piece."],
         "assembly": ["Print the camera fit piece before the torso and try the board in it: 0.5 mm is allowed each side and 0.3 mm under the lips."]}},
     {"id": "biped-camera-other", "when": {"locomotion": ["biped"], "camera": ["pixy2", "picam2"]},
-      "block": "The biped's torso is generated with a mount for one of three boards: the ESP32-CAM, the ESP-EYE or the ESP32-S3-EYE. No torso exists for this camera.", "nearest": {"camera": "none"}},
+      "block": "The biped's torso is generated with a mount for one of three boards: the ESP32-CAM, the ESP-EYE or the ESP32-S3-EYE. No torso exists for this camera. Plates for a Pixy and its pan-tilt base exist as parts (head_pixy_plate_pixy2.stl, head_pixy_plate_pixy1.stl) but they are not placed on the biped: no torso carries one and no check includes one.", "nearest": {"camera": "none"}},
     {"id": "biped-lego-on", "when": {"locomotion": ["biped"], "lego": ["on"]},
       "add": {
         "wiring": ["The torso, thighs, shins and feet carry {lego_holes} pin holes and {lego_studs} studs compatible with LEGO Technic and System elements, for decoration. They were in the analysed parts. Whether a real pin or brick holds in a printed one is not known."],
@@ -315,6 +324,13 @@
           {"name": "Raspberry Pi Zero 2 W with a soldered 40-pin header", "qty": 1, "note": "65 x 30 mm (published); header footprint unpopulated as sold (published); mass not verified"},
           {"name": "Micro USB 5 V supply for the Pi", "qty": 1, "note": "official supply recommended; the product page states no current"}],
         "power": ["The Pi has its own micro USB supply. Its 5 V pin must not feed servos or motors."]}},
+    {"id": "power-pi-full", "when": {"controller": ["pi_full"]},
+      "add": {
+        "parts": [
+          {"name": "Raspberry Pi, full size, with its 40-pin header", "qty": 1, "note": "85 x 56 mm and the 58 x 49 mm hole pattern are the usual figures, not read from a Raspberry Pi drawing; 46 g is an estimate for a Raspberry Pi 4. Which model is not fixed."},
+          {"name": "5 V supply for the Pi on its own connector", "qty": 1, "note": "rating depends on the model; not verified"}],
+        "power": ["The Pi has its own supply. Its 5 V pin must not feed servos or motors."],
+        "firmware": ["Not written. No Raspberry Pi program exists in this repository for this drive.", "Robot Creator has no Raspberry Pi profile family."]}},
     {"id": "power-pi-buildhat", "when": {"controller": ["pi"], "drive": ["buildhat_51515"]},
       "add": {"parts": [{"name": "Raspberry Pi Zero 2 W", "qty": 1, "note": "65 x 30 mm (published); mass not verified"}]}},
     {"id": "power-hub", "when": {"controller": ["hub51515"]},
@@ -344,11 +360,8 @@
     {"id": "fw-crank-note", "when": {"locomotion": ["crank"]},
       "add": {"firmware": ["The prototype README states that no walking controller or tested floor gait is included."]}},
 
-    {"id": "analysis-pi-biped", "when": {"controller": ["pi"], "locomotion": ["biped"]},
-      "add": {
-        "analysis": ["Not analysed with this controller. The numbers on the biped page are for the UNO Q and Braccio shield stack (55 g assumed, on the deck); a Pi Zero 2 W and a driver board have a different mass and position, and balance was marginal."],
-        "wiring": ["The torso deck's rails locate a 68.6 x 53.4 mm UNO Q. A 65 x 30 mm Pi Zero 2 W and a driver board are not located by them: no mount is designed."]}},
-
+    {"id": "pi-biped", "when": {"controller": ["pi", "pi_full"], "locomotion": ["biped"]},
+      "add": {"wiring": ["The torso for this controller has four bosses with 3 mm standoffs for the board. The report carried the Pi and a PCA9685 servo driver board above it as one block of assumed mass; connectors, cables and the driver's mounting are not modelled."]}},
     {"id": "camera-pixy-hub", "when": {"camera": ["pixy2"], "controller": ["hub51515"]},
       "block": "The Pixy's LEGO cable is for NXT and EV3 sensor ports. The 51515 hub's ports are LEGO Power Functions 2.0, a different connector, and Charmed Labs documents no connection to them.", "nearest": {"camera": "none"}},
     {"id": "camera-esp-lego", "when": {"camera": ["esp32cam", "esp_eye", "esp32_s3_eye"], "controller": ["hub51515", "ev3"]},
@@ -372,7 +385,7 @@
       "add": {
         "wiring": ["Pixy2 to the UNO Q over SPI, I2C or UART with the general firmware (Charmed Labs: an Arduino needs the general version). Which pins are free under the Braccio shield is not verified. The LEGO cable is not used."],
         "firmware": ["Camera: not written. Charmed Labs' Arduino library on the UNO Q is not verified."]}},
-    {"id": "camera-pixy-pi", "when": {"camera": ["pixy2"], "controller": ["pi"]},
+    {"id": "camera-pixy-pi", "when": {"camera": ["pixy2"], "controller": ["pi", "pi_full"]},
       "add": {
         "wiring": ["Pixy2 to the Pi by USB. The LEGO cable is not used."],
         "firmware": ["Camera: not written. Charmed Labs' USB library on the Pi is not verified here."]}},
@@ -415,13 +428,32 @@
 
     {"id": "head-pantilt-needs-pixy", "when": {"head": ["pixy_pantilt"], "camera": ["none", "esp32cam", "esp_eye", "esp32_s3_eye", "picam2"]},
       "block": "The pan-tilt kit is the Pixy2's own: its two servos plug into the Pixy2 and carry it.", "nearest": {"head": "fixed"}},
-    {"id": "head-m5-lego-controller", "when": {"head": ["m5_360"], "controller": ["hub51515", "ev3"]},
-      "block": "LEGO hubs and bricks have no hobby servo output, so they cannot drive an M5Stack servo.", "nearest": {"head": "lego_motor"}},
+    {"id": "head-servo-lego-controller", "when": {"head": ["m5_360", "sg90_pan"], "controller": ["hub51515", "ev3"]},
+      "block": "LEGO hubs and bricks have no hobby servo output, so they cannot drive this servo.", "nearest": {"head": "lego_motor"}},
     {"id": "head-lego-needs-lego-drive", "when": {"head": ["lego_motor"], "drive": ["braccio_shield", "servo_driver", "m5_360_wheels", "tt_hbridge"]},
       "block": "A LEGO motor needs a LEGO motor port: the Build HAT, the 51515 hub, the EV3 brick or the BaseX. This drive has none.", "nearest": {"head": "fixed"}},
-    {"id": "head-moving", "when": {"head": ["pixy_pantilt", "m5_360", "lego_motor"]}, "downgrade": true,
-      "reason": "A moving head was not in any analysis: the analysed biped has a fixed camera mount and no head, and the prototype walkers' heads are fixed.",
+    {"id": "head-moving", "when": {"head": ["pixy_pantilt", "lego_motor"]}, "downgrade": true,
+      "reason": "This moving head was not in any analysis.",
       "add": {"analysis": ["Not analysed: the moving head, its mass and its reaction on the body."]}},
+    {"id": "head-pan-not-biped", "when": {"head": ["m5_360", "sg90_pan"], "locomotion": ["crank", "wheeled"]}, "downgrade": true,
+      "reason": "The turning head's parts are drawn for the biped's torso. On this body no mount for it exists.",
+      "add": {"analysis": ["Not analysed: a turning head on this body."]}},
+    {"id": "head-pan-biped", "when": {"head": ["m5_360", "sg90_pan"], "locomotion": ["biped"]},
+      "reason": "The turning head is an option of the biped: a small servo under the front of the deck pans a platform, and the camera sits in a cradle on it. It was put through the digital assembly for pan only. It is not in the robot description, the simulation or the command format, so nothing can command it yet.",
+      "add": {
+        "wiring": [
+          "Pan only by servo, between printed stops. Tilt is set by hand: the cradle turns on one M3 screw and is clamped where it is wanted.",
+          "The pan pocket is drawn for an SG90-size case from data sheet figures (23 x 12.5 mm body, 32.5 mm across the ears); print fit_sg90_cradle.stl and try the servo first.",
+          "The platform takes the servo's horn or the M5Stack kit's adapter on four holes 8 mm from the axis; that pattern is assumed, not dimensioned by the maker.",
+          "The turning-head torso is generated for the UNO Q deck only."],
+        "assembly": ["Print fit_sg90_cradle.stl and check the pan servo in its pocket, the stops and the switch seat before printing the torso. Fit the platform on the horn at mid travel and clamp the tilt by hand."],
+        "firmware": ["Head: not written. The UNO Q agent commands six leg joints; a pan command does not exist in the line format."]}},
+    {"id": "head-sg90", "when": {"head": ["sg90_pan"]},
+      "rails": {"logic5v": {"label": "5 V servo and accessory supply", "limit_ma": null, "limit_label": ""}},
+      "loads": [{"rail": "logic5v", "what": "SG90-class servo (head)", "qty": 1, "stall_ma": null, "basis": "not verified for a generic SG90"}],
+      "add": {
+        "parts": [{"name": "SG90-class 9 g servo for head pan", "qty": 1, "note": "a positional 180 degree servo, for example the M5Stack Servo Kit 180 (named SG90 by M5Stack). Body size is taken from SG90 data sheets; measure yours."}],
+        "wiring": ["One PWM signal for the pan servo, 50 Hz. Restrict the travel in software as well as by the printed stops, and leave cable slack."]}},
     {"id": "head-pantilt", "when": {"head": ["pixy_pantilt"]},
       "rails": {"logic5v": {"label": "5 V servo and accessory supply", "limit_ma": null, "limit_label": ""}},
       "loads": [{"rail": "logic5v", "what": "pan-tilt servo", "qty": 2, "stall_ma": null, "basis": "not published"}],
@@ -430,24 +462,24 @@
         "wiring": ["Both servo leads plug into the Pixy2's servo connector: pan on the left, tilt on the right, seen from the back (Charmed Labs). No mount for the kit exists on any body here: not designed."]}},
     {"id": "head-pantilt-ev3", "when": {"head": ["pixy_pantilt"], "controller": ["ev3"]},
       "add": {"firmware": ["Head: the EV3 cannot command the pan-tilt servos through Charmed Labs' EV3 block or EV3 Python class; neither has a servo call. Whether the Pixy2's own pan-tilt demo runs while it answers the EV3 is not stated: not verified."]}},
-    {"id": "head-pantilt-general", "when": {"head": ["pixy_pantilt"], "controller": ["unoq", "pi", "m5core"]},
+    {"id": "head-pantilt-general", "when": {"head": ["pixy_pantilt"], "controller": ["unoq", "pi", "pi_full", "m5core"]},
       "add": {"firmware": ["Head: not written. Under the general firmware the servos are set with setServos(s0, s1), values 0 to 1000 (Charmed Labs general API)."]}},
     {"id": "head-m5", "when": {"head": ["m5_360"]},
       "rails": {"logic5v": {"label": "5 V servo and accessory supply", "limit_ma": null, "limit_label": ""}},
       "loads": [{"rail": "logic5v", "what": "M5Stack 360 degree servo (head)", "qty": 1, "stall_ma": 750, "basis": "published"}],
       "add": {
-        "parts": [{"name": "M5Stack 360 degree servo for head pan", "qty": 1, "note": "LEGO-compatible bracket on the Servo Kit 360 version (published). The BALA-C supplies two; whether they are the same part is not verified."}],
+        "parts": [{"name": "M5Stack 360 degree servo for head pan", "qty": 1, "note": "LEGO-compatible bracket on the Servo Kit 360 version (published); same SG90 case assumed. The BALA-C supplies two; whether they are the same part is not verified."}],
         "wiring": [
-          "This servo turns continuously: the pulse sets speed and direction, not angle (M5Stack). It cannot hold or return to a head angle without an added position sensor or end stops. Pan only; tilt is not offered because it could not hold against gravity.",
+          "This servo turns continuously: the pulse sets speed and direction, not angle (M5Stack). It cannot hold or return to a head angle by itself; it would run the platform into a printed stop. A positional SG90-class servo is the safer choice.",
           "Restrict the pan travel mechanically and leave cable slack."],
         "firmware": ["Head: not written."]}},
-    {"id": "head-m5-unoq", "when": {"head": ["m5_360"], "controller": ["unoq"]},
-      "add": {"wiring": ["Head servo signal on the UNO Q: a free PWM pin. D2, D7, D8, D13, D20 and D21 are reported free of the Braccio shield; not verified here."]}},
-    {"id": "head-m5-pi-driver", "when": {"head": ["m5_360"], "controller": ["pi"], "drive": ["servo_driver", "m5_360_wheels"]},
+    {"id": "head-m5-unoq", "when": {"head": ["m5_360", "sg90_pan"], "controller": ["unoq"]},
+      "add": {"wiring": ["Pan servo signal on the UNO Q: a free PWM pin. D2, D7, D8, D13, D20 and D21 are reported free of the Braccio shield; not verified here."]}},
+    {"id": "head-m5-pi-driver", "when": {"head": ["m5_360", "sg90_pan"], "controller": ["pi", "pi_full"], "drive": ["servo_driver", "m5_360_wheels"]},
       "add": {"wiring": ["Head servo signal: a spare channel of the servo driver board."]}},
-    {"id": "head-m5-pi-gpio", "when": {"head": ["m5_360"], "controller": ["pi"], "drive": ["buildhat_51515", "tt_hbridge"]},
+    {"id": "head-m5-pi-gpio", "when": {"head": ["m5_360", "sg90_pan"], "controller": ["pi"], "drive": ["buildhat_51515", "tt_hbridge"]},
       "add": {"wiring": ["Head servo signal: a Pi GPIO pin with PWM. Under a Build HAT that needs the optional tall header (Raspberry Pi); which pins the HAT leaves free is not verified."]}},
-    {"id": "head-m5-basex", "when": {"head": ["m5_360"], "controller": ["m5core"]},
+    {"id": "head-m5-basex", "when": {"head": ["m5_360", "sg90_pan"], "controller": ["m5core"]},
       "add": {"wiring": ["Head servo signal: one of the BaseX's two servo outputs (published)."]}},
     {"id": "head-m5-twice", "when": {"head": ["m5_360"], "drive": ["m5_360_wheels"]},
       "add": {"wiring": ["The wheels already use two of these servos. A BALA-C supplies two in all, so the head needs a third."]}},

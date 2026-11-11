@@ -118,7 +118,9 @@ def test_the_configurator_is_the_landing_page():
 
 def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):
     blocks = []
-    for name in ("index.html", "biped.html"):
+    names = sorted(path.name for path in SITE.glob("*.html"))
+    assert {"index.html", "biped.html"} <= set(names)
+    for name in names:
         html = read(name)
         nav = re.search(r'<nav id="site-nav">(.*?)</nav>', html, re.S).group(1)
         blocks.append(nav.replace(' aria-current="page"', ""))
@@ -130,11 +132,38 @@ def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):
                 assert "hidden" in attributes and f'data-page="{target}"' in attributes, target
             else:
                 assert (SITE / target).is_file(), target
-    assert blocks[0] == blocks[1]
+    assert all(block == blocks[0] for block in blocks), "every page carries the same navigation block"
     pages = json.loads((built / "data" / "pages.json").read_text(encoding="utf-8"))
     assert pages == [name for name in ("walkers.html", "flash.html", "control.html") if (SITE / name).is_file()]
     script = read("nav.js")
     assert 'fetch("./data/pages.json")' in script and "link.hidden = false" in script
+
+
+def test_no_page_refers_to_a_file_that_is_not_there(built):
+    """Every relative src and href of every page resolves in the built site,
+    apart from the hidden links to pages that do not exist yet."""
+    for path in sorted(built.glob("*.html")):
+        html = path.read_text(encoding="utf-8")
+        for tag, target in re.findall(r'<([a-z]+)[^>]*?(?:src|href)="\./([^"#?]*)[^"]*"', html):
+            if not target:
+                continue                                        # "./" is the landing page
+            if re.search(rf'href="\./{re.escape(target)}"[^>]*data-page="{re.escape(target)}"[^>]*hidden', html) \
+                    and not (built / target).is_file():
+                continue
+            assert (built / target).is_file(), f"{path.name}: {target}"
+        for target in re.findall(r'<img[^>]*src="\./(images/[^"]+)"', html):
+            assert (ROOT / "docs" / "images" / target.split("/", 1)[1]).is_file(), target
+
+
+def test_switching_the_controller_takes_the_nearest_possible_selection():
+    script = read("build.js")
+    at = script.index('event.target.name === "controller"')
+    handler = script[at:at + 700]
+    assert "tried.nearest" in handler and "sel = tried.nearest.selection" in handler
+    # A link is never adjusted: the first evaluation after loading takes the address as it is.
+    start = script[script.index("async function start()"):]
+    assert start.index("show(window.location.search.length > 1)") > start.index("const controls = buildForm")
+    assert "nearest.selection" not in start[start.index("const linked = fromUrl()"):start.index("const controls = buildForm")]
 
 
 def test_the_biped_page_kept_its_anchors_and_scripts():

@@ -15,7 +15,7 @@ from microduck import recipe
 
 STATUSES = {"analysed", "assembly_only", "being_analysed", "defined", "not_possible"}
 BASIS = {"published", "assumed", "not verified"}
-BASES = {"unoq_braccio", "pi_servo", "hub51515", "ev3", "m5_basex_ev3", "pi_buildhat_51515"}
+BASES = {"unoq_braccio", "pi_servo", "pi_full_servo", "hub51515", "ev3", "m5_basex_ev3", "pi_buildhat_51515"}
 TEXT_SECTIONS = ("wiring", "power", "firmware", "analysis", "assembly")
 
 DRIVER = """
@@ -73,14 +73,15 @@ def rich_bundle(data):
 
 # --- the data ---------------------------------------------------------------
 
-def test_six_bases_with_sources_and_a_basis_on_every_figure():
+def test_the_bases_have_sources_and_a_basis_on_every_figure():
     bases = json.loads((ROOT / "config" / "bases.json").read_text(encoding="utf-8"))
     assert set(bases["bases"]) == BASES
     for name, base in bases["bases"].items():
         for key in ("name", "status", "status_reason", "controller", "outline_mm", "mass_g", "mounting", "actuates",
                     "channels", "power", "cameras", "robot_creator", "software", "sources"):
             assert key in base, f"{name}: {key}"
-        assert base["status"] in ("analysed in simulation", "being analysed", "defined, not designed", "not possible")
+        assert base["status"] in ("analysed in simulation", "assembly checked, not simulated", "being analysed",
+                                  "defined, not designed", "not possible")
         assert base["sources"] and all(url.startswith("https://") for url in base["sources"])
         for key in ("outline_mm", "mass_g", "mounting", "actuates", "channels", "power"):
             figure = base[key]
@@ -119,7 +120,11 @@ def test_compat_refers_only_to_known_options_and_bases(compat, data):
     assert {row["controller"] for row in compat["support"]} == set(known["controller"])
     assert {row["locomotion"] for row in compat["support"]} == set(known["locomotion"])
     reported = [row for row in compat["support"] if row["status"] == "report"]
-    assert [(row["controller"], row["locomotion"], row["drive"]) for row in reported] == [("unoq", "biped", "braccio_shield")]
+    assert [(row["controller"], row["locomotion"], row["drive"]) for row in reported] == [
+        ("unoq", "biped", "braccio_shield"), ("pi", "biped", "servo_driver"), ("pi_full", "biped", "servo_driver")]
+    for key, names in compat["manifest_map"].items():
+        assert set(names) <= set(known[key]), key
+    assert set(compat["report_controller"]) <= set(known["controller"])
     for item in compat["why_not"]:
         check(item["when"])
         assert item["reason"]
@@ -150,11 +155,17 @@ def test_compat_refers_only_to_known_options_and_bases(compat, data):
 
 
 def test_base_status_agrees_with_the_support_table(compat, data):
-    wording = {"report": "analysed in simulation", "defined": "defined, not designed", "summary": "being analysed"}
+    wording = {"defined": "defined, not designed", "summary": "being analysed"}
+    best = {"analysed": "analysed in simulation", "assembly_only": "assembly checked, not simulated"}
     for name, base in data["bases"]["bases"].items():
         rows = [row for row in compat["support"] if row["base"] == name]
         assert rows, name
-        assert base["status"] == wording[rows[0]["status"]], name
+        if rows[0]["status"] == "report":
+            # The base says the best the reports hold for its controller.
+            found = {entry["status"] for entry in data["coverage"]["entries"] if entry["match"]["controller"] == rows[0]["controller"]}
+            assert base["status"] == best["analysed" if "analysed" in found else "assembly_only"], name
+        else:
+            assert base["status"] == wording[rows[0]["status"]], name
 
 
 def test_trademark_and_not_built_lines(compat):
@@ -226,7 +237,7 @@ def test_no_recipe_contradicts_itself(compat, recipes):
             assert not unanalysed, where
             assert any("Stands" in text for text in rec["analysis"]), where
         elif rec["status"] == "assembly_only":
-            assert {key for key in sel if sel[key] != baseline[key]} == {"camera"}, where
+            assert sel["locomotion"] == "biped" and sel["lego"] == baseline["lego"], where
             assert [text[:13] for text in unanalysed] == ["Not simulated"], where
             assert not any("Stands for" in text for text in rec["analysis"]), where
         elif rec["status"] != "not_possible":
@@ -284,20 +295,53 @@ def test_named_cases(data):
 
     default = data["compat"]["defaults"]["camera"]
     assert run()["status"] == "analysed" and run()["selection"]["camera"] == default
-    assert run()["analysis"] == data["coverage"][default]["lines"]
+    covered = {(e["match"]["controller"], e["match"]["camera"], e["match"]["head"]): e for e in data["coverage"]["entries"]}
+    assert run()["analysis"] == covered[("unoq", default, "fixed")]["lines"]
+    assert not any("overlap the deck" in text or "interference" in text for text in run()["assembly"] + run()["analysis"])
     for camera in ("esp32cam", "esp_eye", "esp32_s3_eye"):
         rec = run(camera=camera)
-        assert rec["status"] == data["coverage"][camera]["status"]
+        assert rec["status"] == covered[("unoq", camera, "fixed")]["status"]
         cam_files = [item["file"] for item in rec["print"]["files"] if "cam" in item["file"]]
         assert cam_files == [f"fit_cam_{camera}.stl", f"01_torso_unoq_cam_{camera}.stl"]
+
+    for controller, torso in (("pi", "01_torso_pi_zero_2w_cam_esp32cam.stl"), ("pi_full", "01_torso_pi_cam_esp32cam.stl")):
+        rec = run(controller=controller, drive="servo_driver", camera="esp32cam")
+        assert rec["status"] == "assembly_only"
+        assert [item["file"] for item in rec["print"]["files"] if "torso" in item["file"]] == [torso]
+        assert any(text.startswith("Not simulated") for text in rec["analysis"])
+        other = run(controller=controller, drive="servo_driver", camera="esp_eye")
+        assert other["status"] == "defined" and any("No torso file is committed" in text for text in other["reasons"])
+        assert not [item for item in other["print"]["files"] if "torso" in item["file"]]
+
+    for head in ("sg90_pan", "m5_360"):
+        rec = run(head=head, camera="esp32cam")
+        assert rec["status"] == "assembly_only"
+        names = [item["file"] for item in rec["print"]["files"]]
+        assert [name for name in names if "torso" in name or "head" in name] == [
+            "01_torso_unoq_pan_head.stl", "head_pan_platform.stl", "head_tilt_cradle_esp32cam.stl"]
+        assert names[:3] == ["fit_horn_drill_blank.stl", "fit_lego_compatible_coupon.stl", "fit_sg90_cradle.stl"]
+        assert any("Tilt is set by hand" in text for text in rec["analysis"])
+        assert any("no joint in the robot description, the simulation or the command format" in text for text in rec["analysis"])
+        assert any("not written" in text.lower() for text in rec["firmware"])
+        # The pan head was checked with one cradle; another camera's cradle exists as a part only.
+        assert run(head=head, camera="esp_eye")["status"] == "defined"
+    assert any("turns continuously" in text for text in run(head="m5_360")["wiring"])
+
+    for controller, drive in (("ev3", "ev3_motors"), ("hub51515", "hub_motors")):
+        carried = run(controller=controller, drive=drive, camera="none")
+        assert carried["status"] == "not_possible"
+        assert carried["reasons"][-1] == data["coverage"]["carried"][controller]
+        assert "carried block only" in carried["reasons"][-1] and "makes nothing buildable" in carried["reasons"][-1]
+        walker = run(controller=controller, locomotion="crank", drive=drive, camera="none")
+        assert not any("carried block" in text for text in walker["reasons"] + walker["analysis"])
+    pixy = run(camera="pixy2")
+    assert pixy["status"] == "not_possible" and "not placed on the biped" in pixy["reasons"][0]
     empty = run(camera="none")
     assert empty["status"] == "defined"
     assert any("left empty" in text for text in empty["reasons"])
     assert [item["file"] for item in empty["print"]["files"] if "cam" in item["file"]] == [f"01_torso_unoq_cam_{default}.stl"]
     assert run(lego="off")["status"] == "defined"
-    assert run(head="m5_360")["status"] == "defined"
-    assert run(camera="pixy2")["status"] == "not_possible"
-    assert run(controller="pi", drive="servo_driver")["status"] == "defined"
+    assert run(head="pixy_pantilt")["status"] == "not_possible"
 
     servo_on_ev3 = run(controller="ev3", drive="braccio_shield")
     assert servo_on_ev3["status"] == "not_possible"
@@ -368,7 +412,8 @@ def test_files_link_only_when_the_manifest_names_them(data):
     assert links["ev3-pixy2/chassis.stl"] == data["compat"]["repo_blob"] + "stl/lego/ev3-pixy2/chassis.stl"
     assert links["ev3-pixy2/left_leg.stl"] is None
     bare = copy.deepcopy(data)
-    bare["manifest"] = {"present": False, "paths": [], "served": [], "files": [], "camera_default": "none"}
+    bare["manifest"] = {"present": False, "paths": [], "served": [], "files": [], "camera_default": "none",
+                        "controller_default": "unoq"}
     assert recipe.evaluate(bare, {})["print"]["files"] == []
     assert "no STL manifest" in recipe.evaluate(bare, base)["print"]["note"]
 
@@ -379,18 +424,35 @@ def test_the_real_manifest_is_read_as_it_is(data):
     assert data["manifest"]["present"] and data["manifest"]["served"] == names
     assert data["manifest"]["paths"] == sorted(names)
     by_name = {entry["file"]: entry for entry in data["manifest"]["files"]}
+    home = json.loads((ROOT / "stl" / "parameters.json").read_text(encoding="utf-8"))["controller_default"]
+    assert data["manifest"]["controller_default"] == home
     for entry in listed["files"]:
-        assert by_name[entry["file"]]["camera"] == entry["options"].get("camera")
-        assert by_name[entry["file"]]["fit"] == bool(entry["options"].get("fit_piece"))
-        assert by_name[entry["file"]]["what"] == entry["what"]
-    cameras = {entry["options"]["camera"] for entry in listed["files"] if "camera" in entry["options"]}
-    assert cameras == set(data["coverage"])
-    for camera in sorted(cameras):
+        options = entry["options"]
+        assert set(options) <= {"part", "fit_piece", "controller", "head", "camera"}, entry["file"]
+        mine = by_name[entry["file"]]
+        assert mine["camera"] == options.get("camera") and mine["head"] == options.get("head")
+        assert mine["part"] == options.get("part") and mine["fit"] == bool(options.get("fit_piece"))
+        # A torso without a controller option is the default controller's.
+        assert mine["controller"] == options.get("controller", home if options.get("part") == "torso" else None)
+        assert mine["what"] == entry["what"]
+    general = [e["file"] for e in listed["files"] if not {"controller", "head", "camera"} & set(e["options"]) and e["options"].get("part") != "torso"]
+    assert len([name for name in general if not name.startswith("fit_")]) == 6           # the six leg parts
+    torso_cameras = sorted(e["options"]["camera"] for e in listed["files"]
+                           if e["options"].get("part") == "torso" and e["options"].get("controller") == home)
+    for camera in torso_cameras:
         files = recipe.evaluate(data, {"camera": camera})["print"]["files"]
+        # The legs, the general fit pieces, this camera's torso and this camera's fit piece: nothing
+        # of another controller, of the turning head or of a Pixy plate.
+        assert sorted(item["file"] for item in files) == sorted(
+            general + [f"01_torso_{home}_cam_{camera}.stl", f"fit_cam_{camera}.stl"])
         assert len([item for item in files if not item["fit"]]) == 7
-        assert len(files) == len([e for e in listed["files"] if e["options"].get("camera") in (None, camera)])
         for item in files:
             assert (ROOT / "stl" / item["file"]).is_file()
+    used = set()
+    for sel in recipe.combinations(data["compat"]):
+        used.update(item["file"] for item in recipe.evaluate(data, sel)["print"]["files"] if item["link"])
+    # The hub torso and the Pixy plates are parts in the manifest that no recipe lists.
+    assert set(names) - used == {"01_torso_hub51515_cam_esp32cam.stl", "head_pixy_plate_pixy1.stl", "head_pixy_plate_pixy2.stl"}
 
 
 def test_the_default_camera_is_one_switch_in_config(tmp_path, data):
@@ -415,11 +477,21 @@ def test_the_default_camera_is_one_switch_in_config(tmp_path, data):
 def test_analysed_means_what_the_reports_cover(data, recipes):
     report = json.loads((ROOT / "reports" / "assembly.json").read_text(encoding="utf-8"))
     simulated = report["variants"][report["selected"]]["camera"]["preset"]
-    assert {key for key, value in data["coverage"].items() if value["status"] == "analysed"} == {simulated}
-    assert {key for key, value in data["coverage"].items() if value["status"] == "assembly_only"} == set(report["camera_presets"])
+    entries = data["coverage"]["entries"]
+    key = lambda entry: (entry["match"]["controller"], entry["match"]["camera"], entry["match"]["head"])
+    assert [key(entry) for entry in entries if entry["status"] == "analysed"] == [("unoq", simulated, "fixed")]
+    checked = {key(entry) for entry in entries if entry["status"] == "assembly_only"}
+    pan = report["turning_head"]["camera_preset"]
+    assert checked == ({("unoq", preset, "fixed") for preset in report["camera_presets"]}
+                       | {("pi", "esp32cam", "fixed"), ("pi_full", "esp32cam", "fixed")}
+                       | {("unoq", pan, "sg90_pan"), ("unoq", pan, "m5_360")})
+    assert set(data["coverage"]["carried"]) == {"hub51515", "ev3"}
     assert [rec["query"] for rec in recipes if rec["status"] == "analysed"] == [
         f"controller=unoq&locomotion=biped&drive=braccio_shield&camera={simulated}&head=fixed&lego=on"]
-    assert sorted(rec["selection"]["camera"] for rec in recipes if rec["status"] == "assembly_only") == sorted(report["camera_presets"])
+    got = {(rec["selection"]["controller"], rec["selection"]["camera"], rec["selection"]["head"])
+           for rec in recipes if rec["status"] == "assembly_only"}
+    assert got == checked
+    assert len([rec for rec in recipes if rec["status"] == "assembly_only"]) == len(checked)
 
 
 def test_status_and_numbers_for_walkers_come_from_the_summary(data):
@@ -445,7 +517,7 @@ def test_summary_and_manifest_files_are_read_when_present(tmp_path, compat):
         shutil.copytree(ROOT / folder, tmp_path / folder)
     assert recipe.bundle(tmp_path)["variants"] == []
     assert recipe.bundle(tmp_path)["manifest"] == {"present": False, "paths": [], "served": [], "files": [],
-                                                   "camera_default": compat["defaults"]["camera"]}
+                                                   "camera_default": compat["defaults"]["camera"], "controller_default": "unoq"}
     (tmp_path / "reports" / "variants").mkdir()
     (tmp_path / "reports" / "variants" / "summary.json").write_text(json.dumps({"variants": [
         {"base": "ev3", "locomotion": "crank", "status": "analysed in simulation", "mass_g": 912.5,
@@ -463,7 +535,8 @@ def test_summary_and_manifest_files_are_read_when_present(tmp_path, compat):
     assert loaded["manifest"]["paths"] == ["fit_SR431.stl", "lego/ev3-pixy2/chassis.stl"]
     assert loaded["manifest"]["served"] == ["fit_SR431.stl"]
     assert loaded["manifest"]["files"] == [
-        {"file": "fit_SR431.stl", "what": "fit piece for an SR431 servo cradle", "fit": True, "camera": None}]
+        {"file": "fit_SR431.stl", "what": "fit piece for an SR431 servo cradle", "fit": True, "part": None,
+         "controller": None, "head": None, "camera": None}]
     # The entry with no drive is ambiguous on the Pi and the unknown base matches nothing: both are dropped.
     assert [entry["match"] for entry in loaded["variants"]] == [
         {"controller": "ev3", "locomotion": "crank", "drive": "ev3_motors"},

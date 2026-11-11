@@ -70,7 +70,8 @@ function findVariant(entries, sel) {
   return best;
 }
 
-function unsupported(compat, sel) {
+function unsupported(data, sel) {
+  const compat = data.compat;
   const rows = compat.support.filter((row) => row.controller === sel.controller);
   const offered = rows
     .map((row) => `${label(compat, "locomotion", row.locomotion)} through ${label(compat, "drive", row.drive)}`)
@@ -80,6 +81,9 @@ function unsupported(compat, sel) {
       ` through '${label(compat, "drive", sel.drive)}'. Offered for this controller: ${offered}.`,
   ];
   for (const item of compat.why_not) if (matches(item.when, sel)) reasons.push(item.reason);
+  // A controller the reports only carried on the biped as a block: say so, as a note.
+  const reported = compat.support.some((row) => row.status === "report" && row.locomotion === sel.locomotion);
+  if (reported && sel.controller in data.coverage.carried) reasons.push(data.coverage.carried[sel.controller]);
   const pick =
     rows.find((row) => row.locomotion === sel.locomotion) || rows.find((row) => row.drive === sel.drive) || rows[0];
   return { reasons, nearest: { locomotion: pick.locomotion, drive: pick.drive } };
@@ -89,7 +93,7 @@ function pass(data, sel) {
   const compat = data.compat;
   const row = findRow(compat, sel);
   if (row === null) {
-    const blocked = unsupported(compat, sel);
+    const blocked = unsupported(data, sel);
     return { blocked: true, reasons: blocked.reasons, nearest: blocked.nearest };
   }
   const matched = compat.rules.filter((rule) => matches(rule.when, sel));
@@ -119,10 +123,11 @@ function pass(data, sel) {
       }
     }
   } else if (row.status === "report") {
-    const covered = data.coverage[sel.camera];
+    const covered = data.coverage.entries.find((entry) =>
+      Object.entries(entry.match).every(([key, value]) => sel[key] === value));
     if (covered === undefined) {
       status = "defined";
-      lead.push("Not analysed: the reports do not cover this camera choice.");
+      lead.push("Not analysed: the reports do not cover this controller, camera and head together.");
     } else {
       status = covered.status;
       lead.push(...covered.lines);
@@ -187,21 +192,49 @@ function pass(data, sel) {
   // Files to print: fit-test pieces first, linked when the manifest has them.
   const listing = data.manifest;
   const wanted = [];
+  let noTorso = false;
   for (const item of sections.print) {
-    if (item.from_manifest) {
-      // The committed parts: every file with no camera option, and those of the selected
-      // camera (of the default camera when the selection has no torso of its own).
-      const cameras = listing.files.filter((entry) => entry.camera !== null).map((entry) => entry.camera);
-      const own = cameras.includes(sel.camera);
-      const camera = own ? sel.camera : listing.camera_default;
-      for (const entry of listing.files) {
-        if (entry.camera === null || (entry.camera === camera && (own || !entry.fit))) {
-          wanted.push({ file: entry.file, qty: 1, role: entry.what, fit: entry.fit });
-        }
-      }
-    } else {
+    if (!item.from_manifest) {
       wanted.push(item);
+      continue;
     }
+    // The committed biped parts, chosen by the option fields the manifest gives each file.
+    const maps = compat.manifest_map;
+    const controller = sel.controller in maps.controller ? maps.controller[sel.controller] : null;
+    const head = sel.head in maps.head ? maps.head[sel.head] : null;
+    const torsos = listing.files.filter(
+      (entry) => entry.part === "torso" && entry.controller === controller && entry.head === head);
+    const known = listing.files.filter((entry) => entry.camera !== null).map((entry) => entry.camera);
+    let own = false;
+    let torso = null;
+    if (head === null) {
+      // A fixed mount: the torso of the selected camera, or of the default camera when the
+      // selection is not a camera the manifest knows (the mount is then left empty).
+      own = torsos.some((entry) => entry.camera === sel.camera);
+      const camera = known.includes(sel.camera) ? sel.camera : listing.camera_default;
+      const found = torsos.find((entry) => entry.camera === camera);
+      if (found) torso = found.file;
+    } else if (torsos.length) {
+      torso = torsos[0].file;
+    }
+    if (torso === null) noTorso = true;
+    for (const entry of listing.files) {
+      const general = entry.controller === null && entry.head === null;
+      let take;
+      if (entry.part === "torso") take = entry.file === torso;
+      else if (general && entry.camera === null) take = true; // legs and the fit pieces every build needs
+      else if (general && entry.fit) take = head === null && own && entry.camera === sel.camera;
+      else if (entry.head !== null && entry.controller === null) {
+        take = entry.head === head && (entry.camera === null || entry.camera === sel.camera);
+      } else take = false;
+      if (take) wanted.push({ file: entry.file, qty: 1, role: entry.what, fit: entry.fit });
+    }
+  }
+  if (noTorso) {
+    if (status === "analysed" || status === "assembly_only") status = "defined";
+    reasons.push(
+      "No torso file is committed for this controller with this camera and head. The design's generator " +
+        "would have to be run for it (CONTROLLER, CAMERA and the head option in build.py), and that part has not been checked.");
   }
   let files = [];
   for (const item of wanted) {
@@ -540,10 +573,22 @@ async function start() {
     if (push) window.history.replaceState(null, "", `?${recipe.query}`);
     store(sel);
   };
-  const controls = buildForm(data, document.getElementById("picker"), () => {
+  const controls = buildForm(data, document.getElementById("picker"), (event) => {
     const next = {};
     for (const dim of compat.dimensions) next[dim.id] = controls[dim.id].value;
     sel = normalise(compat, next);
+    const note = document.getElementById("action-note");
+    note.textContent = "";
+    if (event.target.name === "controller") {
+      // Switching only the controller: carry the other choices over where they are possible
+      // and take the nearest possible ones where they are not, instead of answering "not
+      // possible" to a combination nobody asked for. A link still gets the plain answer.
+      const tried = evaluate(data, sel);
+      if (tried.nearest) {
+        sel = tried.nearest.selection;
+        note.textContent = `Changed for this controller: ${tried.nearest.changes.join("; ")}.`;
+      }
+    }
     show(true);
   });
   show(window.location.search.length > 1);

@@ -52,13 +52,19 @@ def camera_default(compat: dict, root: Path = ROOT) -> str:
     return preset if preset in known else "none"
 
 
-def coverage(root: Path = ROOT) -> dict:
-    """What the reports cover for the UNO Q biped, per camera preset.
+def coverage(compat: dict, listing: dict, root: Path = ROOT) -> dict:
+    """What the reports cover for the servo biped.
 
-    The preset of the selected assembly variant is the one that was also
-    simulated: status 'analysed'. The presets under camera_presets were put
-    through the digital assembly in short form only: 'assembly_only'. A camera
-    that is in neither is not covered and the recipe says so.
+    'entries' are matched on controller, camera and head:
+    - the preset of the selected assembly variant on the UNO Q with the fixed
+      mount was also simulated: 'analysed';
+    - the other camera presets, the other controllers' decks and the turning
+      head went through the digital assembly only: 'assembly_only'.
+    Anything else is not covered and the recipe says so.
+
+    'carried' holds the controllers the reports only placed on the deck as a
+    block for a balance figure, with no supported way to drive the servos:
+    a note for the "not possible" answer, never a verdict.
     """
     assembly = _load(root / "reports" / "assembly.json")
     sim = _load(root / "reports" / "sim.json")
@@ -67,13 +73,20 @@ def coverage(root: Path = ROOT) -> dict:
     mass = rep["mass"]
     camera = rep.get("camera", {})
     stand = rep["balance"]["stand_pose"]
-    out = {}
-    if camera.get("preset"):
-        out[camera["preset"]] = {"status": "analysed", "lines": [
+    fixed = compat["defaults"]["head"]
+    home = listing["controller_default"]
+    own = {value: key for key, value in compat["manifest_map"]["controller"].items()}
+    entries = []
+    simulated = camera.get("name", "default camera")
+    if camera.get("preset") and home in own:
+        overlaps = rep.get("neutral_interferences", [])
+        entries.append({"match": {"controller": own[home], "camera": camera["preset"], "head": fixed}, "status": "analysed", "lines": [
             f"Analysed with the {camera['name']} in the mount and the pin holes and studs on the parts.",
             f"Mass {round(mass['total_g'])} g by the model ({round(mass['total_if_printed_solid_g'])} g if printed solid); "
             f"size {round(size[0])} x {round(size[1])} x {round(size[2])} mm; "
             f"feet {round(rep['dimensions']['stance_width_between_foot_centres_mm'])} mm apart.",
+            ("No parts overlap at the neutral pose." if not overlaps
+             else f"{len(overlaps)} pairs of parts overlap at the neutral pose; see the biped page."),
             f"Static balance at the stand pose (thighs {stand['thigh_swing_deg']:g} degrees back): centre of mass "
             f"{stand['margin_mm']:g} mm inside the support polygon.",
             f"Camera: lens {camera['lens_height_above_floor_at_stand_mm']:g} mm above the floor at the stand pose, "
@@ -81,49 +94,98 @@ def coverage(root: Path = ROOT) -> dict:
             sim["verdict"]["stand"],
             sim["verdict"]["neutral"],
             sim["verdict"]["gait"],
-            f"The assembly test lists {len(assembly['findings'])} findings, among them servo and deck interference. "
-            "They are on the biped page and in reports/assembly.json.",
-        ]}
-        simulated = camera["name"]
-    else:
-        simulated = "default camera"
+            f"The assembly test lists {len(assembly['findings'])} findings. They are on the biped page and in reports/assembly.json.",
+        ]})
     for preset, short in assembly.get("camera_presets", {}).items():
+        if home not in own:
+            break
         cone = "clear" if not short["cone_blocked_at_neutral"] and not short["cone_blocked_at_stand"] else "not clear"
-        out[preset] = {"status": "assembly_only", "lines": [
+        entries.append({"match": {"controller": own[home], "camera": preset, "head": fixed}, "status": "assembly_only", "lines": [
             f"Digital assembly in short form with the {short['name']} and its own torso: total mass {short['total_g']:g} g, "
             f"centre of mass {short['stand_margin_mm']:g} mm inside the support polygon at the stand pose "
             f"(thighs {short['stand_thigh_swing_deg']:g} degrees back), {short['clearance_each_side_mm']:g} mm each side in the mount, "
             f"view cone {cone} at the neutral and stand poses.",
             f"Not simulated: the MuJoCo runs used the {simulated} torso. Joint sweeps and the full findings list were run for that torso only.",
-        ]}
-    return out
+        ]})
+    torso_camera = {entry["file"]: entry["camera"] for entry in listing["files"]}
+    report_name = compat["report_controller"]
+    carried = {}
+    for controller, name in report_name.items():
+        block = assembly.get("controllers", {}).get(name)
+        if block is None:
+            continue
+        figures = (f"{block['name']}, taken as one block of {block['mass_g']:g} g (assumed): total mass {block['total_g']:g} g, "
+                   f"centre of mass {block['stand_margin_mm']:g} mm inside the support polygon at the stand pose "
+                   f"(thighs {block['stand_thigh_swing_deg']:g} degrees back), holding torque "
+                   f"{round(block['hip_pitch_torque_fraction'] * 100)} percent of the hip pitch servo limit")
+        supported = any(row["controller"] == controller and row["status"] == "report" for row in compat["support"])
+        if supported and block.get("has_its_own_torso") and torso_camera.get(block["torso_file"]) is not None:
+            clear = "no parts overlap at the neutral pose" if not block["neutral_interferences"] else "parts overlap at the neutral pose"
+            entries.append({"match": {"controller": controller, "camera": torso_camera[block["torso_file"]], "head": fixed},
+                            "status": "assembly_only", "lines": [
+                f"Digital assembly, fit and static balance only, with the {figures}; {clear}.",
+                f"Not simulated: the MuJoCo runs used the UNO Q torso with the {simulated}. Joint sweeps were not repeated for this torso.",
+            ]})
+        elif not supported:
+            carried[controller] = (f"As a carried block only, the reports checked the servo biped's static balance with the {figures}. "
+                                   "That is a balance figure for carrying it. It is not a way to drive the servos, and it makes nothing buildable.")
+    head = assembly.get("turning_head")
+    if head and home in own:
+        travel = head["pan_travel_to_the_stops_deg"]
+        tilt = head["tilt_free_deg"]
+        margins = [pose["stand_margin_mm"] for pose in head["at_the_stand_pose"]]
+        clear = "no parts overlap at the neutral pose" if not head["neutral_interferences"] else "parts overlap at the neutral pose"
+        lines = [
+            f"Digital assembly of the turning head with the {head['camera_preset']} cradle, pan only: {travel[0]:g} to {travel[1]:g} degrees "
+            f"between the printed stops, {clear}, total mass {head['total_g']:g} g of which the head is {head['head_mass_g']:g} g, "
+            f"centre of mass {min(margins):g} to {max(margins):g} mm inside the support polygon at the stand pose across the pan travel.",
+            f"Tilt is set by hand: the cradle is free from {tilt[0]:g} to {tilt[1]:g} degrees about its screw and was checked at "
+            f"{head['tilt_set_to_deg']:g} degrees. At full pan the legs are in the camera's view cone.",
+            "Not simulated: the head has no joint in the robot description, the simulation or the command format.",
+        ]
+        for option, name in compat["manifest_map"]["head"].items():
+            if name == "pan":
+                entries.append({"match": {"controller": own[home], "camera": head["camera_preset"], "head": option},
+                                "status": "assembly_only", "lines": lines})
+    return {"entries": entries, "carried": carried}
 
 
 def manifest(compat: dict, root: Path = ROOT) -> dict:
     """The STLs committed under stl/, from stl/manifest.json.
 
-    Its shape: {"files": [{"file", "what", "options": {"part" | "fit_piece",
-    "camera"}, ...}]}. Those files are also copied into the site by the site
-    build ('served'). Any other string in the manifest that ends in .stl is
-    kept as a path too, so files another branch lists differently (the
+    Its shape: {"files": [{"file", "what", "options": {...}}]}, where options
+    holds "part" (torso, left_hip, ...) or "fit_piece", and where they apply
+    "controller", "head" and "camera". A torso with no controller option is
+    for the generator's default controller (stl/parameters.json,
+    controller_default). Those files are also copied into the site by the
+    site build ('served'). Any other string in the manifest that ends in .stl
+    is kept as a path too, so files another branch lists differently (the
     walkers' and wheeled parts, which do not exist yet) can still be linked.
     """
+    default = camera_default(compat, root)
     for name in MANIFEST_PATHS:
         path = root / name
         if path.is_file():
             content = _load(path)
+            home = "unoq"
+            parameters = path.with_name("parameters.json")
+            if parameters.is_file():
+                home = _load(parameters).get("controller_default", home)
             files = []
             entries = content.get("files", []) if isinstance(content, dict) else []
             for entry in entries:
                 if isinstance(entry, dict) and str(entry.get("file", "")).lower().endswith(".stl"):
                     options = entry.get("options", {})
+                    part = options.get("part")
                     files.append({"file": entry["file"], "what": str(entry.get("what", "")),
-                                  "fit": bool(options.get("fit_piece")), "camera": options.get("camera")})
+                                  "fit": bool(options.get("fit_piece")), "part": part,
+                                  "controller": options.get("controller", home if part == "torso" else None),
+                                  "head": options.get("head"), "camera": options.get("camera")})
             found: list[str] = []
             _collect_stl_names(content, found)
             return {"present": True, "paths": sorted(set(found)), "served": [item["file"] for item in files],
-                    "files": files, "camera_default": camera_default(compat, root)}
-    return {"present": False, "paths": [], "served": [], "files": [], "camera_default": camera_default(compat, root)}
+                    "files": files, "camera_default": default, "controller_default": home}
+    return {"present": False, "paths": [], "served": [], "files": [], "camera_default": default, "controller_default": "unoq"}
 
 
 def _collect_stl_names(node, found: list[str]) -> None:
@@ -253,12 +315,13 @@ def bundle(root: Path = ROOT) -> dict:
     compat = _load(root / "config" / "compat.json")
     # One switch: the default camera is config/assembly.json camera.preset.
     compat["defaults"]["camera"] = camera_default(compat, root)
+    listing = manifest(compat, root)
     return {
         "compat": compat,
         "bases": _load(root / "config" / "bases.json"),
         "facts": facts(root),
-        "coverage": coverage(root),
-        "manifest": manifest(compat, root),
+        "coverage": coverage(compat, listing, root),
+        "manifest": listing,
         "variants": variants(compat, root),
     }
 
@@ -326,7 +389,7 @@ def _find_variant(entries: list, sel: dict):
     return best
 
 
-def _unsupported(compat: dict, sel: dict) -> dict:
+def _why_not(compat: dict, sel: dict):
     rows = [row for row in compat["support"] if row["controller"] == sel["controller"]]
     offered = "; ".join(_label(compat, "locomotion", row["locomotion"]) + " through " + _label(compat, "drive", row["drive"])
                         for row in rows)
@@ -336,6 +399,16 @@ def _unsupported(compat: dict, sel: dict) -> dict:
     for item in compat["why_not"]:
         if _matches(item["when"], sel):
             reasons.append(item["reason"])
+    return reasons, rows
+
+
+def _unsupported(data: dict, sel: dict) -> dict:
+    compat = data["compat"]
+    reasons, rows = _why_not(compat, sel)
+    # A controller the reports only carried on the biped as a block: say so, as a note.
+    reported = any(row["status"] == "report" and row["locomotion"] == sel["locomotion"] for row in compat["support"])
+    if reported and sel["controller"] in data["coverage"]["carried"]:
+        reasons.append(data["coverage"]["carried"][sel["controller"]])
     pick = None
     for row in rows:
         if row["locomotion"] == sel["locomotion"]:
@@ -356,7 +429,7 @@ def _pass(data: dict, sel: dict) -> dict:
     compat = data["compat"]
     row = _find_row(compat, sel)
     if row is None:
-        blocked = _unsupported(compat, sel)
+        blocked = _unsupported(data, sel)
         return {"blocked": True, "reasons": blocked["reasons"], "nearest": blocked["nearest"]}
     matched = [rule for rule in compat["rules"] if _matches(rule["when"], sel)]
     blocks = [rule for rule in matched if "block" in rule]
@@ -382,10 +455,14 @@ def _pass(data: dict, sel: dict) -> dict:
             if status != "analysed":
                 lead.append("Not analysed to a verdict yet: the summary does not report this variant as analysed.")
     elif row["status"] == "report":
-        covered = data["coverage"].get(sel["camera"])
+        covered = None
+        for entry in data["coverage"]["entries"]:
+            if all(sel[key] == value for key, value in entry["match"].items()):
+                covered = entry
+                break
         if covered is None:
             status = "defined"
-            lead.append("Not analysed: the reports do not cover this camera choice.")
+            lead.append("Not analysed: the reports do not cover this controller, camera and head together.")
         else:
             status = covered["status"]
             lead.extend(covered["lines"])
@@ -448,18 +525,52 @@ def _pass(data: dict, sel: dict) -> dict:
     # Files to print: fit-test pieces first, linked when the manifest has them.
     listing = data["manifest"]
     wanted = []
+    no_torso = False
     for item in sections["print"]:
-        if item.get("from_manifest"):
-            # The committed parts: every file with no camera option, and those of the selected
-            # camera (of the default camera when the selection has no torso of its own).
-            cameras = [entry["camera"] for entry in listing["files"] if entry["camera"] is not None]
-            own = sel["camera"] in cameras
-            camera = sel["camera"] if own else listing["camera_default"]
-            for entry in listing["files"]:
-                if entry["camera"] is None or (entry["camera"] == camera and (own or not entry["fit"])):
-                    wanted.append({"file": entry["file"], "qty": 1, "role": entry["what"], "fit": entry["fit"]})
-        else:
+        if not item.get("from_manifest"):
             wanted.append(item)
+            continue
+        # The committed biped parts, chosen by the option fields the manifest gives each file.
+        maps = compat["manifest_map"]
+        controller = maps["controller"].get(sel["controller"])
+        head = maps["head"].get(sel["head"])
+        torsos = [entry for entry in listing["files"]
+                  if entry["part"] == "torso" and entry["controller"] == controller and entry["head"] == head]
+        known = [entry["camera"] for entry in listing["files"] if entry["camera"] is not None]
+        own = False
+        torso = None
+        if head is None:
+            # A fixed mount: the torso of the selected camera, or of the default camera when the
+            # selection is not a camera the manifest knows (the mount is then left empty).
+            own = sel["camera"] in [entry["camera"] for entry in torsos]
+            camera = sel["camera"] if sel["camera"] in known else listing["camera_default"]
+            for entry in torsos:
+                if entry["camera"] == camera:
+                    torso = entry["file"]
+                    break
+        elif torsos:
+            torso = torsos[0]["file"]
+        if torso is None:
+            no_torso = True
+        for entry in listing["files"]:
+            general = entry["controller"] is None and entry["head"] is None
+            if entry["part"] == "torso":
+                take = entry["file"] == torso
+            elif general and entry["camera"] is None:
+                take = True                                   # legs and the fit pieces every build needs
+            elif general and entry["fit"]:
+                take = head is None and own and entry["camera"] == sel["camera"]
+            elif entry["head"] is not None and entry["controller"] is None:
+                take = entry["head"] == head and (entry["camera"] is None or entry["camera"] == sel["camera"])
+            else:
+                take = False
+            if take:
+                wanted.append({"file": entry["file"], "qty": 1, "role": entry["what"], "fit": entry["fit"]})
+    if no_torso:
+        if status in ("analysed", "assembly_only"):
+            status = "defined"
+        reasons.append("No torso file is committed for this controller with this camera and head. The design's generator "
+                       "would have to be run for it (CONTROLLER, CAMERA and the head option in build.py), and that part has not been checked.")
     files = []
     for item in wanted:
         name = item["file"]

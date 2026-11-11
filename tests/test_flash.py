@@ -197,6 +197,6 @@ def test_every_configurator_base_resolves(tmp_path):
     bases = list(json.loads(path.read_text(encoding="utf-8"))["bases"])
     out = dump(tmp_path, {"plans": {base: {"base": base, "host": "unoq.local"} for base in bases}})["plans"]
     assert {base: plan["base"]["key"] for base, plan in out.items()} == {
-        "unoq_braccio": "unoq", "pi_servo": "raspberrypi", "hub51515": "lego", "ev3": "lego", "m5_basex_ev3": "m5stack",
+        "unoq_braccio": "unoq", "pi_servo": "raspberrypi", "pi_full_servo": "raspberrypi", "hub51515": "lego", "ev3": "lego", "m5_basex_ev3": "m5stack",
         "pi_buildhat_51515": "raspberrypi"}
     assert [base for base, plan in out.items() if plan["written"]] == ["unoq_braccio"]

@@ -162,7 +162,8 @@ LEGO prototypes, or two driven wheels), drive, camera and head, and read what
 can honestly be said about that combination: analysed in simulation, checked
 in the digital assembly only, being analysed, defined but not designed, or
 not possible with the reason. Only the UNO Q biped with its default camera
-has been simulated; nothing has been built. The biped's findings are on
+has been simulated; other cameras, the two Raspberry Pi decks and the turning
+head were checked in the digital assembly only; nothing has been built. The biped's findings are on
 `site/biped.html`. Data and sources:
 [docs/build-yours.md](docs/build-yours.md).
 
