@@ -163,36 +163,22 @@
   {
    "id": "pi_zero_2w",
    "name": "Raspberry Pi Zero 2 W",
-   "kind": "photo",
+   "kind": "drawing",
    "file": "pi_zero_2w.png",
-   "origin": "Wikimedia Commons",
-   "title": "File:Raspberry Pi Zero 2 W.jpg",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (controllers.pi_zero_2w)",
    "match": [
     "pi zero 2 w"
-   ],
-   "author": "Laserlicht",
-   "licence": "CC BY-SA 4.0",
-   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
-   "source_url": "https://commons.wikimedia.org/wiki/File:Raspberry_Pi_Zero_2_W.jpg",
-   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
-   "sha256": "ac319f82b751c2758f5387a4452864bd1d3cbb973a63919b1f4de0109b5b4970"
+   ]
   },
   {
    "id": "pi_full",
    "name": "Raspberry Pi, full size",
-   "kind": "photo",
+   "kind": "drawing",
    "file": "pi_full.png",
-   "origin": "Wikimedia Commons",
-   "title": "File:Raspberry Pi 4 Model B - Top.jpg",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (controllers.pi)",
    "match": [
     "raspberry pi, full size"
-   ],
-   "author": "Laserlicht",
-   "licence": "CC BY-SA 4.0",
-   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
-   "source_url": "https://commons.wikimedia.org/wiki/File:Raspberry_Pi_4_Model_B_-_Top.jpg",
-   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
-   "sha256": "fd02f4aadcbcbf73b69a4640c09ab965e6812206c6e76ed76c8e39315d159b76"
+   ]
   },
   {
    "id": "buildhat",

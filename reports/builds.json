@@ -6,9 +6,9 @@
    "file": "docs/images/build-duck.png",
    "drawn_from": "the assembly model at the stand pose (microduck/model.py)",
    "kind": "biped",
-   "bytes": 10951,
-   "sha256": "31b3cbd69a86610939db6ea56151b720c69d77da20997108eebbe328d07db35e",
-   "inputs_sha256": "80b9876df812949a23bdfd53b94991cf12bc15e9a72a2c8bfe23983ddbce5f16"
+   "bytes": 11046,
+   "sha256": "9efaaca3c169f915bff981bced5f8a6f805ef27ba5bf40f7fefc51e9ce7da7a8",
+   "inputs_sha256": "dd9c53e119283381c1b69b86860219f44451c2aa968a5b3be3d92460971c4661"
   },
   "ev3-walker": {
    "file": "docs/images/build-ev3-walker.png",

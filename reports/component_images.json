@@ -22,6 +22,20 @@
    "inputs_sha256": "1d144d2aef20c224a1a3bd7f731727b755302b489d46397d51289e5ae1430858",
    "dimensions_from": "config/hardware.json board"
   },
+  "pi_zero_2w": {
+   "file": "docs/components/pi_zero_2w.png",
+   "bytes": 3908,
+   "sha256": "1d8fbe341cf326cbe944ef8a10bad5d5e4fe7257a7c396aeaa85e8a1e16ade92",
+   "inputs_sha256": "6de2b03d9a4fb56aca2e6458e7a9f5e85da3fdd420fa6e5b19d31a554502d31f",
+   "dimensions_from": "config/hardware.json controllers.pi_zero_2w"
+  },
+  "pi_full": {
+   "file": "docs/components/pi_full.png",
+   "bytes": 4312,
+   "sha256": "5262a9c335652b0c42036cde868d55b84ae612ded042163e5413d256844f537f",
+   "inputs_sha256": "ac05c8937aeff93da22dec7bf91190ec6f6ad3b309542a4bcd5192f89e0d2d0f",
+   "dimensions_from": "config/hardware.json controllers.pi"
+  },
   "buildhat": {
    "file": "docs/components/buildhat.png",
    "bytes": 3989,

@@ -288,6 +288,12 @@ export async function startTour(index) {
   return running;
 }
 
+// Start it, and say nothing if its steps cannot be loaded: the page served by
+// the robot's own server carries this script but not the site's data.
+function quietly(index) {
+  return startTour(index).catch(() => {});
+}
+
 // The small card a new visitor sees: start the tour or send it away.
 function offer() {
   const card = el("div", undefined, "tour-offer");
@@ -299,7 +305,7 @@ function offer() {
   no.type = "button";
   start.addEventListener("click", () => {
     card.remove();
-    startTour(0);
+    quietly(0);
   });
   no.addEventListener("click", () => {
     write("localStorage", SEEN_KEY, "1");
@@ -313,6 +319,8 @@ function offer() {
 
 function begin() {
   const params = new URLSearchParams(window.location.search);
+  // The landing page is the one with the row of finished builds, whatever its address.
+  const landing = pageName() === "index.html" && document.getElementById("builds") !== null;
   const flag = read("localStorage", SWITCH_KEY);
   const seen = read("localStorage", SEEN_KEY);
   const saved = read("sessionStorage", SESSION_KEY);
@@ -321,20 +329,20 @@ function begin() {
     session: saved.value === null ? null : Number(saved.value),
     seen: seen.ok ? seen.value === "1" : null,
     off: flag.value === "off",
-    landing: pageName() === "index.html",
+    landing,
     count: Number.MAX_SAFE_INTEGER,
   });
   // "Take the tour" in the footer starts it here when this is the landing page.
   for (const link of document.querySelectorAll("a[data-tour]")) {
     link.addEventListener("click", (event) => {
-      if (pageName() !== "index.html") return;
+      if (!landing) return;
       event.preventDefault();
-      startTour(0);
+      quietly(0);
     });
   }
   if (decision.action === "run") {
     // After the page's own script has drawn what the steps point at.
-    const go = () => startTour(decision.index).catch(() => {});
+    const go = () => quietly(decision.index);
     if (document.readyState === "complete") window.setTimeout(go, 0);
     else window.addEventListener("load", () => window.setTimeout(go, 0));
   } else if (decision.action === "offer") {

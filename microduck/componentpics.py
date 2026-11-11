@@ -142,6 +142,35 @@ def draw_unoq(d):
     return items, f"{length:g} x {width:g} mm", "config/hardware.json board"
 
 
+def _pi_board(length, width, holes, tall):
+    """A Raspberry Pi board as its outline, its four mounting holes and its 40-pin header."""
+    items = _board(length, width, "board")
+    x0 = -length / 2.0 + 3.5                                            # the holes start 3.5 mm in from one short edge
+    for x in (x0, x0 + holes[0]):
+        for y in (-holes[1] / 2.0, holes[1] / 2.0):
+            items.append(cylinder("z", (x, y, 1.7), 2.6, 0.4, "gold", 24))
+    items.append(box((x0 + 3.6, width / 2.0 - 6.0, 1.6), (x0 + 54.4, width / 2.0 - 1.0, 1.6 + 8.5), "black"))   # 2 x 20 pins at 2.54 mm
+    items.append(box((-7.0, -7.0, 1.6), (7.0, 7.0, 3.2), "steel"))                                      # the processor
+    for i in range(tall):                                               # the tall sockets of a full-size board, at the far short edge
+        y = -width / 2.0 + 3.0 + i * 18.0
+        items.append(box((length / 2.0 - 17.0, y, 1.6), (length / 2.0 + 2.0, y + 14.5, 15.0), "steel"))
+    return items
+
+
+def draw_pi_zero_2w(d):
+    p = d.hardware["controllers"]["pi_zero_2w"]["published"]
+    return (_pi_board(p["length_mm"], p["width_mm"], p["hole_pattern_mm"], 0),
+            f"{p['length_mm']:g} x {p['width_mm']:g} mm, holes {p['hole_pattern_mm'][0]:g} x {p['hole_pattern_mm'][1]:g} mm",
+            "config/hardware.json controllers.pi_zero_2w")
+
+
+def draw_pi_full(d):
+    a = d.hardware["controllers"]["pi"]["assumed"]
+    length, width, holes = _value(a["length_mm"]), _value(a["width_mm"]), _value(a["hole_pattern_mm"])
+    return (_pi_board(length, width, holes, 3), f"{length:g} x {width:g} mm, holes {holes[0]:g} x {holes[1]:g} mm",
+            "config/hardware.json controllers.pi")
+
+
 def draw_braccio_shield(d):
     s = d.hardware["shield"]["published"]
     length, width = s["length_mm"], s["width_mm"]
@@ -377,7 +406,7 @@ def draw_technic_beam(d):
 
 
 DRAWINGS = {
-    "unoq": draw_unoq, "braccio_shield": draw_braccio_shield, "sr431": draw_sr431, "sr311": draw_sr311, "pca9685": draw_pca9685,
+    "unoq": draw_unoq, "pi_zero_2w": draw_pi_zero_2w, "pi_full": draw_pi_full, "braccio_shield": draw_braccio_shield, "sr431": draw_sr431, "sr311": draw_sr311, "pca9685": draw_pca9685,
     "buildhat": draw_buildhat, "hub51515": draw_hub51515, "angular_motor": draw_angular_motor, "m5_360": draw_m5_360,
     "tt_motor": draw_tt_motor, "pixy2": draw_pixy2, "pixy_pantilt": draw_pixy_pantilt, "esp_eye": draw_esp_eye,
     "esp32_s3_eye": draw_esp32_s3_eye, "xiao_sense": draw_xiao_sense, "round_display": draw_round_display, "m5core": draw_m5core,

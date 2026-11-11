@@ -124,7 +124,10 @@ def test_every_build_has_figures_from_the_reports(data, sim_report, selected):
         assert 100 < figures["mass_g"] < 2000 and 5 < figures["speed_mm_s"] < 2000
         sel = recipe.build_selection(data, entry)
         if sel["locomotion"] == "biped":
-            assert figures == {"mass_g": selected["mass"]["total_g"], "speed_mm_s": sim_report["gait_best"]["speed_mm_s"]}
+            study = json.loads((ROOT / "reports" / "motion.json").read_text(encoding="utf-8"))
+            walk = study["presets"][sel["feet"]]["walk"]["nominal"]["speed_mm_s"]
+            assert figures == {"mass_g": selected["mass"]["total_g"], "speed_mm_s": walk}
+            assert f"walks at {walk:g} mm/s" in sim_report["verdict"]["gait"], "the figure the verdict quotes"
         else:
             mine = recipe.summary_entry(sel, ROOT)
             assert mine in summary and mine["status"] == "analysed in simulation" and figures["mass_g"] == mine["mass_g"]

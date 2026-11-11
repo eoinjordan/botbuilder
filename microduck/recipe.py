@@ -476,7 +476,14 @@ def build_figures(data: dict, sel: dict, root: Path = ROOT) -> dict:
         assembly = _load(root / "reports" / "assembly.json")
         sim = _load(root / "reports" / "sim.json")
         out["mass_g"] = assembly["variants"][assembly["selected"]]["mass"]["total_g"]
-        speed = (sim.get("gait_best") or sim.get("gait_default") or {}).get("speed_mm_s")
+        # The walk of the motion study, the figure the simulation verdict quotes; without that
+        # report, the same gait in the plain simulation.
+        speed = (sim.get("gait_default") or {}).get("speed_mm_s")
+        study = root / "reports" / "motion.json"
+        if study.is_file():
+            walks = _load(study).get("presets", {})
+            feet = assembly.get("feet_preset") or data["compat"]["defaults"]["feet"]
+            speed = walks.get(feet, {}).get("walk", {}).get("nominal", {}).get("speed_mm_s", speed)
         if isinstance(speed, (int, float)):
             out["speed_mm_s"] = speed
     return out
