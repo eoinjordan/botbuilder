@@ -20,6 +20,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
+sys.path.insert(0, str(ROOT))
+from microduck import recipe  # noqa: E402  (standard library only)
 DATA = {
     "assembly.json": ROOT / "reports" / "assembly.json",
     "sim.json": ROOT / "reports" / "sim.json",
@@ -47,6 +49,8 @@ def main() -> int:
         if name == "model.json":
             content["meshes_published"] = bool(args.with_meshes)
         (data / name).write_text(json.dumps(content, separators=(",", ":")), encoding="utf-8", newline="\n")
+    # Build yours: compatibility data, bases, report facts, STL manifest and variants summary in one file.
+    (data / "recipe.json").write_text(json.dumps(recipe.bundle(ROOT), separators=(",", ":")), encoding="utf-8", newline="\n")
     count = 0
     for picture in sorted((ROOT / "docs" / "images").iterdir()):
         if picture.suffix in (".png", ".gif"):
