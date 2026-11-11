@@ -36,42 +36,100 @@ def _load(path: Path):
 def facts(root: Path = ROOT) -> dict:
     """Strings for the {placeholders} in compat.json, from the reports."""
     assembly = _load(root / "reports" / "assembly.json")
-    sim = _load(root / "reports" / "sim.json")
-    rep = assembly["variants"][assembly["selected"]]
-    size = rep["dimensions"]["size_mm"]
+    features = assembly["variants"][assembly["selected"]].get("lego_compatible", {})
     return {
-        "mass_total_g": str(round(rep["mass"]["total_g"])),
-        "mass_solid_g": str(round(rep["mass"]["total_if_printed_solid_g"])),
-        "size_l_mm": str(round(size[0])),
-        "size_w_mm": str(round(size[1])),
-        "size_h_mm": str(round(size[2])),
-        "stance_mm": str(round(rep["dimensions"]["stance_width_between_foot_centres_mm"])),
-        "findings_count": str(len(assembly["findings"])),
-        "verdict_stand": sim["verdict"]["stand"],
-        "verdict_neutral": sim["verdict"]["neutral"],
-        "verdict_gait": sim["verdict"]["gait"],
+        "lego_holes": str(len(features.get("holes", []))),
+        "lego_studs": str(len(features.get("studs", []))),
     }
 
 
-def manifest(root: Path = ROOT) -> dict:
-    """Paths of the STLs under stl/, if another branch has committed a manifest.
+def camera_default(compat: dict, root: Path = ROOT) -> str:
+    """The camera preset the design is generated and analysed for by default:
+    config/assembly.json camera.preset, the one switch for the whole
+    repository. 'none' if that file names a camera this page does not offer."""
+    preset = _load(root / "config" / "assembly.json").get("camera", {}).get("preset")
+    known = [option["id"] for dim in compat["dimensions"] if dim["id"] == "camera" for option in dim["options"]]
+    return preset if preset in known else "none"
 
-    The manifest's layout is not fixed here: every string in it that ends in
-    .stl is taken as a path under stl/.
+
+def coverage(root: Path = ROOT) -> dict:
+    """What the reports cover for the UNO Q biped, per camera preset.
+
+    The preset of the selected assembly variant is the one that was also
+    simulated: status 'analysed'. The presets under camera_presets were put
+    through the digital assembly in short form only: 'assembly_only'. A camera
+    that is in neither is not covered and the recipe says so.
+    """
+    assembly = _load(root / "reports" / "assembly.json")
+    sim = _load(root / "reports" / "sim.json")
+    rep = assembly["variants"][assembly["selected"]]
+    size = rep["dimensions"]["size_mm"]
+    mass = rep["mass"]
+    camera = rep.get("camera", {})
+    stand = rep["balance"]["stand_pose"]
+    out = {}
+    if camera.get("preset"):
+        out[camera["preset"]] = {"status": "analysed", "lines": [
+            f"Analysed with the {camera['name']} in the mount and the pin holes and studs on the parts.",
+            f"Mass {round(mass['total_g'])} g by the model ({round(mass['total_if_printed_solid_g'])} g if printed solid); "
+            f"size {round(size[0])} x {round(size[1])} x {round(size[2])} mm; "
+            f"feet {round(rep['dimensions']['stance_width_between_foot_centres_mm'])} mm apart.",
+            f"Static balance at the stand pose (thighs {stand['thigh_swing_deg']:g} degrees back): centre of mass "
+            f"{stand['margin_mm']:g} mm inside the support polygon.",
+            f"Camera: lens {camera['lens_height_above_floor_at_stand_mm']:g} mm above the floor at the stand pose, "
+            f"{camera['tilt_below_level_deg']:g} degrees below level, {camera['clearance_each_side_mm']:g} mm each side in the mount.",
+            sim["verdict"]["stand"],
+            sim["verdict"]["neutral"],
+            sim["verdict"]["gait"],
+            f"The assembly test lists {len(assembly['findings'])} findings, among them servo and deck interference. "
+            "They are on the biped page and in reports/assembly.json.",
+        ]}
+        simulated = camera["name"]
+    else:
+        simulated = "default camera"
+    for preset, short in assembly.get("camera_presets", {}).items():
+        cone = "clear" if not short["cone_blocked_at_neutral"] and not short["cone_blocked_at_stand"] else "not clear"
+        out[preset] = {"status": "assembly_only", "lines": [
+            f"Digital assembly in short form with the {short['name']} and its own torso: total mass {short['total_g']:g} g, "
+            f"centre of mass {short['stand_margin_mm']:g} mm inside the support polygon at the stand pose "
+            f"(thighs {short['stand_thigh_swing_deg']:g} degrees back), {short['clearance_each_side_mm']:g} mm each side in the mount, "
+            f"view cone {cone} at the neutral and stand poses.",
+            f"Not simulated: the MuJoCo runs used the {simulated} torso. Joint sweeps and the full findings list were run for that torso only.",
+        ]}
+    return out
+
+
+def manifest(compat: dict, root: Path = ROOT) -> dict:
+    """The STLs committed under stl/, from stl/manifest.json.
+
+    Its shape: {"files": [{"file", "what", "options": {"part" | "fit_piece",
+    "camera"}, ...}]}. Those files are also copied into the site by the site
+    build ('served'). Any other string in the manifest that ends in .stl is
+    kept as a path too, so files another branch lists differently (the
+    walkers' and wheeled parts, which do not exist yet) can still be linked.
     """
     for name in MANIFEST_PATHS:
         path = root / name
         if path.is_file():
+            content = _load(path)
+            files = []
+            entries = content.get("files", []) if isinstance(content, dict) else []
+            for entry in entries:
+                if isinstance(entry, dict) and str(entry.get("file", "")).lower().endswith(".stl"):
+                    options = entry.get("options", {})
+                    files.append({"file": entry["file"], "what": str(entry.get("what", "")),
+                                  "fit": bool(options.get("fit_piece")), "camera": options.get("camera")})
             found: list[str] = []
-            _collect_stl_names(_load(path), found)
-            return {"present": True, "paths": sorted(set(found))}
-    return {"present": False, "paths": []}
+            _collect_stl_names(content, found)
+            return {"present": True, "paths": sorted(set(found)), "served": [item["file"] for item in files],
+                    "files": files, "camera_default": camera_default(compat, root)}
+    return {"present": False, "paths": [], "served": [], "files": [], "camera_default": camera_default(compat, root)}
 
 
 def _collect_stl_names(node, found: list[str]) -> None:
     if isinstance(node, str):
         text = node.replace("\\", "/")
-        if text.lower().endswith(".stl"):
+        if text.lower().endswith(".stl") and " " not in text:
             found.append(text[4:] if text.startswith("stl/") else text.lstrip("./"))
     elif isinstance(node, list):
         for item in node:
@@ -193,11 +251,14 @@ def bundle(root: Path = ROOT) -> dict:
     """Everything evaluate() needs, as one JSON-serialisable object. The site
     build writes this to site/data/recipe.json for site/build.js."""
     compat = _load(root / "config" / "compat.json")
+    # One switch: the default camera is config/assembly.json camera.preset.
+    compat["defaults"]["camera"] = camera_default(compat, root)
     return {
         "compat": compat,
         "bases": _load(root / "config" / "bases.json"),
         "facts": facts(root),
-        "manifest": manifest(root),
+        "coverage": coverage(root),
+        "manifest": manifest(compat, root),
         "variants": variants(compat, root),
     }
 
@@ -320,17 +381,24 @@ def _pass(data: dict, sel: dict) -> dict:
             lead.extend(variant["lines"])
             if status != "analysed":
                 lead.append("Not analysed to a verdict yet: the summary does not report this variant as analysed.")
+    elif row["status"] == "report":
+        covered = data["coverage"].get(sel["camera"])
+        if covered is None:
+            status = "defined"
+            lead.append("Not analysed: the reports do not cover this camera choice.")
+        else:
+            status = covered["status"]
+            lead.extend(covered["lines"])
     else:
         status = row["status"]
-        if status != "analysed":
-            lead.append("Not analysed: no simulation or digital assembly exists for this selection.")
+        lead.append("Not analysed: no simulation or digital assembly exists for this selection.")
     sections = {name: [] for name in compat["sections"]}
     sections["analysis"].extend(lead)
     settings = {"mechanism": "", "preset": ""}
     rails = {}
     loads = []
     for rule in matched:
-        if rule.get("downgrade") and status == "analysed":
+        if rule.get("downgrade") and status in ("analysed", "assembly_only"):
             status = "defined"
         if "reason" in rule:
             reasons.append(rule["reason"])
@@ -379,15 +447,29 @@ def _pass(data: dict, sel: dict) -> dict:
 
     # Files to print: fit-test pieces first, linked when the manifest has them.
     listing = data["manifest"]
-    files = []
+    wanted = []
     for item in sections["print"]:
+        if item.get("from_manifest"):
+            # The committed parts: every file with no camera option, and those of the selected
+            # camera (of the default camera when the selection has no torso of its own).
+            cameras = [entry["camera"] for entry in listing["files"] if entry["camera"] is not None]
+            own = sel["camera"] in cameras
+            camera = sel["camera"] if own else listing["camera_default"]
+            for entry in listing["files"]:
+                if entry["camera"] is None or (entry["camera"] == camera and (own or not entry["fit"])):
+                    wanted.append({"file": entry["file"], "qty": 1, "role": entry["what"], "fit": entry["fit"]})
+        else:
+            wanted.append(item)
+    files = []
+    for item in wanted:
         name = item["file"]
         if item.get("folder") and settings["preset"]:
             name = settings["preset"] + "/" + name
         link = None
         for path in listing["paths"]:
             if path == name or path.endswith("/" + name):
-                link = compat["repo_blob"] + "stl/" + path
+                # Files the site build copies are linked on the site; others in the repository.
+                link = "./stl/" + path if path in listing["served"] else compat["repo_blob"] + "stl/" + path
                 break
         files.append({"file": name, "qty": item["qty"], "role": item["role"], "fit": bool(item.get("fit")),
                       "link": link})
@@ -395,9 +477,9 @@ def _pass(data: dict, sel: dict) -> dict:
     if not files:
         note = "No printable files are named for this selection yet: the design is in progress on another branch."
     elif listing["present"]:
-        note = "Linked files are in the repository's stl/ directory. A name without a link is not in its manifest."
+        note = "Linked files are in the repository's stl/ directory; none has been printed. A name without a link is not in its manifest."
     else:
-        note = "File names only: the repository has no STL manifest yet, so nothing is linked."
+        note = "File names only: the repository has no STL manifest, so nothing is linked."
 
     base = data["bases"]["bases"][row["base"]]
     values = data["facts"]

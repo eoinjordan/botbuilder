@@ -13,7 +13,7 @@ from conftest import ROOT
 from microduck import recipe
 
 SITE = ROOT / "site"
-PAGE_FILES = ("build.html", "build.js", "recipe.css")
+PAGE_FILES = ("index.html", "build.js", "nav.js", "recipe.css")
 
 
 def read(name):
@@ -29,7 +29,11 @@ def built():
 def test_site_build_writes_the_recipe_data_from_the_same_json(built):
     shipped = json.loads((built / "data" / "recipe.json").read_text(encoding="utf-8"))
     assert shipped == recipe.bundle(ROOT)
-    assert shipped["compat"] == json.loads((ROOT / "config" / "compat.json").read_text(encoding="utf-8"))
+    compat = json.loads((ROOT / "config" / "compat.json").read_text(encoding="utf-8"))
+    preset = json.loads((ROOT / "config" / "assembly.json").read_text(encoding="utf-8"))["camera"]["preset"]
+    assert compat["defaults"]["camera"] == "" and shipped["compat"]["defaults"]["camera"] == preset
+    compat["defaults"]["camera"] = preset
+    assert shipped["compat"] == compat
     assert shipped["bases"] == json.loads((ROOT / "config" / "bases.json").read_text(encoding="utf-8"))
 
 
@@ -41,12 +45,13 @@ def test_paths_are_relative_so_any_base_path_works():
         assert not re.search(r'fetch\(["`]/', text), name
     assert 'fetch("./data/recipe.json")' in read("build.js")
     # The repository name appears only in the source link, never in a site path.
-    assert not re.search(r'(src|href)="[^"h][^"]*(botbuilder|microduck-braccio)', read("build.html"))
+    for name in ("index.html", "biped.html"):
+        assert not re.search(r'(src|href)="[^"h][^"]*(botbuilder|microduck-braccio)', read(name)), name
 
 
 def test_no_external_script_style_or_tracker():
-    html = read("build.html")
-    assert re.findall(r'<script[^>]*src="([^"]+)"', html) == ["./build.js"]
+    html = read("index.html")
+    assert re.findall(r'<script[^>]*src="([^"]+)"', html) == ["./nav.js", "./build.js"]
     assert re.findall(r'<link[^>]*href="([^"]+)"', html) == ["./style.css", "./recipe.css"]
     assert "import " not in read("build.js").replace("import { ", "")
     text = "".join(read(name).lower() for name in PAGE_FILES)
@@ -57,7 +62,7 @@ def test_no_external_script_style_or_tracker():
 
 
 def test_page_states_the_status_rule_and_the_trademarks():
-    html = read("build.html")
+    html = read("index.html")
     assert "No robot has been assembled or powered" in html
     assert "LEGO, Mindstorms and Technic are trademarks of the LEGO Group" in html
     assert "does not sponsor" in html
@@ -71,7 +76,7 @@ def test_page_states_the_status_rule_and_the_trademarks():
 
 def test_no_combination_is_written_into_the_page():
     compat = json.loads((ROOT / "config" / "compat.json").read_text(encoding="utf-8"))
-    text = read("build.js") + read("build.html")
+    text = read("build.js") + read("index.html")
     for dim in compat["dimensions"]:
         for option in dim["options"]:
             assert f'"{option["id"]}"' not in read("build.js"), option["id"]
@@ -93,7 +98,7 @@ def test_state_is_in_the_url_and_storage_is_guarded():
 
 
 def test_keyboard_print_and_phone_width():
-    html = read("build.html")
+    html = read("index.html")
     css = read("recipe.css")
     assert 'name="viewport"' in html
     assert 'aria-live="polite"' in html
@@ -104,5 +109,40 @@ def test_keyboard_print_and_phone_width():
     assert "overflow-wrap: anywhere" in css and "max-width: 100%" in css
 
 
-def test_index_links_to_the_page():
-    assert 'href="./build.html"' in read("index.html")
+def test_the_configurator_is_the_landing_page():
+    html = read("index.html")
+    assert "<h1>Build your own bot from the parts you have</h1>" in html
+    assert 'id="picker"' in html and 'id="recipe"' in html
+    assert not (SITE / "build.html").exists()
+
+
+def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):
+    blocks = []
+    for name in ("index.html", "biped.html"):
+        html = read(name)
+        nav = re.search(r'<nav id="site-nav">(.*?)</nav>', html, re.S).group(1)
+        blocks.append(nav.replace(' aria-current="page"', ""))
+        assert html.count('aria-current="page"') == 1, name
+        assert '<script type="module" src="./nav.js"></script>' in html, name
+        for target, attributes in re.findall(r'<a href="\./([a-z]*\.html)"([^>]*)>', nav):
+            if "data-page" in attributes:
+                # A page another branch will add: hidden until the site build lists it.
+                assert "hidden" in attributes and f'data-page="{target}"' in attributes, target
+            else:
+                assert (SITE / target).is_file(), target
+    assert blocks[0] == blocks[1]
+    pages = json.loads((built / "data" / "pages.json").read_text(encoding="utf-8"))
+    assert pages == [name for name in ("walkers.html", "flash.html", "control.html") if (SITE / name).is_file()]
+    script = read("nav.js")
+    assert 'fetch("./data/pages.json")' in script and "link.hidden = false" in script
+
+
+def test_the_biped_page_kept_its_anchors_and_scripts():
+    html = read("biped.html")
+    for anchor in ("what", "assembly", "viewer", "simulation", "real"):
+        assert f'id="{anchor}"' in html, anchor
+    for anchor in ("assembly", "viewer", "simulation", "real"):
+        assert f'href="#{anchor}"' in html, anchor
+    assert '<script type="module" src="./app.js"></script>' in html
+    assert "microduck-braccio-unoq-sim" not in html + read("index.html")
+    assert "https://github.com/eoinjordan/botbuilder/blob/main/docs/assembly.md" in html

@@ -2,7 +2,7 @@
 """Assemble the static site in site/ for GitHub Pages.
 
 Copies the generated reports, the viewer model and the pictures next to the
-hand-written index.html, style.css and app.js. Standard library only, so the
+hand-written pages, style sheets and scripts. Standard library only, so the
 Pages workflow needs no installs.
 
     python scripts/build_site.py
@@ -20,6 +20,7 @@ ROOT =Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
 sys.path.insert(0, str(ROOT))
 from microduck import recipe  # noqa: E402  (standard library only)
+OPTIONAL_PAGES = ("walkers.html", "flash.html", "control.html")
 DATA = {
     "assembly.json": ROOT / "reports" / "assembly.json",
     "sim.json": ROOT / "reports" / "sim.json",
@@ -49,6 +50,9 @@ def main() -> int:
         (data / name).write_text(json.dumps(content, separators=(",", ":")), encoding="utf-8", newline="\n")
     # Build yours: compatibility data, bases, report facts, STL manifest and variants summary in one file.
     (data / "recipe.json").write_text(json.dumps(recipe.bundle(ROOT), separators=(",", ":")), encoding="utf-8", newline="\n")
+    # Pages other branches add. nav.js shows a link only for a page listed here.
+    pages = [name for name in OPTIONAL_PAGES if (SITE / name).is_file()]
+    (data / "pages.json").write_text(json.dumps(pages), encoding="utf-8", newline="\n")
     count = 0
     for picture in sorted((ROOT / "docs" / "images").iterdir()):
         if picture.suffix in (".png", ".gif"):

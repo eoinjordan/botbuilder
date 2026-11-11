@@ -5,7 +5,7 @@
     "unoq_braccio": {
       "name": "Arduino UNO Q with the Braccio shield and servos",
       "status": "analysed in simulation",
-      "status_reason": "The six-servo biped on this base is the design this repository assembled digitally and simulated (reports/assembly.json, reports/sim.json). Nothing has been built.",
+      "status_reason": "The six-servo biped on this base is the design this repository assembles digitally and simulates (reports/assembly.json, reports/sim.json): camera mount at the front of the deck, pin holes and studs on the parts. The simulation was run with the default camera preset; the other two presets were put through the digital assembly in short form. Nothing has been built.",
       "controller": "Arduino UNO Q (ABX00162)",
       "outline_mm": {"value": [68.58, 53.34], "basis": "published", "source": "https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf"},
       "mass_g": {"value": 55, "basis": "assumed", "note": "30 g board plus 25 g shield, both estimates (config/hardware.json); the maker publishes neither. No battery: the robot is tethered."},
@@ -15,8 +15,11 @@
       "spare_pwm_pins": {"value": "D2, D7, D8, D13, D20, D21 are reported free of the shield and PWM capable", "basis": "not verified", "note": "read by another contributor from the Zephyr core overlay; not checked here"},
       "power": {"value": "Board: USB-C 5 V up to 3 A, or VIN 7 to 24 V. Servos: the Braccio kit supply, regulated 5 V 4 A, through the shield.", "basis": "published", "source": "https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf"},
       "cameras": {
-        "esp32cam": "Its own 5 V feed and a UART or Wi-Fi link. No link is written. A torso with an ESP32-CAM mount exists in the design directory and was not in the analysis.",
-        "pixy2": "Charmed Labs: an Arduino needs the general (non-LEGO) firmware. The Pixy2 Arduino library on the UNO Q is not verified. The LEGO cable is not used.",
+        "esp32cam": "Stands in the mount at the front of the torso deck; own torso file and fit piece in stl/. 5 V on its header pins; UART or Wi-Fi link, not written.",
+        "esp_eye": "Own torso file and fit piece in stl/; checked in the digital assembly in short form. Powered and read through its Micro-USB socket.",
+        "esp32_s3_eye": "Own torso file and fit piece in stl/; checked in the digital assembly in short form. Powered and read through its Micro-USB socket.",
+        "none": "The mount is part of the torso and is left empty.",
+        "pixy2": "Not possible on the biped: no torso is generated for it. Elsewhere on a UNO Q: Charmed Labs says an Arduino needs the general (non-LEGO) firmware; the Pixy2 Arduino library on the UNO Q is not verified, and the LEGO cable is not used.",
         "picam2": "Not possible: the Camera Module needs a CSI connector on a Raspberry Pi."
       },
       "robot_creator": {"family": null, "code_targets": [], "note": "The Robot Creator profile schema has no family for an Arduino board."},
@@ -153,9 +156,18 @@
     },
     "esp32cam": {
       "name": "AI-Thinker ESP32-CAM",
-      "published": {"size_mm": [27.0, 40.5, 4.5], "supply_v": 5, "recommended_supply_a": 2},
-      "note": "Figures from copies of the AI-Thinker datasheet; AI-Thinker's own page could not be read: not verified against the original. Mass not verified (the design directory assumes 10 g).",
-      "source": "https://docs.ai-thinker.com/en/esp32-cam"
+      "note": "Dimensions, mass, supply and current are in config/hardware.json (cameras.esp32cam), from AI-Thinker's specification V1.0 read from a mirror: 40.5 x 27 x 4.5 mm, 10 g, 5 V, 180 mA with the flash LED off, 310 mA at maximum.",
+      "source": "https://iarduino.ru/lib/78eba891fa500cedb3b7a5641d82ce74.pdf"
+    },
+    "esp_eye": {
+      "name": "Espressif ESP-EYE",
+      "note": "See config/hardware.json (cameras.esp_eye). Espressif publishes no dimensions or mass: 41 x 21 mm is a reseller's figure and 8 g an estimate.",
+      "source": "https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP-EYE_Getting_Started_Guide.md"
+    },
+    "esp32_s3_eye": {
+      "name": "Espressif ESP32-S3-EYE",
+      "note": "See config/hardware.json (cameras.esp32_s3_eye). 60 x 30 mm from Espressif's board drawing; 25 g is an estimate.",
+      "source": "https://dl.espressif.com/dl/schematics/DXF_ESP32-S3-EYE_MB_top_V2.2_20211207.pdf"
     },
     "picam2": {"name": "Raspberry Pi Camera Module 2", "note": "Mounting holes 21 x 12.5 mm per the owner's generator; not checked against Raspberry Pi's drawing.", "source": "https://www.raspberrypi.com/documentation/accessories/camera.html"}
   },
@@ -167,7 +179,7 @@
     "The 51515 hub's ports are LEGO Power Functions 2.0 (LPF2), a different connector from the NXT/EV3 port the cable fits. Charmed Labs documents no LPF2 connection."
   ],
   "joint_count_findings": [
-    "The analysed biped has six position joints, one hobby servo each.",
+    "The analysed biped has six position joints, one hobby servo each, and no head: its torso carries a fixed camera mount.",
     "The EV3 brick has four output ports, the Build HAT four connectors, the BaseX four motor ports. The 51515 hub has six ports.",
     "The owner's LEGO prototypes (microduck-lego) do not try to drive six joints. Each is a two-motor parallel-crank walker: one motor per side turns two cranks through three 16-tooth gears, and each leg hangs from the two crank tips. A third motor may pan the head; on four-port controllers one port is then spare.",
     "So the LEGO-motor bases are a different mechanism from the six-servo biped, and are presented as such."

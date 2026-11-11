@@ -118,9 +118,18 @@ function pass(data, sel) {
         lead.push("Not analysed to a verdict yet: the summary does not report this variant as analysed.");
       }
     }
+  } else if (row.status === "report") {
+    const covered = data.coverage[sel.camera];
+    if (covered === undefined) {
+      status = "defined";
+      lead.push("Not analysed: the reports do not cover this camera choice.");
+    } else {
+      status = covered.status;
+      lead.push(...covered.lines);
+    }
   } else {
     status = row.status;
-    if (status !== "analysed") lead.push("Not analysed: no simulation or digital assembly exists for this selection.");
+    lead.push("Not analysed: no simulation or digital assembly exists for this selection.");
   }
   const sections = {};
   for (const name of compat.sections) sections[name] = [];
@@ -129,7 +138,7 @@ function pass(data, sel) {
   const rails = {};
   const loads = [];
   for (const rule of matched) {
-    if (rule.downgrade && status === "analysed") status = "defined";
+    if (rule.downgrade && (status === "analysed" || status === "assembly_only")) status = "defined";
     if ("reason" in rule) reasons.push(rule.reason);
     for (const [key, value] of Object.entries(rule.set || {})) settings[key] = value;
     for (const [key, value] of Object.entries(rule.rails || {})) if (!(key in rails)) rails[key] = value;
@@ -177,14 +186,32 @@ function pass(data, sel) {
 
   // Files to print: fit-test pieces first, linked when the manifest has them.
   const listing = data.manifest;
-  let files = [];
+  const wanted = [];
   for (const item of sections.print) {
+    if (item.from_manifest) {
+      // The committed parts: every file with no camera option, and those of the selected
+      // camera (of the default camera when the selection has no torso of its own).
+      const cameras = listing.files.filter((entry) => entry.camera !== null).map((entry) => entry.camera);
+      const own = cameras.includes(sel.camera);
+      const camera = own ? sel.camera : listing.camera_default;
+      for (const entry of listing.files) {
+        if (entry.camera === null || (entry.camera === camera && (own || !entry.fit))) {
+          wanted.push({ file: entry.file, qty: 1, role: entry.what, fit: entry.fit });
+        }
+      }
+    } else {
+      wanted.push(item);
+    }
+  }
+  let files = [];
+  for (const item of wanted) {
     let name = item.file;
     if (item.folder && settings.preset) name = `${settings.preset}/${name}`;
     let link = null;
     for (const path of listing.paths) {
       if (path === name || path.endsWith(`/${name}`)) {
-        link = `${compat.repo_blob}stl/${path}`;
+        // Files the site build copies are linked on the site; others in the repository.
+        link = listing.served.includes(path) ? `./stl/${path}` : `${compat.repo_blob}stl/${path}`;
         break;
       }
     }
@@ -195,9 +222,9 @@ function pass(data, sel) {
   if (!files.length) {
     note = "No printable files are named for this selection yet: the design is in progress on another branch.";
   } else if (listing.present) {
-    note = "Linked files are in the repository's stl/ directory. A name without a link is not in its manifest.";
+    note = "Linked files are in the repository's stl/ directory; none has been printed. A name without a link is not in its manifest.";
   } else {
-    note = "File names only: the repository has no STL manifest yet, so nothing is linked.";
+    note = "File names only: the repository has no STL manifest, so nothing is linked.";
   }
 
   const base = data.bases.bases[row.base];
@@ -424,7 +451,8 @@ function render(data, recipe, target) {
       if (item.link) {
         const link = el("a", item.file);
         link.href = item.link;
-        link.rel = "noopener noreferrer";
+        if (item.link.startsWith("./")) link.download = "";
+        else link.rel = "noopener noreferrer";
         cell.append(link);
       } else {
         cell.textContent = item.file;

@@ -1,10 +1,11 @@
 {
-  "_comment": "Compatibility data for the Build yours configurator. microduck/recipe.py and site/build.js both evaluate this file with the same small algorithm; neither holds a combination of its own. 'support' is the single table that says which locomotion each controller supports and through which drive. 'why_not' explains unsupported rows. 'rules' add recipe content, or block a selection with a reason and a nearest change. Row status: 'analysed' (in reports/assembly.json and reports/sim.json), 'defined' (defined, not designed), 'summary' (read from the variants summary when it exists, otherwise being analysed). Currents are whole mA in multiples of 10.",
+  "_comment": "Compatibility data for the Build yours configurator. microduck/recipe.py and site/build.js both evaluate this file with the same small algorithm; neither holds a combination of its own. 'support' is the single table that says which locomotion each controller supports and through which drive. 'why_not' explains unsupported rows. 'rules' add recipe content, or block a selection with a reason and a nearest change. The default camera is not written here: microduck/recipe.py reads it from config/assembly.json (camera.preset). Row status: 'report' (read per camera preset from reports/assembly.json and reports/sim.json), 'defined' (defined, not designed), 'summary' (read from the variants summary when it exists, otherwise being analysed). Currents are whole mA in multiples of 10.",
   "not_built": "Nothing on this page has been physically built. No part has been printed against a servo or a motor, no robot has been assembled or powered.",
   "trademarks": "LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. No affiliation with any of them.",
   "repo_blob": "https://github.com/eoinjordan/botbuilder/blob/main/",
   "statuses": {
     "analysed": {"label": "Analysed, stands in simulation", "headline": "Analysed in simulation only: digitally assembled and simulated, never built."},
+    "assembly_only": {"label": "Assembly checked, not simulated", "headline": "Checked in the digital assembly only: fit, mass and static balance. Not simulated and never built. This is not a tested build."},
     "being_analysed": {"label": "Being analysed", "headline": "Being analysed: no result is available yet, so this is not a build recipe. Do not buy or print against it."},
     "defined": {"label": "Defined, not designed", "headline": "Defined but not designed: the parts are named, but no complete design or analysis exists. This is not a build recipe."},
     "not_possible": {"label": "Not possible", "headline": "Not possible as selected."}
@@ -31,16 +32,18 @@
       {"id": "m5_360_wheels", "label": "M5Stack 360 degree servos as wheel drives"},
       {"id": "tt_hbridge", "label": "Yellow TT DC gear motors on an H-bridge board"}]},
     {"id": "camera", "label": "Camera", "options": [
-      {"id": "none", "label": "No camera"},
-      {"id": "pixy2", "label": "Pixy2 (standard) with pan-tilt kit and LEGO cable"},
+      {"id": "none", "label": "No camera (mount left empty)"},
       {"id": "esp32cam", "label": "AI-Thinker ESP32-CAM"},
+      {"id": "esp_eye", "label": "Espressif ESP-EYE"},
+      {"id": "esp32_s3_eye", "label": "Espressif ESP32-S3-EYE"},
+      {"id": "pixy2", "label": "Pixy2 (standard) with pan-tilt kit and LEGO cable"},
       {"id": "picam2", "label": "Raspberry Pi Camera Module 2"}]},
     {"id": "head", "label": "Head articulation", "options": [
-      {"id": "fixed", "label": "Fixed head"},
+      {"id": "fixed", "label": "Camera mount, nothing moves"},
       {"id": "pixy_pantilt", "label": "Pixy pan-tilt kit servos"},
       {"id": "m5_360", "label": "M5Stack 360 degree servo (pan)"},
       {"id": "lego_motor", "label": "A LEGO motor pans the head"}]},
-    {"id": "lego", "label": "LEGO-compatible features", "options": [
+    {"id": "lego", "label": "Pin holes and studs (LEGO-compatible)", "options": [
       {"id": "off", "label": "Off"},
       {"id": "on", "label": "On"}]},
     {"id": "wheels", "label": "Driven wheels at", "only_for": {"locomotion": ["wheeled"]}, "options": [
@@ -55,9 +58,9 @@
       {"id": "lego", "label": "Stock LEGO wheels"},
       {"id": "tt65", "label": "Stock 65 mm TT wheel"}]}
   ],
-  "defaults": {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "camera": "none", "head": "fixed", "lego": "off", "wheels": "back", "support": "roller", "wheel": "printed_ring"},
+  "defaults": {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "camera": "", "head": "fixed", "lego": "on", "wheels": "back", "support": "roller", "wheel": "printed_ring"},
   "support": [
-    {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "base": "unoq_braccio", "status": "analysed", "reason": "This is the design the repository assembled digitally and simulated. It stands at the stand pose and shuffles; it does not walk."},
+    {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "base": "unoq_braccio", "status": "report", "reason": "This is the design the repository assembles digitally and simulates: the UNO Q biped with a camera mount at the front of the deck and pin holes and studs on the parts. What was run for the selected camera is listed under Analysis."},
     {"controller": "unoq", "locomotion": "wheeled", "drive": "m5_360_wheels", "base": "unoq_braccio", "status": "summary", "reason": "A wheeled UNO Q variant on two 360 degree servos is being designed and analysed on another branch."},
     {"controller": "unoq", "locomotion": "wheeled", "drive": "tt_hbridge", "base": "unoq_braccio", "status": "summary", "reason": "A wheeled UNO Q variant on two TT gear motors is being designed and analysed on another branch."},
     {"controller": "pi", "locomotion": "biped", "drive": "servo_driver", "base": "pi_servo", "status": "defined", "reason": "The legs and servos are the analysed ones, but no deck, mount, wiring or software exists for a Raspberry Pi, and the analysis used the UNO Q stack's mass and position."},
@@ -98,18 +101,9 @@
     {"when": {"controller": ["unoq", "pi"], "locomotion": ["crank"]}, "reason": "The crank walker is defined only with LEGO motors: on a Raspberry Pi through the Build HAT, on the EV3 brick, on the 51515 hub, or on an M5Stack Core through the BaseX."}
   ],
   "rules": [
-    {"id": "biped", "when": {"locomotion": ["biped"]}, "set": {"mechanism": "Six-servo biped: left and right hip roll, hip pitch and knee pitch, one hobby servo per joint. No yaw, no ankles. Four SR431 at the hips, two SR311 at the knees.", "preset": "biped-braccio-unoq"},
+    {"id": "biped", "when": {"locomotion": ["biped"]}, "set": {"mechanism": "Six-servo biped: left and right hip roll, hip pitch and knee pitch, one hobby servo per joint. No yaw, no ankles, no head: the torso carries a camera mount at the front edge of the deck. Four SR431 at the hips, two SR311 at the knees.", "preset": "biped-braccio-unoq"},
       "add": {
-        "print": [
-          {"file": "fit_SR431.stl", "qty": 1, "fit": true, "role": "fit test: SR431 cradle"},
-          {"file": "fit_SR311.stl", "qty": 1, "fit": true, "role": "fit test: SR311 cradle"},
-          {"file": "fit_horn_drill_blank.stl", "qty": 1, "fit": true, "role": "fit test: horn drill blank"},
-          {"file": "left_hip_roll_pitch_yoke.stl", "qty": 1, "role": "left hip yoke"},
-          {"file": "right_hip_roll_pitch_yoke.stl", "qty": 1, "role": "right hip yoke"},
-          {"file": "left_thigh_knee_cradle.stl", "qty": 1, "role": "left thigh with knee cradle"},
-          {"file": "right_thigh_knee_cradle.stl", "qty": 1, "role": "right thigh with knee cradle"},
-          {"file": "left_shin_fixed_foot.stl", "qty": 1, "role": "left shin and foot"},
-          {"file": "right_shin_fixed_foot.stl", "qty": 1, "role": "right shin and foot"}],
+        "print": [{"from_manifest": true}],
         "parts": [
           {"name": "SR431 servo (TinkerKit Braccio kit)", "qty": 4, "note": "hip roll and hip pitch"},
           {"name": "SR311 servo (TinkerKit Braccio kit)", "qty": 2, "note": "knees"},
@@ -117,18 +111,30 @@
           {"name": "Small cable tie", "qty": 12, "note": "two per servo; the assembly test found only the far-end tie can pass over the case"},
           {"name": "Horn screws for the printed blanks", "qty": 12, "note": "at least two opposed per horn; size to suit the horn, not specified by the design"}],
         "assembly": [
-          "Print the three fit pieces at 100 percent scale. Try a servo of each size between the rails, both tie paths, and the horn on the drill blank.",
-          "Read the assembly findings on the main page and decide what to change before printing the set: each hip roll servo overlaps the deck in the model.",
+          "Print the fit pieces at 100 percent scale. Try a servo of each size between the rails, both tie paths, the horn on the drill blank, and the camera board in its fit piece.",
+          "Read the assembly findings on the biped page and decide what to change before printing the set: each hip roll servo overlaps the deck in the model.",
           "Print one of each of the other files. Use the horn as a drilling jig on each circular blank.",
           "Centre each servo with the horns off. Strap two SR431 to the torso for hip roll, fit each yoke to its horn with the second SR431 facing outward for hip pitch.",
           "Fit each thigh at its circular end, strap an SR311 at the far end for the knee, and fit the shin to the knee horn, toes forward.",
           "Dry-assemble one leg and sweep it by hand, unpowered, before building the second."]}},
-    {"id": "biped-torso-plain", "when": {"locomotion": ["biped"], "camera": ["none", "pixy2", "picam2"]},
-      "add": {"print": [{"file": "01_torso_unoq_fixed_head.stl", "qty": 1, "role": "torso with board deck and fixed head (the analysed torso)"}]}},
-    {"id": "biped-torso-esp32cam", "when": {"locomotion": ["biped"], "camera": ["esp32cam"]},
-      "add": {"print": [
-        {"file": "fit_cam_esp32cam.stl", "qty": 1, "fit": true, "role": "fit test: ESP32-CAM mount"},
-        {"file": "01_torso_unoq_cam_esp32cam.stl", "qty": 1, "role": "torso with board deck and ESP32-CAM mount (not the analysed torso)"}]}},
+    {"id": "biped-camera-none", "when": {"locomotion": ["biped"], "camera": ["none"]},
+      "reason": "No camera means the mount is simply left empty: it is part of the torso. The analysis carried a camera board in it, so the empty mount is not a case the reports cover.",
+      "add": {"wiring": ["No camera: the mount at the front of the deck stays empty. The torso listed is the one for the default camera preset."]}},
+    {"id": "biped-camera-board", "when": {"locomotion": ["biped"], "camera": ["esp32cam", "esp_eye", "esp32_s3_eye"]},
+      "add": {
+        "wiring": ["The camera board stands in the mount at the front edge of the deck, lower edge on the corner seats, back against the ledges, held by the snap lips, lens the way the toes point and 10 degrees below level. Each board has its own torso file and fit piece."],
+        "assembly": ["Print the camera fit piece before the torso and try the board in it: 0.5 mm is allowed each side and 0.3 mm under the lips."]}},
+    {"id": "biped-camera-other", "when": {"locomotion": ["biped"], "camera": ["pixy2", "picam2"]},
+      "block": "The biped's torso is generated with a mount for one of three boards: the ESP32-CAM, the ESP-EYE or the ESP32-S3-EYE. No torso exists for this camera.", "nearest": {"camera": "none"}},
+    {"id": "biped-lego-on", "when": {"locomotion": ["biped"], "lego": ["on"]},
+      "add": {
+        "wiring": ["The torso, thighs, shins and feet carry {lego_holes} pin holes and {lego_studs} studs compatible with LEGO Technic and System elements, for decoration. They were in the analysed parts. Whether a real pin or brick holds in a printed one is not known."],
+        "assembly": ["Print fit_lego_compatible_coupon.stl flat, studs up, and try a pin and a brick on each marked pair before printing the robot; the generator's HOLE_EXTRA and STUD_UNDER set the allowance."]}},
+    {"id": "biped-lego-off", "when": {"locomotion": ["biped"], "lego": ["off"]}, "downgrade": true,
+      "reason": "The committed parts carry the pin holes and studs. Parts without them are not in the repository: they mean running the design's generator with its LEGO switches (torso, thigh, shin, foot) off, and that set was not analysed.",
+      "add": {
+        "wiring": ["Without pin holes and studs: regenerate the parts with LEGO = dict(torso=False, thigh=False, shin=False, foot=False) in the design's build.py. The files listed are the committed ones, which have the features."],
+        "analysis": ["Not analysed: the parts regenerated without pin holes and studs."]}},
 
     {"id": "crank", "when": {"locomotion": ["crank"]}, "set": {"mechanism": "Two-motor parallel-crank walker from the owner's LEGO prototypes: one motor per side turns two cranks through three 16-tooth gears, and each leg hangs from the two crank tips. Crank radius 12 mm, 24 mm of fore-aft foot travel. Two driven axes, not six joints."},
       "add": {
@@ -157,7 +163,7 @@
       "add": {"print": [{"file": "chassis.stl", "qty": 1, "role": "strap-slot chassis drawn for the EV3 brick; no chassis exists for this controller and its fit is not checked", "folder": true}]}},
     {"id": "crank-head-picam", "when": {"locomotion": ["crank"], "camera": ["picam2"]},
       "add": {"print": [{"file": "pi-zero-2w-51515/camera_head.stl", "qty": 1, "role": "head with the Camera Module 2 plate"}]}},
-    {"id": "crank-head-other", "when": {"locomotion": ["crank"], "camera": ["none", "pixy2", "esp32cam"]},
+    {"id": "crank-head-other", "when": {"locomotion": ["crank"], "camera": ["none", "pixy2", "esp32cam", "esp_eye", "esp32_s3_eye"]},
       "add": {"print": [{"file": "ev3-pixy2/camera_head.stl", "qty": 1, "role": "head with a Technic beam face (drawn for the Pixy2 for LEGO brackets)"}]}},
 
     {"id": "wheeled", "when": {"locomotion": ["wheeled"]}, "set": {"mechanism": "Two driven wheels and one passive third support, steered by driving the wheels at different speeds. No legs."},
@@ -338,25 +344,15 @@
     {"id": "fw-crank-note", "when": {"locomotion": ["crank"]},
       "add": {"firmware": ["The prototype README states that no walking controller or tested floor gait is included."]}},
 
-    {"id": "analysis-unoq-biped", "when": {"controller": ["unoq"], "locomotion": ["biped"], "drive": ["braccio_shield"]},
-      "add": {"analysis": [
-        "Mass {mass_total_g} g by the model ({mass_solid_g} g if printed solid); size {size_l_mm} x {size_w_mm} x {size_h_mm} mm; feet {stance_mm} mm apart.",
-        "{verdict_stand}",
-        "{verdict_neutral}",
-        "{verdict_gait}",
-        "The assembly test lists {findings_count} findings, among them servo and deck interference. They are on the main page and in reports/assembly.json."]}},
     {"id": "analysis-pi-biped", "when": {"controller": ["pi"], "locomotion": ["biped"]},
       "add": {
-        "analysis": ["Not analysed with this controller. The numbers on the main page are for the UNO Q and Braccio shield stack (55 g assumed, on the deck); a Pi Zero 2 W and a driver board have a different mass and position, and balance was marginal."],
+        "analysis": ["Not analysed with this controller. The numbers on the biped page are for the UNO Q and Braccio shield stack (55 g assumed, on the deck); a Pi Zero 2 W and a driver board have a different mass and position, and balance was marginal."],
         "wiring": ["The torso deck's rails locate a 68.6 x 53.4 mm UNO Q. A 65 x 30 mm Pi Zero 2 W and a driver board are not located by them: no mount is designed."]}},
 
-    {"id": "camera-on-biped", "when": {"locomotion": ["biped"], "camera": ["pixy2", "esp32cam", "picam2"]}, "downgrade": true,
-      "reason": "A camera was not in the analysis: its mass and position change the balance, which has a small margin.",
-      "add": {"analysis": ["Not analysed: the camera's mass and its effect on balance."]}},
     {"id": "camera-pixy-hub", "when": {"camera": ["pixy2"], "controller": ["hub51515"]},
       "block": "The Pixy's LEGO cable is for NXT and EV3 sensor ports. The 51515 hub's ports are LEGO Power Functions 2.0, a different connector, and Charmed Labs documents no connection to them.", "nearest": {"camera": "none"}},
-    {"id": "camera-esp32cam-lego", "when": {"camera": ["esp32cam"], "controller": ["hub51515", "ev3"]},
-      "block": "No connection from an ESP32-CAM to a LEGO hub or brick port is documented, so the controller could not read it. The owner named this camera for the non-LEGO bases.", "nearest": {"camera": "none"}},
+    {"id": "camera-esp-lego", "when": {"camera": ["esp32cam", "esp_eye", "esp32_s3_eye"], "controller": ["hub51515", "ev3"]},
+      "block": "No connection from an ESP32 camera board to a LEGO hub or brick port is documented, so the controller could not read it. The owner named these cameras for the non-LEGO bases.", "nearest": {"camera": "none"}},
     {"id": "camera-picam-not-pi", "when": {"camera": ["picam2"], "controller": ["unoq", "hub51515", "ev3", "m5core"]},
       "block": "The Raspberry Pi Camera Module connects to the CSI connector of a Raspberry Pi.", "nearest": {"camera": "none"}},
     {"id": "camera-pixy", "when": {"camera": ["pixy2"]},
@@ -386,11 +382,27 @@
         "firmware": ["Camera: not written."]}},
     {"id": "camera-esp32cam", "when": {"camera": ["esp32cam"]},
       "rails": {"logic5v": {"label": "5 V servo and accessory supply", "limit_ma": null, "limit_label": ""}},
-      "loads": [{"rail": "logic5v", "what": "ESP32-CAM (recommended supply)", "qty": 1, "stall_ma": 2000, "basis": "datasheet copies; not verified against AI-Thinker"}],
+      "loads": [{"rail": "logic5v", "what": "ESP32-CAM, flash LED at maximum (not a stall figure)", "qty": 1, "stall_ma": 310, "basis": "published"}],
       "add": {
-        "parts": [{"name": "AI-Thinker ESP32-CAM", "qty": 1, "note": "27 x 40.5 x 4.5 mm, 5 V; figures from datasheet copies, not verified against AI-Thinker. It has no USB: a serial adapter is needed to program it."}],
-        "wiring": ["ESP32-CAM on its own 5 V feed, ground shared with the controller. Link by UART or Wi-Fi; no pins are defined."],
-        "firmware": ["Camera: not written. The owner ran this camera with the UNO Q sketchbot; nothing from that is wired in here."]}},
+        "parts": [{"name": "AI-Thinker ESP32-CAM", "qty": 1, "note": "40.5 x 27 x 4.5 mm, 10 g, 5 V on the 5V and GND pins, 180 mA with the flash LED off and 310 mA at maximum (AI-Thinker specification V1.0, read from a mirror). No USB: a serial adapter is needed to program it."}],
+        "wiring": ["ESP32-CAM: 5 V and ground on its header pins, from a supply that is not the controller's 5 V pin if servos share it. Link by UART or Wi-Fi; no pins are defined."],
+        "firmware": ["Camera: not flashed, not run. docs/camera.md describes the camera sketch and what must change for it to run on an ESP32-CAM."]}},
+    {"id": "camera-esp-eye", "when": {"camera": ["esp_eye"]},
+      "rails": {"logic5v": {"label": "5 V servo and accessory supply", "limit_ma": null, "limit_label": ""}},
+      "loads": [{"rail": "logic5v", "what": "ESP-EYE", "qty": 1, "stall_ma": null, "basis": "not published"}],
+      "add": {
+        "parts": [{"name": "Espressif ESP-EYE", "qty": 1, "note": "41 x 21 mm is a reseller's figure and 8 g an estimate; Espressif publishes no dimensions or mass. Powered by its Micro-USB socket."}],
+        "wiring": ["ESP-EYE: powered and read through its Micro-USB socket on the back face at the lower short edge. Cable routing is not modelled."],
+        "firmware": ["Camera: not flashed, not run. docs/camera.md describes the camera sketch written for the ESP-EYE."]}},
+    {"id": "camera-esp32-s3-eye", "when": {"camera": ["esp32_s3_eye"]},
+      "rails": {"logic5v": {"label": "5 V servo and accessory supply", "limit_ma": null, "limit_label": ""}},
+      "loads": [{"rail": "logic5v", "what": "ESP32-S3-EYE", "qty": 1, "stall_ma": null, "basis": "not published"}],
+      "add": {
+        "parts": [{"name": "Espressif ESP32-S3-EYE", "qty": 1, "note": "60 x 30 mm (Espressif's board drawing); 25 g is an estimate and the thickness of its two-board stack is not known. Powered by its Micro-USB socket."}],
+        "wiring": ["ESP32-S3-EYE: powered and read through its Micro-USB socket on the back face at the lower short edge. Cable routing is not modelled."],
+        "firmware": ["Camera: not flashed, not run. No sketch for this board is in the repository: see docs/camera.md."]}},
+    {"id": "camera-esp-not-biped", "when": {"camera": ["esp32cam", "esp_eye", "esp32_s3_eye"], "locomotion": ["crank", "wheeled"]},
+      "add": {"wiring": ["No mount for this camera board exists on this body: not designed. The mount that was analysed is on the biped's torso."]}},
     {"id": "camera-picam", "when": {"camera": ["picam2"]},
       "add": {
         "parts": [
@@ -398,17 +410,17 @@
           {"name": "Zero-series CSI ribbon", "qty": 1, "note": "the Zero's connector is narrower than the standard ribbon"}],
         "wiring": ["Camera Module on the Pi's CSI-2 connector (published), ribbon routed loosely down the neck."],
         "firmware": ["Camera: not written."]}},
-    {"id": "camera-picam-biped", "when": {"camera": ["picam2"], "locomotion": ["biped", "wheeled"]},
+    {"id": "camera-picam-wheeled", "when": {"camera": ["picam2"], "locomotion": ["wheeled"]},
       "add": {"wiring": ["No Camera Module mount exists on this body: not designed."]}},
 
-    {"id": "head-pantilt-needs-pixy", "when": {"head": ["pixy_pantilt"], "camera": ["none", "esp32cam", "picam2"]},
+    {"id": "head-pantilt-needs-pixy", "when": {"head": ["pixy_pantilt"], "camera": ["none", "esp32cam", "esp_eye", "esp32_s3_eye", "picam2"]},
       "block": "The pan-tilt kit is the Pixy2's own: its two servos plug into the Pixy2 and carry it.", "nearest": {"head": "fixed"}},
     {"id": "head-m5-lego-controller", "when": {"head": ["m5_360"], "controller": ["hub51515", "ev3"]},
       "block": "LEGO hubs and bricks have no hobby servo output, so they cannot drive an M5Stack servo.", "nearest": {"head": "lego_motor"}},
     {"id": "head-lego-needs-lego-drive", "when": {"head": ["lego_motor"], "drive": ["braccio_shield", "servo_driver", "m5_360_wheels", "tt_hbridge"]},
       "block": "A LEGO motor needs a LEGO motor port: the Build HAT, the 51515 hub, the EV3 brick or the BaseX. This drive has none.", "nearest": {"head": "fixed"}},
     {"id": "head-moving", "when": {"head": ["pixy_pantilt", "m5_360", "lego_motor"]}, "downgrade": true,
-      "reason": "A moving head was not in any analysis: the analysed and prototype heads are fixed or pan only by hand.",
+      "reason": "A moving head was not in any analysis: the analysed biped has a fixed camera mount and no head, and the prototype walkers' heads are fixed.",
       "add": {"analysis": ["Not analysed: the moving head, its mass and its reaction on the body."]}},
     {"id": "head-pantilt", "when": {"head": ["pixy_pantilt"]},
       "rails": {"logic5v": {"label": "5 V servo and accessory supply", "limit_ma": null, "limit_label": ""}},
@@ -462,9 +474,6 @@
 
     {"id": "lego-needed", "when": {"lego": ["off"], "drive": ["buildhat_51515", "hub_motors", "ev3_motors", "basex_ev3"]},
       "block": "LEGO motors mount and couple through Technic axles, pins and beams, so the body needs its LEGO-compatible holes.", "nearest": {"lego": "on"}},
-    {"id": "lego-on-biped", "when": {"lego": ["on"], "locomotion": ["biped"]}, "downgrade": true,
-      "reason": "No part of the analysed biped has Technic holes. LEGO-compatible variants, if the STL manifest lists any, are separate files that were not in the analysis.",
-      "add": {"analysis": ["Not analysed: any LEGO-compatible variant of the printed parts."]}},
     {"id": "lego-on-wheeled-hobby", "when": {"lego": ["on"], "locomotion": ["wheeled"], "drive": ["m5_360_wheels", "tt_hbridge"]},
       "add": {"wiring": ["LEGO-compatible features on: the Servo Kit 360 servos have a LEGO-compatible bracket (M5Stack). Whether the wheeled chassis has Technic holes is read from the variants summary when it exists."]}},
     {"id": "lego-on-lego-drive", "when": {"lego": ["on"], "drive": ["buildhat_51515", "hub_motors", "ev3_motors", "basex_ev3"]},

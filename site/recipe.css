@@ -8,7 +8,6 @@
 select { font: inherit; width: 100%; max-width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--ink); }
 select:disabled { color: var(--muted); background: #f1f5f3; }
 select:focus-visible { outline: 3px solid #76b4ee; outline-offset: 3px; }
-.masthead nav a[aria-current="page"] { color: var(--green); font-weight: 600; }
 .small-note.flush { margin: 8px 0; }
 .form-actions { align-items: center; margin-bottom: 14px; }
 
@@ -17,6 +16,8 @@ select:focus-visible { outline: 3px solid #76b4ee; outline-offset: 3px; }
 .verdict .eyebrow { margin-bottom: 4px; }
 .verdict-analysed { border-left-color: var(--green); }
 .verdict-analysed h2 { color: var(--green); }
+.verdict-assembly_only { border-left-color: var(--blue); }
+.verdict-assembly_only h2 { color: var(--blue); }
 .verdict-being_analysed { border-left-color: var(--blue); }
 .verdict-being_analysed h2 { color: var(--blue); }
 .verdict-defined { border-left-color: var(--warn); background: #fff8ec; }
