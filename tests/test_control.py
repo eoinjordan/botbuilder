@@ -453,7 +453,13 @@ def test_bridge_drives_the_virtual_robot_and_stops(bridge, cal):
     time.sleep(0.8)
     state = json.loads(request(base, "/api/state")[1])
     assert state["robot"]["status"]["mode"] == "HOLD", "no more lines: the watchdog holds"
-    assert state["robot"]["status"]["q"] == pytest.approx(held, abs=0.3)
+    # The stop reads the commanded position and then sends it back as the hold target, two lines
+    # on the socket. If a 20 ms controller tick falls between them, the position read straight
+    # after the stop is one tick of travel past the target and settles back onto it.
+    one_tick = cal.max_speed_deg_s * protocol.TICK_MS / 1000.0
+    assert state["robot"]["status"]["q"] == pytest.approx(held, abs=one_tick + 0.3)
+    time.sleep(0.2)
+    assert json.loads(request(base, "/api/state")[1])["robot"]["status"]["q"] == state["robot"]["status"]["q"], "and stays there"
 
 
 def test_bridge_refuses_a_remote_robot_without_the_flag(bridge):
