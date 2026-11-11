@@ -5,12 +5,10 @@ Copies the generated reports, the viewer model and the pictures next to the
 hand-written index.html, style.css and app.js. Standard library only, so the
 Pages workflow needs no installs.
 
-    python scripts/build_site.py [--with-meshes]
+    python scripts/build_site.py
 
---with-meshes also copies the printable STLs from build/stl into
-site/data/meshes for a local preview with the real part shapes. Do not
-publish that directory until the licence of the source meshes is settled
-(see NOTICE); it is ignored by git and the Pages workflow never passes the flag.
+The printable STLs in stl/ are copied to site/stl with their manifest, as
+downloads and for the 3D view.
 """
 import argparse
 import json
@@ -18,7 +16,7 @@ import shutil
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT =Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
 DATA = {
     "assembly.json": ROOT / "reports" / "assembly.json",
@@ -31,12 +29,12 @@ DATA = {
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--with-meshes", action="store_true")
-    args = parser.parse_args()
+    parser.parse_args()
 
     data = SITE / "data"
     images = SITE / "images"
-    for folder in (data, images):
+    parts = SITE / "stl"
+    for folder in (data, images, parts):
         if folder.exists():
             shutil.rmtree(folder)
         folder.mkdir(parents=True)
@@ -45,7 +43,7 @@ def main() -> int:
         with open(source, encoding="utf-8") as handle:
             content = json.load(handle)
         if name == "model.json":
-            content["meshes_published"] = bool(args.with_meshes)
+            content["meshes_published"] = True
         (data / name).write_text(json.dumps(content, separators=(",", ":")), encoding="utf-8", newline="\n")
     count = 0
     for picture in sorted((ROOT / "docs" / "images").iterdir()):
@@ -53,16 +51,13 @@ def main() -> int:
             shutil.copyfile(picture, images / picture.name)
             count += 1
     (SITE / ".nojekyll").write_text("", encoding="utf-8")
-    if args.with_meshes:
-        source = ROOT / "build" / "stl"
-        if not source.is_dir():
-            print("no build/stl: run scripts/fetch_stls.py first", file=sys.stderr)
-            return 1
-        (data / "meshes").mkdir()
-        for stl in sorted(source.glob("*.stl")):
-            shutil.copyfile(stl, data / "meshes" / stl.name)
+    # The printable parts, as downloads and for the 3D view.
+    with open(ROOT / "stl" / "manifest.json", encoding="utf-8") as handle:
+        manifest = json.load(handle)
+    for name in [entry["file"] for entry in manifest["files"]] + ["manifest.json", "parameters.json"]:
+        shutil.copyfile(ROOT / "stl" / name, parts / name)
     size = sum(p.stat().st_size for p in SITE.rglob("*") if p.is_file())
-    print(f"site built: {len(DATA)} data files, {count} pictures, {size / 1e6:.2f} MB")
+    print(f"site built: {len(DATA)} data files, {count} pictures, {len(manifest['files'])} STLs, {size / 1e6:.2f} MB")
     return 0
 
 

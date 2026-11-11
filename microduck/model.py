@@ -44,9 +44,8 @@ PART_FILES = {
 FIT_FILES = {"SR431": "fit_SR431.stl", "SR311": "fit_SR311.stl", "horn": "fit_horn_drill_blank.stl",
              "lego_compatible_coupon": "fit_lego_compatible_coupon.stl",
              **{"cam_" + name: f"fit_cam_{name}.stl" for name in CAMERAS}}
-# Torsos for the camera presets the assembly does not use, and the record of
-# the generator parameters; fetched with the rest.
-OTHER_FILES = [f"01_torso_unoq_cam_{name}.stl" for name in CAMERAS] + ["parameters.json"]
+# Torsos for the camera presets the assembly does not use.
+OTHER_FILES = [f"01_torso_unoq_cam_{name}.stl" for name in CAMERAS]
 COLORS = {"print": (236, 205, 120), "servo": (60, 66, 74), "horn": (225, 228, 230),
           "board": (20, 120, 110), "shield": (40, 90, 160), "camera": (150, 40, 60)}
 # From build.py: cradle plate thickness, torso cradle position, yoke cradle
@@ -69,8 +68,8 @@ def load_json(name: str) -> dict:
 
 
 def stl_dir() -> Path:
-    """Where the seven printable STLs are read from (never committed)."""
-    return Path(os.environ.get("MICRODUCK_STL_DIR", ROOT / "build" / "stl"))
+    """Where the printable STLs are read from: the committed stl/ directory."""
+    return Path(os.environ.get("MICRODUCK_STL_DIR", ROOT / "stl"))
 
 
 def design_parameters() -> dict:

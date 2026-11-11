@@ -127,6 +127,7 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 
 | Path | What |
 |---|---|
+| `stl/` | the printable parts of the biped as generated, with a manifest |
 | `config/` | bought-part data with sources, placement assumptions, calibration, gait |
 | `microduck/` | model, assembly test, renderer, description generator, simulator, protocol, player |
 | `scripts/` | fetch the STLs, run each stage, regenerate everything, play, calibrate, virtual robot |
@@ -145,9 +146,8 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
     .venv/Scripts/python -m pytest
     .venv/Scripts/python scripts/play.py trajectories/gait.csv
 
-The simulation, the player and most tests run from what is committed. The
-assembly test and the description generator need the printable STLs, which
-are not in this repository:
+Everything runs from what is committed, the printable STLs in `stl/`
+included. To regenerate after changing the design or a configuration file:
 
     python scripts/regenerate.py --design-dir /path/to/microduck-braccio-unoq
 
@@ -163,8 +163,10 @@ does not look like the original (see the pictures in
 [docs/assembly.md](docs/assembly.md)). The idea of a small duck-like biped is
 owed to the [Microduck by Pollen Robotics](https://github.com/pollen-robotics/microduck_rl).
 
-The STLs are not committed; `scripts/fetch_stls.py` reads them from the local
-design directory.
+The generated STLs are in `stl/`, listed in `stl/manifest.json` with what
+each is, its size, checksum and the design commit it came from. They are the
+files the assembly test read. `scripts/fetch_stls.py` copies them from the
+local design directory after its generator has run. None has been printed.
 
 ## Unverified
 
