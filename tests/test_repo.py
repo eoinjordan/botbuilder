@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 """House rules for the repository: plain ASCII text, SPDX lines on source
-files, no STL in the tree, documents that agree with the reports."""
+files, STLs only under stl/, documents that agree with the reports."""
 import re
 import subprocess
 
@@ -46,16 +46,26 @@ def test_source_files_carry_an_spdx_line():
             assert "SPDX-License-Identifier: MIT" in head, path.relative_to(ROOT).as_posix()
 
 
-def test_no_mesh_files_are_tracked():
+def under_stl(path) -> bool:
+    return path.relative_to(ROOT).parts[0] == "stl"
+
+
+def test_mesh_files_are_tracked_only_under_stl():
     for path in tracked():
-        assert path.suffix.lower() not in (".stl", ".obj", ".step", ".3mf"), path.name
+        if path.suffix.lower() in (".stl", ".obj", ".step", ".3mf"):
+            assert under_stl(path), path.relative_to(ROOT).as_posix()
 
 
 def test_repository_stays_small():
-    total = sum(path.stat().st_size for path in tracked())
-    assert total < 5_000_000
-    for path in tracked():
+    # Printable files under stl/ have their own budget; stl/lego adds 5.1 MB.
+    rest = [path for path in tracked() if not under_stl(path)]
+    assert sum(path.stat().st_size for path in rest) < 5_000_000
+    for path in rest:
         assert path.stat().st_size < 1_000_000, path.name
+    meshes = [path for path in tracked() if under_stl(path)]
+    assert sum(path.stat().st_size for path in meshes) < 20_000_000
+    for path in meshes:
+        assert path.stat().st_size < 3_000_000, path.name
 
 
 def test_generated_documents_say_their_status():

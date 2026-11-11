@@ -1,0 +1,30 @@
+{
+ "_comment": "The printable files copied into stl/lego/ and what each is for. Quantities are per robot.",
+ "folders": {
+  "ev3-pixy2": {
+   "what": "Crank walker for the EV3 brick, two EV3 large motors and a Pixy2",
+   "files": {
+    "chassis.stl": {"purpose": "deck with strap slots for the brick, two side panels with the axle row, forward shelf for the head", "quantity": 1},
+    "camera_head.stl": {"purpose": "head with a perforated face for the Pixy2 LEGO edition brackets; print this or camera_head_pantilt, not both", "quantity": 1},
+    "camera_head_pantilt.stl": {"purpose": "head with a slotted top platform for the base plate of the Pixy2 pan-tilt kit; alternative to camera_head", "quantity": 0, "note": "platform size is assumed: measure the kit's base plate first"},
+    "left_leg.stl": {"purpose": "left leg and foot, fingers at +/-70 mm", "quantity": 1},
+    "right_leg.stl": {"purpose": "right leg and foot, fingers at +/-27 mm", "quantity": 1},
+    "crank_print_4.stl": {"purpose": "crank, 12 mm radius, cross-axle bore and pin bore", "quantity": 4},
+    "gear_16t_print_6.stl": {"purpose": "16-tooth module 1 spur gear, 5 mm thick, cross-axle bore", "quantity": 6},
+    "fit_coupon.stl": {"purpose": "fit test: cross-axle hole, 4.95 mm pin hole, 5.35 mm bearing hole; print first", "quantity": 1}
+   }
+  },
+  "pi-zero-2w-51515": {
+   "what": "Crank walker for a Raspberry Pi Zero 2 W with the Build HAT, two 51515 medium angular motors and a Camera Module 2",
+   "files": {
+    "chassis.stl": {"purpose": "deck with four M2.5 bosses on 58 x 23 mm centres, two side panels with the axle row, forward shelf for the head", "quantity": 1},
+    "camera_head.stl": {"purpose": "head with a 21 x 12.5 mm M2 pattern for the Camera Module 2", "quantity": 1},
+    "left_leg.stl": {"purpose": "left leg and foot, fingers at +/-70 mm", "quantity": 1},
+    "right_leg.stl": {"purpose": "right leg and foot, fingers at +/-27 mm", "quantity": 1},
+    "crank_print_4.stl": {"purpose": "crank, 12 mm radius, cross-axle bore and pin bore", "quantity": 4},
+    "gear_16t_print_6.stl": {"purpose": "16-tooth module 1 spur gear, 5 mm thick, cross-axle bore", "quantity": 6},
+    "fit_coupon.stl": {"purpose": "fit test: cross-axle hole, 4.95 mm pin hole, 5.35 mm bearing hole; print first", "quantity": 1}
+   }
+  }
+ }
+}
