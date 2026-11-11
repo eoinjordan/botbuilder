@@ -1,0 +1,24 @@
+{
+  "_comment": "Placement choices the design does not state. Each is an assumption of this repository, shown in docs/images/assumption-*.png. Change a value and run scripts/regenerate.py to see its effect.",
+  "thigh_face": "rail",
+  "roll_servo_flip": true,
+  "pitch_servo_flip": true,
+  "knee_servo_flip": false,
+  "board_x_offset_mm": 0.0,
+  "sweep_step_deg": 2.0,
+  "limit_margin_deg": 3.0,
+  "interference_threshold_mm3": 0.5,
+  "notes": {
+    "frame": "x forward (toes, head), y left, z up. The left leg is the one built from the mirrored yoke, on the torso cradle at y = +57.",
+    "servo_in_cradle": "Case bottom on the plate, long sides between the rails, centred along the rails, output shaft away from the plate.",
+    "roll_servo_flip": "true puts the hip roll shaft at the upper end of the torso cradle.",
+    "pitch_servo_flip": "true puts the hip pitch shaft at the lower end of the yoke cradle.",
+    "knee_servo_flip": "false puts the knee shaft at the far (distal) end of the thigh.",
+    "horn_side": "The printed blank sits on the outer face of the horn, so the horn screw is reached through the 8 mm hole from the far side.",
+    "yoke_face": "The roll horn meets the yoke face at yoke z = 0; the wall and the pitch cradle extend forward from it.",
+    "thigh_face": "'rail' puts the hip horn on the face that carries the rails, so the knee servo lies beside the hip pitch servo and the foot is nearer the body. 'flat' puts it on the flat face, stacking thigh, knee servo and shin outward. Both are checked; this value picks the one the robot description uses.",
+    "shin_face": "The shin blank is symmetric; the face towards the knee servo meets the horn and the foot points +x.",
+    "neutral": "Thighs straight down, shins vertical, soles level, horns at mid travel.",
+    "board": "UNO Q long side along x, centred between the deck rails, on spacers; Braccio shield stacked on top."
+  }
+}

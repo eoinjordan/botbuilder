@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Printable STLs copied from the local design directory by
+# scripts/fetch_stls.py. They are derived from third-party Microduck meshes
+# whose licence is not settled (see NOTICE), so they stay out of the history.
+build/
+site/data/meshes/
+*.stl
+
+# Simulator scratch output
+output/
+
+# Arduino / App Lab build caches
+.cache/
+
+# OS / editor
+.DS_Store
+.vscode/

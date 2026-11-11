@@ -1,0 +1,17 @@
+{
+  "_comment": "Per-servo calibration, edited by hand during bring-up. Joint limits are not here: they come from the assembly test (robot/joints.json). servo_deg = zero_deg + direction * joint_deg. Every zero_deg and direction below is a starting value that has never been checked on hardware.",
+  "pulse": {"min_us": 500, "max_us": 2500, "frequency_hz": 50},
+  "soft_start_pin": 12,
+  "max_speed_deg_s": 120.0,
+  "watchdog_ms": 500,
+  "watchdog_action": "hold",
+  "calibration_step_max_deg": 2.0,
+  "joints": [
+    {"name": "left_hip_roll", "servo": "SR431", "channel": "M1", "pin": 11, "zero_deg": 90.0, "direction": 1},
+    {"name": "left_hip_pitch", "servo": "SR431", "channel": "M2", "pin": 10, "zero_deg": 90.0, "direction": 1},
+    {"name": "left_knee", "servo": "SR311", "channel": "M5", "pin": 5, "zero_deg": 90.0, "direction": -1},
+    {"name": "right_hip_roll", "servo": "SR431", "channel": "M3", "pin": 9, "zero_deg": 90.0, "direction": 1},
+    {"name": "right_hip_pitch", "servo": "SR431", "channel": "M4", "pin": 6, "zero_deg": 90.0, "direction": -1},
+    {"name": "right_knee", "servo": "SR311", "channel": "M6", "pin": 3, "zero_deg": 90.0, "direction": 1}
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "_comment": "Bought parts. 'published' values are quoted from the maker's page at 'source'. 'assumed' values are not published by the maker; each carries the reason it was chosen. Lengths in mm, masses in g.",
+  "servos": {
+    "SR431": {
+      "source": "https://store-usa.arduino.cc/products/tinkerkit-braccio-robot",
+      "published": {
+        "length_mm": 42.0,
+        "width_mm": 20.5,
+        "height_mm": 39.5,
+        "mass_g": 62.0,
+        "torque_kgcm_4v8": 12.2,
+        "torque_kgcm_6v0": 14.5,
+        "speed_s_per_60deg_4v8": 0.20,
+        "speed_s_per_60deg_6v0": 0.18,
+        "rotation_range_deg": 180.0,
+        "control": "PWM analog"
+      },
+      "assumed": {
+        "height_is_case_only": {"value": true, "why": "the page gives one height; taken as the case without the output spline"},
+        "shaft_from_end_mm": {"value": 10.25, "why": "half the case width, as on standard-size servos; not published"},
+        "ear_overhang_mm": {"value": 6.5, "why": "typical mounting ear of a standard-size servo; not published"},
+        "ear_thickness_mm": {"value": 2.5, "why": "typical; not published"},
+        "ear_bottom_height_mm": {"value": 27.0, "why": "about 0.68 of the case height; not published"},
+        "boss_radius_mm": {"value": 6.5, "why": "output bearing boss; not published"},
+        "boss_height_mm": {"value": 1.5, "why": "not published"},
+        "horn_radius_mm": {"value": 10.5, "why": "round horn of about 21 mm; the kit's horn is not dimensioned by the maker"},
+        "horn_thickness_mm": {"value": 2.5, "why": "not published"},
+        "horn_hub_radius_mm": {"value": 4.5, "why": "not published"},
+        "horn_face_above_case_mm": {"value": 5.5, "why": "case top to the outer face of the horn, where the printed blank sits; not published"},
+        "stall_current_a": {"value": 2.0, "why": "the maker publishes no stall current; typical for an analog servo of this torque at 5 V"},
+        "armature_kgm2": {"value": 0.003, "why": "reflected rotor inertia for the simulation; not published"}
+      }
+    },
+    "SR311": {
+      "source": "https://store-usa.arduino.cc/products/tinkerkit-braccio-robot",
+      "published": {
+        "length_mm": 31.3,
+        "width_mm": 16.5,
+        "height_mm": 28.6,
+        "mass_g": 27.0,
+        "torque_kgcm_4v8": 3.1,
+        "torque_kgcm_6v0": 3.8,
+        "speed_s_per_60deg_4v8": 0.14,
+        "speed_s_per_60deg_6v0": 0.12,
+        "rotation_range_deg": 180.0,
+        "control": "PWM analog"
+      },
+      "assumed": {
+        "height_is_case_only": {"value": true, "why": "the page gives one height; taken as the case without the output spline"},
+        "shaft_from_end_mm": {"value": 8.25, "why": "half the case width; not published"},
+        "ear_overhang_mm": {"value": 4.5, "why": "typical mounting ear of a mini servo; not published"},
+        "ear_thickness_mm": {"value": 2.0, "why": "typical; not published"},
+        "ear_bottom_height_mm": {"value": 19.5, "why": "about 0.68 of the case height; not published"},
+        "boss_radius_mm": {"value": 5.0, "why": "not published"},
+        "boss_height_mm": {"value": 1.2, "why": "not published"},
+        "horn_radius_mm": {"value": 9.0, "why": "round horn of about 18 mm; not dimensioned by the maker"},
+        "horn_thickness_mm": {"value": 2.0, "why": "not published"},
+        "horn_hub_radius_mm": {"value": 3.5, "why": "not published"},
+        "horn_face_above_case_mm": {"value": 4.5, "why": "case top to the outer face of the horn; not published"},
+        "stall_current_a": {"value": 1.0, "why": "the maker publishes no stall current; typical for a mini analog servo at 5 V"},
+        "armature_kgm2": {"value": 0.001, "why": "reflected rotor inertia for the simulation; not published"}
+      }
+    }
+  },
+  "supply": {
+    "source": "https://store-usa.arduino.cc/products/tinkerkit-braccio-robot",
+    "published": {
+      "braccio_supply_v": 5.0,
+      "braccio_supply_ma": 4000,
+      "servo_spec_voltage_used_v": 4.8
+    },
+    "note": "The Braccio shield feeds the servos from the kit's regulated 5 V supply. The maker rates the servos at 4.8 V and 6.0 V only, so the 4.8 V torque and speed are used."
+  },
+  "board": {
+    "name": "Arduino UNO Q",
+    "source": "https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf",
+    "published": {
+      "length_mm": 68.58,
+      "width_mm": 53.34,
+      "bottom_parts_max_mm": 2.0,
+      "usb_c_v": 5.0,
+      "usb_c_max_a": 3.0,
+      "vin_min_v": 7.0,
+      "vin_max_v": 24.0,
+      "pin_5v_max_a": 3.0
+    },
+    "assumed": {
+      "pcb_thickness_mm": {"value": 1.6, "why": "standard board thickness; not in the datasheet text"},
+      "mass_g": {"value": 30.0, "why": "the datasheet gives no mass; estimate for a populated UNO-format board"},
+      "spacer_mm": {"value": 2.5, "why": "insulating spacers the design README asks for; must exceed the 2 mm bottom-side parts"}
+    }
+  },
+  "shield": {
+    "name": "Braccio shield",
+    "source": "https://store-usa.arduino.cc/products/tinkerkit-braccio-robot",
+    "published": {
+      "length_mm": 68.58,
+      "width_mm": 53.34
+    },
+    "assumed": {
+      "mass_g": {"value": 25.0, "why": "not published; estimate for the shield with headers and jack"},
+      "pcb_gap_mm": {"value": 11.0, "why": "stacking header pitch between board and shield; not published"},
+      "stack_height_mm": {"value": 26.0, "why": "top of the servo plugs above the UNO Q board top; not published"}
+    }
+  },
+  "print": {
+    "assumed": {
+      "material": {"value": "PLA", "why": "the design README names no material"},
+      "density_g_cm3": {"value": 1.24, "why": "typical PLA filament data sheet value; PETG is about 1.27"},
+      "solid_fraction": {"value": 0.6, "why": "4 mm plates with two perimeters and 0.8 mm skins at 20 percent infill are mostly shell"}
+    }
+  },
+  "driver": {
+    "assumed": {
+      "screwdriver_radius_mm": {"value": 3.0, "why": "shank of a small cross-head driver for the horn screw"},
+      "screwdriver_length_mm": {"value": 80.0, "why": "free length needed in front of the access hole"}
+    }
+  }
+}
