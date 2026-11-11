@@ -16,6 +16,7 @@ from conftest import ROOT
 from microduck import firmware_table, protocol
 
 SKETCH = ROOT / "app_lab" / "microduck_agent" / "sketch"
+STAND = protocol.load_calibration().stand_deg
 
 
 def test_table_header_is_up_to_date():
@@ -39,6 +40,16 @@ def test_sketch_uses_the_sketchbot_build_profile():
     assert "NOT BUILT" in sketch
 
 
+def test_table_carries_the_leg_clearance_boxes():
+    header = firmware_table.TARGET.read_text(encoding="utf-8")
+    cal = protocol.load_calibration()
+    for side in ("left", "right"):
+        leg = cal.clearance["legs"][side]
+        assert f"{len(leg['shin'])},  // shin boxes" in header
+        assert len(leg["shin"]) <= 8 and len(leg["thigh"]) <= 8      # MAX_BOXES in DuckControl.hpp
+    assert "constexpr int MAX_BOXES = 8;" in (SKETCH / "DuckControl.hpp").read_text(encoding="utf-8")
+
+
 def test_sketch_starts_relaxed():
     """No pulse may leave the board before an E line: setup must not enable."""
     sketch = (SKETCH / "sketch.ino").read_text(encoding="utf-8")
@@ -59,7 +70,11 @@ def _script(seed: int, lines: int) -> list:
             now += 20
             out.append(f"T {now}")
         elif roll < 0.85:
-            q = [rng.uniform(-120, 120) for _ in range(6)]
+            if rng.random() < 0.5:
+                q = [rng.uniform(-120, 120) for _ in range(6)]
+            else:
+                # near the stand pose, where the leg clearance rule decides
+                q = [s + rng.uniform(-22, 22) for s in STAND]
             out.append(f"L {now} " + protocol.format_joints(q).strip())
         elif roll < 0.9:
             now += rng.choice([100, 400, 700])
@@ -89,7 +104,7 @@ def host_binary(tmp_path_factory):
     if compiler is None:
         pytest.skip("no host C++ compiler")
     binary = tmp_path_factory.mktemp("fw") / "firmware_host"
-    subprocess.run([compiler, "-std=c++17", "-Wall", "-Wextra", "-Werror", "-I", str(SKETCH),
+    subprocess.run([compiler, "-std=c++17", "-Wall", "-Wextra", "-Werror", "-ffp-contract=off", "-I", str(SKETCH),
                     str(ROOT / "tests" / "firmware_host.cpp"), "-o", str(binary)], check=True)
     return next(p for p in (binary, binary.with_suffix(".exe")) if p.exists())
 
@@ -104,4 +119,7 @@ def test_firmware_core_matches_the_reference(host_binary, seed):
     for i, (a, b) in enumerate(zip(got, want)):
         assert a == b, f"line {i} ({script[i]!r}): firmware {a!r}, reference {b!r}"
     assert any(line.startswith("R OK CLAMP") for line in want), "the script must exercise the soft limits"
+    refused = sum(1 for line in want if line == "R ERR CLEAR")
+    taken = sum(1 for row, line in zip(script, want) if row.split()[2:3] == ["J"] and line.startswith("R OK"))
+    assert refused > 10 and taken > 10, "the script must exercise the leg clearance rule both ways"
     assert any("mode=HOLD" in line for line in want) or any(line == "P 0 0 0 0 0 0" for line in want)

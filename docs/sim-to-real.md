@@ -10,7 +10,7 @@ one reply per line. Angles are joint angles in degrees.
 
 | Line | Meaning | Reply |
 |---|---|---|
-| `J q0 q1 q2 q3 q4 q5` | joint targets | `OK`, `OK CLAMP n`, `ERR DISABLED`, `ERR CAL`, `ERR ARGS` |
+| `J q0 q1 q2 q3 q4 q5` | joint targets | `OK`, `OK CLAMP n`, `ERR CLEAR` (the target would bring one leg into the other), `ERR DISABLED`, `ERR CAL`, `ERR ARGS` |
 | `E` | enable: soft start, then pulses one joint at a time | `OK` |
 | `R` | relax: stop all pulses | `OK` |
 | `S` | status | `STAT mode=RUN age_ms=40 wd=500 q=0.0,45.0,...` |

@@ -11,6 +11,13 @@
 // Watchdog: in RUN, if no J line arrives for watchdog_ms the controller
 // holds the current command (or relaxes, if set to).
 // Calibration: C/N/Z/X move one joint by steps of at most step_max_deg.
+// Leg clearance: per-joint limits cannot keep one leg out of the other, so
+// the table carries boxes around each thigh and each shin with its sole. A J
+// target or a calibration nudge that would bring the legs together is
+// refused (ERR CLEAR), and a tick's step that would is not taken. The test
+// uses its own sine and plain double arithmetic so that this file, the
+// Python reference and the page's copy agree bit for bit; build it without
+// fused multiply-add contraction (-ffp-contract=off).
 #pragma once
 
 #include <stddef.h>
@@ -30,6 +37,24 @@ struct JointCal {
   double max_deg;
 };
 
+constexpr int MAX_BOXES = 8;
+
+// Centre, half size and bounding radius of a box in its link frame, mm.
+struct Box {
+  double v[7];
+};
+
+// One leg for the clearance test: the origins of the hip roll, hip pitch and
+// knee frames, each in its parent frame (mm), and the boxes of the thigh and
+// of the shin. A leg with no shin box switches the test off.
+struct LegShape {
+  double origin[3][3];
+  int thigh_count;
+  Box thigh[MAX_BOXES];
+  int shin_count;
+  Box shin[MAX_BOXES];
+};
+
 struct Table {
   JointCal joints[JOINTS];
   int min_us;
@@ -41,7 +66,124 @@ struct Table {
   bool watchdog_relax;
   double step_max_deg;
   double stand_deg[JOINTS];
+  LegShape legs[2];   // left, right
 };
+
+// --- leg clearance ----------------------------------------------------------
+// Keep this block operation for operation the same as microduck/protocol.py.
+
+namespace clearance {
+
+constexpr double PI = 3.141592653589793;
+constexpr double S3 = -0.16666666666666666, S5 = 0.008333333333333333, S7 = -0.0001984126984126984;
+constexpr double S9 = 2.7557319223985893e-06, S11 = -2.505210838544172e-08, S13 = 1.6059043836821613e-10;
+
+// Sine of an angle in degrees, the same arithmetic everywhere.
+inline double sine(double deg) {
+  double x = deg * (PI / 180.0);
+  while (x > PI) x -= 2.0 * PI;
+  while (x < -PI) x += 2.0 * PI;
+  if (x > 0.5 * PI) x = PI - x;
+  if (x < -0.5 * PI) x = -PI - x;
+  const double x2 = x * x;
+  return x * (1.0 + x2 * (S3 + x2 * (S5 + x2 * (S7 + x2 * (S9 + x2 * (S11 + x2 * S13))))));
+}
+
+inline double cosine(double deg) { return sine(deg + 90.0); }
+
+// Rotation about x by roll, then about y by pitch; rows of the matrix.
+inline void frame(double roll, double pitch, double m[3][3]) {
+  const double sr = sine(roll), cr = cosine(roll), sp = sine(pitch), cp = cosine(pitch);
+  m[0][0] = cp;       m[0][1] = 0.0; m[0][2] = sp;
+  m[1][0] = sr * sp;  m[1][1] = cr;  m[1][2] = -sr * cp;
+  m[2][0] = -cr * sp; m[2][1] = sr;  m[2][2] = cr * cp;
+}
+
+inline void apply(const double m[3][3], const double *v, double out[3]) {
+  out[0] = m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2];
+  out[1] = m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2];
+  out[2] = m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2];
+}
+
+struct Pose {
+  double thigh[3][3], p_thigh[3], shin[3][3], p_shin[3];
+};
+
+// Frames of the thigh and the shin in the torso frame, mm.
+inline void leg(const LegShape &shape, double roll, double pitch, double knee, Pose &out) {
+  double level[3][3], lifted[3], lowered[3];
+  frame(roll, pitch, out.thigh);
+  frame(roll, pitch + knee, out.shin);
+  frame(roll, 0.0, level);
+  apply(level, shape.origin[1], lifted);
+  for (int k = 0; k < 3; k++) out.p_thigh[k] = shape.origin[0][k] + lifted[k];
+  apply(out.thigh, shape.origin[2], lowered);
+  for (int k = 0; k < 3; k++) out.p_shin[k] = out.p_thigh[k] + lowered[k];
+}
+
+// True when two boxes do not touch. Separating axis test.
+inline bool apart(const double ra[3][3], const double *pa, const double *a,
+                  const double rb[3][3], const double *pb, const double *b) {
+  double ca[3], cb[3], d[3], r[3][3], f[3][3], t[3];
+  apply(ra, a, ca);
+  apply(rb, b, cb);
+  for (int k = 0; k < 3; k++) d[k] = pb[k] + cb[k] - pa[k] - ca[k];
+  const double reach = a[6] + b[6];
+  if (d[0] * d[0] + d[1] * d[1] + d[2] * d[2] > reach * reach) return true;
+  // b's axes and the offset in a's frame
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      r[i][j] = ra[0][i] * rb[0][j] + ra[1][i] * rb[1][j] + ra[2][i] * rb[2][j];
+      f[i][j] = (r[i][j] >= 0.0 ? r[i][j] : -r[i][j]) + 1e-9;
+    }
+  }
+  for (int i = 0; i < 3; i++) t[i] = ra[0][i] * d[0] + ra[1][i] * d[1] + ra[2][i] * d[2];
+  for (int i = 0; i < 3; i++) {
+    const double s = t[i] >= 0.0 ? t[i] : -t[i];
+    if (s > a[3 + i] + b[3] * f[i][0] + b[4] * f[i][1] + b[5] * f[i][2]) return true;
+  }
+  for (int j = 0; j < 3; j++) {
+    double s = t[0] * r[0][j] + t[1] * r[1][j] + t[2] * r[2][j];
+    if (s < 0.0) s = -s;
+    if (s > a[3] * f[0][j] + a[4] * f[1][j] + a[5] * f[2][j] + b[3 + j]) return true;
+  }
+  for (int i = 0; i < 3; i++) {
+    const int i1 = (i + 1) % 3, i2 = (i + 2) % 3;
+    for (int j = 0; j < 3; j++) {
+      const int j1 = (j + 1) % 3, j2 = (j + 2) % 3;
+      double s = t[i2] * r[i1][j] - t[i1] * r[i2][j];
+      if (s < 0.0) s = -s;
+      if (s > a[3 + i1] * f[i2][j] + a[3 + i2] * f[i1][j] + b[3 + j1] * f[i][j2] + b[3 + j2] * f[i][j1]) return true;
+    }
+  }
+  return false;
+}
+
+// True when no box of one leg touches a box of the other at joint angles q.
+inline bool legsClear(const LegShape legs[2], const double *q) {
+  const LegShape &left = legs[0];
+  const LegShape &right = legs[1];
+  if (left.shin_count == 0 || right.shin_count == 0) return true;
+  Pose l, r;
+  leg(left, q[0], q[1], q[2], l);
+  leg(right, q[3], q[4], q[5], r);
+  for (int i = 0; i < left.shin_count; i++) {
+    for (int j = 0; j < right.shin_count; j++) {
+      if (!apart(l.shin, l.p_shin, left.shin[i].v, r.shin, r.p_shin, right.shin[j].v)) return false;
+    }
+    for (int j = 0; j < right.thigh_count; j++) {
+      if (!apart(l.shin, l.p_shin, left.shin[i].v, r.thigh, r.p_thigh, right.thigh[j].v)) return false;
+    }
+  }
+  for (int i = 0; i < left.thigh_count; i++) {
+    for (int j = 0; j < right.shin_count; j++) {
+      if (!apart(l.thigh, l.p_thigh, left.thigh[i].v, r.shin, r.p_shin, right.shin[j].v)) return false;
+    }
+  }
+  return true;
+}
+
+}  // namespace clearance
 
 enum Mode { RELAX = 0, RUN = 1, HOLD = 2, CAL = 3 };
 
@@ -81,8 +223,13 @@ class Controller {
     }
     if (mode_ != RUN) return;
     const double step = table_.max_speed_deg_s * TICK_MS / 1000.0;
+    double next[JOINTS];
     for (int i = 0; i < JOINTS; i++) {
-      current_[i] += bound(target_[i] - current_[i], -step, step);
+      next[i] = current_[i] + bound(target_[i] - current_[i], -step, step);
+    }
+    // a step that would bring the legs together is not taken
+    if (clearance::legsClear(table_.legs, next)) {
+      for (int i = 0; i < JOINTS; i++) current_[i] = next[i];
     }
   }
 
@@ -126,11 +273,13 @@ class Controller {
         if (mode_ == RELAX) { w.text("ERR DISABLED"); return; }
         if (mode_ == CAL) { w.text("ERR CAL"); return; }
         int clamped = 0;
+        double c[JOINTS];
         for (int i = 0; i < JOINTS; i++) {
-          const double c = bound(v[i], table_.joints[i].min_deg, table_.joints[i].max_deg);
-          if (c != v[i]) clamped++;
-          target_[i] = c;
+          c[i] = bound(v[i], table_.joints[i].min_deg, table_.joints[i].max_deg);
+          if (c[i] != v[i]) clamped++;
         }
+        if (!clearance::legsClear(table_.legs, c)) { w.text("ERR CLEAR"); return; }
+        for (int i = 0; i < JOINTS; i++) target_[i] = c[i];
         mode_ = RUN;
         armed_ = true;
         last_cmd_ms_ = now_ms;
@@ -194,7 +343,11 @@ class Controller {
         if (delta > table_.step_max_deg || delta < -table_.step_max_deg) { w.text("ERR STEP"); return; }
         const int i = cal_index_;
         const double servo = calServo(delta);
-        current_[i] = (servo - zero_[i]) / table_.joints[i].direction;
+        double moved[JOINTS];
+        for (int k = 0; k < JOINTS; k++) moved[k] = current_[k];
+        moved[i] = (servo - zero_[i]) / table_.joints[i].direction;
+        if (!clearance::legsClear(table_.legs, moved)) { w.text("ERR CLEAR"); return; }
+        current_[i] = moved[i];
         target_[i] = current_[i];
         w.text("CAL ");
         w.integer(i);

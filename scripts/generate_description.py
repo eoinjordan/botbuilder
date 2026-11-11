@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from microduck import describe, firmware_table, model  # noqa: E402
+from microduck import clearance, describe, firmware_table, model  # noqa: E402
 
 if __name__ == "__main__":
     if not model.have_stls():
@@ -15,4 +15,6 @@ if __name__ == "__main__":
     result = describe.generate()
     print("collision boxes per link:", result["boxes"])
     print("stand pose (deg):", result["table"]["stand_pose_deg"])
+    table = clearance.write()
+    print("leg clearance boxes:", {side: leg["shin_names"] + leg["thigh_names"] for side, leg in table["legs"].items()})
     print("firmware table:", firmware_table.write())

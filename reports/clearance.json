@@ -1,0 +1,46 @@
+{
+ "seed": 1,
+ "margin_mm": 4.0,
+ "mesh_overlap_threshold_mm3": 0.5,
+ "sets": {
+  "uniform over the limits": {
+   "poses": 20000,
+   "mesh_colliding": 764,
+   "rule_refuses": 1368,
+   "false_accepts": 0,
+   "false_rejects": 604,
+   "false_accept_rate_of_colliding_poses": 0.0,
+   "false_reject_rate_of_free_poses": 0.0314,
+   "worst_accepted_overlap_mm3": 0.0
+  },
+  "within 25 degrees of the stand pose": {
+   "poses": 20000,
+   "mesh_colliding": 6018,
+   "rule_refuses": 9217,
+   "false_accepts": 0,
+   "false_rejects": 3199,
+   "false_accept_rate_of_colliding_poses": 0.0,
+   "false_reject_rate_of_free_poses": 0.2288,
+   "worst_accepted_overlap_mm3": 0.0
+  },
+  "one joint moved from the stand pose": {
+   "poses": 2400,
+   "mesh_colliding": 302,
+   "rule_refuses": 559,
+   "false_accepts": 0,
+   "false_rejects": 257,
+   "false_accept_rate_of_colliding_poses": 0.0,
+   "false_reject_rate_of_free_poses": 0.1225,
+   "worst_accepted_overlap_mm3": 0.0
+  }
+ },
+ "total": {
+  "poses": 42400,
+  "false_accepts": 0,
+  "false_rejects": 4060,
+  "mesh_free": 35316,
+  "mesh_colliding": 7084,
+  "false_reject_rate_of_free_poses": 0.115
+ },
+ "generated_by": "scripts/validate_clearance.py"
+}

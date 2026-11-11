@@ -26,6 +26,21 @@ def render(cal: Calibration) -> str:
               f"  {'true' if cal.watchdog_action == 'relax' else 'false'},  // watchdog_relax",
               f"  {cal.step_max_deg!r},  // step_max_deg",
               "  {" + ", ".join(repr(v) for v in cal.stand_deg) + "},  // stand_deg",
+              "  // leg clearance, from robot/clearance.json: origins of the hip roll, hip pitch and knee",
+              "  // frames, then thigh boxes and shin boxes as centre, half size, bounding radius (mm)",
+              "  {"]
+    for side in ("left", "right"):
+        leg = (cal.clearance or {"legs": {side: {"origins_mm": [[0.0] * 3] * 3, "thigh": [], "shin": []}}})["legs"][side]
+        lines.append(f"    {{  // {side}")
+        lines.append("      {" + ", ".join("{" + ", ".join(repr(float(v)) for v in o) + "}" for o in leg["origins_mm"]) + "},")
+        for part in ("thigh", "shin"):
+            lines.append(f"      {len(leg[part])},  // {part} boxes")
+            lines.append("      {")
+            for box in leg[part]:
+                lines.append("        {{" + ", ".join(repr(float(v)) for v in box) + "}},")
+            lines.append("      },")
+        lines.append("    },")
+    lines += ["  },",
               "};", "", "}  // namespace duck", ""]
     return "\n".join(lines)
 
