@@ -140,6 +140,59 @@ function fillParts(manifest) {
   }
 }
 
+function fillWheeled(summary, analysis, sim) {
+  const entries = summary.entries.filter((e) => e.locomotion === "wheeled");
+  const pick = document.getElementById("base-pick");
+  for (const [i, e] of entries.entries()) {
+    const option = el("option", `${e.base}: ${e.drive}`);
+    option.value = String(i);
+    pick.append(option);
+  }
+  const body = document.querySelector("#wheeled-options tbody");
+  function show() {
+    const e = entries[Number(pick.value)];
+    facts(document.getElementById("wheeled-facts"), [["Wheels offered", e.wheels.join("; ")], ["Default wheel", e.default_wheel],
+      ["Top speed, no load", `${e.top_speed_no_load_m_s} m/s`], ["Ground clearance", `${e.ground_clearance_mm} mm`],
+      ["Speed feedback", e.feedback], ["Sideways tilt to tip", `${e.balance.sideways_tilt_to_tip_deg} deg`]]);
+    body.replaceChildren();
+    for (const [name, o] of Object.entries(e.options)) {
+      body.append(row([name, o.mass_g, o.static_margin_mm, o.speed_m_s, o.spin_deg_s, o.max_slope_deg, o.max_step_mm]));
+    }
+    document.getElementById("wheeled-note").textContent =
+      `Drive: ${e.drive_mount}. Power: ${e.power}. Signals: ${e.signals}. ` +
+      (e.controller_sketch ? `Sketch: ${e.controller_sketch} (not run on hardware).` : "No controller sketch yet.");
+  }
+  pick.addEventListener("change", show);
+  show();
+
+  const ids = analysis.defaults;
+  const mean = (list, f) => (list.reduce((sum, id) => sum + f(id), 0) / list.length).toFixed(1);
+  const at = (end) => ids.filter((id) => analysis.variants[id].wheels_at === end);
+  const slope = (id) => sim.variants[id].slope.steepest_climbed_deg;
+  const list = document.getElementById("wheeled-findings");
+  list.append(finding("ok", `All ${ids.length} default builds have the centre of mass inside the triangle of the two wheels and the support, ` +
+    `with ${Math.min(...ids.map((id) => analysis.variants[id].static_margin_mm))} mm or more to the nearest edge.`, "balance"));
+  list.append(finding("ok", `Wheels at the back climb ${mean(at("back"), slope)} degrees on average in simulation, wheels at the front ` +
+    `${mean(at("front"), slope)}: climbing and accelerating press trailing wheels down and unload leading ones.`, "which end"));
+  list.append(finding("fit", "Wheels at the back can lift the support on a hard start and tip backward at the slope limit; wheels at the front " +
+    "lift the support on hard braking instead. Ramp the drive up. Recommended: wheels at the back.", "tipping"));
+  list.append(finding("fit", "A ball in a plain printed cup slides in the cup: it lowers the skid's drag but does not remove it. " +
+    "It helps most with the wheels at the front on a slope.", "support"));
+  const tyres = document.querySelector("#tyres tbody");
+  for (const id of analysis.tyre_comparison) {
+    const a = analysis.variants[id];
+    const s = sim.variants[id];
+    tyres.append(row([`${a.base} / ${a.drive}`, a.wheel, a.tyre.replace("_", " "), a.friction.wheel, s.straight.speed_m_s,
+      s.spin.fraction_of_ideal, s.slope.steepest_climbed_deg, s.slope.how || "-", s.step.highest_climbed_mm]));
+  }
+  const rec = document.getElementById("wheeled-recordings");
+  if (sim.recordings) {
+    rec.append(figure(sim.recordings.ev3_straight_and_turn, "Recording of the simulated EV3 wheeled build driving straight and turning", "EV3, skid, wheels at the back", 320, 240));
+    rec.append(figure(sim.recordings.ev3_step, "Recording of the simulated EV3 wheeled build stopped by a step", "EV3 stopped by a step", 320, 240));
+    rec.append(figure(sim.recordings.unoq_tt_ball_front, "Recording of the simulated UNO Q build on TT motors with the wheels at the front", "UNO Q, TT motors, ball, wheels at the front", 320, 240));
+  }
+}
+
 // Binary STL to a three.js geometry.
 function parseStl(THREE, buffer) {
   const view = new DataView(buffer);
@@ -375,11 +428,13 @@ async function viewer(models) {
 
 async function main() {
   try {
-    const [assembly, sim, manifest, ...models] = await Promise.all(
-      ["lego-assembly.json", "lego-sim.json", "lego-manifest.json", ...BUILDS.map((b) => `lego-model-${b}.json`)].map(getJson));
+    const [assembly, sim, manifest, summary, wheeledAnalysis, wheeledSim, ...models] = await Promise.all(
+      ["lego-assembly.json", "lego-sim.json", "lego-manifest.json", "variants-summary.json", "wheeled-analysis.json",
+        "wheeled-sim.json", ...BUILDS.map((b) => `lego-model-${b}.json`)].map(getJson));
     fillBuilds(assembly, sim);
     fillAssembly(assembly);
     fillSimulation(sim);
+    fillWheeled(summary, wheeledAnalysis, wheeledSim);
     fillParts(manifest);
     await viewer(Object.fromEntries(BUILDS.map((b, i) => [b, models[i]])));
   } catch (error) {

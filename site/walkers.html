@@ -5,23 +5,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#087f60">
-  <meta name="description" content="Two crank walkers on LEGO motors: printable parts, digital assembly and balance test, MuJoCo simulation.">
+  <meta name="description" content="Two crank walkers on LEGO motors and a wheeled variant of every controller base: printable parts, digital assembly and balance test, MuJoCo simulation.">
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./walkers.css">
-  <title>Crank walkers / botbuilder</title>
+  <title>Crank walkers and wheeled bases / botbuilder</title>
   <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
 </head>
 <body>
   <header class="masthead">
     <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">MD</span><span>Microduck <b>walkers</b></span></a>
     <nav aria-label="Sections">
-      <a href="./">Biped</a><a href="#builds">Builds</a><a href="#viewer">3D view</a><a href="#assembly">Assembly</a><a href="#simulation">Simulation</a><a href="#print">Print</a>
+      <a href="./">Biped</a><a href="#builds">Builds</a><a href="#viewer">3D view</a><a href="#assembly">Assembly</a><a href="#simulation">Simulation</a><a href="#wheeled">Wheeled</a><a href="#print">Print</a>
       <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
     </nav>
   </header>
   <main>
     <div class="title-row">
-      <div><p class="eyebrow">LEGO MOTORS / EV3 BRICK / RASPBERRY PI BUILD HAT</p><h1>Two crank walkers</h1></div>
+      <div><p class="eyebrow">LEGO MOTORS / EV3 BRICK / RASPBERRY PI BUILD HAT / WHEELS</p><h1>Two crank walkers, and wheels for every base</h1></div>
       <span class="release-tag">Analysed and simulated</span>
     </div>
 
@@ -91,8 +91,37 @@
       <div class="table-wrap"><table id="limits"><thead><tr><th>Build</th><th>Steady up to (mm/s)</th><th>Uphill (deg)</th><th>Downhill (deg)</th><th>Cross slope (deg)</th><th>Step (mm)</th><th>Phase error tolerated (deg)</th><th>Turns</th></tr></thead><tbody></tbody></table></div>
     </section>
 
+    <section id="wheeled">
+      <div class="section-heading"><span class="step">05</span><h2>Wheeled variants</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/wheeled-variants.md" rel="noopener noreferrer">Full report</a></div>
+      <div class="status warn">
+        <h3>Analysed and simulated only, never built</h3>
+        <p>The cradles for the TT motor and the servo are drawn from typical dimensions, not a maker's drawing. Every
+          friction coefficient is assumed. Print the fit pieces first.</p>
+      </div>
+      <p>The same chassis on two driven wheels and a third support, for every controller base. The wheels sit on the
+        rear axle line and a post with a skid, a ball in a printed cup or a small idler hangs under the shelf.
+        Wheels at the front is the same build with the head pinned on facing the other way and the drive reversed.</p>
+      <div class="variant-filter"><label for="base-pick">Base and drive <select id="base-pick"></select></label></div>
+      <dl class="facts" id="wheeled-facts"></dl>
+      <div class="table-wrap"><table id="wheeled-options"><thead><tr><th>Support, wheels at</th><th>Mass (g)</th><th>Margin (mm)</th><th>Speed (m/s)</th><th>Spin (deg/s)</th><th>Slope (deg)</th><th>Step (mm)</th></tr></thead><tbody></tbody></table></div>
+      <p id="wheeled-note" class="small-note wide"></p>
+      <ul class="findings" id="wheeled-findings"></ul>
+      <h3>Wheels: LEGO, stock TT, printed with a ring, printed with a TPU tyre</h3>
+      <p><b>A bare printed wheel slips on a smooth floor.</b> The default printed wheel is one piece with a groove for a
+        standard 3 mm O-ring (38 x 3, 50 x 3 or 58 x 3) or a rubber band; a hub with a separate TPU 95A tyre is the
+        alternative. Assumed friction: rubber and O-ring 0.8, TPU 0.7, stock TT tyre 0.6, bare plastic 0.3. The same
+        robot on each, skid, wheels at the back:</p>
+      <div class="table-wrap"><table id="tyres"><thead><tr><th>Robot</th><th>Wheel</th><th>Tread</th><th>Friction</th><th>Speed (m/s)</th><th>Spin, of ideal</th><th>Slope (deg)</th><th>Fails by</th><th>Step (mm)</th></tr></thead><tbody></tbody></table></div>
+      <h3>Servo or TT motor</h3>
+      <p>For the bases without LEGO motors. The 360-degree servo has twice the torque (0.157 N m against 0.078) and
+        needs only a pulse pin per wheel. The yellow TT motor is more than twice as fast (200 rpm against 83), needs
+        an H-bridge board (TB6612FNG or DRV8833; an L298N loses about 2 V) and draws up to 1.5 A each at stall. Both
+        run open loop. Neither motor limits the slope: grip and tipping do.</p>
+      <div class="gallery tight" id="wheeled-recordings"></div>
+    </section>
+
     <section id="print">
-      <div class="section-heading"><span class="step">05</span><h2>Print list</h2><a href="https://github.com/eoinjordan/botbuilder/tree/main/stl/lego" rel="noopener noreferrer">Folder</a></div>
+      <div class="section-heading"><span class="step">06</span><h2>Print list</h2><a href="https://github.com/eoinjordan/botbuilder/tree/main/stl/lego" rel="noopener noreferrer">Folder</a></div>
       <p>Print the fit coupon first: a cross axle in the keyed hole, a pin in the 4.95 mm hole, an axle turning freely
         in the 5.35 mm hole. Millimetres, 100 percent scale. The Pixy2 pan-tilt kit needs <code>camera_head_pantilt</code>
         in place of <code>camera_head</code>.</p>
@@ -100,11 +129,12 @@
     </section>
 
     <section id="control">
-      <div class="section-heading"><span class="step">06</span><h2>Controllers and camera</h2></div>
+      <div class="section-heading"><span class="step">07</span><h2>Controllers and camera</h2></div>
       <ul class="plain">
         <li><b>EV3:</b> a Pybricks sketch, large motors on ports B and C. The EV3 encoders are relative, so the legs are set by hand once (left foot down, right foot up) and the encoders hold the phase from there.</li>
         <li><b>Raspberry Pi:</b> a <code>buildhat</code> sketch, 51515 motors on Build HAT ports A and B. Their absolute encoders let the program home itself.</li>
-        <li><b>Neither sketch has run on hardware.</b> Both are in <code>walkers/controllers/</code> and are only syntax-checked.</li>
+        <li><b>Wheeled builds:</b> two-speed drive sketches for the EV3, the 51515 hub, the Build HAT and a plain Raspberry Pi with servos or a TB6612FNG. None for the UNO Q or BaseX yet.</li>
+        <li><b>No sketch has run on hardware.</b> All are in <code>walkers/controllers/</code> and are only syntax-checked.</li>
         <li><b>Pixy2:</b> a standard Pixy2 is the same board as the LEGO edition and needs the LEGO firmware and the EV3 cable for the EV3 blocks. Its hardware bag has no LEGO brackets. The pan-tilt servos are driven by the Pixy2; moving them from the EV3 is not supported by the LEGO firmware and is untested with the stock one.</li>
         <li><b>Power:</b> the Pi build is designed around the Build HAT's 8 V mains adapter, so it walks on a tether unless a 7.2 to 8.5 V battery is added.</li>
       </ul>
@@ -112,7 +142,8 @@
   </main>
   <footer>
     <p>Code and the walker parts under the MIT licence. LEGO, Mindstorms and Technic are trademarks of the LEGO Group,
-      which does not sponsor or endorse this. Raspberry Pi is a trademark of Raspberry Pi Ltd. Fonts: Space Grotesk,
+      which does not sponsor or endorse this. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino and UNO Q are
+      trademarks of Arduino; M5Stack is a trademark of M5Stack Technology. Fonts: Space Grotesk,
       SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>). No analytics, no cookies.</p>
   </footer>
   <script type="module" src="./walkers.js"></script>

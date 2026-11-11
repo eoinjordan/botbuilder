@@ -33,6 +33,8 @@ DATA = {
     "lego-model-ev3-pixy2.json": ROOT / "robot" / "lego" / "ev3-pixy2.json",
     "lego-model-pi-zero-2w-51515.json": ROOT / "robot" / "lego" / "pi-zero-2w-51515.json",
     "variants-summary.json": ROOT / "reports" / "variants" / "summary.json",
+    "wheeled-analysis.json": ROOT / "reports" / "wheeled" / "analysis.json",
+    "wheeled-sim.json": ROOT / "reports" / "wheeled" / "sim.json",
 }
 
 
