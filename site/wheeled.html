@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087f60">
+  <meta name="description" content="Two-wheeled builds for every controller: LEGO motors, 360-degree servos or TT motors, a skid or ball, printed wheels with an O-ring or a TPU tyre, parts and programs.">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./walkers.css">
+  <title>Two-wheeled / Botbuilder</title>
+  <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <nav id="site-nav" aria-label="Site">
+      <a href="./">Build yours</a><a href="./biped.html">Biped</a><a href="./wheeled.html" aria-current="page">Two-wheeled</a><a href="./walkers.html">Walkers</a><a href="./flash.html">Flash</a><a href="./control.html">Control</a>
+      <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+    </nav>
+  </header>
+  <main>
+    <div class="title-row">
+      <div><p class="eyebrow">EV3 / 51515 HUB / RASPBERRY PI / UNO Q / M5STACK</p><h1>Two wheels and a third support</h1></div>
+    </div>
+    <p class="lead"><a href="./?locomotion=wheeled">Build a two-wheeled bot from the parts you have</a>: the configurator lists the files, parts and wiring for your controller.</p>
+
+    <section id="choose">
+      <div class="section-heading"><span class="step">01</span><h2>Pick a build</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/wheeled-variants.md" rel="noopener noreferrer">Full report</a></div>
+      <p>The <a href="./walkers.html">walker</a> chassis on two driven wheels. The wheels sit on the rear axle line and a
+        post with a skid or a ball in a printed cup hangs under the shelf. For wheels at the front, pin the head on
+        facing the other way and reverse the drive.</p>
+      <div class="variant-filter">
+        <label for="pick-base">Controller and drive <select id="pick-base"></select></label>
+        <label for="pick-wheel">Wheels <select id="pick-wheel"></select></label>
+        <label for="pick-support">Third support <select id="pick-support"><option value="skid">Drag skid</option><option value="roller">Ball in a printed cup</option></select></label>
+        <label for="pick-end">Wheels at <select id="pick-end"><option value="back">the back</option><option value="front">the front</option></select></label>
+      </div>
+      <div class="viewer-layout">
+        <div class="viewer-stage"><canvas id="view" tabindex="0" aria-label="3D view of the chosen two-wheeled build. Arrow keys turn the view, plus and minus zoom."></canvas><p id="view-note" class="small-note">Loading the printable parts.</p></div>
+        <div class="viewer-controls">
+          <h3 id="build-title"></h3>
+          <dl class="facts" id="build-facts"></dl>
+        </div>
+      </div>
+      <ul class="plain" id="build-notes"></ul>
+      <h3>Print</h3>
+      <div class="table-wrap"><table id="build-files"><thead><tr><th>STL</th><th>Print</th><th>For</th><th>Size</th></tr></thead><tbody></tbody></table></div>
+      <h3>Other parts</h3>
+      <ul class="plain" id="build-parts"></ul>
+      <h3>Programs</h3>
+      <ul class="plain" id="build-programs"></ul>
+    </section>
+
+    <section id="findings-section">
+      <div class="section-heading"><span class="step">02</span><h2>What to choose</h2></div>
+      <ul class="plain">
+        <li><b>Wheels at the back, with a ramped start.</b> Climbing and accelerating press trailing wheels down and unload leading ones. A hard start is what lifts the support, so ramp the drive up over about a second.</li>
+        <li><b>Fit a ring or a band to a printed wheel.</b> A bare printed wheel slips on a smooth floor.</li>
+        <li><b>Print the fit pieces first</b> and measure the TT motor's holes and the servo's case against them before printing a cradle.</li>
+        <li><b>Keep fingers clear of the wheels</b> and try each program first with the wheels off the floor.</li>
+      </ul>
+      <ul class="findings" id="wheeled-findings"></ul>
+      <h3>Wheels: LEGO, stock TT, printed with a ring, printed with a TPU tyre</h3>
+      <p>The default printed wheel is one piece with a groove for a standard 3 mm O-ring (38 x 3, 50 x 3 or 58 x 3) or
+        a rubber band; a hub with a separate TPU 95A tyre is the alternative. Friction used: rubber and O-ring 0.8,
+        TPU 0.7, stock TT tyre 0.6, bare plastic 0.3. The same robot on each, skid, wheels at the back:</p>
+      <div class="table-wrap"><table id="tyres"><thead><tr><th>Robot</th><th>Wheel</th><th>Tread</th><th>Friction</th><th>Speed (m/s)</th><th>Spin, of ideal</th><th>Slope (deg)</th><th>Fails by</th><th>Step (mm)</th></tr></thead><tbody></tbody></table></div>
+      <h3>Servo or TT motor</h3>
+      <p>For the controllers without LEGO motors. The 360-degree servo has twice the torque (0.157 N m against 0.078) and
+        needs only a pulse pin per wheel. The yellow TT motor is more than twice as fast (200 rpm against 83), needs
+        an H-bridge board (TB6612FNG or DRV8833; an L298N loses about 2 V) and draws up to 1.5 A each at stall. Both
+        run open loop: equal commands do not give a straight line. Neither motor limits the slope: grip and tipping do.</p>
+      <div class="gallery tight" id="wheeled-recordings"></div>
+    </section>
+
+    <section id="print">
+      <div class="section-heading"><span class="step">03</span><h2>All wheeled parts</h2><a href="https://github.com/eoinjordan/botbuilder/tree/main/stl/lego/wheeled" rel="noopener noreferrer">Folder</a></div>
+      <p>Everything in the wheeled folder. The chassis and head come from the walker folders and are listed with each
+        build above.</p>
+      <div class="table-wrap"><table id="parts"><thead><tr><th>STL</th><th>Print</th><th>For</th><th>Size</th></tr></thead><tbody></tbody></table></div>
+    </section>
+  </main>
+  <footer>
+    <p>Code and the parts under the MIT licence. LEGO, Mindstorms and Technic are trademarks of the LEGO Group,
+      which does not sponsor or endorse this. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino and UNO Q are
+      trademarks of Arduino; M5Stack is a trademark of M5Stack Technology. Fonts: Space Grotesk, SIL Open Font License
+      (<a href="./assets/licenses/space-grotesk.txt">text</a>). No analytics, no cookies. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./admin.html">Admin</a>.</p>
+  </footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./wheeled.js"></script>
+</body>
+</html>

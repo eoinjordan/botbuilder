@@ -23,3 +23,5 @@ site/data/
 site/images/
 site/stl/
 site/.nojekyll
+site/programs/
+site/docs/

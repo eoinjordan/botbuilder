@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: MIT
+# User unit for the control page on the UNO Q, in the form of
+# sketchbot-studio.service in unoq-braccio-sketchbot. Motion is disabled:
+# add --allow-motion to ExecStart yourself, after calibration.
+# Assumes the checkout is at ~/botbuilder. Not run on hardware.
+[Unit]
+Description=Microduck control page (HTTP on :7101, motion disabled)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/botbuilder
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 app_lab/microduck_agent/control_server.py --bind 0.0.0.0 --port 7101
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=10
+
+[Install]
+WantedBy=default.target

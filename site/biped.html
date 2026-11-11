@@ -1,0 +1,122 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087f60">
+  <meta name="description" content="A printed biped on six Braccio servos and an Arduino UNO Q: digital assembly test, MuJoCo emulation and the path to the real robot.">
+  <link rel="stylesheet" href="./style.css">
+  <title>Biped: sim to real / Botbuilder</title>
+  <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <nav id="site-nav" aria-label="Site">
+      <a href="./">Build yours</a><a href="./biped.html" aria-current="page">Biped</a><a href="./wheeled.html">Two-wheeled</a><a href="./walkers.html">Walkers</a><a href="./flash.html">Flash</a><a href="./control.html">Control</a>
+      <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+    </nav>
+  </header>
+  <main>
+    <div class="title-row">
+      <div><p class="eyebrow">ARDUINO UNO Q / TINKERKIT BRACCIO SERVOS</p><h1>A printed biped, from simulation to the bench</h1></div>
+      <span class="release-tag">Bench prototype</span>
+    </div>
+    <p class="lead"><a href="./?locomotion=biped">Build this biped from the parts you have</a>: the configurator lists the files, parts and wiring for your controller.</p>
+    <p class="subnav">On this page: <a href="#assembly">Assembly</a><a href="#viewer">3D view</a><a href="#simulation">Simulation</a><a href="#real">Sim to real</a></p>
+
+    <section id="what" class="two-col">
+      <div>
+        <div class="section-heading"><span class="step">01</span><h2>What it is</h2></div>
+        <p>A Microduck-style biped rebuilt around the six servos of a stock TinkerKit Braccio kit and an Arduino UNO Q.
+          Four SR431 servos sit at the hips: two on the torso for hip roll, one on each yoke for hip pitch. Two SR311
+          servos at the far end of each thigh turn the knees. The shin carries a fixed foot; there are no ankles. A camera
+          board stands in a mount at the front edge of the deck, looking the way the toes point.
+          The printable parts of the biped are in <a href="./stl/manifest.json">stl/</a>, listed with sizes and checksums in the manifest. The UNO Q and the Braccio shield are strapped to a deck on the torso. Servos are held by cable ties.</p>
+        <p>Seven printed parts, three fit-test pieces, six actuated joints: left and right hip roll, hip pitch and knee pitch.</p>
+        <dl class="facts" id="facts"></dl>
+      </div>
+      <figure><img src="./images/assembly-iso.png" width="900" height="700" alt="Rendered view of the assembled robot at the neutral pose with interfering volumes in red"><figcaption>Neutral pose. Red marks where parts overlap.</figcaption></figure>
+    </section>
+
+    <section id="assembly">
+      <div class="section-heading"><span class="step">02</span><h2>Digital assembly test</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/assembly.md" rel="noopener noreferrer">Full report</a></div>
+      <p>The seven STLs and a parametric model of the servos are placed by the joint chain and checked with exact mesh
+        booleans: interference at the neutral pose and through each joint's sweep, servo fit in the cradles, horn screw
+        access, board clearance, mass, centre of mass and static balance.</p>
+      <ul class="findings" id="findings"></ul>
+      <h3>Joint ranges</h3>
+      <div class="table-wrap"><table id="limits"><thead><tr><th>Joint</th><th>Collision free (deg)</th><th>Limit used (deg)</th><th>Set by</th><th>Servo</th><th>Torque limit (N m)</th><th>Speed limit (deg/s)</th></tr></thead><tbody></tbody></table></div>
+      <div class="gallery">
+        <figure><img loading="lazy" src="./images/assembly-front.png" width="900" height="700" alt="Front view of the assembled robot"><figcaption>Front</figcaption></figure>
+        <figure><img loading="lazy" src="./images/assembly-left.png" width="900" height="700" alt="Left view of the assembled robot"><figcaption>Left</figcaption></figure>
+        <figure><img loading="lazy" src="./images/roll-servo-seat.png" width="1680" height="520" alt="Hip roll servo under the deck, three views"><figcaption>Hip roll servo under the deck</figcaption></figure>
+        <figure><img loading="lazy" src="./images/camera-mount.png" width="1680" height="520" alt="Camera board in its mount at the front edge of the deck, three views"><figcaption>Camera board in its mount</figcaption></figure>
+        <figure><img loading="lazy" src="./images/assumption-cradle-SR431.png" width="1120" height="460" alt="SR431 in its cradle with horn, drill blank and the two cable ties"><figcaption>Assumed: how a servo lies in its cradle</figcaption></figure>
+        <figure><img loading="lazy" src="./images/assumption-thigh-face.png" width="1280" height="520" alt="The two possible thigh mountings side by side"><figcaption>Assumed: which thigh face meets the hip horn</figcaption></figure>
+        <figure><img loading="lazy" src="./images/balance.png" width="920" height="520" alt="Support polygon and centre of mass at the neutral and stand poses"><figcaption>Balance on two feet</figcaption></figure>
+        <figure><img loading="lazy" src="./images/stand-pose.png" width="1140" height="620" alt="The stand pose"><figcaption>Stand pose</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="viewer">
+      <div class="section-heading"><span class="step">03</span><h2>Move the joints</h2></div>
+      <div class="viewer-layout">
+        <div class="viewer-stage"><canvas id="view" aria-label="Interactive 3D view of the robot"></canvas><p id="view-note" class="small-note">Drag to turn, scroll to zoom.</p></div>
+        <div class="viewer-controls">
+          <div id="sliders"></div>
+          <div class="form-actions"><button id="pose-neutral" class="secondary" type="button">Neutral</button><button id="pose-stand" class="primary" type="button">Stand pose</button></div>
+          <p class="small-note">Sliders stop at the collision-free limits from the assembly test. Printed parts are shown as the
+            boxes the simulator uses for contact; servos, horns and boards are to size.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="simulation">
+      <div class="section-heading"><span class="step">04</span><h2>Emulation in MuJoCo</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/simulation.md" rel="noopener noreferrer">Full results</a></div>
+      <div class="two-col">
+        <div>
+          <ul class="findings" id="verdict"></ul>
+          <h3>Torque needed to stand</h3>
+          <div class="table-wrap"><table id="torque"><thead><tr><th>Joint</th><th>Mean (N m)</th><th>Peak (N m)</th><th>Limit (N m)</th><th>Peak / limit</th></tr></thead><tbody></tbody></table></div>
+        </div>
+        <figure><img loading="lazy" src="./images/sim-gait.gif" width="400" height="300" alt="Recording of the simulated robot playing the open-loop gait"><figcaption>The default open-loop gait in simulation</figcaption></figure>
+      </div>
+      <h3>What the simulation suggests changing</h3>
+      <p class="small-note">Suggestions only. None of this has been done.</p>
+      <ul class="plain" id="suggestions"></ul>
+    </section>
+
+    <section id="real">
+      <div class="section-heading"><span class="step">05</span><h2>From simulation to the robot</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/sim-to-real.md" rel="noopener noreferrer">Details</a></div>
+      <p>The simulator and the board take the same command lines: six joint angles in degrees, in the robot's own
+        convention. A calibration table maps each joint to a shield channel, a zero and a direction. The same
+        trajectory file plays on either.</p>
+      <ol class="checklist" id="checklist">
+        <li><label><input type="checkbox" data-key="fit"> Print the three fit pieces. Check a servo of each size between the rails, both tie paths, the horn on the drill blank.</label></li>
+        <li><label><input type="checkbox" data-key="findings"> Read the assembly findings and decide what to change in the parts before printing the set.</label></li>
+        <li><label><input type="checkbox" data-key="rehearse"> Rehearse on the virtual robot: stand, calibrate, gait, over the same socket the board uses.</label></li>
+        <li><label><input type="checkbox" data-key="power"> Size the supply for stall currents and wire a switch within reach.</label></li>
+        <li><label><input type="checkbox" data-key="build"> Build the sketch in App Lab and review it.</label></li>
+        <li><label><input type="checkbox" data-key="horns"> Centre each servo with the horns off, then fit the horns with the joints at neutral.</label></li>
+        <li><label><input type="checkbox" data-key="calibrate"> Calibrate one joint at a time, robot held off the bench. Write the zeros and directions into the table.</label></li>
+        <li><label><input type="checkbox" data-key="stand"> Play the stand trajectory with a hand on the robot and a hand on the switch.</label></li>
+        <li><label><input type="checkbox" data-key="gait"> Only then try the gait. Expect a shuffle at best.</label></li>
+      </ol>
+      <div class="status warn">
+        <h3>Power</h3>
+        <p id="power"></p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>Code under the MIT licence. The printable parts are flat plates whose outlines started from Microduck meshes; they are not in the repository;
+      see NOTICE. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
+      No analytics, no cookies; the checklist ticks stay in this browser. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./admin.html">Admin</a>.</p>
+  </footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

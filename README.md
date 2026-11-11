@@ -1,14 +1,24 @@
-# Microduck on Braccio servos and an Arduino UNO Q: simulation to real
+# Botbuilder: build your own bot from the parts you have
+
+Printed robots for the controllers, motors and cameras you already own. The
+site's first page is a configurator: pick a controller (Arduino UNO Q,
+Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack Core), a locomotion
+(six-servo biped, two-motor crank walker, two driven wheels), a drive and a
+camera, and it answers with what can honestly be said about that robot:
+status first, then the files to print, parts, wiring, power and software.
+See [Build yours](#build-yours).
+
+The biped is the one design analysed so far, and most of this README is about
+it. Site: https://eoinjordan.github.io/botbuilder/. What has been simulated,
+checked or assumed, and the owner's own print checks, are in
+[docs/status.md](docs/status.md).
+
+## The biped: Microduck on Braccio servos and an Arduino UNO Q
 
 A small printed biped, checked digitally before anything is printed:
 assembled from its STL files and a model of the servos, tested for fit and
 balance, described as URDF and MJCF, emulated in MuJoCo, and given the
 firmware and tools to play the same joint commands on the real robot.
-
-> **Status: verified in simulation only.** The robot has never been
-> assembled or powered. The parts have not been printed as a set. The UNO Q
-> sketch has not been built or flashed. Dimensions the makers do not publish
-> are assumed and listed in [docs/assembly.md](docs/assembly.md).
 
 ![assembled robot at the neutral pose, interferences in red](docs/images/assembly-iso.png)
 
@@ -197,6 +207,44 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 10 A (assumed stall currents; the maker publishes none) against the kit's
 5 V 4 A supply, and the UNO Q needs its own 5 V 3 A.
 
+## Build yours
+
+The site's landing page, `site/index.html`, is a configurator: pick a
+controller (UNO Q, Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack
+Core), a locomotion (the six-servo biped, the two-motor crank walker of the
+LEGO prototypes, or two driven wheels), drive, camera and head, and read what
+can honestly be said about that combination: analysed in simulation, checked
+in the digital assembly only, being analysed, defined but not designed, or
+not possible with the reason. Only the UNO Q biped with its default camera
+has been simulated; other cameras, the two Raspberry Pi decks and the turning
+head were checked in the digital assembly only; nothing has been built. The biped's findings are on
+`site/biped.html`. Data and sources:
+[docs/build-yours.md](docs/build-yours.md).
+
+## Flash and control
+
+The site has a Flash page that writes the SSH commands to install and flash
+the App Lab app on a UNO Q (commands only; nothing is flashed from the
+browser), and a Control page that drives the robot from a USB or Bluetooth
+game controller. Control plays back in the page by default; the real robot
+is reached through `app_lab/microduck_agent/control_server.py`, which serves
+the same page next to the robot's socket. See [docs/flash.md](docs/flash.md) and
+[docs/control.md](docs/control.md).
+
+## Crank walkers and two-wheeled builds
+
+Three crank walkers of the owner's design on LEGO motors, for the EV3 brick,
+the Robot Inventor 51515 hub and a Raspberry Pi Zero 2 W with the Build HAT:
+printable parts in `stl/lego/`, programs in `programs/`, the assembly and
+balance test and the MuJoCo simulation of the crank gait under `walkers/`.
+Report: [docs/lego-walkers.md](docs/lego-walkers.md).
+
+The same chassis carries a two-wheeled build for every controller: two driven
+wheels (LEGO motors, 360-degree servos or yellow TT motors), a skid or ball,
+printed wheels with an O-ring groove or a TPU tyre. Report:
+[docs/wheeled-variants.md](docs/wheeled-variants.md). The LEGO programs load
+through [Mindstorms Robot Creator](https://github.com/eoinjordan/mindstorms-robot-creator).
+
 ## Layout
 
 | Path | What |
@@ -240,45 +288,15 @@ owed to the [Microduck by Pollen Robotics](https://github.com/pollen-robotics/mi
 The generated STLs are in `stl/`, listed in `stl/manifest.json` with what
 each is, its size, checksum and the design commit it came from. They are the
 files the assembly test read. `scripts/fetch_stls.py` copies them from the
-local design directory after its generator has run. None has been printed.
-
-## Unverified
-
-- The comb feet: a proposal from simulation. Never printed or loaded; their
-  stiffness is a hand calculation and is not in the simulation.
-- Physical fit of anything: no part has been printed against a servo or a
-  camera board.
-- The pin holes and studs: no printed one has been tried with a real pin,
-  beam or brick. Their nominal dimensions are from secondary sources.
-- The other controllers: the masses of the Raspberry Pi boards, the hub's
-  battery and the EV3 brick are estimates, and the full-size Pi's hole
-  pattern and the EV3's size are not from their makers' pages.
-- The turning head: the servo body, shaft position and horn height are
-  assumed from SG90 data sheets, the adapter hole pattern is a guess to be
-  measured, and no firmware drives it.
-- The round display: its glass diameter, rim thickness, depth and mass, and
-  the size of its battery, are assumed. The faces were not analysed on the
-  turning head.
-- The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
-  outline are the makers' figures. Lens, button, connector and pin positions,
-  board thickness and the other masses are assumed or scaled from pictures.
-- The camera firmware on an ESP32-CAM: see [docs/camera.md](docs/camera.md).
-- Every assumed dimension: servo ears, shaft position, horn size, board and
-  shield mass, print density and infill.
-- Holding torque, backlash, tie slip, flex of the 4 mm plates.
-- Floor friction and the contact model, on which the shuffle depends.
-- Servo direction and zero in the calibration table.
-- The sketch: not built, not flashed. `Serial` as the header UART, relax by
-  zero duty and the `String` Bridge function are to be checked at first build.
-- Stall currents, and how the Braccio shield shares power with the UNO Q.
+local design directory after its generator has run.
 
 ## Publishing
 
-1. Create the repository `eoinjordan/microduck-braccio-unoq-sim` on GitHub and
+1. Create the repository `eoinjordan/botbuilder` on GitHub and
    push `main`.
 2. In the repository settings, under Pages, set the source to GitHub Actions.
 3. Run the "Publish Site" workflow, or push a change under `site/`. The site
-   appears at https://eoinjordan.github.io/microduck-braccio-unoq-sim/.
+   appears at https://eoinjordan.github.io/botbuilder/.
 
 ## Licence
 

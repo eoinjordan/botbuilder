@@ -1,0 +1,182 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#087f60">
+  <meta name="description" content="Drive the Microduck Braccio biped from a USB or Bluetooth game controller: in-page playback by default, the real robot through its own server.">
+  <link rel="stylesheet" href="./style.css">
+  <title>Control / Botbuilder</title>
+  <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
+  <style>
+    select { font: inherit; }
+    main p, main li, main label, main span { overflow-wrap: anywhere; min-width: 0; }
+    .targets { display: grid; gap: 10px; margin: 10px 0; }
+    .targets label { display: flex; gap: 10px; align-items: flex-start; }
+    .targets input { margin-top: 5px; accent-color: var(--green); }
+    .stopbar { position: sticky; top: 0; z-index: 5; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin-bottom: 26px; }
+    .stop { background: var(--red); border: 1px solid var(--red); color: #fff; font-weight: 600; font-size: 16px; border-radius: 7px; padding: 10px 26px; }
+    .stopbar p { margin: 0; font-size: 13px; min-width: 0; flex: 1 1 220px; }
+    .chip { display: inline-block; font-size: 12px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; margin: 0 6px 6px 0; color: var(--muted); background: #fff; }
+    .chip.on { background: var(--green); border-color: var(--green); color: #fff; }
+    .axis { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; align-items: center; font-size: 13px; margin-bottom: 6px; }
+    .meter { display: block; position: relative; height: 8px; border-radius: 4px; background: #e4efe9; overflow: hidden; min-width: 60px; }
+    .meter > span { display: block; height: 100%; background: var(--green); }
+    .meter.mid > span { position: absolute; top: 0; left: 50%; width: 8%; margin-left: -4%; }
+    .num { font-variant-numeric: tabular-nums; }
+    .pad-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 76px)); gap: 8px; margin: 12px 0; }
+    .pad-grid button, .hold-row button { min-height: 48px; touch-action: none; user-select: none; -webkit-user-select: none; }
+    .pad-grid .up { grid-column: 2; } .pad-grid .left { grid-column: 1; grid-row: 2; } .pad-grid .right { grid-column: 3; grid-row: 2; } .pad-grid .down { grid-column: 2; grid-row: 3; }
+    .hold-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; align-items: center; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    button.holding { background: var(--green); color: #fff; }
+    #log { font-size: 12px; background: #f7faf8; border: 1px solid var(--line); border-radius: 8px; padding: 10px; overflow-x: auto; min-height: 5em; margin: 10px 0 0; white-space: pre; }
+    pre.block { font-size: 13px; background: #f7faf8; border: 1px solid var(--line); border-radius: 8px; padding: 10px; overflow-x: auto; margin: 8px 0 12px; }
+    dialog { border: 1px solid var(--line); border-radius: 10px; padding: 22px; max-width: min(560px, 92vw); }
+    dialog::backdrop { background: rgba(23, 44, 44, 0.45); }
+    kbd { font: inherit; font-size: 12px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: #fff; }
+    td .meter { width: 100%; }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <nav id="site-nav" aria-label="Site">
+      <a href="./">Build yours</a><a href="./biped.html">Biped</a><a href="./wheeled.html">Two-wheeled</a><a href="./walkers.html">Walkers</a><a href="./flash.html">Flash</a><a href="./control.html" aria-current="page">Control</a>
+      <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+    </nav>
+  </header>
+  <main>
+    <div class="title-row">
+      <div><p class="eyebrow">GAMEPAD / KEYBOARD / TOUCH</p><h1>Drive it from a controller</h1></div>
+    </div>
+
+    <div class="stopbar" role="group" aria-label="Stop">
+      <button id="stop" class="stop" type="button">Stop</button>
+      <p><span id="live" class="chip">not enabled</span><span id="command" class="num">idle</span></p>
+      <p id="message" role="status" aria-live="polite">Loading the robot data.</p>
+    </div>
+
+    <section aria-labelledby="target-heading">
+      <div class="section-heading"><span class="step">01</span><h2 id="target-heading">Target</h2></div>
+      <div class="targets" role="radiogroup" aria-labelledby="target-heading">
+        <label><input type="radio" name="target" id="target-sim" checked> <span><b>Simulator (playback)</b>: the commands move the 3D view in this page.</span></label>
+        <label><input type="radio" name="target" id="target-real" disabled> <span><b>Real robot</b>: <span id="real-reason">checking.</span></span></label>
+      </div>
+      <p id="target-label" class="small-note" style="margin-left:0"></p>
+      <div id="real-panel" hidden>
+        <p id="real-status"></p>
+        <div class="form-actions">
+          <button id="arm" class="primary" type="button" disabled>Arm (pre-flight checklist)</button>
+          <button id="relax" class="secondary" type="button" disabled>Relax servos</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="drive-heading">
+      <div class="section-heading"><span class="step">02</span><h2 id="drive-heading">Drive</h2></div>
+      <div class="viewer-layout">
+        <div>
+          <div class="viewer-stage"><canvas id="view" aria-label="3D view of the commanded pose"></canvas>
+            <p id="view-note" class="small-note">Commanded pose. Playback, not physics: the lowest point is placed on the floor and nothing falls. Drag to turn.</p></div>
+          <div class="table-wrap"><table><thead><tr><th>Joint</th><th>Commanded (deg)</th><th>Soft limits (deg)</th><th>In range</th></tr></thead><tbody id="joints"></tbody></table></div>
+          <p class="small-note" style="margin-left:0">Playback controller mode: <span id="sim-mode">RELAX</span>. It applies the same soft limits, 120 deg/s speed limit and 500 ms watchdog as the firmware.</p>
+        </div>
+        <div>
+          <h3 style="margin-top:0">Controller</h3>
+          <p id="pad-name" class="small-note" style="margin-left:0">No controller seen.</p>
+          <div id="pad-axes"></div>
+          <div id="pad-buttons"></div>
+          <p class="small-note" style="margin-left:0">USB and Bluetooth pads both arrive through the browser's Gamepad API. Pairing is done in the
+            operating system, not here. A pad shows up only after a button is pressed on it.</p>
+          <h3>On screen</h3>
+          <p class="small-note" style="margin-left:0">Hold a button to move; let go to stop. Each button is its own enable control.</p>
+          <div class="pad-grid">
+            <button type="button" class="secondary up" data-hold="forward" aria-label="Walk forward, hold">Fwd</button>
+            <button type="button" class="secondary left" data-hold="left" aria-label="Turn left, hold">Left</button>
+            <button type="button" class="secondary right" data-hold="right" aria-label="Turn right, hold">Right</button>
+            <button type="button" class="secondary down" data-hold="back" aria-label="Walk back, hold">Back</button>
+          </div>
+          <div class="hold-row">
+            <button type="button" class="secondary" data-hold="stand">Stand</button>
+            <button type="button" class="secondary" data-hold="sit">Sit</button>
+            <button type="button" class="secondary" data-hold="jump">Jump (hold)</button>
+          </div>
+          <div class="hold-row">
+            <label><input type="checkbox" id="expert"> Expert: jog one joint</label>
+            <label for="jog-joint" class="small-note" style="margin:0">Joint</label><select id="jog-joint" disabled></select>
+            <button type="button" class="secondary" data-hold="jog-minus" aria-label="Jog joint negative, hold">-</button>
+            <button type="button" class="secondary" data-hold="jog-plus" aria-label="Jog joint positive, hold">+</button>
+          </div>
+          <pre id="log" aria-label="Last command lines and replies"></pre>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="actions-heading">
+      <div class="section-heading"><span class="step">03</span><h2 id="actions-heading">What it can do now</h2></div>
+      <p>This page drives the six-servo biped on the UNO Q, the robot <a href="./">Build yours</a> lists as analysed in simulation; its findings are on the <a href="./biped.html">Biped</a> page.</p>
+      <p>Motions come from the repository's motion manifest: named trajectories in the joint-command format and the
+        limits of the parametric gait. A motion that does not exist yet is disabled here, with the reason. Nothing is faked.</p>
+      <ul class="findings" id="actions"></ul>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Action</th><th>Controller (standard mapping)</th><th>Keyboard</th></tr></thead>
+        <tbody>
+          <tr><td>Enable (dead-man)</td><td>hold LB or RB</td><td>hold <kbd>Shift</kbd></td></tr>
+          <tr><td>Walk, turn</td><td>left stick</td><td><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or arrows</td></tr>
+          <tr><td>Head pan, tilt</td><td>right stick</td><td>none</td></tr>
+          <tr><td>Stand, sit</td><td>A, X</td><td><kbd>1</kbd>, <kbd>2</kbd></td></tr>
+          <tr><td>Jump</td><td>hold Y for 0.8 s</td><td>hold <kbd>3</kbd></td></tr>
+          <tr><td>Stop</td><td>B</td><td><kbd>Esc</kbd>, always</td></tr>
+          <tr><td>Expert: joint, jog</td><td>d-pad left and right, up and down</td><td><kbd>[</kbd> <kbd>]</kbd>, <kbd>-</kbd> <kbd>=</kbd></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section aria-labelledby="reach-heading">
+      <div class="section-heading"><span class="step">04</span><h2 id="reach-heading">Reaching the real robot</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/control.md" rel="noopener noreferrer">Details</a></div>
+      <p>This public page is served over https. A browser does not let an https page call http or ws addresses on
+        your network, and no web page can open the board's TCP port. So this page cannot reach a robot, and it does
+        not pretend to. The same page is served by a small server in the repository that sits next to the robot's
+        socket, as the sketchbot's Studio is served from its UNO Q. Run one of these from a checkout and open the
+        address it prints:</p>
+      <p class="small-note" style="margin-left:0">Rehearsal, no hardware (two terminals):</p>
+      <pre class="block" tabindex="0">python scripts/virtual_robot.py</pre>
+      <pre class="block" tabindex="0">python app_lab/microduck_agent/control_server.py --allow-motion</pre>
+      <p class="small-note" style="margin-left:0">On the UNO Q, next to the agent (see <a href="./flash.html">Flash</a>):</p>
+      <pre class="block" tabindex="0">python3 app_lab/microduck_agent/control_server.py --bind 0.0.0.0 --allow-motion</pre>
+      <p class="small-note" style="margin-left:0">Or on your computer, as a bridge to the board:</p>
+      <pre class="block" tabindex="0">python app_lab/microduck_agent/control_server.py --robot unoq.local:8766 --real --allow-motion</pre>
+      <ul class="plain">
+        <li>Motion needs <code>--allow-motion</code> on the server, an armed session after the pre-flight checklist, and a held enable control for every command.</li>
+        <li>Commands are rate limited to 20 a second in the page and refused faster than one per 30 ms by the server. Nothing is queued.</li>
+        <li>Every target passes the firmware's soft limits, its 120 deg/s speed limit and its 500 ms watchdog.</li>
+        <li>Releasing the enable control, Stop, <kbd>Esc</kbd>, a lost controller, a hidden tab, a lost window focus or a dropped connection sends the stop sequence; after that nothing is sent and the watchdog holds the pose.</li>
+        <li>Stop does not cut servo power. Keep a hand on the supply switch.</li>
+        <li>The server has no login. Use a trusted network and never forward its port to the Internet.</li>
+      </ul>
+    </section>
+
+    <dialog id="preflight" aria-labelledby="preflight-heading">
+      <h2 id="preflight-heading">Before the robot moves</h2>
+      <ol class="checklist">
+        <li><label><input type="checkbox" data-key="calibrated"> Every joint has been calibrated: zeros and directions are in the table and the sketch was rebuilt with them.</label></li>
+        <li><label><input type="checkbox" data-key="stand"> The robot is on a stand or held, feet clear of the bench.</label></li>
+        <li><label><input type="checkbox" data-key="supply"> The servo supply is sized for stall current and the board has its own USB-C supply.</label></li>
+        <li><label><input type="checkbox" data-key="switch"> A hand is on the servo supply switch. A software stop does not cut power.</label></li>
+        <li><label><input type="checkbox" data-key="clear"> Fingers, hair and cables are clear of the legs.</label></li>
+      </ol>
+      <p class="small-note" style="margin-left:0">Arming sends the enable line: the servos take up their present commanded pose.</p>
+      <div class="form-actions"><button id="confirm-arm" class="primary" type="button" disabled>Arm</button><button id="cancel-arm" class="secondary" type="button">Cancel</button></div>
+    </dialog>
+  </main>
+  <footer>
+    <p>Code under the MIT licence. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
+      No analytics, no cookies. This page sends nothing anywhere unless it is served by the robot's own server, and then only to that server. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./admin.html">Admin</a>.</p>
+  </footer>
+  <script type="module" src="./nav.js"></script>
+  <script type="module" src="./control.js"></script>
+</body>
+</html>

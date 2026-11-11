@@ -1,0 +1,451 @@
+{
+ "build": "hub-51515",
+ "options": {
+  "motor_direction": "rear",
+  "camera": "none",
+  "hub_x": 0.0
+ },
+ "mass_kg": 0.4784,
+ "start_phase_deg": 90.0,
+ "start_height_m": 0.096,
+ "crank_radius_m": 0.012,
+ "stride_per_turn_m": 0.048,
+ "motor": {
+  "name": "Technic Medium Angular Motor (Robot Inventor 51515, element 6299646)",
+  "stall_torque_nm": 0.18,
+  "running_torque_nm": 0.035,
+  "no_load_rpm": 185,
+  "gear_ratio_motor_to_crank": 1.0,
+  "rotor_inertia_kgm2": 0.0001,
+  "joint_friction_nm": 0.004
+ },
+ "floor_friction": 0.4,
+ "closed_loop": "connect constraint at the front crank tip plus a joint constraint for the gear train, per side",
+ "viewer": {
+  "printed": [
+   {
+    "name": "chassis",
+    "file": "lego/hub-51515/chassis.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "head",
+    "file": "lego/hub-51515/camera_head.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     84.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     45.8,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "left leg",
+    "file": "lego/hub-51515/left_leg.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     75.0,
+     0.0,
+     0.0,
+     1.0,
+     -84.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "leg",
+     "left"
+    ]
+   },
+   {
+    "name": "left rear gear",
+    "file": "lego/hub-51515/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     -16.0,
+     0.0,
+     0.0,
+     -1.0,
+     49.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "left centre gear",
+    "file": "lego/hub-51515/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     -1.0,
+     49.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "left front gear",
+    "file": "lego/hub-51515/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     16.0,
+     0.0,
+     0.0,
+     -1.0,
+     49.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "left rear crank",
+    "file": "lego/hub-51515/crank_print_4.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "crank",
+     "left",
+     -16.0,
+     73.8
+    ]
+   },
+   {
+    "name": "left front crank",
+    "file": "lego/hub-51515/crank_print_4.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "crank",
+     "left",
+     16.0,
+     73.8
+    ]
+   },
+   {
+    "name": "right leg",
+    "file": "lego/hub-51515/right_leg.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     -75.0,
+     0.0,
+     0.0,
+     1.0,
+     -84.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "leg",
+     "right"
+    ]
+   },
+   {
+    "name": "right rear gear",
+    "file": "lego/hub-51515/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     -16.0,
+     0.0,
+     0.0,
+     -1.0,
+     -44.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "right centre gear",
+    "file": "lego/hub-51515/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     -1.0,
+     -44.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "right front gear",
+    "file": "lego/hub-51515/gear_16t_print_6.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     16.0,
+     0.0,
+     0.0,
+     -1.0,
+     -44.2,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": null
+   },
+   {
+    "name": "right rear crank",
+    "file": "lego/hub-51515/crank_print_4.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "crank",
+     "right",
+     -16.0,
+     -66.0
+    ]
+   },
+   {
+    "name": "right front crank",
+    "file": "lego/hub-51515/crank_print_4.stl",
+    "matrix": [
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "motion": [
+     "crank",
+     "right",
+     16.0,
+     -66.0
+    ]
+   }
+  ],
+  "boxes": [
+   {
+    "name": "left motor",
+    "kind": "motor",
+    "min": [
+     -32.0,
+     19.0,
+     -16.0
+    ],
+    "max": [
+     0.0,
+     43.0,
+     16.0
+    ]
+   },
+   {
+    "name": "left motor",
+    "kind": "motor",
+    "min": [
+     -72.0,
+     19.0,
+     -16.0
+    ],
+    "max": [
+     -32.0,
+     43.0,
+     16.0
+    ]
+   },
+   {
+    "name": "right motor",
+    "kind": "motor",
+    "min": [
+     -32.0,
+     -43.0,
+     -16.0
+    ],
+    "max": [
+     0.0,
+     -19.0,
+     16.0
+    ]
+   },
+   {
+    "name": "right motor",
+    "kind": "motor",
+    "min": [
+     -72.0,
+     -43.0,
+     -16.0
+    ],
+    "max": [
+     -32.0,
+     -19.0,
+     16.0
+    ]
+   },
+   {
+    "name": "51515 hub",
+    "kind": "controller",
+    "min": [
+     -44.0,
+     -28.0,
+     42.0
+    ],
+    "max": [
+     44.0,
+     28.0,
+     74.0
+    ]
+   }
+  ],
+  "crank_radius_mm": 12.0,
+  "leg_drop_mm": 84.0,
+  "stride_per_turn_mm": 48.0
+ }
+}

@@ -1,0 +1,154 @@
+{
+ "_comment": "Wheeled variants: controller bases, wheel drives, wheels and third supports. class: maker = maker's or distributor's own published figure; third-party = parts catalogue; assumed = not published, with the reason. Lengths in mm, masses in g, torque in N m.",
+ "geometry": {
+  "axle_x_mm": -16.0,
+  "support_x_mm": 92.0,
+  "shelf_underside_mm": 38.0,
+  "panel_bottom_mm": -12.0,
+  "note": "Wheels on the rear axle line of the walker chassis, support post under the two shelf holes at x = 92. Wheels at the front is the same build with the head pinned on facing the other way and the drive reversed."
+ },
+ "drives": {
+  "ev3_large": {
+   "name": "EV3 large motor", "components_key": "ev3_large_motor", "feedback": "encoder, 1 degree: closed-loop speed",
+   "mount": "inside the panels, output hub on the wheel axle, body pointing toward the support", "y_centre_mm": 30.0,
+   "stall_current_a": {"value": 1.8, "class": "assumed", "why": "LEGO publishes none; commonly quoted measurement at 9 V"},
+   "signals": "one EV3 motor port per wheel (B and C)"
+  },
+  "angular": {
+   "name": "51515 medium angular motor", "components_key": "angular_motor", "feedback": "absolute encoder, 360 counts: closed-loop speed",
+   "mount": "inside the panels, output on the wheel axle, body pointing toward the support", "y_centre_mm": 31.0,
+   "stall_current_a": {"value": 0.8, "class": "maker", "source": "https://cdn.shopify.com/s/files/1/0539/2056/3365/files/SPIKE_Prime_Tech_fact_sheet_Medium_Angular_Motor_45603.pdf"},
+   "signals": "one LPF2 port per wheel (A and B)"
+  },
+  "servo360": {
+   "name": "M5Stack 360-degree servo (9 g, as in BALA-C and the Servo Kit 360)", "feedback": "none: open-loop speed",
+   "mount": "printed servo_cradle on the outside of each panel, wheel screwed to the servo's own horn",
+   "mass_g": {"value": 9.0, "class": "maker", "source": "https://docs.m5stack.com/en/accessory/servo_kit_360"},
+   "stall_torque_nm": {"value": 0.157, "class": "maker", "source": "https://docs.m5stack.com/en/accessory/servo_kit_360", "note": "1.6 kg.cm at 4.8 V; 1.8 kg.cm at 6.0 V"},
+   "no_load_rpm": {"value": 83.0, "class": "maker", "source": "https://docs.m5stack.com/en/app/balac", "note": "BALA-C page: 0.12 s per 60 degrees at 4.8 V. The kit page gives no speed."},
+   "stall_current_a": {"value": 0.75, "class": "maker", "source": "https://docs.m5stack.com/en/accessory/servo_kit_360"},
+   "supply": {"value": "4.8 to 6.0 V", "class": "maker", "source": "https://docs.m5stack.com/en/accessory/servo_kit_360"},
+   "control": {"value": "50 Hz pulse, 0.5 to 2.5 ms; the stop point near 1.5 ms is not stated and must be trimmed", "class": "maker", "source": "https://docs.m5stack.com/en/accessory/servo_kit_360"},
+   "output": {"value": "20-tooth spline with horns; the kit's own wheels are 24 mm", "class": "maker", "source": "https://docs.m5stack.com/en/accessory/servo_kit_360", "note": "The page says LEGO compatible without saying how. No Technic axle fit is documented, so the wheel screws to the horn. In the BALA-C itself the two servos are driven by an L9110S H-bridge, which suggests motors without servo electronics: check which kind the owner's are."},
+   "body_mm": {"value": [22.7, 12.2, 27.0], "class": "assumed", "why": "standard 9 g servo case; M5Stack gives only the kit's packed size"},
+   "rotor_inertia_kgm2": {"value": 0.00002, "class": "assumed", "why": "reflected inertia at the output, for the simulation"},
+   "wheel_plane_y_mm": 93.5,
+   "signals": "one servo pulse output per wheel"
+  },
+  "tt": {
+   "name": "Yellow TT gear motor, 1:48", "feedback": "none: open-loop speed (an encoder version exists)",
+   "mount": "printed tt_cradle on the outside of each panel, wheel on the outer shaft",
+   "mass_g": {"value": 30.6, "class": "maker", "source": "https://www.adafruit.com/product/3777", "note": "DFRobot's 1:120 FIT0016 is 45 g"},
+   "stall_torque_nm": {"value": 0.078, "class": "maker", "source": "https://www.adafruit.com/product/3777", "note": "0.8 kg.cm at 6 V, 0.4 kg.cm at 3 V. DFRobot 1:120: 0.8 kgf.cm."},
+   "no_load_rpm": {"value": 200.0, "class": "maker", "source": "https://www.adafruit.com/product/3777", "note": "200 rpm +/- 10 percent at 6 V by specification, 250 measured; 90 to 120 rpm at 3 V. DFRobot 1:120: 160 rpm at 6 V."},
+   "stall_current_a": {"value": 1.5, "class": "maker", "source": "https://www.adafruit.com/product/3777", "note": "at 6 V. DFRobot 1:120: 2.8 A."},
+   "supply": {"value": "3 to 6 V", "class": "maker", "source": "https://www.adafruit.com/product/3777"},
+   "body_mm": {"value": [70.0, 22.0, 18.0], "class": "maker", "source": "https://www.adafruit.com/product/3777"},
+   "shaft": {"value": "5.4 mm with two flats 3.7 mm apart", "class": "assumed", "why": "DFRobot gives a 5.4 mm maximum shaft diameter; the flats are the usual figure and no distributor page found states them"},
+   "mounting_holes": {"value": "two 3 mm holes 17.5 mm apart, 20.3 mm behind the shaft", "class": "assumed", "why": "usual figures for this gearbox; no distributor page found states them. Print fit_tt_cradle first."},
+   "vendor_spread": "gear ratio 1:48 to 1:120, 160 to 250 rpm at 6 V, stall current 1.5 to 2.8 A, mass 30.6 to 45 g",
+   "encoder_option": {"value": "DFRobot FIT0450: 1:120, 960 pulses per output turn, 50 g", "class": "maker", "source": "https://www.dfrobot.com/product-1457.html"},
+   "rotor_inertia_kgm2": {"value": 0.00003, "class": "assumed", "why": "reflected inertia at the output, for the simulation"},
+   "wheel_plane_y_mm": 100.0,
+   "signals": "an H-bridge channel per wheel: one PWM and one or two direction lines"
+  }
+ },
+ "wheels": {
+  "lego_43": {"name": "LEGO tyre 44309 on rim 56145 (EV3 31313)", "kind": "LEGO", "diameter_mm": 43.2, "width_mm": 22.0, "bore": "cross",
+   "source": "https://brickset.com/inventories/31313-1", "class": "third-party", "mass_g": {"value": 14.0, "class": "assumed", "why": "no parts catalogue lists a mass"}, "friction": "rubber"},
+  "lego_56": {"name": "LEGO wheel 39367, 56 x 14 (Robot Inventor 51515)", "kind": "LEGO", "diameter_mm": 56.0, "width_mm": 14.0, "bore": "cross",
+   "source": "https://brickarchitect.com/parts/39367", "class": "third-party", "mass_g": {"value": 12.0, "class": "assumed", "why": "no parts catalogue lists a mass"}, "friction": "rubber"},
+  "tt_65": {"name": "Stock TT wheel, 65 mm", "kind": "TT stock", "diameter_mm": 65.0, "width_mm": 26.0, "bore": "tt",
+   "source": "https://www.adafruit.com/product/3766", "class": "assumed", "why": "the usual yellow-hub wheel is sold as 65 mm; Adafruit's TT wheel is listed as 63 x 29 mm and 38 g, which is used for the mass",
+   "mass_g": {"value": 38.0, "class": "maker", "source": "https://www.adafruit.com/product/3766"}, "friction": "tt_tyre"},
+  "solid_d43": {"name": "Printed solid wheel, cross-axle bore, 38 x 3 O-ring", "kind": "printed solid with O-ring or band", "diameter_mm": 44.76, "width_mm": 14.0, "bore": "cross", "stl": ["wheel_solid_cross_d43", "wheel_band_cross_d43"], "ring_g": 1.6, "friction": "o_ring", "bare_friction": "pla"},
+  "solid_d56": {"name": "Printed solid wheel, cross-axle bore, 50 x 3 O-ring", "kind": "printed solid with O-ring or band", "diameter_mm": 57.0, "width_mm": 14.0, "bore": "cross", "stl": ["wheel_solid_cross_d56", "wheel_band_cross_d56"], "ring_g": 2.0, "friction": "o_ring", "bare_friction": "pla"},
+  "solid_horn_d56": {"name": "Printed solid wheel, horn face, 50 x 3 O-ring", "kind": "printed solid with O-ring or band", "diameter_mm": 57.0, "width_mm": 14.0, "bore": "horn", "stl": ["wheel_solid_horn_d56", "wheel_band_horn_d56"], "ring_g": 2.0, "friction": "o_ring", "bare_friction": "pla"},
+  "solid_tt_d65": {"name": "Printed solid wheel, TT shaft bore, two 58 x 3 O-rings", "kind": "printed solid with O-ring or band", "diameter_mm": 65.16, "width_mm": 18.0, "bore": "tt", "stl": ["wheel_solid_tt_d65", "wheel_band_tt_d65"], "ring_g": 4.6, "friction": "o_ring", "bare_friction": "pla"},
+  "tpu_d43": {"name": "Printed hub with TPU tyre, cross-axle bore", "kind": "printed hub with TPU tyre", "diameter_mm": 43.2, "width_mm": 14.0, "bore": "cross", "stl": ["hub_tpu_cross_d43", "tyre_tpu_d43"], "friction": "tpu"},
+  "tpu_d56": {"name": "Printed hub with TPU tyre, cross-axle bore", "kind": "printed hub with TPU tyre", "diameter_mm": 56.0, "width_mm": 14.0, "bore": "cross", "stl": ["hub_tpu_cross_d56", "tyre_tpu_d56"], "friction": "tpu"},
+  "tpu_horn_d56": {"name": "Printed hub with TPU tyre, horn face", "kind": "printed hub with TPU tyre", "diameter_mm": 56.0, "width_mm": 14.0, "bore": "horn", "stl": ["hub_tpu_horn_d56", "tyre_tpu_d56"], "friction": "tpu"},
+  "tpu_tt_d65": {"name": "Printed hub with TPU tyre, TT shaft bore", "kind": "printed hub with TPU tyre", "diameter_mm": 65.0, "width_mm": 18.0, "bore": "tt", "stl": ["hub_tpu_tt_d65", "tyre_tpu_d65"], "friction": "tpu"}
+ },
+ "friction": {
+  "_comment": "Coefficients against a hard indoor floor. No measured data for these pairs on laminate, tile or vinyl was found; all are assumed from generic tables and one vendor note, and the range is run as sensitivity.",
+  "rubber": {"value": 0.8, "range": [0.6, 1.0], "class": "assumed", "why": "LEGO tyres; generic tables give 0.5 to 0.9 for rubber on dry hard surfaces", "source": "https://www.engineeringtoolbox.com/friction-coefficients-d_778.html"},
+  "o_ring": {"value": 0.8, "range": [0.6, 0.9], "class": "assumed", "why": "nitrile O-ring or a rubber band; same generic rubber figures", "source": "https://www.engineeringtoolbox.com/friction-coefficients-d_778.html"},
+  "tpu": {"value": 0.7, "range": [0.6, 0.8], "class": "assumed", "why": "TPU 95A; one printer vendor's note gives 0.70 to 0.80 on hardwood with no method", "source": "https://qidi3d.com/blogs/print-lab/tpu-furniture-feet-stop-sliding"},
+  "tt_tyre": {"value": 0.6, "range": [0.4, 0.8], "class": "assumed", "why": "the stock TT tyre is a harder compound than a LEGO tyre"},
+  "pla": {"value": 0.3, "range": [0.2, 0.4], "class": "assumed", "why": "bare printed PLA or PETG; generic tables give 0.3 to 0.35 for polystyrene on steel", "source": "https://www.engineeringtoolbox.com/friction-coefficients-d_778.html"},
+  "skid": {"value": 0.3, "range": [0.2, 0.4], "class": "assumed", "why": "a printed PLA dome sliding on the floor"},
+  "ball_in_cup": {"value": 0.15, "range": [0.1, 0.3], "class": "assumed", "why": "a ball in a plain printed cup does not roll freely: it slides in the cup, so its drag is the cup friction acting at the ball radius"},
+  "rolling": {"value": 0.02, "range": [0.01, 0.05], "class": "assumed", "why": "rolling resistance of small tyres on a hard floor; generic tables give 0.01 to 0.02 for car tyres and note that small wheels are worse", "source": "https://www.engineeringtoolbox.com/rolling-friction-resistance-d_1303.html"}
+ },
+ "supports": {
+  "skid": {"name": "Drag skid (tip_skid)", "stl": ["tip_skid"], "contact_radius_mm": 14.0, "friction": "skid"},
+  "ball": {"name": "Ball in a printed cup (tip_ball_16p5 with a LEGO 16.5 mm ball, or tip_ball_12p7 with a 12.7 mm steel ball)", "stl": ["tip_ball_16p5", "tip_ball_12p7"], "ball_mm": 16.5, "ball_g": 2.0, "friction": "ball_in_cup",
+   "note": "The EV3 31313 set has three 16.5 mm balls (part 54821) and no ball caster. The steel caster ball 99948 is in the education set 45544 only. The 51515 set has neither."},
+  "idler": {"name": "Printed idler with TPU tyre on a Technic axle (tip_idler_fork, idler_hub, idler_tyre_tpu)", "stl": ["tip_idler_fork", "idler_hub", "idler_tyre_tpu"], "friction": "rolling",
+   "note": "Fixed axis: it rolls straight ahead and scrubs sideways in a turn. Analysed for drag only, not simulated."}
+ },
+ "o_rings": {
+  "standard": "Metric sections 1, 1.5, 2, 2.5, 3 and 5 mm; ISO 3601 and DIN 3771 use 1.80, 2.65, 3.55, 5.30 and 7.00 mm",
+  "source": "https://o-ring.info/en/o-ring/technical%20handbook/16%20-%20eriks%20nv%20-%20o-ring%20technical%20handbook%20-%20o-ring%20size%20chart.pdf",
+  "stretch": "Installed stretch of 1 to 5 percent on the inner diameter, 2 percent ideal; the grooves use 2 percent",
+  "stretch_source": "https://www.applerubber.com/seal-design-guide/oring-basics/dimensional-considerations/",
+  "rings": {"d43": "38 x 3", "d56": "50 x 3", "d65": "58 x 3 (two)"},
+  "groove": "3.4 mm wide, 2.0 mm deep, ring 1.0 mm proud; the ring sets the rolling diameter: 44.8, 57.0 and 65.2 mm",
+  "band_groove": "7.0 mm wide, 0.5 mm deep: one rubber band up to 6 mm wide (size 64) or two 3 mm bands (size 33) side by side"
+ },
+ "tpu": {
+  "hardness": {"value": "95A assumed; Ultimaker's TPU 95A data sheet gives 96 Shore A", "class": "maker", "source": "https://um-support-files.ultimaker.com/materials/2.85mm/tds/TPU-95A/TDS-TPU95A-V2.01-250915.pdf"},
+  "density_g_cm3": {"value": 1.22, "class": "maker", "source": "https://um-support-files.ultimaker.com/materials/2.85mm/tds/TPU-95A/TDS-TPU95A-V2.01-250915.pdf"},
+  "design": "tyre 4 mm thick, bore 2 percent under the hub (stretch), eight keys against slipping round, a 1 mm lip each side against walking off, plain extrusion so it prints without supports",
+  "printing": "Print slowly: a maker of softer filament gives 15 to 35 mm/s. Direct-drive extruders cope better. Retraction settings vary by machine and are not given here. Softer TPU needs more stretch than 2 percent."
+ },
+ "bases": {
+  "ev3": {"name": "LEGO EV3 brick", "chassis": "ev3-pixy2", "head": "camera_head_pantilt", "camera": "pantilt",
+   "drives": ["ev3_large"], "wheels": {"ev3_large": ["lego_43", "solid_d43", "tpu_d43"]},
+   "controller": {"name": "EV3 brick with six AA cells", "mass_g": 348, "size_mm": [110, 71, 44], "class": "assumed", "why": "see components.json"},
+   "extra": [], "power": "the brick's own cells", "signals": "motor ports B and C", "sketch": "walkers/controllers/ev3_drive.py"},
+  "pi_buildhat": {"name": "Raspberry Pi Zero 2 W with Build HAT", "chassis": "pi-zero-2w-51515", "head": "camera_head", "camera": "camera_module_2",
+   "drives": ["angular"], "wheels": {"angular": ["lego_56", "solid_d56", "tpu_d56"]},
+   "controller": {"name": "Pi Zero 2 W and Build HAT", "mass_g": 42, "size_mm": [65, 56.5, 25], "class": "assumed", "why": "see components.json"},
+   "extra": [{"name": "battery pack, six NiMH AA", "mass_g": 190, "at_mm": [45, 0, 20], "class": "assumed", "why": "7.2 V on the barrel jack, inside the product brief's 7.2 to 8.5 V; tied under the deck ahead of the motors"}],
+   "power": "a 7.2 to 8.5 V battery on the Build HAT's barrel jack (it also powers the Pi), or the 8 V adapter on a tether", "signals": "Build HAT ports A and B", "sketch": "walkers/controllers/buildhat_drive.py"},
+  "hub51515": {"name": "LEGO 51515 hub", "chassis": "ev3-pixy2", "head": "camera_head", "camera": null,
+   "drives": ["angular"], "wheels": {"angular": ["lego_56", "solid_d56", "tpu_d56"]},
+   "controller": {"name": "51515 hub with its battery", "mass_g": 143, "size_mm": [88, 56, 32], "class": "assumed", "why": "LEGO gives 63 g without the battery and 88 x 56 x 32 mm for the SPIKE Prime hub, the same hardware; the 2100 mAh battery is taken as 80 g", "source": "https://assets.education.lego.com/v3/assets/blt293eea581807678a/bltf512a371e82f6420/5f8801baf4f4cf0fa39d2feb/techspecs_techniclargehub.pdf"},
+   "extra": [], "power": "the hub's own 7.3 V battery", "signals": "hub ports A and B", "sketch": "walkers/controllers/hub51515_drive.py"},
+  "m5_basex": {"name": "M5Stack Core with BaseX", "chassis": "ev3-pixy2", "head": "camera_head", "camera": null,
+   "drives": ["ev3_large", "servo360"], "wheels": {"ev3_large": ["lego_43", "solid_d43", "tpu_d43"], "servo360": ["solid_horn_d56", "tpu_horn_d56"]},
+   "controller": {"name": "M5Stack Core Basic on BaseX", "mass_g": 108.5, "size_mm": [54, 54, 43], "class": "maker", "source": "https://docs.m5stack.com/en/base/basex", "note": "49.5 g and 59.0 g"},
+   "extra": [{"name": "motor battery, 9 to 12 V", "mass_g": 90, "at_mm": [45, 0, 20], "class": "assumed", "why": "BaseX takes 9 to 12 V on a jack for motor power only; a three-cell lithium pack of about 1000 mAh is taken"}],
+   "power": "BaseX needs 9 to 12 V on its jack for the motors; its own 950 mAh cell runs the logic", "signals": "BaseX motor ports 1 and 2 for EV3 motors, or its two servo outputs for the 360-degree servos. Its documentation says nothing about bare DC motors on the motor ports, so the TT motor is not offered here.", "sketch": null},
+  "unoq": {"name": "Arduino UNO Q", "chassis": "ev3-pixy2", "head": "camera_head", "camera": null,
+   "drives": ["servo360", "tt"], "wheels": {"servo360": ["solid_horn_d56", "tpu_horn_d56"], "tt": ["tt_65", "solid_tt_d65", "tpu_tt_d65"]},
+   "controller": {"name": "Arduino UNO Q", "mass_g": 30, "size_mm": [68.6, 53.3, 12], "class": "assumed", "why": "as in config/hardware.json"},
+   "extra": [{"name": "USB power bank for the board", "mass_g": 120, "at_mm": [10, 0, 20], "class": "assumed", "why": "the UNO Q needs 5 V 3 A; a small 5000 mAh bank tied under the deck"},
+             {"name": "motor battery, four AA", "mass_g": 110, "at_mm": [50, 0, 20], "class": "assumed", "why": "4.8 to 6 V for the servos or TT motors, kept apart from the board's supply"}],
+   "power": "a 5 V 3 A source for the board and a separate 4.8 to 6 V pack for the wheel drives", "signals": "see the control section", "sketch": null},
+  "pi": {"name": "Raspberry Pi without a LEGO HAT", "chassis": "pi-zero-2w-51515", "head": "camera_head", "camera": "camera_module_2",
+   "drives": ["servo360", "tt"], "wheels": {"servo360": ["solid_horn_d56", "tpu_horn_d56"], "tt": ["tt_65", "solid_tt_d65", "tpu_tt_d65"]},
+   "controller": {"name": "Raspberry Pi Zero 2 W", "mass_g": 16, "size_mm": [65, 30, 6], "class": "assumed", "why": "see components.json; a Pi 4 or 5 is about 30 g heavier"},
+   "extra": [{"name": "USB power bank for the Pi", "mass_g": 120, "at_mm": [10, 0, 20], "class": "assumed", "why": "5 V 2.5 A"},
+             {"name": "motor battery, four AA", "mass_g": 110, "at_mm": [50, 0, 20], "class": "assumed", "why": "4.8 to 6 V for the servos or TT motors"}],
+   "power": "a 5 V source for the Pi and a separate 4.8 to 6 V pack for the wheel drives", "signals": "see the control section", "sketch": "walkers/controllers/pi_servo_drive.py, walkers/controllers/pi_tt_drive.py"}
+ },
+ "control": {
+  "unoq_pwm": {"value": "D3, D5, D6, D9, D10 and D11 are the pins the datasheet marks as PWM; all 3.3 V logic", "class": "maker", "source": "https://docs.arduino.cc/resources/datasheets/ABX00162-datasheet.pdf"},
+  "braccio_pins": {"value": "The Braccio shield uses exactly those six for its servos, and D12 for soft start", "class": "maker", "source": "https://raw.githubusercontent.com/arduino-libraries/Braccio/master/src/Braccio.cpp"},
+  "unoq_free": "With the shield fitted the free pins are D2, D4, D7, D8, D13, D20, D21 and A0 to A5. None is marked PWM. D2, D7, D8, D13, D20 and D21 do carry timer channels in the datasheet's pin map (TIM2_CH2, TIM8_CH4N, TIM3_CH1, TIM1_CH1N, TIM2_CH4, TIM2_CH3), which matches the list reported for this project, but whether the Zephyr core gives PWM on them is not verified.",
+  "unoq_servo": "A wheeled UNO Q does not use the Braccio servos, so the simplest wiring is the shield itself: plug the two 360-degree servos into two of its servo headers (D11 and D10) and let its 5 V supply feed them. Without the shield, use two of the marked PWM pins and the separate pack.",
+  "unoq_tt": "TB6612FNG without the shield: PWMA D5, PWMB D6, AIN1 D2, AIN2 D4, BIN1 D7, BIN2 D8, STBY tied high. DRV8833: IN1 to IN4 on D5, D6, D9, D10.",
+  "pi_pwm": {"value": "Two hardware PWM channels: PWM0 on GPIO12 or GPIO18, PWM1 on GPIO13 or GPIO19", "class": "maker", "source": "https://raw.githubusercontent.com/raspberrypi/firmware/master/boot/overlays/README"},
+  "pi_servo": "Two servos fit the two hardware channels (GPIO12 and GPIO13). Software PWM from RPi.GPIO jitters; the pigpio daemon times pulses by DMA. A PCA9685 board (16 channels, 12 bit, I2C) is the alternative.",
+  "pi_tt": "TB6612FNG: PWMA GPIO12, PWMB GPIO13, AIN1 GPIO5, AIN2 GPIO6, BIN1 GPIO20, BIN2 GPIO21, STBY GPIO16.",
+  "drivers": [
+   {"name": "TB6612FNG", "motor_supply": "4.5 to 13.5 V", "current": "1 A continuous, 3 A peak per channel", "pins": "PWM, IN1, IN2 per motor and a shared STBY", "verdict": "fits the TT motor at 6 V; its 1.5 A stall is inside the peak rating", "source": "https://www.pololu.com/product/713"},
+   {"name": "DRV8833", "motor_supply": "2.7 to 10.8 V", "current": "1.2 A continuous, 2 A peak per channel", "pins": "two inputs per motor, PWM on either", "verdict": "fits; fewest pins if four PWM outputs are free", "source": "https://www.pololu.com/product/2130"},
+   {"name": "L298N module", "motor_supply": "up to 46 V", "current": "2 A per channel", "pins": "IN1, IN2 and EN (PWM) per motor", "verdict": "drops 1.8 V typically and up to 3.2 V at 1 A: from 6 V the TT motor sees about 4 V. Avoid.", "source": "https://cdn.sparkfun.com/assets/7/1/d/6/c/Full-Bridge_Motor_Driver_Dual_-_L298N.pdf"}
+  ],
+  "basex": {"value": "Four LEGO motor ports with encoder registers (2 A in total), two servo outputs taking an angle or a 500 to 2500 pulse, I2C address 0x22, 9 to 12 V for motor power", "class": "maker", "source": "https://docs.m5stack.com/en/base/basex"}
+ }
+}

@@ -1,0 +1,61 @@
+name: Record a validated build
+
+# The owner marks a build or a part as printed and checked by submitting the
+# "Mark a build as validated" issue form. Only his own issues are applied.
+# The issue body is untrusted text: no step puts it on a command line. It is
+# read from the event file by scripts/record_validation.py.
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: validated
+  cancel-in-progress: false
+
+jobs:
+  record:
+    if: contains(github.event.issue.labels.*.name, 'validated')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      # The gate. Anyone can open an issue with this form; only the
+      # repository owner's is acted on. Nothing below runs for anyone else.
+      - name: Owner only
+        id: gate
+        if: github.event.issue.user.login != github.repository_owner || github.event.issue.author_association != 'OWNER'
+        run: |
+          gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body "Only the repository owner can record a validation. Nothing was changed."
+          echo "stop=true" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.stop != 'true'
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.stop != 'true'
+        with:
+          python-version: '3.13'
+      - name: Read the form and update config/validated.json
+        id: record
+        if: steps.gate.outputs.stop != 'true'
+        run: python scripts/record_validation.py --event "$GITHUB_EVENT_PATH" --outcome "$RUNNER_TEMP/outcome.md" --github-output "$GITHUB_OUTPUT"
+      - name: Commit and push
+        if: steps.gate.outputs.stop != 'true' && steps.record.outputs.changed == 'true'
+        run: |
+          git config user.name eoinjordan
+          git config user.email 11853924+eoinjordan@users.noreply.github.com
+          git add config/validated.json docs/validated
+          git commit -m "validated: record issue $ISSUE"
+          git push origin HEAD:main
+      - name: Answer and close the issue
+        if: steps.gate.outputs.stop != 'true'
+        run: |
+          gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/outcome.md"
+          gh issue close "$ISSUE" --repo "$GITHUB_REPOSITORY"
