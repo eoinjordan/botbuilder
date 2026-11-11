@@ -87,6 +87,31 @@ What the simulation suggests changing is listed at the end of
 [docs/simulation.md](docs/simulation.md). Those are suggestions; the parts
 are the owner's and were not edited.
 
+## Walk, jump, sit: the motion study
+
+Full results: [docs/motion.md](docs/motion.md). The servo model gains a dead
+band, gear play, a series spring, the command delay and the 4 A supply limit,
+and a seeded search looks for open-loop motions on the geometry as drawn and
+on one variant. Simulation only.
+
+- As drawn it does not truly step. The best gait found stamps along at
+  11.7 mm/s: a sole clears the floor by 2.53 mm for 0.06 s while the
+  standing foot slips further than the lifted foot advances, and the turn
+  input does not steer it.
+- The jump is a hop: nothing touches the floor for 0.08 s and the centre of
+  mass rises 5.02 mm in that time. It needs the firmware speed limit raised and
+  is not allowed on real hardware by default.
+- Sitting is a squat on the servo travel stops, 58.2 mm lower. It holds
+  with the servos relaxed, only the soles touch the floor, and standing up
+  again takes 0.402 of the knee torque limit.
+- Variant `comb_feet`, a proposal of the study and not the owner's design:
+  new soles whose fingers cross the centreline and interleave. It steps at
+  38.1 mm/s with 12.97 mm of clearance and turns at about 3.54 and -3.14 deg/s.
+  The part change is specified in [docs/generator-changes.md](docs/generator-changes.md).
+
+Motion files for both, with what each is allowed to do, are listed in
+`trajectories/manifest.json`; `python scripts/run_motion.py` regenerates them.
+
 ## Simulation to real
 
 One line format carries joint angles in degrees to the simulator and to the

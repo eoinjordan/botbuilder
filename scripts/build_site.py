@@ -26,6 +26,9 @@ DATA = {
     "joints.json": ROOT / "robot" / "joints.json",
     "model.json": ROOT / "robot" / "model.json",
     "hardware.json": ROOT / "config" / "hardware.json",
+    "motion.json": ROOT / "reports" / "motion.json",
+    "manifest.json": ROOT / "trajectories" / "manifest.json",
+    "gait_params.json": ROOT / "trajectories" / "gait_params.json",
 }
 
 
@@ -47,6 +50,12 @@ def main() -> int:
         if name == "model.json":
             content["meshes_published"] = bool(args.with_meshes)
         (data / name).write_text(json.dumps(content, separators=(",", ":")), encoding="utf-8", newline="\n")
+    # The motion files the manifest lists, next to it.
+    (data / "trajectories").mkdir()
+    with open(DATA["manifest.json"], encoding="utf-8") as handle:
+        for entry in json.load(handle)["trajectories"]:
+            (data / "trajectories" / entry["file"]).parent.mkdir(exist_ok=True)
+            shutil.copyfile(ROOT / "trajectories" / entry["file"], data / "trajectories" / entry["file"])
     count = 0
     for picture in sorted((ROOT / "docs" / "images").iterdir()):
         if picture.suffix in (".png", ".gif"):

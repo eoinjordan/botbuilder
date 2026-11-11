@@ -93,6 +93,21 @@
       <ul class="plain" id="suggestions"></ul>
     </section>
 
+    <section id="motion">
+      <div class="section-heading"><span class="step">04b</span><h2>Walk, jump, sit</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/motion.md" rel="noopener noreferrer">Motion study</a></div>
+      <p>A fuller servo model (dead band, gear play, compliance, command delay, the 4 A supply) and a seeded search for
+        open-loop motions. As drawn the robot does not truly step: the best gait found stamps along at 11.7 mm/s.
+        Its jump is a hop, 0.08 s off the floor with the centre of mass rising 5.02 mm. It sits by squatting on to the
+        servo travel stops and stands up again. A variant with interleaved comb soles, a proposal of the study and not the
+        owner's design, steps at 38.1 mm/s. Simulation only.</p>
+      <div class="gallery">
+        <figure><img loading="lazy" src="./images/motion-drawn-walk.gif" width="288" height="216" alt="Simulated robot stamping forward on the drawn geometry"><figcaption>As drawn: best gait found</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-comb-feet-walk.gif" width="288" height="216" alt="Simulated robot stepping on the comb-feet variant"><figcaption>Variant with comb soles: steps</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-drawn-jump.gif" width="288" height="216" alt="Simulated hop at one fifth speed"><figcaption>The hop, one fifth speed</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-drawn-sit.gif" width="288" height="216" alt="Simulated robot squatting, relaxing its servos and standing up"><figcaption>Sit, servos off, stand up</figcaption></figure>
+      </div>
+    </section>
+
     <section id="real">
       <div class="section-heading"><span class="step">05</span><h2>From simulation to the robot</h2><a href="https://github.com/eoinjordan/microduck-braccio-unoq-sim/blob/main/docs/sim-to-real.md" rel="noopener noreferrer">Details</a></div>
       <p>The simulator and the board take the same command lines: six joint angles in degrees, in the robot's own
