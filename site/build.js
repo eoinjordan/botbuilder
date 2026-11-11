@@ -486,7 +486,17 @@ function render(data, recipe, target) {
       for (const text of recipe[name]) steps.append(el("li", text));
       target.append(block(SECTION_TITLES[name], steps));
     } else {
-      target.append(block(SECTION_TITLES[name], list(recipe[name])));
+      const section = block(SECTION_TITLES[name], list(recipe[name]));
+      if (name === "firmware" && recipe.base) {
+        // The Flash page builds the commands for this controller, or says
+        // that none are written.
+        const link = el("a", "Flash steps for this controller");
+        link.href = `./flash.html?base=${encodeURIComponent(recipe.base)}`;
+        const para = el("p");
+        para.append(link);
+        section.append(para);
+      }
+      target.append(section);
     }
   }
 
