@@ -49,7 +49,9 @@ FIT_FILES = {"SR431": "fit_SR431.stl", "SR311": "fit_SR311.stl", "horn": "fit_ho
              "lego_compatible_coupon": "fit_lego_compatible_coupon.stl",
              **{"cam_" + name: f"fit_cam_{name}.stl" for name in CAMERAS}}
 # Torsos for the camera presets the assembly does not use.
+CONTROLLER_TORSOS = ("pi_zero_2w", "pi", "hub51515")
 OTHER_FILES = ([f"01_torso_unoq_cam_{name}.stl" for name in CAMERAS] + list(HEAD_FILES.values())
+               + [f"01_torso_{name}_cam_{CAMERA}.stl" for name in CONTROLLER_TORSOS]
                + [f"head_tilt_cradle_{name}.stl" for name in CAMERAS]
                + ["fit_sg90_cradle.stl", "head_pixy_plate_pixy2.stl", "head_pixy_plate_pixy1.stl"])
 COLORS = {"print": (236, 205, 120), "servo": (60, 66, 74), "horn": (225, 228, 230),
@@ -136,10 +138,12 @@ def trimesh_from_manifold(solid: Manifold) -> trimesh.Trimesh:
     return trimesh.Trimesh(np.asarray(mesh.vert_properties)[:, :3], np.asarray(mesh.tri_verts), process=False)
 
 
-def load_part(name: str, camera: str | None = None) -> Manifold:
+def load_part(name: str, camera: str | None = None, torso_file: str | None = None) -> Manifold:
     files = {**PART_FILES, **HEAD_FILES, **{"fit_" + k: v for k, v in FIT_FILES.items()}}
     if name == "torso" and camera:
         files["torso"] = f"01_torso_unoq_cam_{camera}.stl"
+    if name == "torso" and torso_file:
+        files["torso"] = torso_file
     if name == "head_cradle" and camera:
         files["head_cradle"] = f"head_tilt_cradle_{camera}.stl"
     return manifold_from_trimesh(trimesh.load_mesh(stl_dir() / files[name]))
@@ -335,11 +339,14 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
         assembly["thigh_face"] = thigh_face
     printing = {k: v["value"] for k, v in hardware["print"]["assumed"].items()}
     big, small = servo_shape("SR431", hardware), servo_shape("SR311", hardware)
+    controller = assembly.get("controller", "unoq")
+    other = hardware["controllers"][controller] if controller != "unoq" else None
+    torso_file = other["torso"].format(camera=assembly["camera"]["preset"]) if other else None
 
     def printed(name: str, part: str, to_link: np.ndarray) -> Solid:
         if not load_meshes:
             return Solid(name, "print", Manifold(), 0.0, part, to_link)
-        raw = load_part(part, assembly["camera"]["preset"])
+        raw = load_part(part, assembly["camera"]["preset"], torso_file)
         mass = raw.volume() / 1000.0 * printing["density_g_cm3"] * printing["solid_fraction"]
         return Solid(name, "print", apply(raw, to_link), mass, part, to_link)
 
@@ -358,12 +365,18 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
     z0 = PLATE + ba["spacer_mm"]
     z1 = z0 + ba["pcb_thickness_mm"]
     half = np.array([b["length_mm"] / 2, b["width_mm"] / 2])
-    torso.solids.append(Solid("unoq", "board", box([bx - half[0], -half[1], z0], [bx + half[0], half[1], z1]), ba["mass_g"]))
     zs = z1 + sa["pcb_gap_mm"]
-    torso.solids.append(Solid("braccio_shield", "shield",
-                              box([bx - half[0], -half[1], zs], [bx + half[0], half[1], zs + ba["pcb_thickness_mm"]]),
-                              sa["mass_g"]))
-    envelope = box([bx - half[0], -half[1], z1], [bx + half[0], half[1], z1 + sa["stack_height_mm"]])
+    if other is None:
+        torso.solids.append(Solid("unoq", "board", box([bx - half[0], -half[1], z0], [bx + half[0], half[1], z1]), ba["mass_g"]))
+        torso.solids.append(Solid("braccio_shield", "shield",
+                                  box([bx - half[0], -half[1], zs], [bx + half[0], half[1], zs + ba["pcb_thickness_mm"]]),
+                                  sa["mass_g"]))
+        envelope = box([bx - half[0], -half[1], z1], [bx + half[0], half[1], z1 + sa["stack_height_mm"]])
+    else:
+        # Another controller, as one block where config/hardware.json puts it.
+        lo, hi = other["assumed"]["box_mm"]["value"]
+        envelope = box(lo, hi)
+        torso.solids.append(Solid("controller", "board", envelope, other["assumed"]["mass_g"]["value"]))
 
     # Camera board in the mount at the front edge of the deck.
     mount = assembly["camera"]

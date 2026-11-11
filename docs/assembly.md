@@ -245,6 +245,24 @@ The other camera presets, each with its own torso file, checked in short form (s
 The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are
 and what is assumed about them is in `config/hardware.json` and the design README.
 
+## Other controllers on the deck
+
+The biped's deck with another controller in place of the UNO Q and Braccio shield, each as one block of the stated
+mass on its torso variant, camera mount unchanged. Assembly and static balance only: none was simulated, and what
+would drive the six servos from each is not part of this. Outlines and masses, with what is published and what is
+assumed, are in `config/hardware.json` under `controllers`.
+
+| controller | torso file | block mass (g) | overlap with the print (mm3) | gap to the camera board (mm) | interference at neutral | total mass (g) | centre of mass at neutral (mm) | legs straight: margin (mm) | stand pose: thighs back (deg) | stand margin (mm) | hip pitch holding torque / limit |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| unoq with Braccio shield | 01_torso_unoq_cam_esp32cam.stl | 55.0 | 0.0 | 10.57 | 0 | 502.5 | [53.89, -0.0, -33.08] | -6.61 | 42.0 | 37.31 | see the simulation |
+| pi_zero_2w | 01_torso_pi_zero_2w_cam_esp32cam.stl | 20.0 | 0.0 | 13.18 | 0 | 467.2 | [57.96, -0.0, -36.39] | -2.54 | 38.0 | 37.1 | 0.06 |
+| pi | 01_torso_pi_cam_esp32cam.stl | 55.0 | 0.0 | 17.06 | 0 | 501.6 | [54.01, -0.01, -32.6] | -6.49 | 42.0 | 37.41 | 0.073 |
+| hub51515 | 01_torso_hub51515_cam_esp32cam.stl | 133.0 | 0.0 | 18.86 | 0 | 580.2 | [46.21, -0.0, -24.42] | -14.29 | 50.0 | 37.28 | 0.103 |
+| ev3 | 01_torso_hub51515_cam_esp32cam.stl (not made for it) | 300.0 | 0.0 | 10.86 | 0 | 747.2 | [34.63, -0.0, -10.43] | -25.87 | 63.0 | 37.49 | 0.167 |
+
+The hip pitch torque is the static moment of everything above the hips about the hip pitch axis at the stand pose,
+shared by two servos, against the SR431's published 4.8 V torque.
+
 ## Turning head (option)
 
 An optional head in place of the fixed mount: a 9 g SG90-class servo hangs by its ears in a tab at the deck front and

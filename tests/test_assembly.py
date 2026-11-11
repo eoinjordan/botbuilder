@@ -141,6 +141,12 @@ def test_hardware_config_marks_every_assumption():
             assert entry["why"]
     for name in ("head_servo", "pixy"):
         assert hardware[name]["source"].startswith("https://")
+    for name, spec in hardware["controllers"].items():
+        if name.startswith("_"):
+            continue
+        assert spec["source"].startswith("https://")
+        for entry in spec["assumed"].values():
+            assert entry["why"]
 
 
 def test_fk_rotates_about_the_named_axis():

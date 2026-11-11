@@ -420,6 +420,49 @@ def camera_preset_summary(robot: Robot) -> dict:
     return out
 
 
+# --- other controllers on the deck -------------------------------------------
+
+def controller_summary(robot: Robot, limits: dict) -> dict:
+    """A controller other than the UNO Q, as one block on its torso variant:
+    does it sit clear of the print and the camera, and what does its mass do
+    to the centre of mass and to balance on two feet."""
+    threshold = robot.assumptions["interference_threshold_mm3"]
+    name = robot.assumptions["controller"]
+    spec = robot.hardware["controllers"][name]
+    torso = _solid(robot, "torso_print")[1].manifold
+    block = _solid(robot, "controller")[1].manifold
+    camera = _solid(robot, "camera_board")[1].manifold
+    bb = _bbox(block)
+    neutral = interferences(robot.placed(), threshold)
+    bal = balance(robot, limits)
+    total, com = centre_of_mass(robot)
+    stand = bal["stand_pose"]
+    # Hip pitch torque to hold the stand pose, from the mass above the hips.
+    frames = robot.fk(stand["q_deg"])
+    above = [n for n in robot.links if n in ("torso", "left_hip", "right_hip")]
+    masses = {n: link_mass(robot.links[n]) for n in above}
+    m_above = sum(m[0] for m in masses.values())
+    c_above = sum(masses[n][0] * model.point(frames[n], masses[n][1]) for n in above) / m_above
+    arm = c_above[0] - frames["left_thigh"][0, 3]
+    torque = abs(arm) * m_above * 9.80665 * 1e-6 / 2
+    limit = robot.hardware["servos"]["SR431"]["published"]["torque_kgcm_4v8"] * 9.80665 / 100.0
+    return {"controller": name, "name": spec["name"], "torso_file": spec["torso"].format(camera=robot.camera["preset"]),
+            "has_its_own_torso": name in model.CONTROLLER_TORSOS,
+            "block_mm": _r(bb), "mass_g": spec["assumed"]["mass_g"]["value"],
+            "overlap_with_print_mm3": _r((block ^ torso).volume(), 1),
+            "overlap_with_camera_board_mm3": _r((block ^ camera).volume(), 1),
+            "gap_to_camera_board_mm": _r(block.min_gap(camera, 80.0)),
+            "overhang_past_the_deck_mm": _r(max(0.0, bb[1][1] - 59.0)),
+            "neutral_interferences": [(f["a"], f["b"], f["volume_mm3"]) for f in neutral],
+            "total_g": _r(total, 1), "com_neutral_mm": _r(com),
+            "neutral_margin_mm": bal["neutral_two_feet"]["margin_mm"],
+            "stand_thigh_swing_deg": stand["thigh_swing_deg"], "stand_margin_mm": stand["margin_mm"],
+            "stands_statically": bool(stand["inside"]),
+            "one_foot_margin_at_stand_mm": bal["one_foot_left"]["at_stand_pose"]["margin_mm"],
+            "hip_pitch_hold_torque_nm_each": _r(torque, 3), "hip_pitch_torque_limit_nm": _r(limit, 3),
+            "hip_pitch_torque_fraction": _r(torque / limit, 3)}
+
+
 # --- turning head ------------------------------------------------------------
 
 def head_checks(robot: Robot, stand_q: dict) -> dict:

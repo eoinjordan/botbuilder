@@ -613,6 +613,160 @@
   ],
   "head_mass_g": 30.1
  },
+ "controllers": {
+  "pi_zero_2w": {
+   "controller": "pi_zero_2w",
+   "name": "Raspberry Pi Zero 2 W with a PCA9685 servo driver board",
+   "torso_file": "01_torso_pi_zero_2w_cam_esp32cam.stl",
+   "has_its_own_torso": true,
+   "block_mm": [
+    [
+     -32.5,
+     -15.0,
+     7.0
+    ],
+    [
+     32.5,
+     15.0,
+     27.0
+    ]
+   ],
+   "mass_g": 20.0,
+   "overlap_with_print_mm3": 0.0,
+   "overlap_with_camera_board_mm3": 0.0,
+   "gap_to_camera_board_mm": 13.18,
+   "overhang_past_the_deck_mm": 0.0,
+   "neutral_interferences": [],
+   "total_g": 467.2,
+   "com_neutral_mm": [
+    57.96,
+    -0.0,
+    -36.39
+   ],
+   "neutral_margin_mm": -2.54,
+   "stand_thigh_swing_deg": 38.0,
+   "stand_margin_mm": 37.1,
+   "stands_statically": true,
+   "one_foot_margin_at_stand_mm": -61.92,
+   "hip_pitch_hold_torque_nm_each": 0.072,
+   "hip_pitch_torque_limit_nm": 1.196,
+   "hip_pitch_torque_fraction": 0.06
+  },
+  "pi": {
+   "controller": "pi",
+   "name": "Raspberry Pi, full size, with a PCA9685 servo driver board",
+   "torso_file": "01_torso_pi_cam_esp32cam.stl",
+   "has_its_own_torso": true,
+   "block_mm": [
+    [
+     -28.0,
+     -42.5,
+     7.0
+    ],
+    [
+     28.0,
+     42.5,
+     29.0
+    ]
+   ],
+   "mass_g": 55.0,
+   "overlap_with_print_mm3": 0.0,
+   "overlap_with_camera_board_mm3": 0.0,
+   "gap_to_camera_board_mm": 17.06,
+   "overhang_past_the_deck_mm": 0.0,
+   "neutral_interferences": [],
+   "total_g": 501.6,
+   "com_neutral_mm": [
+    54.01,
+    -0.01,
+    -32.6
+   ],
+   "neutral_margin_mm": -6.49,
+   "stand_thigh_swing_deg": 42.0,
+   "stand_margin_mm": 37.41,
+   "stands_statically": true,
+   "one_foot_margin_at_stand_mm": -61.92,
+   "hip_pitch_hold_torque_nm_each": 0.087,
+   "hip_pitch_torque_limit_nm": 1.196,
+   "hip_pitch_torque_fraction": 0.073
+  },
+  "hub51515": {
+   "controller": "hub51515",
+   "name": "LEGO Technic large hub of the Robot Inventor 51515 set, with its battery",
+   "torso_file": "01_torso_hub51515_cam_esp32cam.stl",
+   "has_its_own_torso": true,
+   "block_mm": [
+    [
+     -30.0,
+     -44.0,
+     7.8
+    ],
+    [
+     26.0,
+     44.0,
+     39.8
+    ]
+   ],
+   "mass_g": 133.0,
+   "overlap_with_print_mm3": 0.0,
+   "overlap_with_camera_board_mm3": 0.0,
+   "gap_to_camera_board_mm": 18.86,
+   "overhang_past_the_deck_mm": 0.0,
+   "neutral_interferences": [],
+   "total_g": 580.2,
+   "com_neutral_mm": [
+    46.21,
+    -0.0,
+    -24.42
+   ],
+   "neutral_margin_mm": -14.29,
+   "stand_thigh_swing_deg": 50.0,
+   "stand_margin_mm": 37.28,
+   "stands_statically": true,
+   "one_foot_margin_at_stand_mm": -61.92,
+   "hip_pitch_hold_torque_nm_each": 0.123,
+   "hip_pitch_torque_limit_nm": 1.196,
+   "hip_pitch_torque_fraction": 0.103
+  },
+  "ev3": {
+   "controller": "ev3",
+   "name": "LEGO EV3 Intelligent Brick with six AA cells",
+   "torso_file": "01_torso_hub51515_cam_esp32cam.stl",
+   "has_its_own_torso": false,
+   "block_mm": [
+    [
+     -42.0,
+     -59.5,
+     7.8
+    ],
+    [
+     34.0,
+     59.5,
+     55.8
+    ]
+   ],
+   "mass_g": 300.0,
+   "overlap_with_print_mm3": 0.0,
+   "overlap_with_camera_board_mm3": 0.0,
+   "gap_to_camera_board_mm": 10.86,
+   "overhang_past_the_deck_mm": 0.5,
+   "neutral_interferences": [],
+   "total_g": 747.2,
+   "com_neutral_mm": [
+    34.63,
+    -0.0,
+    -10.43
+   ],
+   "neutral_margin_mm": -25.87,
+   "stand_thigh_swing_deg": 63.0,
+   "stand_margin_mm": 37.49,
+   "stands_statically": true,
+   "one_foot_margin_at_stand_mm": -61.92,
+   "hip_pitch_hold_torque_nm_each": 0.2,
+   "hip_pitch_torque_limit_nm": 1.196,
+   "hip_pitch_torque_fraction": 0.167
+  }
+ },
  "images": {
   "assembly_iso": "images/assembly-iso.png",
   "assembly_front": "images/assembly-front.png",

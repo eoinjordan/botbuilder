@@ -40,12 +40,19 @@ def describe(name: str) -> tuple:
     stem = name[:-4]
     for camera in CAMERAS:
         if stem == f"01_torso_unoq_cam_{camera}":
-            return f"torso with the UNO Q deck and the camera mount for the {camera} preset", {"part": "torso", "camera": camera}
+            return f"torso with the UNO Q deck and the camera mount for the {camera} preset", {"part": "torso", "controller": "unoq", "camera": camera}
         if stem == f"fit_cam_{camera}":
             return f"fit piece for the {camera} camera mount", {"fit_piece": True, "camera": camera}
     for camera in CAMERAS:
         if stem == f"head_tilt_cradle_{camera}":
             return f"turning head: tilt cradle for the {camera} preset", {"head": "pan", "camera": camera}
+    names = {"pi_zero_2w": "a Raspberry Pi Zero 2 W on bosses", "pi": "a full-size Raspberry Pi on bosses",
+             "hub51515": "a LEGO 51515 hub on two rows of pin holes"}
+    for controller, text in names.items():
+        for camera in CAMERAS:
+            if stem == f"01_torso_{controller}_cam_{camera}":
+                return f"torso with the deck for {text} and the camera mount for the {camera} preset", {
+                    "part": "torso", "controller": controller, "camera": camera}
     table = {
         "01_torso_unoq_pan_head": ("torso with the UNO Q deck and the pan servo tab of the turning head", {"part": "torso", "head": "pan"}),
         "head_pan_platform": ("turning head: platform on the pan servo horn", {"head": "pan"}),

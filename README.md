@@ -50,6 +50,14 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   10 degrees below level, 226 mm above the floor at the stand pose. A cone
   of 40 degrees half angle in front of it is clear at the neutral and stand
   poses; a thigh swung more than 21 degrees forward comes into it.
+- **Other controllers.** The deck has torso variants for a Raspberry Pi Zero
+  2 W, a full-size Raspberry Pi and the LEGO 51515 hub. As blocks of their
+  mass they clear the print and the camera, and the robot still balances at
+  a stand pose in each case: the heavier the controller, the further back
+  the thighs go (38, 42 and 50 degrees; 63 with an EV3 brick of an assumed
+  300 g, which has no torso of its own). The static stand margin stays near
+  37 mm. Geometry and static balance only; none was simulated. Raspberry Pi
+  is a trademark of Raspberry Pi Ltd.
 - **Turning head, an option.** A second torso carries a 9 g servo under a tab
   at the deck front; it turns the camera 75 degrees each way between printed
   stops, and tilt is set by hand on one screw. It meets nothing, costs the
@@ -183,6 +191,9 @@ local design directory after its generator has run. None has been printed.
   camera board.
 - The pin holes and studs: no printed one has been tried with a real pin,
   beam or brick. Their nominal dimensions are from secondary sources.
+- The other controllers: the masses of the Raspberry Pi boards, the hub's
+  battery and the EV3 brick are estimates, and the full-size Pi's hole
+  pattern and the EV3's size are not from their makers' pages.
 - The turning head: the servo body, shaft position and horn height are
   assumed from SG90 data sheets, the adapter hole pattern is a guess to be
   measured, and no firmware drives it.

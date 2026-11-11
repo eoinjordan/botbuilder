@@ -105,6 +105,90 @@
    "lens_standoff": 6.5
   }
  },
+ "controller_default": "unoq",
+ "controllers": {
+  "unoq": {
+   "torso": "01_torso_unoq_cam_esp32cam.stl",
+   "seat": "rails"
+  },
+  "pi_zero_2w": {
+   "torso": "01_torso_pi_zero_2w_cam_esp32cam.stl",
+   "seat": "bosses",
+   "holes": [
+    [
+     -29,
+     -11.5
+    ],
+    [
+     -29,
+     11.5
+    ],
+    [
+     29,
+     -11.5
+    ],
+    [
+     29,
+     11.5
+    ]
+   ],
+   "standoff": 3.0,
+   "screw": 2.8
+  },
+  "pi": {
+   "torso": "01_torso_pi_cam_esp32cam.stl",
+   "seat": "bosses",
+   "holes": [
+    [
+     -24.5,
+     -39.0
+    ],
+    [
+     24.5,
+     -39.0
+    ],
+    [
+     -24.5,
+     19.0
+    ],
+    [
+     24.5,
+     19.0
+    ]
+   ],
+   "standoff": 3.0,
+   "screw": 2.8,
+   "studs": false
+  },
+  "hub51515": {
+   "torso": "01_torso_hub51515_cam_esp32cam.stl",
+   "seat": "pads",
+   "rows": [
+    -16.0,
+    16.0
+   ],
+   "first_x": -24.0,
+   "count": 7,
+   "strap_slots": [
+    [
+     -34.0,
+     -20.0
+    ],
+    [
+     -34.0,
+     20.0
+    ],
+    [
+     31.0,
+     -22.0
+    ],
+    [
+     31.0,
+     22.0
+    ]
+   ]
+  }
+ },
  "head": {
   "torso": "01_torso_unoq_pan_head.stl",
   "platform": "head_pan_platform.stl",

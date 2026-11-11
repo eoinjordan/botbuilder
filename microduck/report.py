@@ -385,6 +385,26 @@ def markdown(report: dict) -> str:
            "The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are",
            "and what is assumed about them is in `config/hardware.json` and the design README.", ""]
 
+    base = rep
+    md += ["## Other controllers on the deck", "",
+           "The biped's deck with another controller in place of the UNO Q and Braccio shield, each as one block of the stated",
+           "mass on its torso variant, camera mount unchanged. Assembly and static balance only: none was simulated, and what",
+           "would drive the six servos from each is not part of this. Outlines and masses, with what is published and what is",
+           "assumed, are in `config/hardware.json` under `controllers`.", "",
+           _table(["controller", "torso file", "block mass (g)", "overlap with the print (mm3)", "gap to the camera board (mm)",
+                   "interference at neutral", "total mass (g)", "centre of mass at neutral (mm)", "legs straight: margin (mm)",
+                   "stand pose: thighs back (deg)", "stand margin (mm)", "hip pitch holding torque / limit"],
+                  [("unoq with Braccio shield", model.PART_FILES["torso"], 55.0, 0.0, base["camera"]["gaps"]["stack_envelope"]["to_camera_board_mm"],
+                    len(base["neutral_interferences"]), base["mass"]["total_g"], base["mass"]["com_neutral_mm"],
+                    base["balance"]["neutral_two_feet"]["margin_mm"], base["balance"]["stand_pose"]["thigh_swing_deg"],
+                    base["balance"]["stand_pose"]["margin_mm"], "see the simulation")]
+                  + [(k, c["torso_file"] + ("" if c["has_its_own_torso"] else " (not made for it)"), c["mass_g"], c["overlap_with_print_mm3"],
+                      c["gap_to_camera_board_mm"], len(c["neutral_interferences"]), c["total_g"], c["com_neutral_mm"],
+                      c["neutral_margin_mm"], c["stand_thigh_swing_deg"], c["stand_margin_mm"], c["hip_pitch_torque_fraction"])
+                     for k, c in report["controllers"].items()]), "",
+           "The hip pitch torque is the static moment of everything above the hips about the hip pitch axis at the stand pose,",
+           "shared by two servos, against the SR431's published 4.8 V torque.", ""]
+
     th = report["turning_head"]
     md += ["## Turning head (option)", "",
            "An optional head in place of the fixed mount: a 9 g SG90-class servo hangs by its ears in a tab at the deck front and",
@@ -490,6 +510,11 @@ def run(progress=print) -> dict:
         progress(f"camera preset {name}")
         other = dict(config, camera=dict(config["camera"], preset=name))
         presets[name] = assembly.camera_preset_summary(build_robot(selected, hardware, other))
+    controllers = {}
+    for name in [k for k in hardware["controllers"] if not k.startswith("_")]:
+        progress(f"controller {name}")
+        other = build_robot(selected, hardware, dict(config, controller=name))
+        controllers[name] = assembly.controller_summary(other, reports[selected]["joint_limits_deg"])
     progress("turning head")
     turning = build_robot(selected, hardware, dict(config, head="pan"))
     head = assembly.head_checks(turning, reports[selected]["balance"]["stand_pose"]["q_deg"])
@@ -533,6 +558,7 @@ def run(progress=print) -> dict:
         "findings": findings(reports[selected]),
         "camera_presets": presets,
         "turning_head": head,
+        "controllers": controllers,
         "images": images,
         "variants": reports,
     }
