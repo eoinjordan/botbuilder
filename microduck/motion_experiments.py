@@ -710,7 +710,7 @@ def write_files(report: dict, gaits: dict, firmware: dict) -> dict:
         unavailable["turn"] = ("the step difference does not steer reliably in simulation: the yaw rate does not follow the turn input at every floor friction, "
                                "and there is no hip yaw joint")
     manifest = {"version": 1,
-                "gait": {"params": "config/gait_motion.json", "forward": env["forward_range"], "turn": env["turn_range"]},
+                "gait": {"params": "config/gait.json", "forward": env["forward_range"], "turn": env["turn_range"]},
                 "motions": motions, "unavailable": unavailable,
                 "study": {"generated_by": "scripts/run_motion.py", "robot": "comb soles, default head",
                           "format": "CSV, header t_ms and the six joint names, joint angles in degrees at 50 Hz (microduck/gait.py)",
@@ -719,7 +719,7 @@ def write_files(report: dict, gaits: dict, firmware: dict) -> dict:
     (folder / "manifest.json").write_text(json.dumps(manifest, indent=1) + "\n", encoding="utf-8", newline="\n")
     doc = {"generated_by": "scripts/run_motion.py",
            "gait": "microduck/gait.py with the control page's inputs: left step scaled by forward minus turn, right by forward plus turn, each clipped to -1..1",
-           "params_file": "config/gait_motion.json", "params": g["walk"]["params"],
+           "params_file": "config/gait.json", "params": g["walk"]["params"],
            "stand_pose_deg": dict(zip(JOINTS, cal.stand_deg)), "max_speed_deg_s": default_speed,
            "forward": env["forward_range"], "turn": env["turn_range"],
            "note": "Inside forward and turn every tested point stayed up at floor friction 0.4, 0.6 and 0.9 with the legs apart and no command refused. "

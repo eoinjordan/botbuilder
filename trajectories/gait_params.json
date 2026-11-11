@@ -1,7 +1,7 @@
 {
  "generated_by": "scripts/run_motion.py",
  "gait": "microduck/gait.py with the control page's inputs: left step scaled by forward minus turn, right by forward plus turn, each clipped to -1..1",
- "params_file": "config/gait_motion.json",
+ "params_file": "config/gait.json",
  "params": {
   "period_s": 0.5,
   "roll_amplitude_deg": 7.78,

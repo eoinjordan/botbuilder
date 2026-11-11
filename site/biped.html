@@ -25,7 +25,7 @@
       <span class="release-tag">Bench prototype</span>
     </div>
     <p class="lead"><a href="./?locomotion=biped">Build this biped from the parts you have</a>: the configurator lists the files, parts and wiring for your controller.</p>
-    <p class="subnav">On this page: <a href="#assembly">Assembly</a><a href="#viewer">3D view</a><a href="#simulation">Simulation</a><a href="#real">Sim to real</a></p>
+    <p class="subnav">On this page: <a href="#assembly">Assembly</a><a href="#viewer">3D view</a><a href="#simulation">Simulation</a><a href="#motion">Walk and sit</a><a href="#real">Sim to real</a></p>
 
     <section id="what" class="two-col">
       <div>
@@ -82,11 +82,30 @@
           <h3>Torque needed to stand</h3>
           <div class="table-wrap"><table id="torque"><thead><tr><th>Joint</th><th>Mean (N m)</th><th>Peak (N m)</th><th>Limit (N m)</th><th>Peak / limit</th></tr></thead><tbody></tbody></table></div>
         </div>
-        <figure><img loading="lazy" src="./images/sim-gait.gif" width="400" height="300" alt="Recording of the simulated robot playing the open-loop gait"><figcaption>The default open-loop gait in simulation</figcaption></figure>
+        <figure><img loading="lazy" src="./images/sim-gait.gif" width="400" height="300" alt="Recording of the simulated robot playing the open-loop gait"><figcaption>The open-loop gait in simulation</figcaption></figure>
       </div>
       <h3>What the simulation suggests changing</h3>
       <p class="small-note">Suggestions only. None of this has been done.</p>
       <ul class="plain" id="suggestions"></ul>
+    </section>
+
+    <section id="motion">
+      <div class="section-heading"><span class="step">04b</span><h2>Walk, turn, jump, sit</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/motion.md" rel="noopener noreferrer">Motion study</a></div>
+      <p>The same robot in a fuller servo model (dead band, gear play, compliance, command delay, the 4 A supply), with the
+        gait's parameters found by a seeded search. On the comb soles it steps: 41.9 mm/s, a sole 3.86 mm clear of the
+        floor, peak torque 0.658 of the limit, upright in all 30 runs over floor friction 0.3 to 1.0 and mass 0.9 to 1.1 times.
+        With the flat soles first drawn the same search finds no gait that lifts a foot. The heading drifts about 1.31 deg/s
+        and a step difference between the legs does not steer it reliably, so the control page offers forward only.</p>
+      <p>Sitting is a squat to the hip pitch limit. With the pulses stopped the robot sinks on to the servo travel stops and stays
+        on its soles; enabled again it stands up. The jump is a hop of 0.06 s and stays locked: it runs four servos at
+        stall torque from a supply that cannot feed them and can strip gears or break parts. The control core refuses a command
+        that would swing one comb sole into the other.</p>
+      <div class="gallery">
+        <figure><img loading="lazy" src="./images/motion-comb-walk.gif" width="288" height="216" alt="Simulated robot stepping forward on comb soles"><figcaption>Comb soles: the tuned gait</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-flat-feet-walk.gif" width="288" height="216" alt="Simulated robot on flat soles, feet staying on the floor"><figcaption>Flat soles, for comparison</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-comb-sit.gif" width="288" height="216" alt="Simulated robot squatting, losing power and standing up"><figcaption>Comb soles: sit, power off, stand up</figcaption></figure>
+        <figure><img loading="lazy" src="./images/motion-comb-jump.gif" width="288" height="216" alt="Simulated hop at one fifth speed"><figcaption>The hop, one fifth speed</figcaption></figure>
+      </div>
     </section>
 
     <section id="real">
@@ -103,7 +122,7 @@
         <li><label><input type="checkbox" data-key="horns"> Centre each servo with the horns off, then fit the horns with the joints at neutral.</label></li>
         <li><label><input type="checkbox" data-key="calibrate"> Calibrate one joint at a time, robot held off the bench. Write the zeros and directions into the table.</label></li>
         <li><label><input type="checkbox" data-key="stand"> Play the stand trajectory with a hand on the robot and a hand on the switch.</label></li>
-        <li><label><input type="checkbox" data-key="gait"> Only then try the gait. Expect a shuffle at best.</label></li>
+        <li><label><input type="checkbox" data-key="gait"> Only then try the gait, robot held at first. Expect the heading to drift.</label></li>
       </ol>
       <div class="status warn">
         <h3>Power</h3>

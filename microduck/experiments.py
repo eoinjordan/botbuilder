@@ -98,8 +98,13 @@ def run(progress=print, record: bool = True) -> dict:
     progress("gait parameter sweep")
     rows = []
     keys = list(SWEEP)
+    refused = 0
     for values in itertools.product(*SWEEP.values()):
         p = dict(params, **dict(zip(keys, values)))
+        # a set whose commands the leg clearance rule would refuse is not a gait the robot can play
+        if any(not protocol.legs_clear(s.cal.clearance, q) for _, q in gait.gait(stand_deg, p, GAIT_SECONDS)):
+            refused += 1
+            continue
         r = _run_gait(s, p)
         playable = not gait.check_limits(gait.gait(stand_deg, p, 3.0 * p["period_s"] + p["lead_in_s"]), s.cal)
         rows.append({**{k: p[k] for k in keys}, "within_speed_limit": playable, "fell": r["fell"], "fell_at_s": r["fell_at_s"], "fell_how": r["fell_how"],
@@ -112,6 +117,7 @@ def run(progress=print, record: bool = True) -> dict:
     candidates = [r for r in upright if r["within_speed_limit"]]
     best = max(candidates, key=lambda r: r["distance_forward_m"]) if candidates else None
     out["gait_sweep"] = {"runs": len(rows), "fell": len(rows) - len(upright), "seconds_each": GAIT_SECONDS,
+                         "sets_tried": len(rows) + refused, "refused_by_the_leg_clearance_rule": refused,
                          "over_speed_limit": sum(1 for r in rows if not r["within_speed_limit"]),
                          "best": best, "rows": rows}
 
@@ -169,20 +175,30 @@ def verdict(out: dict) -> dict:
                     if ne["fell"] else "With the legs straight down it stays up, which the assembly test did not predict."),
     }
     if gd["fell"]:
-        text["gait"] = f"The default gait falls {gd['fell_how']} at {gd['fell_at_s']} s."
+        text["gait"] = f"The gait falls {gd['fell_how']} at {gd['fell_at_s']} s."
     else:
         lift = max(gd["feet"]["max_whole_sole_lift_mm"].values())
-        text["gait"] = (f"The default gait stays up for {gd['duration_s']} s and moves {round(gd['distance_forward_m'] * 1000)} mm forward "
+        text["gait"] = (f"The gait stays up for {gd['duration_s']} s and moves {round(gd['distance_forward_m'] * 1000)} mm forward "
                         f"({gd['speed_mm_s']} mm/s). "
                         + ("It is a shuffle, not a walk" if lift < 1.0 or gd["feet"]["both_loaded_fraction"] > 0.9 else
                            "The feet leave the floor in turn")
                         + f": the highest a whole sole comes off the floor is "
                         f"{lift} mm, and both feet stay loaded {round(gd['feet']['both_loaded_fraction'] * 100)} percent of the time.")
+    study = ROOT / "reports" / "motion.json"
+    if study.is_file() and not gd["fell"]:
+        with open(study, encoding="utf-8") as handle:
+            walk = json.load(handle)["presets"]["comb"]["walk"]
+        n, rb = walk["nominal"], walk["robustness"]
+        text["gait"] += (f" In the fuller servo model of the motion study the same gait walks at {n['speed_mm_s']} mm/s, makes "
+                         f"{round(100 * n['step_fraction'])} percent of its steps with a sole clear of the floor, peaks at "
+                         f"{n['peak_torque_fraction']} of the torque limit and stayed up in {rb['runs'] - rb['fell']} of {rb['runs']} perturbed runs.")
     if best:
         sweep = out["gait_sweep"]
-        text["best"] = (f"Best of {sweep['runs']} parameter sets that stay inside the speed limit as written: "
+        text["best"] = (f"Best of {sweep['runs']} parameter sets around it that stay inside the speed limit as written: "
                         f"{round(best['distance_forward_m'] * 1000)} mm in {sweep['seconds_each']} s ({best['speed_mm_s']} mm/s). "
-                        f"{sweep['fell']} sets fell; {sweep['over_speed_limit']} ask for more than the speed limit and are slowed by the controller.")
+                        f"{sweep['fell']} sets fell; {sweep['over_speed_limit']} ask for more than the speed limit and are slowed by the controller. "
+                        f"{sweep['refused_by_the_leg_clearance_rule']} of the {sweep['sets_tried']} sets tried ask for a pose the leg clearance rule "
+                        "refuses and were not run.")
     return text
 
 
@@ -198,10 +214,11 @@ def markdown(out: dict) -> str:
     md += ["", "## How the servos are modelled", "",
            "Each joint is a position actuator with the stall torque the maker gives at 4.8 V as its force limit and a joint",
            "damping of stall torque over no-load speed, which gives the published speed with no load and less under load.",
-           f"Commands pass through the same controller the firmware runs: soft limits, {out['max_speed_deg_s']} deg/s speed limit, watchdog,",
+           f"Commands pass through the same controller the firmware runs: soft limits, leg clearance rule, {out['max_speed_deg_s']} deg/s speed limit, watchdog,",
            f"{out['controller_tick_ms']} ms tick. Floor friction {out['floor_friction']} (assumed). Only the floor is a contact surface; parts of the robot",
-           "do not collide with each other in the simulation, the joint limits from the assembly test stand in for that.",
-           "No backlash, no cable-tie compliance, no flex in the printed parts.", "",
+           "do not collide with each other in the simulation; the soft limits and the leg clearance rule act on the commands, and the joints",
+           "themselves are free over the servo travel. No backlash, no cable-tie compliance, no flex in the printed parts: the motion study",
+           "(`docs/motion.md`) adds those.", "",
            "## Standing", "", v["stand"], "", _torque_table(st), "",
            f"Estimated supply current while standing: {st['supply_estimate']['mean_a']} A "
            "(stall current scaled by torque; stall currents are assumed, see docs/power.md).", "",
@@ -211,7 +228,9 @@ def markdown(out: dict) -> str:
             f"{round(out['relax_from_stand']['fell_at_s'] - out['relax_from_stand']['relaxed_at_s'], 2)} s later. "
             "So the watchdog's default action is hold, not relax."
             if out["relax_from_stand"]["fell"] else
-            "With the pulses stopped at the stand pose the robot stays up in the simulation, held by the assumed gear friction."), "",
+            "With the pulses stopped at the stand pose the robot sinks until hip pitch and knee reach the ends of the servo travel and stays "
+            "on its soles. That holds only if the real servos have their stops at 90 degrees and the stops take the weight; see docs/status.md. "
+            "The watchdog's default action stays hold."), "",
            "## Watchdog", "",
            f"Commands stopped at {out['watchdog_hold']['commands_stopped_at_s']} s in mid gait. Controller afterwards: "
            f"`{out['watchdog_hold']['status_line']}`. Fell: {out['watchdog_hold']['fell']}.", "",
@@ -258,12 +277,12 @@ def suggestions() -> list:
         return [
             f"Move the hips back under the body. The hip pitch axis is {hip_x:.0f} mm ahead of the torso origin, so with straight legs "
             f"the centre of mass is behind the heels and the robot only stands with the thighs swung {swing:.0f} degrees back.",
-            f"The comb soles put the centre of mass {one:.0f} mm inside either sole alone, so a foot can be lifted. The gait here is the "
-            "one written for the flat soles, with its parameters unchanged: it was not tuned for these feet. A gait study on this "
-            "geometry is the next step.",
+            f"The comb soles put the centre of mass {one:.0f} mm inside either sole alone, so a foot can be lifted. The gait in "
+            "config/gait.json was tuned for these soles by the motion study (docs/motion.md).",
             "Stiffness is not in the simulation. Standing on one foot bends the fingers, the shin plate and the servo mounts; the "
             "design README gives a hand calculation for the printed parts only.",
-            "Add hip yaw or accept that the robot cannot turn by joint motion alone: with roll and pitch only, heading changes come from slipping.",
+            "Add hip yaw or accept that the robot cannot steer by joint motion alone: in the motion study the heading drifts and a step "
+            "difference between the legs does not turn it reliably.",
             "Check the soles on the real floor. The contact model is the least certain part of the simulation.",
         ]
     return [

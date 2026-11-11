@@ -264,7 +264,7 @@ def test_walk_is_the_gait_of_gait_py(gaits, cal):
     assert [t for t, _ in ours] == [t for t, _ in theirs]
     for (_, a), (_, b) in zip(ours, theirs):
         assert a == pytest.approx(b, abs=0.051)
-    on_disk = gait.load_params(ROOT / "config" / "gait_motion.json")
+    on_disk = gait.load_params()
     assert {k: v for k, v in on_disk.items() if not k.startswith("_")} == params
 
 
@@ -281,7 +281,7 @@ def test_gait_stays_inside_the_rate_limit_over_the_envelope(gaits, manifest, cal
 def test_manifest_has_the_shape_the_control_page_reads(manifest, cal):
     assert manifest["version"] == 1
     g = manifest["gait"]
-    assert g["params"] == "config/gait_motion.json" and (ROOT / g["params"]).is_file()
+    assert g["params"] == "config/gait.json" and (ROOT / g["params"]).is_file()
     for key in ("forward", "turn"):
         low, high = g[key]
         assert -1.0 <= low <= 0.0 <= high <= 1.0
@@ -428,7 +428,7 @@ def test_documents_carry_the_safety_warnings(report):
 
 def test_readme_and_site_carry_the_reported_numbers(report):
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    page = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
+    page = (ROOT / "site" / "biped.html").read_text(encoding="utf-8")
     walk = report["presets"]["comb"]["walk"]["nominal"]
     for text in (readme, page):
         assert f"{walk['speed_mm_s']} mm/s" in text
@@ -436,3 +436,53 @@ def test_readme_and_site_carry_the_reported_numbers(report):
         assert "hop" in text and "strip gears" in text
     assert "ERR CLEAR" in readme
     assert f"{report['leg_clearance_rule']['total']['poses']} poses" in readme
+
+
+def test_the_control_page_loader_reads_this_manifest(manifest, cal, tmp_path):
+    """microduck/motions.py is what the control page and the robot's server
+    read: it takes the study's manifest, ignores the study key, and carries
+    the leg clearance table to the page."""
+    from microduck import motions
+    loaded = motions.load_manifest()
+    assert loaded["source"] == "trajectories/manifest.json"
+    assert "study" in manifest and "study" not in loaded
+    assert set(loaded["motions"]) == {"stand", "sit"}
+    assert loaded["motions"]["sit"]["source"] == "trajectories/sit.csv" and loaded["motions"]["sit"]["duration_ms"] > 1000
+    assert loaded["gait"]["forward"] == manifest["gait"]["forward"] and loaded["gait"]["turn"] == [0.0, 0.0]
+    assert loaded["gait"]["params"] == {k: v for k, v in gait.load_params().items() if not k.startswith("_")}
+    for name in ("jump", "back", "turn", "head"):
+        assert len(loaded["unavailable"][name]) > 10, name
+    assert "strip gears" in loaded["unavailable"]["jump"]
+    assert loaded["robot"]["clearance"] == cal.clearance
+    assert loaded["robot"]["allow_jump"] is False
+    exported = motions.export(tmp_path / "data")
+    assert (tmp_path / "data" / "trajectories" / "sit.csv").is_file()
+    assert json.loads((tmp_path / "data" / "motions.json").read_text(encoding="utf-8"))["robot"]["clearance"] == cal.clearance
+    assert exported["gait"]["params"]["period_s"] == gait.load_params()["period_s"]
+
+
+def test_one_gait_file_and_no_sweep_row_the_firmware_would_refuse(cal, sim_report, gaits):
+    params = {k: v for k, v in gait.load_params().items() if not k.startswith("_")}
+    assert params == gaits["comb"]["walk"]["params"]
+    assert not (ROOT / "config" / "gait_motion.json").exists()
+    assert sim_report["gait_default"]["params"]["period_s"] == params["period_s"]
+    sweep = sim_report["gait_sweep"]
+    assert sweep["runs"] + sweep["refused_by_the_leg_clearance_rule"] == sweep["sets_tried"] == 54
+    for row in sweep["rows"]:
+        p = dict(params, **{k: row[k] for k in ("period_s", "roll_amplitude_deg", "step_amplitude_deg", "lift_deg")})
+        assert all(protocol.legs_clear(cal.clearance, q) for _, q in gait.gait(cal.stand_deg, p, 12.0)), row
+    assert sim_report["relax_from_stand"]["fell"] is False
+    assert "servo travel" in (ROOT / "docs" / "simulation.md").read_text(encoding="utf-8")
+    assert cal.watchdog_action == "hold"
+
+
+def test_recipe_and_site_speak_from_the_study(report, sim_report):
+    walk = report["presets"]["comb"]["walk"]["nominal"]
+    assert f"{walk['speed_mm_s']} mm/s" in sim_report["verdict"]["gait"]
+    assert str(walk["peak_torque_fraction"]) in sim_report["verdict"]["gait"]
+    for path in list((ROOT / "site").glob("*.html")) + list((ROOT / "site").glob("*.js")) + [ROOT / "README.md", ROOT / "reports" / "sim.json"]:
+        assert "shuffl" not in path.read_text(encoding="utf-8").lower(), path.name
+    page = (ROOT / "site" / "biped.html").read_text(encoding="utf-8")
+    for picture in ("motion-comb-walk.gif", "motion-comb-sit.gif", "motion-flat-feet-walk.gif"):
+        assert picture in page and (ROOT / "docs" / "images" / picture).is_file()
+    assert 'href="#motion"' in page and 'id="motion"' in page

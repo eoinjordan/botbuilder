@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 """Search for the gait and the jump of the motion study and write
-config/gaits.json and config/gait_motion.json.
+config/gaits.json and config/gait.json.
 
     python scripts/optimise_motion.py [--only comb.walk ...] [--workers 7]
 
@@ -12,9 +12,9 @@ the free disk space before a long run; the search itself writes two small
 files.
 
 The walking gait is the one of microduck/gait.py, so the result is a set of
-its parameters. The comb robot's set is also written to
-config/gait_motion.json in the format of config/gait.json, which is the file
-trajectories/manifest.json names for the control page.
+its parameters. The comb robot's set is written to config/gait.json, the one
+gait file: the control page (through trajectories/manifest.json), the
+simulator and the trajectories all read it.
 """
 import argparse
 import json
@@ -25,7 +25,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from microduck import gait, gaitsearch, motiongen, variant  # noqa: E402
+from microduck import gaitsearch, motiongen, variant  # noqa: E402
 
 # what, preset, kind, seed, generations, population, wall-clock budget (s)
 PLAN = [
@@ -35,6 +35,7 @@ PLAN = [
     ("flat_feet.jump", "flat_feet", "jump", 1, 40, 14, 600.0),
 ]
 SPACE = {"gait": motiongen.GAIT_SPACE, "jump": motiongen.JUMP_SPACE}
+START = {"period_s": 1.0, "roll_amplitude_deg": 8.0, "step_amplitude_deg": 8.0, "lift_deg": 6.0, "step_phase_deg": 90.0}
 
 
 def main() -> int:
@@ -50,11 +51,10 @@ def main() -> int:
         if args.only and what not in args.only:
             continue
         print(f"{what}: seed {seed}, {generations} generations of {popsize}", flush=True)
-        # the gait search starts from the repository's default gait (config/gait.json)
+        # the gait search starts from the gait first written for the flat soles
         start = None
         if kind == "gait":
-            default = gait.load_params()
-            start = [(default[name] - lo) / (hi - lo) for name, lo, hi in motiongen.GAIT_SPACE]
+            start = [(START[name] - lo) / (hi - lo) for name, lo, hi in motiongen.GAIT_SPACE]
         result = gaitsearch.search(kind, preset, seed, generations, popsize, budget, args.workers, x0=start, sigma0=0.2 if start else 0.25,
                                    max_speed=jump_speed if kind == "jump" else None,
                                    progress=lambda g, f, best, sigma: print(f"  {g:3d} {f:8.3f} {best:8.3f} {sigma:.3f}", flush=True) if g % 5 == 0 else None)
@@ -78,9 +78,10 @@ def main() -> int:
                          "total_wall_clock_s": round(sum(s["wall_clock_s"] for s in searches), 1)}
         path.write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8", newline="\n")
         if what == "comb.walk":
-            tuned = {"_comment": "Open-loop gait parameters (microduck/gait.py) found by scripts/optimise_motion.py for the comb soles. "
-                                "Angles in degrees. Same format as config/gait.json.", **params}
-            (ROOT / "config" / "gait_motion.json").write_text(json.dumps(tuned, indent=2) + "\n", encoding="utf-8", newline="\n")
+            tuned = {"_comment": "Open-loop gait parameters (microduck/gait.py), found for the comb soles by scripts/optimise_motion.py "
+                                 "(docs/motion.md). Angles in degrees. The control page, the simulator and the trajectories all read this file.",
+                     **params}
+            (ROOT / "config" / "gait.json").write_text(json.dumps(tuned, indent=2) + "\n", encoding="utf-8", newline="\n")
         print(f"  score {result['score']:.3f} in {result['seconds']} s: {params}", flush=True)
     return 0
 

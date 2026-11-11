@@ -136,18 +136,22 @@ Full results: [docs/simulation.md](docs/simulation.md). Numbers:
   hip pitch servos need 0.09 N m of their 1.2 N m, the knees 0.04 of 0.30.
 - **Straight legs fall.** At the neutral pose it tips backward in 0.5 s, as
   the assembly test predicted.
-- **The old gait now steps.** The open-loop weight shift and step written
-  for the flat soles, parameters unchanged, keeps the robot up for the whole
-  run and moves it 236 mm in 11 s (21 mm/s). The feet leave the floor in
-  turn: a whole sole lifts up to 27 mm and both feet are loaded 21 percent
-  of the time. The left knee reaches 0.98 of its torque limit. The best of
-  54 parameter sets inside the speed limit manages 238 mm in 11 s; 13 of
-  the 54 fell. This gait was not tuned for the comb feet: the walking study
-  on its own branch is to be rerun on this geometry.
-- **Watchdog.** Commands cut in mid gait: the controller holds and the robot
-  stays up. Relaxed instead, it falls in 0.3 s.
+- **The gait steps.** The gait in `config/gait.json`, tuned for the comb
+  soles by the motion study below, keeps the robot up for the whole run and
+  moves it 537 mm in 11 s (48.8 mm/s) in this first, simpler servo model. The
+  feet leave the floor in turn: a whole sole lifts up to 6.18 mm and both
+  feet are loaded 41 percent of the time. Of 54 parameter sets around it,
+  18 ask for a pose the leg clearance rule refuses and were not run; the
+  best of the other 36 inside the speed limit manages 368 mm in 11 s and
+  0 fell.
+- **Watchdog and power off.** Commands cut in mid gait: the controller holds
+  and the robot stays up. With the pulses stopped at the stand pose it sinks
+  until hip pitch and knee reach the ends of the servo travel and stays on
+  its soles; that rests on the real servo stops being at 90 degrees and
+  taking the weight, which is one of the open points in the status notes,
+  so the watchdog default stays hold.
 
-![the default gait in simulation](docs/images/sim-gait.gif)
+![the gait in simulation](docs/images/sim-gait.gif)
 
 What the simulation suggests changing is listed at the end of
 [docs/simulation.md](docs/simulation.md). Those are suggestions; the parts
@@ -161,7 +165,7 @@ fuller servo (dead band, gear play, a series spring, the command delay, the
 `microduck/gait.py`.
 
 - **It steps.** On the comb soles the tuned gait
-  (`config/gait_motion.json`) walks at 41.9 mm/s with a sole
+  (`config/gait.json`) walks at 41.9 mm/s with a sole
   clear of the floor by 3.86 mm on 97 percent of its steps and a
   peak torque of 0.658 of the limit. It stayed up in all 30 runs over
   floor friction 0.3 to 1.0, mass 0.9 to 1.1 times and disturbed starts,

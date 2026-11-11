@@ -326,7 +326,7 @@ def markdown(out: dict, manifest: dict | None = None) -> str:
     md += REAL
     md += ["## Files", "",
            "- `config/motion.json`: every parameter of the model. `config/presets.json`: the comparison preset. `config/gaits.json`: the searched motions.",
-           "- `config/gait_motion.json`: the gait parameters for the robot as built, in the format of `config/gait.json`.",
+           "- `config/gait.json`: the gait parameters for the robot as built; the one gait file.",
            "- `robot/clearance.json`: the boxes of the leg clearance rule. `reports/clearance.json`: its validation.",
            "- `trajectories/manifest.json`, `trajectories/gait_params.json`: the motions and the tested envelope for the control page.",
            "- `reports/motion.json`: all numbers on this page and the rows behind them.", ""]

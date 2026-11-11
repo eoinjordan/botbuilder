@@ -1,7 +1,7 @@
 {
  "version": 1,
  "gait": {
-  "params": "config/gait_motion.json",
+  "params": "config/gait.json",
   "forward": [
    0.0,
    1.0

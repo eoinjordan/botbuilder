@@ -1,9 +1,9 @@
 {
-  "_comment": "Open-loop gait parameters (microduck/gait.py). Angles in degrees.",
-  "period_s": 1.0,
-  "roll_amplitude_deg": 8.0,
-  "step_amplitude_deg": 8.0,
-  "lift_deg": 6.0,
-  "step_phase_deg": 90.0,
+  "_comment": "Open-loop gait parameters (microduck/gait.py), found for the comb soles by scripts/optimise_motion.py (docs/motion.md). Angles in degrees. The control page, the simulator and the trajectories all read this file.",
+  "period_s": 0.5,
+  "roll_amplitude_deg": 7.78,
+  "step_amplitude_deg": 7.56,
+  "lift_deg": 2.78,
+  "step_phase_deg": 150.0,
   "lead_in_s": 1.0
 }

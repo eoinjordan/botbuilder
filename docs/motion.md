@@ -407,7 +407,7 @@ collision boxes of the two legs, and through the exact meshes of the two legs.
 | `trajectories/stand_up.csv` | 2.74 | 120.0 | 0 | 0 | 0 | 4.2 | 0.0 | yes |
 | `trajectories/restricted/jump.csv` | 3.38 | 430.0 | 0 | 0 | 0 | 4.2 | 0.0 | yes |
 
-`trajectories/manifest.json` is in the shape the control page reads: gait parameters `config/gait_motion.json`, forward [0.0, 1.0], turn [0.0, 0.0], motions stand, sit; unavailable: jump, back, turn. The jump is listed as unavailable with its reason and its file is kept in `trajectories/restricted/`.
+`trajectories/manifest.json` is in the shape the control page reads: gait parameters `config/gait.json`, forward [0.0, 1.0], turn [0.0, 0.0], motions stand, sit; unavailable: jump, back, turn. The jump is listed as unavailable with its reason and its file is kept in `trajectories/restricted/`.
 
 ## Search budget
 
@@ -441,7 +441,7 @@ and commands the clearance rule refuses.
 ## Files
 
 - `config/motion.json`: every parameter of the model. `config/presets.json`: the comparison preset. `config/gaits.json`: the searched motions.
-- `config/gait_motion.json`: the gait parameters for the robot as built, in the format of `config/gait.json`.
+- `config/gait.json`: the gait parameters for the robot as built; the one gait file.
 - `robot/clearance.json`: the boxes of the leg clearance rule. `reports/clearance.json`: its validation.
 - `trajectories/manifest.json`, `trajectories/gait_params.json`: the motions and the tested envelope for the control page.
 - `reports/motion.json`: all numbers on this page and the rows behind them.

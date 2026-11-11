@@ -56,7 +56,27 @@ been built.
 - Every assumed dimension: servo ears, shaft position, horn size, board and
   shield mass, print density and infill.
 - Holding torque, backlash, tie slip, flex of the 4 mm plates.
-- Floor friction and the contact model, on which the shuffle depends.
+- Floor friction and the contact model, on which the walk and its heading
+  drift depend.
+- The motion study (docs/motion.md): every result is from the model. Its dead
+  band, gear play, series spring, delays and stall currents are estimates;
+  the soles are rigid in it.
+- Power off: the model's relaxed robot sinks on to the servo travel stops
+  (hip pitch 90, knee -90 degrees) and stays on its soles. Where the real
+  stops are, and whether they take the weight, is not known. Between hip
+  pitch 65 and 75 degrees with level soles the top of each shin grazes the
+  torso in the meshes (up to 13 mm3); the model lets it pass. Switched off in
+  mid stride the legs meet; where the robot then rests is not predicted.
+- The leg clearance rule: checked against the meshes, not on the robot. Its
+  4 mm margin is about the size of the play at a sole, so it depends on the
+  horn zeros. It covers leg against leg only. Its cost on the microcontroller
+  (double arithmetic) has not been measured, and the sketch must be built
+  without fused multiply-add for the firmware to agree with the reference.
+- The hold command `H` and `ERR CLEAR`: in the reference, the host-compiled
+  core and the page; the sketch that carries them has not been built.
+- Turning: the step difference does not steer the model reliably. The jump:
+  a hop in the model; never to be tried before the robot has stood and
+  walked.
 - Servo direction and zero in the calibration table.
 - The sketch: not built, not flashed. `Serial` as the header UART, relax by
   zero duty and the `String` Bridge function are to be checked at first build.

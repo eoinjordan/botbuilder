@@ -32,6 +32,11 @@ class DuckSim:
         self.true_zero = [j.zero_deg + e for j, e in zip(self.cal.joints, mount_error_deg or [0.0] * 6)]
         self.torso = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, "torso")
         self.qadr = [self.model.jnt_qposadr[mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, j)] for j in JOINTS]
+        # The soft limits act on the commands (the controller clamps them). The
+        # joints themselves are free over the servo travel, as on the robot, so
+        # a relaxed joint runs to its travel stop and not to a soft limit.
+        for joint in JOINTS:
+            self.model.jnt_range[mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, joint)] = (-np.pi / 2.0, np.pi / 2.0)
         self.steps_per_tick = int(round(TICK_MS / 1000.0 / self.model.opt.timestep))
         self.limits = self.model.actuator_forcerange[:, 1].copy()
         self.kp = self.model.actuator_gainprm[:, 0].copy()
