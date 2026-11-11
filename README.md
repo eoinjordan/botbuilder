@@ -137,20 +137,18 @@ are not in this repository:
 
 See [docs/regenerate.md](docs/regenerate.md).
 
-## The printable parts and their licence
+## The printable parts and where their shape comes from
 
-The STLs are derived from 15 third-party Microduck meshes: the design's
-generator takes their convex outlines and extrudes them into plates. That
-pack came with no licence or author. Its part list matches the body tree of
-Pollen Robotics' Microduck simulation model, whose 3D files are under a
-Creative Commons BY-NC-SA licence according to the microduck_rl README. This
-has not been confirmed.
+The printable parts are flat plates with servo cradles, horn blanks and a
+board deck. The design's generator took the convex outline of each of 15
+Microduck meshes in one projection as the starting silhouette of a plate; no
+surface, joint or mechanism of those meshes is in the parts, and the result
+does not look like the original (see the pictures in
+[docs/assembly.md](docs/assembly.md)). The idea of a small duck-like biped is
+owed to the [Microduck by Pollen Robotics](https://github.com/pollen-robotics/microduck_rl).
 
-**Check the terms of the source meshes before making this repository
-public.** Until that is settled the derived STLs stay out of the repository
-and its history, and are read from the local design directory by
-`scripts/fetch_stls.py`. The pictures and the box approximations under
-`robot/` are made from those STLs; see [NOTICE](NOTICE).
+The STLs are not committed; `scripts/fetch_stls.py` reads them from the local
+design directory.
 
 ## Unverified
 
@@ -166,11 +164,10 @@ and its history, and are read from the local design directory by
 
 ## Publishing
 
-1. Settle the mesh licence question above.
-2. Create the repository `eoinjordan/microduck-braccio-unoq-sim` on GitHub and
+1. Create the repository `eoinjordan/microduck-braccio-unoq-sim` on GitHub and
    push `main`.
-3. In the repository settings, under Pages, set the source to GitHub Actions.
-4. Run the "Publish Site" workflow, or push a change under `site/`. The site
+2. In the repository settings, under Pages, set the source to GitHub Actions.
+3. Run the "Publish Site" workflow, or push a change under `site/`. The site
    appears at https://eoinjordan.github.io/microduck-braccio-unoq-sim/.
 
 ## Licence
