@@ -23,9 +23,10 @@ from scipy.spatial import ConvexHull
 ROOT = Path(__file__).resolve().parents[1]
 STL = ROOT / "stl" / "lego"
 CONFIG = Path(__file__).resolve().parent / "config"
-BUILDS = ("ev3-pixy2", "pi-zero-2w-51515")
+BUILDS = ("ev3-pixy2", "pi-zero-2w-51515", "hub-51515")
 TITLES = {"ev3-pixy2": "EV3 brick, two large motors, Pixy2",
-          "pi-zero-2w-51515": "Raspberry Pi Zero 2 W, Build HAT, two 51515 motors"}
+          "pi-zero-2w-51515": "Raspberry Pi Zero 2 W, Build HAT, two 51515 motors",
+          "hub-51515": "51515 hub, two medium angular motors"}
 
 CRANK_R = 12.0                      # crank radius
 AXLES_X = (-16.0, 0.0, 16.0)        # rear, centre (idler), front
@@ -239,6 +240,7 @@ def motor_item(name: str, spec: dict, direction: str, y_centre: float, axle_x: f
 DEFAULTS = {
     "ev3-pixy2": {"motor_direction": "rear", "camera": "pantilt", "brick_x": 0.0, "battery": "six AA"},
     "pi-zero-2w-51515": {"motor_direction": "rear", "camera": "camera_module_2", "ballast_g": 0.0, "ballast_x": 0.0},
+    "hub-51515": {"motor_direction": "rear", "camera": "none", "hub_x": 0.0},
 }
 
 
@@ -323,6 +325,17 @@ def build_walker(build: str, **overrides) -> Walker:
                                  (x0, -p[1] / 2, SHELF_TOP + 55 - p[2] / 2), (x0 + p[0], p[1] / 2, SHELF_TOP + 55 + p[2] / 2),
                                  "maker, brackets assumed"))
             notes.append("Pixy2 on its LEGO-edition brackets 8 mm in front of the perforated face.")
+    elif build == "hub-51515":
+        h = comp["hub51515"]
+        size = h["size_mm"]["value"]
+        x = options["hub_x"]
+        items.append(_bought("51515 hub", "controller", h["mass_bare_g"]["value"] + h["battery_g"]["value"],
+                             (x - size[0] / 2, -size[1] / 2, DECK_TOP), (x + size[0] / 2, size[1] / 2, DECK_TOP + size[2]),
+                             "maker without battery; battery assumed"))
+        notes.append(f"Hub flat on the deck, long side fore and aft, between the two end stops and under two straps, "
+                     f"centred at x = {x:g}. Its pin holes are not published, so it is strapped.")
+        notes.append("No camera: the Pixy2 cannot plug into this hub's ports. The head is the plate with a row of "
+                     "seven pin holes for a self-contained camera or a LEGO sensor.")
     else:
         zero = comp["pi_zero_2w"]
         hat = comp["build_hat"]

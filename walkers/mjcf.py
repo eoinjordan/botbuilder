@@ -108,7 +108,7 @@ def _viewer(walker: Walker, spec: dict) -> dict:
     printed, boxes = [], []
     for item in walker.items:
         if item.part:
-            printed.append({"name": item.name, "file": f"{walker.build}/{item.part}.stl",
+            printed.append({"name": item.name, "file": f"lego/{walker.build}/{item.part}.stl",
                             "matrix": [round(float(v), 4) for v in item.matrix.flatten()],
                             "motion": list(item.motion) if item.motion else None})
         elif item.solid is not None and item.kind == "motor":
@@ -197,8 +197,10 @@ def generate(build: str, visual_meshes: bool = True, **options) -> tuple:
     # What can hit the floor if the robot tips: the deck, the panels, the head.
     x.append('      <geom name="deck_hit" type="box" pos="0.019 0 0.0165" size="0.084 0.058 0.0285" rgba="0 0 0 0"/>')
     x.append(f'      <geom name="head_hit" type="box" pos="{(model.HEAD_X + 2) * MM} 0 {(model.SHELF_TOP + 35) * MM}" size="0.03 0.028 0.035" rgba="0 0 0 0"/>')
-    if build == "ev3-pixy2":
-        b = np.array(walker.item("EV3 brick").placed().bounding_box()) * MM
+    for name in ("EV3 brick", "51515 hub"):
+        if not any(i.name == name for i in walker.items):
+            continue
+        b = np.array(walker.item(name).placed().bounding_box()) * MM
         c, h = (b[:3] + b[3:]) / 2, (b[3:] - b[:3]) / 2
         x.append(f'      <geom name="brick_hit" type="box" pos="{c[0]:.4f} {c[1]:.4f} {c[2]:.4f}" size="{h[0]:.4f} {h[1]:.4f} {h[2]:.4f}" rgba="0 0 0 0"/>')
     rotor = spec["rotor_inertia_kgm2"]["value"]

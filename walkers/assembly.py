@@ -27,7 +27,7 @@ PHASE_STEP = 5
 COLORS = {"print": (236, 200, 120), "motor": (150, 156, 164), "controller": (70, 120, 170), "camera": (60, 150, 110),
           "technic": (60, 60, 66), "ballast": (120, 90, 60)}
 # Pairs that touch by design: a part resting on or pinned to its seat.
-SEATED = {("chassis", "head"), ("chassis", "EV3 brick"), ("chassis", "Pi Zero 2 W"), ("head", "pan-tilt kit"),
+SEATED = {("chassis", "head"), ("chassis", "EV3 brick"), ("chassis", "51515 hub"), ("chassis", "Pi Zero 2 W"), ("head", "pan-tilt kit"),
           ("head", "Pixy2"), ("head", "Camera Module 2"), ("pan-tilt kit", "Pixy2")}
 
 
@@ -244,13 +244,14 @@ def _range(rows: list, threshold: float):
 def placement(walker: Walker, polygons: list) -> dict:
     """Where the brick (EV3) or a battery (Pi) must sit."""
     xs = np.arange(-80.0, 80.5, 1.0)
-    if walker.build == "ev3-pixy2":
-        brick = walker.item("EV3 brick")
-        rows = sweep_mass(walker, polygons, "EV3 brick", brick.mass_g, xs)
+    name = {"ev3-pixy2": "EV3 brick", "hub-51515": "51515 hub"}.get(walker.build)
+    if name:
+        brick = walker.item(name)
+        rows = sweep_mass(walker, polygons, name, brick.mass_g, xs)
         best = max(rows, key=lambda r: r[1])
         plateau = [x for x, m in rows if m >= best[1] - 0.05]
-        on_deck = [-10.0, 10.0]
-        return {"what": "EV3 brick centre, fore and aft, on the deck",
+        on_deck = [-10.0, 10.0] if name == "EV3 brick" else [0.0, 0.0]     # the hub sits between end stops
+        return {"what": f"{name} centre, fore and aft, on the deck", "item": name,
                 "mass_g": round(brick.mass_g, 1),
                 "x_range_balanced_mm": _range(rows, 0.0),
                 "x_range_with_5_mm_margin_mm": _range(rows, 5.0),
@@ -297,7 +298,7 @@ def pictures(walker: Walker, polygons: list, window: dict, place: dict) -> dict:
         render.render(_items(walker), view, size).save(IMAGES / name, optimize=True)
         out[view] = f"images/{name}"
     name = f"{tag}-drive.png"
-    render.render(_items(walker, hide=("chassis", "head", "EV3 brick", "pan-tilt kit", "Pixy2", "Pi Zero 2 W",
+    render.render(_items(walker, hide=("chassis", "head", "EV3 brick", "51515 hub", "pan-tilt kit", "Pixy2", "Pi Zero 2 W",
                                        "Build HAT", "Camera Module 2")), "iso_back", (760, 520)).save(IMAGES / name, optimize=True)
     out["drive"] = f"images/{name}"
 
@@ -388,7 +389,7 @@ def analyse(build: str, with_pictures: bool = True) -> dict:
             w = build_walker(build, battery=battery)
             report["battery_sensitivity"][battery] = {"mass_g": round(w.mass_g(), 1),
                                                       "min_margin_mm": stability(w)["min_margin_mm"]}
-    else:
+    elif build == "pi-zero-2w-51515":
         pack = walker.components["build_hat"]["battery_pack_g"]["value"]
         w = build_walker(build, ballast_g=pack, ballast_x=0.0)
         report["with_battery_pack"] = {"mass_g": round(w.mass_g(), 1), "min_margin_mm": stability(w)["min_margin_mm"],
