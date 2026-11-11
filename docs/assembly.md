@@ -14,9 +14,10 @@ Status: geometry only. Nothing here has been printed, assembled or powered.
 - **ok**: All six horn screw holes are on their shaft axes and a screwdriver has a free path to each at the neutral pose.
 - **ok**: The AI-Thinker ESP32-CAM stands in its mount with 0.5 mm each side and 0.3 mm of play under the snap lips, on the corner seats, overlapping the print by 0.0 mm3. The mount is 1.06 mm from the UNO Q and 1.34 mm from the space kept for the shield and its plugs.
 - **ok**: The lens looks along +x, the way the toes point, 10.0 degrees below level, 223.42 mm above the floor at the stand pose. A cone of 40.0 degrees half angle in front of it is clear at the neutral and stand poses. A leg comes into the cone with left_hip_roll between 86.0 and 89.0 degrees; left_hip_pitch between -90.0 and -21.0 degrees; right_hip_roll between -90.0 and -87.0 degrees; right_hip_pitch between -90.0 and -21.0 degrees (one joint moved, the others at the stand or neutral pose).
-- **balance**: Legs straight down: the centre of mass is 6.58 mm outside the support polygon of the two feet (behind the heels); it falls backward.
-- **ok**: With the thighs swung back 42.0 degrees and the knees turned the other way to keep the soles level, the centre of mass is 37.42 mm inside the polygon. This is the stand pose.
-- **balance**: On one foot the centre of mass is 61.92 mm outside the foot at the stand pose and still 37.91 mm outside with the stance hip rolled up to 30 degrees: there is no ankle, so hip roll tilts the body instead of shifting it. It only comes over the foot with the stance hip rolled 77.0 degrees, which lays the body on its side.
+- **ok**: 23 pin holes and 40 studs compatible with LEGO Technic and System elements: every hole is open for a 4.8 mm pin over 7.8 mm with wall all round, none is nearer than 12.29 mm to a joint axis or 2.71 mm to another part at the neutral pose, and none is in the camera's clear cone. Whether a real pin or brick holds in a printed one is not known.
+- **balance**: Legs straight down: the centre of mass is 6.6 mm outside the support polygon of the two feet (behind the heels); it falls backward.
+- **ok**: With the thighs swung back 42.0 degrees and the knees turned the other way to keep the soles level, the centre of mass is 37.33 mm inside the polygon. This is the stand pose.
+- **balance**: On one foot the centre of mass is 61.92 mm outside the foot at the stand pose and still 37.83 mm outside with the stance hip rolled up to 30 degrees: there is no ankle, so hip roll tilts the body instead of shifting it. It only comes over the foot with the stance hip rolled 77.0 degrees, which lays the body on its side.
 
 ![assembled robot](images/assembly-iso.png)
 
@@ -243,26 +244,62 @@ The other camera presets, each with its own torso file, checked in short form (s
 
 | preset | board (mm) | each side (mm) | under the lips (mm) | up to the catch (mm) | on the seats | overlap with print (mm3) | mount to UNO Q (mm) | cone clear at neutral and stand | total mass (g) | centre of mass at neutral (mm) | stand margin (mm) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| esp_eye | [21.0, 41.0, 1.6] | 0.5 | 0.3 | 1.04 | True | 0.0 | 1.06 | True | 497.7 | [54.01, 0.0, -31.42] | 37.41 |
-| esp32_s3_eye | [30.0, 60.0, 1.6] | 0.5 | 0.3 | 1.04 | True | 0.0 | 1.06 | True | 515.4 | [53.95, -0.01, -28.02] | 37.26 |
+| esp_eye | [21.0, 41.0, 1.6] | 0.5 | 0.3 | 1.04 | True | 0.0 | 1.06 | True | 499.8 | [53.98, 0.0, -31.6] | 37.32 |
+| esp32_s3_eye | [30.0, 60.0, 1.6] | 0.5 | 0.3 | 1.04 | True | 0.0 | 1.06 | True | 517.5 | [53.93, -0.01, -28.21] | 37.35 |
 
 The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are
 and what is assumed about them is in `config/hardware.json` and the design README.
 
+## Pin holes and studs
+
+Attachment features compatible with LEGO Technic and System elements. LEGO, Technic, Mindstorms and SPIKE are
+trademarks of the LEGO Group, which does not sponsor or endorse this. Geometry only: no printed hole or stud has been
+tried with a real element.
+
+Nominal: pitch 8.0 mm, pin hole 4.8 mm with a counterbore of 6.2 x 0.8 mm at each end, hole length 7.8 mm, stud 4.8 x 1.7 mm. Print allowance: holes 0.2 mm larger, studs 0.05 mm smaller.
+
+| part | pin holes | open for a nominal pin | wall around the hole | hole to nearest joint axis (mm) | hole pad to nearest other part (mm) | studs | present | pointing up at neutral | stud to nearest other part (mm) |
+|---|---|---|---|---|---|---|---|---|---|
+| left_shin | 5 | True | True | 26.0 to 58.0 | 13.0 to 30.0 | 8 | True | True | 30.0 to 30.0 |
+| left_thigh | 4 | True | True | 24.0 to 40.0 | 7.35 to 16.23 | 0 | True | True | - |
+| right_shin | 5 | True | True | 26.0 to 58.0 | 13.0 to 30.0 | 8 | True | True | 30.0 to 30.0 |
+| right_thigh | 4 | True | True | 24.0 to 40.0 | 7.35 to 16.23 | 0 | True | True | - |
+| torso | 5 | True | True | 42.76 to 58.28 | 2.71 to 2.71 | 24 | True | True | 10.98 to 27.02 |
+
+Features inside the camera's clear cone at the neutral pose: 0.
+The joint sweeps above were run with the pads and studs in place.
+
+### How much decoration the stand pose carries
+
+Extra mass placed at one spot, robot at the stand pose on two feet. Static balance only: the mass at which the centre of
+mass reaches the edge of the support polygon. Servo torque, walking and the stiffness of the plates are not in it, and
+the gait was not rerun with added mass.
+
+| where | margin with 50 g (mm) | with 100 g (mm) | with 200 g (mm) | mass that uses up the margin (g) |
+|---|---|---|---|---|
+| at the camera, on the mount | 36.26 | 35.09 | 33.24 | more than 3000 |
+| on the rear pin holes of the deck | 29.77 | 23.47 | 13.55 | 406.0 |
+| on the deck studs, shared between both sides | 31.31 | 26.29 | 18.38 | 641.0 |
+| on the thigh pin holes, shared between both thighs | 35.67 | 33.99 | 31.36 | more than 3000 |
+| on the shin pin holes, shared between both shins | 36.53 | 35.87 | 34.82 | more than 3000 |
+| on the foot studs, shared between both feet | 36.12 | 34.83 | 32.79 | more than 3000 |
+
+The margin with nothing added is 37.33 mm.
+
 ## Mass and centre of mass
 
-Total 501.9 g: servos 302.0 g, printed parts 134.9 g (PLA at 1.24 g/cm3, 60 percent of solid; 591.8 g in total if printed solid), board 30.0 g and shield 25.0 g (both assumed), camera 10.0 g.
-Centre of mass at the neutral pose: [53.92, -0.0, -30.89] mm in the torso frame.
+Total 504.0 g: servos 302.0 g, printed parts 137.0 g (PLA at 1.24 g/cm3, 60 percent of solid; 595.3 g in total if printed solid), board 30.0 g and shield 25.0 g (both assumed), camera 10.0 g.
+Centre of mass at the neutral pose: [53.9, -0.0, -31.07] mm in the torso frame.
 
 | link | mass (g) | centre of mass in the link frame (mm) |
 |---|---|---|
-| torso | 238.2 | [15.62, -0.01, -4.61] |
+| torso | 239.0 | [15.47, -0.01, -4.57] |
 | left_hip | 74.1 | [37.58, 34.64, -0.05] |
-| left_thigh | 36.5 | [0.15, -10.27, -66.5] |
-| left_shin | 21.2 | [5.51, -2.0, -61.91] |
+| left_thigh | 36.8 | [0.15, -10.25, -66.33] |
+| left_shin | 21.6 | [5.61, -2.1, -61.79] |
 | right_hip | 74.1 | [37.58, -34.64, -0.05] |
-| right_thigh | 36.5 | [-0.15, 10.27, -66.5] |
-| right_shin | 21.2 | [5.51, 2.0, -61.91] |
+| right_thigh | 36.8 | [-0.15, 10.25, -66.33] |
+| right_shin | 21.6 | [5.61, 2.1, -61.79] |
 
 ## Balance
 
@@ -270,10 +307,10 @@ Centre of mass at the neutral pose: [53.92, -0.0, -30.89] mm in the torso frame.
 
 | case | margin (mm) | inside the support polygon |
 |---|---|---|
-| two feet, legs straight down | -6.58 | False |
-| two feet, stand pose (thighs back 42.0 deg) | 37.42 | True |
+| two feet, legs straight down | -6.6 | False |
+| two feet, stand pose (thighs back 42.0 deg) | 37.33 | True |
 | one foot, stand pose | -61.92 | False |
-| one foot, best with stance hip roll within 30 deg | -37.91 | False |
+| one foot, best with stance hip roll within 30 deg | -37.83 | False |
 
 Margin is the distance from the ground projection of the centre of mass to the nearest edge of the support polygon;
 negative means outside. The stand pose keeps the shins vertical and the soles level: hip pitch = t, knee = -t.

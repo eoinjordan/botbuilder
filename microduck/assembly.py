@@ -396,6 +396,125 @@ def camera_preset_summary(robot: Robot) -> dict:
     return out
 
 
+# --- attachment features compatible with LEGO elements -----------------------
+
+def _segment(a, b, radius, inner=0.0) -> Manifold:
+    a, b = np.asarray(a, float), np.asarray(b, float)
+    length = float(np.linalg.norm(b - a))
+    rod = cylinder_z(radius, 0.0, length)
+    if inner:
+        rod -= cylinder_z(inner, -1.0, length + 1.0)
+    return apply(rod, _axis_frame(a, b - a))
+
+
+def lego_checks(robot: Robot, design: dict) -> dict:
+    """Pin holes and studs the generator added: is each hole open for a pin of
+    nominal diameter over a full beam thickness, is there wall around it, does
+    each stud exist, and how far each is from the nearest joint axis and from
+    any other part at the neutral pose."""
+    spec = design["lego_compatible"]
+    frames = robot.fk()
+    placed = robot.placed()
+    by_part = {s.part: (link, s) for link, s in robot.solids() if s.kind == "print"}
+    axes = [(link.joint, frames[name][:3, 3], frames[name][:3, :3] @ link.axis) for name, link in robot.links.items() if link.joint]
+
+    def to_world(part, p):
+        link, solid = by_part[part]
+        return model.point(frames[link] @ solid.part_to_link, p), link, solid
+
+    def axis_distance(p):
+        return min(float(np.linalg.norm(np.cross(p - o, d))) for _, o, d in axes)
+
+    def neighbour_gap(shape, own):
+        gaps = [(shape.min_gap(m, 30.0), s.name) for _, s, m in placed if s.name != own and not m.is_empty()]
+        gap, name = min(gaps)
+        return _r(gap), name
+
+    holes, studs = [], []
+    pin_r = spec["pin_hole"] / 2
+    bore_r = (spec["pin_counterbore"][0] + spec["hole_extra"]) / 2
+    for h in spec["holes"]:
+        a, link, solid = to_world(h["part"], h["start"])
+        b = to_world(h["part"], h["end"])[0]
+        printed = apply(solid.manifold, frames[link])
+        inset = spec["pin_counterbore"][1] * (b - a) / np.linalg.norm(b - a)
+        wall = _segment(a + inset, b - inset, bore_r + 0.8, bore_r + 0.1)
+        gap, near = neighbour_gap(_segment(a, b, bore_r + 0.8), solid.name)
+        holes.append({"part": h["part"], "length_mm": _r(np.linalg.norm(b - a)),
+                      "open_for_a_nominal_pin": bool((_segment(a, b, pin_r) ^ printed).volume() < 1e-3),
+                      "wall_fill_fraction": _r((wall ^ printed).volume() / wall.volume(), 3),
+                      "from_nearest_joint_axis_mm": _r(axis_distance(0.5 * (a + b))),
+                      "nearest_other_part": near, "gap_to_it_mm": gap})
+    stud_r, stud_h = (spec["stud"][0] - spec["stud_under"]) / 2, spec["stud"][1]
+    for s in spec["studs"]:
+        base, link, solid = to_world(s["part"], s["base"])
+        tip = to_world(s["part"], np.asarray(s["base"]) + stud_h * np.asarray(s["axis"]))[0]
+        printed = apply(solid.manifold, frames[link])
+        body = _segment(base, tip, stud_r - 0.05)
+        gap, near = neighbour_gap(_segment(base, tip, stud_r), solid.name)
+        studs.append({"part": s["part"], "present": bool((body ^ printed).volume() > 0.98 * body.volume()),
+                      "points_up_at_neutral": bool((tip - base)[2] > 0.99 * stud_h),
+                      "from_nearest_joint_axis_mm": _r(axis_distance(base)),
+                      "nearest_other_part": near, "gap_to_it_mm": gap})
+    cone = model.view_cone(robot.camera["pose"], robot.camera["cone_half_angle_deg"])
+    in_cone = 0
+    for item, key in [(h, "start") for h in spec["holes"]] + [(s, "base") for s in spec["studs"]]:
+        p = to_world(item["part"], item[key])[0]
+        in_cone += int((apply(Manifold.sphere(3.0, 12), trans(*p)) ^ cone).volume() > 0)
+    return {"nominal_mm": {k: spec[k] for k in ("pitch", "pin_hole", "pin_counterbore", "beam", "stud")},
+            "print_allowance_mm": {"hole_extra": spec["hole_extra"], "stud_under": spec["stud_under"]},
+            "holes": holes, "studs": studs, "features_in_the_camera_cone_at_neutral": in_cone,
+            "counts": {part: {"holes": sum(h["part"] == part for h in holes), "studs": sum(s["part"] == part for s in studs)}
+                       for part in sorted({x["part"] for x in holes + studs})}}
+
+
+def decoration_budget(robot: Robot, stand_q: dict) -> list:
+    """How much extra mass the stand pose tolerates at a few places before the
+    centre of mass reaches the edge of the support polygon. Static balance on
+    two feet only: no servo torque, no motion."""
+    frames = robot.fk(stand_q)
+    base = support(robot, stand_q, ("left", "right"))
+    ground = np.linalg.inv(frames["left_shin"])
+    hull = ConvexHull(np.asarray(base["polygon_mm"]))
+    total, com = centre_of_mass(robot, stand_q)
+    com_g = model.point(ground, com)
+    pose = robot.camera["pose"]
+    places = [("at the camera, on the mount", [("torso", pose["lens"])]),
+              ("on the rear pin holes of the deck", [("torso", [-41.0, 0.0, 12.0])]),
+              ("on the deck studs, shared between both sides", [("torso", [-24.0, 48.0, 10.0]), ("torso", [-24.0, -48.0, 10.0])]),
+              ("on the thigh pin holes, shared between both thighs", None),
+              ("on the shin pin holes, shared between both shins", None),
+              ("on the foot studs, shared between both feet", None)]
+    by_part = {s.part: (link, s) for link, s in robot.solids() if s.kind == "print"}
+
+    def part_point(part, p):
+        link, solid = by_part[part]
+        return model.point(frames[link] @ solid.part_to_link, p)
+
+    places[3] = (places[3][0], [(None, part_point(f"{s}_thigh", [36.0, 0.0, -4.0])) for s in ("left", "right")])
+    places[4] = (places[4][0], [(None, part_point(f"{s}_shin", [0.0, 0.0, 40.0])) for s in ("left", "right")])
+    places[5] = (places[5][0], [(None, part_point(f"{s}_shin", [26.0, 0.0, 12.0])) for s in ("left", "right")])
+    out = []
+    for label, points in places:
+        where = np.mean([model.point(ground, p if link is None else model.point(frames[link], p)) for link, p in points], axis=0)
+
+        def margin(grams):
+            c = (total * com_g + grams * where) / (total + grams)
+            return float(-np.max(hull.equations[:, :2] @ c[:2] + hull.equations[:, 2]))
+
+        limit = None
+        if margin(3000.0) <= 0:
+            lo, hi = 0.0, 3000.0
+            while hi - lo > 0.5:
+                mid = 0.5 * (lo + hi)
+                lo, hi = (mid, hi) if margin(mid) > 0 else (lo, mid)
+            limit = lo
+        out.append({"where": label, "point_in_ground_frame_mm": _r(where), "margin_with_50_g_mm": _r(margin(50.0)),
+                    "margin_with_100_g_mm": _r(margin(100.0)), "margin_with_200_g_mm": _r(margin(200.0)),
+                    "mass_that_uses_up_the_margin_g": None if limit is None else _r(limit, 0)})
+    return out
+
+
 # --- mass and balance -------------------------------------------------------
 
 def solid_mass(solid) -> tuple:
@@ -620,4 +739,7 @@ def analyse(robot: Robot, progress=lambda text: None) -> dict:
     report["balance"] = balance(robot, limits)
     progress("camera mount")
     report["camera"] = camera_checks(robot, limits, report["balance"]["stand_pose"]["q_deg"])
+    progress("pin holes and studs")
+    report["lego_compatible"] = lego_checks(robot, model.design_parameters())
+    report["decoration_budget"] = decoration_budget(robot, report["balance"]["stand_pose"]["q_deg"])
     return report

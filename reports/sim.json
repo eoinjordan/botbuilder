@@ -35,15 +35,15 @@
     "saturated_fraction_of_time": 0.0
    },
    "left_hip_pitch": {
-    "mean_nm": 0.0875,
-    "peak_nm": 0.0875,
+    "mean_nm": 0.088,
+    "peak_nm": 0.088,
     "limit_nm": 1.1964,
-    "peak_fraction_of_limit": 0.073,
+    "peak_fraction_of_limit": 0.074,
     "saturated_fraction_of_time": 0.0
    },
    "left_knee": {
-    "mean_nm": 0.0214,
-    "peak_nm": 0.0214,
+    "mean_nm": 0.0212,
+    "peak_nm": 0.0212,
     "limit_nm": 0.304,
     "peak_fraction_of_limit": 0.07,
     "saturated_fraction_of_time": 0.0
@@ -56,15 +56,15 @@
     "saturated_fraction_of_time": 0.0
    },
    "right_hip_pitch": {
-    "mean_nm": 0.0875,
-    "peak_nm": 0.0875,
+    "mean_nm": 0.0879,
+    "peak_nm": 0.088,
     "limit_nm": 1.1964,
-    "peak_fraction_of_limit": 0.073,
+    "peak_fraction_of_limit": 0.074,
     "saturated_fraction_of_time": 0.0
    },
    "right_knee": {
-    "mean_nm": 0.0214,
-    "peak_nm": 0.0214,
+    "mean_nm": 0.0212,
+    "peak_nm": 0.0212,
     "limit_nm": 0.304,
     "peak_fraction_of_limit": 0.07,
     "saturated_fraction_of_time": 0.0
@@ -81,18 +81,18 @@
   "fell_at_s": 0.42,
   "fell_how": "backward",
   "upright_s": 0.42,
-  "distance_forward_m": -0.0999,
+  "distance_forward_m": -0.1002,
   "drift_left_m": 0.0,
-  "max_tilt_deg_while_upright": 38.65,
+  "max_tilt_deg_while_upright": 38.8,
   "final_tilt_deg": 59.82,
   "clamped_commands": 0,
   "feet": {
-   "both_loaded_fraction": 1.0,
+   "both_loaded_fraction": 0.952,
    "single_support_fraction": 0.0,
-   "airborne_fraction": 0.0,
+   "airborne_fraction": 0.048,
    "max_whole_sole_lift_mm": {
-    "left": 0.0,
-    "right": 0.0
+    "left": 0.01,
+    "right": 0.01
    }
   },
   "torque": {
@@ -104,17 +104,17 @@
     "saturated_fraction_of_time": 0.0
    },
    "left_hip_pitch": {
-    "mean_nm": 0.0721,
-    "peak_nm": 0.0826,
+    "mean_nm": 0.0724,
+    "peak_nm": 0.0831,
     "limit_nm": 1.1964,
     "peak_fraction_of_limit": 0.069,
     "saturated_fraction_of_time": 0.0
    },
    "left_knee": {
-    "mean_nm": 0.0715,
-    "peak_nm": 0.0854,
+    "mean_nm": 0.0718,
+    "peak_nm": 0.0859,
     "limit_nm": 0.304,
-    "peak_fraction_of_limit": 0.281,
+    "peak_fraction_of_limit": 0.283,
     "saturated_fraction_of_time": 0.0
    },
    "right_hip_roll": {
@@ -125,17 +125,17 @@
     "saturated_fraction_of_time": 0.0
    },
    "right_hip_pitch": {
-    "mean_nm": 0.072,
-    "peak_nm": 0.0825,
+    "mean_nm": 0.0724,
+    "peak_nm": 0.083,
     "limit_nm": 1.1964,
     "peak_fraction_of_limit": 0.069,
     "saturated_fraction_of_time": 0.0
    },
    "right_knee": {
-    "mean_nm": 0.0715,
-    "peak_nm": 0.0854,
+    "mean_nm": 0.0718,
+    "peak_nm": 0.086,
     "limit_nm": 0.304,
-    "peak_fraction_of_limit": 0.281,
+    "peak_fraction_of_limit": 0.283,
     "saturated_fraction_of_time": 0.0
    }
   }
@@ -161,10 +161,10 @@
   "fell_at_s": null,
   "fell_how": null,
   "upright_s": 12.0,
-  "distance_forward_m": 0.0456,
-  "drift_left_m": -0.0145,
-  "max_tilt_deg_while_upright": 5.75,
-  "final_tilt_deg": 5.18,
+  "distance_forward_m": 0.0453,
+  "drift_left_m": -0.0144,
+  "max_tilt_deg_while_upright": 5.7,
+  "final_tilt_deg": 5.19,
   "clamped_commands": 0,
   "feet": {
    "both_loaded_fraction": 0.993,
@@ -177,43 +177,43 @@
   },
   "torque": {
    "left_hip_roll": {
-    "mean_nm": 0.084,
-    "peak_nm": 0.1692,
-    "limit_nm": 1.1964,
-    "peak_fraction_of_limit": 0.141,
-    "saturated_fraction_of_time": 0.0
-   },
-   "left_hip_pitch": {
-    "mean_nm": 0.1393,
-    "peak_nm": 0.3329,
-    "limit_nm": 1.1964,
-    "peak_fraction_of_limit": 0.278,
-    "saturated_fraction_of_time": 0.0
-   },
-   "left_knee": {
-    "mean_nm": 0.0527,
-    "peak_nm": 0.1073,
-    "limit_nm": 0.304,
-    "peak_fraction_of_limit": 0.353,
-    "saturated_fraction_of_time": 0.0
-   },
-   "right_hip_roll": {
-    "mean_nm": 0.0858,
-    "peak_nm": 0.1701,
+    "mean_nm": 0.0845,
+    "peak_nm": 0.1704,
     "limit_nm": 1.1964,
     "peak_fraction_of_limit": 0.142,
     "saturated_fraction_of_time": 0.0
    },
+   "left_hip_pitch": {
+    "mean_nm": 0.1402,
+    "peak_nm": 0.3342,
+    "limit_nm": 1.1964,
+    "peak_fraction_of_limit": 0.279,
+    "saturated_fraction_of_time": 0.0
+   },
+   "left_knee": {
+    "mean_nm": 0.0527,
+    "peak_nm": 0.1082,
+    "limit_nm": 0.304,
+    "peak_fraction_of_limit": 0.356,
+    "saturated_fraction_of_time": 0.0
+   },
+   "right_hip_roll": {
+    "mean_nm": 0.086,
+    "peak_nm": 0.1679,
+    "limit_nm": 1.1964,
+    "peak_fraction_of_limit": 0.14,
+    "saturated_fraction_of_time": 0.0
+   },
    "right_hip_pitch": {
-    "mean_nm": 0.1358,
-    "peak_nm": 0.3333,
+    "mean_nm": 0.1366,
+    "peak_nm": 0.3343,
     "limit_nm": 1.1964,
     "peak_fraction_of_limit": 0.279,
     "saturated_fraction_of_time": 0.0
    },
    "right_knee": {
-    "mean_nm": 0.0532,
-    "peak_nm": 0.1145,
+    "mean_nm": 0.0533,
+    "peak_nm": 0.1148,
     "limit_nm": 0.304,
     "peak_fraction_of_limit": 0.377,
     "saturated_fraction_of_time": 0.0
@@ -221,8 +221,8 @@
   },
   "speed_mm_s": 4.1,
   "supply_estimate": {
-   "mean_a": 1.09,
-   "sum_of_peaks_a": 2.41
+   "mean_a": 1.1,
+   "sum_of_peaks_a": 2.42
   },
   "limit_problems": 0
  },
@@ -247,13 +247,13 @@
    "fell": false,
    "fell_at_s": null,
    "fell_how": null,
-   "distance_forward_m": 0.1087,
-   "drift_left_m": -0.0211,
-   "speed_mm_s": 9.9,
+   "distance_forward_m": 0.1102,
+   "drift_left_m": -0.0208,
+   "speed_mm_s": 10.0,
    "max_tilt_deg": 9.05,
-   "single_support_fraction": 0.023,
+   "single_support_fraction": 0.018,
    "max_sole_lift_mm": 0.01,
-   "peak_torque_fraction": 0.27
+   "peak_torque_fraction": 0.272
   },
   "rows": [
    {
@@ -271,7 +271,7 @@
     "max_tilt_deg": 1.36,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.114
+    "peak_torque_fraction": 0.115
    },
    {
     "period_s": 0.6,
@@ -282,13 +282,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0537,
-    "drift_left_m": -0.0024,
-    "speed_mm_s": 4.9,
-    "max_tilt_deg": 4.3,
+    "distance_forward_m": 0.0519,
+    "drift_left_m": -0.0,
+    "speed_mm_s": 4.7,
+    "max_tilt_deg": 4.37,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.433
+    "peak_torque_fraction": 0.436
    },
    {
     "period_s": 0.6,
@@ -299,12 +299,12 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.079,
-    "drift_left_m": -0.0035,
-    "speed_mm_s": 7.2,
+    "distance_forward_m": 0.08,
+    "drift_left_m": -0.0042,
+    "speed_mm_s": 7.3,
     "max_tilt_deg": 4.02,
     "single_support_fraction": 0.005,
-    "max_sole_lift_mm": 0.01,
+    "max_sole_lift_mm": 0.0,
     "peak_torque_fraction": 0.212
    },
    {
@@ -316,13 +316,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1321,
-    "drift_left_m": -0.0198,
-    "speed_mm_s": 12.0,
-    "max_tilt_deg": 6.62,
-    "single_support_fraction": 0.093,
-    "max_sole_lift_mm": 0.29,
-    "peak_torque_fraction": 0.51
+    "distance_forward_m": 0.1331,
+    "drift_left_m": -0.0081,
+    "speed_mm_s": 12.1,
+    "max_tilt_deg": 6.58,
+    "single_support_fraction": 0.077,
+    "max_sole_lift_mm": 0.32,
+    "peak_torque_fraction": 0.512
    },
    {
     "period_s": 0.6,
@@ -333,13 +333,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1178,
-    "drift_left_m": -0.0026,
-    "speed_mm_s": 10.7,
+    "distance_forward_m": 0.1171,
+    "drift_left_m": -0.0002,
+    "speed_mm_s": 10.6,
     "max_tilt_deg": 7.86,
-    "single_support_fraction": 0.09,
+    "single_support_fraction": 0.083,
     "max_sole_lift_mm": 0.04,
-    "peak_torque_fraction": 0.295
+    "peak_torque_fraction": 0.299
    },
    {
     "period_s": 0.6,
@@ -350,13 +350,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0737,
-    "drift_left_m": -0.0219,
-    "speed_mm_s": 6.7,
-    "max_tilt_deg": 11.09,
-    "single_support_fraction": 0.155,
-    "max_sole_lift_mm": 0.26,
-    "peak_torque_fraction": 0.576
+    "distance_forward_m": 0.0675,
+    "drift_left_m": -0.0119,
+    "speed_mm_s": 6.1,
+    "max_tilt_deg": 11.03,
+    "single_support_fraction": 0.125,
+    "max_sole_lift_mm": 0.22,
+    "peak_torque_fraction": 0.589
    },
    {
     "period_s": 0.6,
@@ -384,13 +384,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0627,
-    "drift_left_m": -0.0245,
-    "speed_mm_s": 5.7,
-    "max_tilt_deg": 6.3,
-    "single_support_fraction": 0.0,
+    "distance_forward_m": 0.0644,
+    "drift_left_m": -0.0195,
+    "speed_mm_s": 5.9,
+    "max_tilt_deg": 4.61,
+    "single_support_fraction": 0.003,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.547
+    "peak_torque_fraction": 0.544
    },
    {
     "period_s": 0.6,
@@ -401,81 +401,81 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1051,
-    "drift_left_m": -0.0106,
+    "distance_forward_m": 0.106,
+    "drift_left_m": -0.0115,
     "speed_mm_s": 9.6,
-    "max_tilt_deg": 4.78,
-    "single_support_fraction": 0.008,
-    "max_sole_lift_mm": 0.01,
-    "peak_torque_fraction": 0.229
-   },
-   {
-    "period_s": 0.6,
-    "roll_amplitude_deg": 8.0,
-    "step_amplitude_deg": 6.0,
-    "lift_deg": 8.0,
-    "within_speed_limit": false,
-    "fell": false,
-    "fell_at_s": null,
-    "fell_how": null,
-    "distance_forward_m": 0.1921,
-    "drift_left_m": -0.0283,
-    "speed_mm_s": 17.5,
-    "max_tilt_deg": 9.11,
-    "single_support_fraction": 0.122,
-    "max_sole_lift_mm": 0.5,
-    "peak_torque_fraction": 0.565
-   },
-   {
-    "period_s": 0.6,
-    "roll_amplitude_deg": 8.0,
-    "step_amplitude_deg": 12.0,
-    "lift_deg": 0.0,
-    "within_speed_limit": false,
-    "fell": false,
-    "fell_at_s": null,
-    "fell_how": null,
-    "distance_forward_m": 0.1664,
-    "drift_left_m": -0.0079,
-    "speed_mm_s": 15.1,
-    "max_tilt_deg": 8.24,
-    "single_support_fraction": 0.077,
-    "max_sole_lift_mm": 0.02,
-    "peak_torque_fraction": 0.307
-   },
-   {
-    "period_s": 0.6,
-    "roll_amplitude_deg": 8.0,
-    "step_amplitude_deg": 12.0,
-    "lift_deg": 8.0,
-    "within_speed_limit": false,
-    "fell": false,
-    "fell_at_s": null,
-    "fell_how": null,
-    "distance_forward_m": -0.0061,
-    "drift_left_m": -0.0277,
-    "speed_mm_s": -0.6,
-    "max_tilt_deg": 11.37,
-    "single_support_fraction": 0.235,
-    "max_sole_lift_mm": 0.29,
-    "peak_torque_fraction": 0.513
-   },
-   {
-    "period_s": 0.6,
-    "roll_amplitude_deg": 14.0,
-    "step_amplitude_deg": 0.0,
-    "lift_deg": 0.0,
-    "within_speed_limit": false,
-    "fell": false,
-    "fell_at_s": null,
-    "fell_how": null,
-    "distance_forward_m": 0.0208,
-    "drift_left_m": -0.0252,
-    "speed_mm_s": 1.9,
-    "max_tilt_deg": 4.78,
-    "single_support_fraction": 0.047,
+    "max_tilt_deg": 4.79,
+    "single_support_fraction": 0.017,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.295
+    "peak_torque_fraction": 0.228
+   },
+   {
+    "period_s": 0.6,
+    "roll_amplitude_deg": 8.0,
+    "step_amplitude_deg": 6.0,
+    "lift_deg": 8.0,
+    "within_speed_limit": false,
+    "fell": false,
+    "fell_at_s": null,
+    "fell_how": null,
+    "distance_forward_m": 0.2136,
+    "drift_left_m": -0.0258,
+    "speed_mm_s": 19.4,
+    "max_tilt_deg": 8.8,
+    "single_support_fraction": 0.148,
+    "max_sole_lift_mm": 0.53,
+    "peak_torque_fraction": 0.558
+   },
+   {
+    "period_s": 0.6,
+    "roll_amplitude_deg": 8.0,
+    "step_amplitude_deg": 12.0,
+    "lift_deg": 0.0,
+    "within_speed_limit": false,
+    "fell": false,
+    "fell_at_s": null,
+    "fell_how": null,
+    "distance_forward_m": 0.1672,
+    "drift_left_m": -0.0102,
+    "speed_mm_s": 15.2,
+    "max_tilt_deg": 8.23,
+    "single_support_fraction": 0.063,
+    "max_sole_lift_mm": 0.03,
+    "peak_torque_fraction": 0.319
+   },
+   {
+    "period_s": 0.6,
+    "roll_amplitude_deg": 8.0,
+    "step_amplitude_deg": 12.0,
+    "lift_deg": 8.0,
+    "within_speed_limit": false,
+    "fell": false,
+    "fell_at_s": null,
+    "fell_how": null,
+    "distance_forward_m": 0.0015,
+    "drift_left_m": -0.0233,
+    "speed_mm_s": 0.1,
+    "max_tilt_deg": 11.47,
+    "single_support_fraction": 0.277,
+    "max_sole_lift_mm": 0.29,
+    "peak_torque_fraction": 0.525
+   },
+   {
+    "period_s": 0.6,
+    "roll_amplitude_deg": 14.0,
+    "step_amplitude_deg": 0.0,
+    "lift_deg": 0.0,
+    "within_speed_limit": false,
+    "fell": false,
+    "fell_at_s": null,
+    "fell_how": null,
+    "distance_forward_m": 0.0209,
+    "drift_left_m": -0.025,
+    "speed_mm_s": 1.9,
+    "max_tilt_deg": 4.79,
+    "single_support_fraction": 0.033,
+    "max_sole_lift_mm": 0.0,
+    "peak_torque_fraction": 0.293
    },
    {
     "period_s": 0.6,
@@ -486,13 +486,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0184,
-    "drift_left_m": -0.0352,
-    "speed_mm_s": 1.7,
-    "max_tilt_deg": 8.97,
-    "single_support_fraction": 0.053,
-    "max_sole_lift_mm": 0.04,
-    "peak_torque_fraction": 0.821
+    "distance_forward_m": 0.0266,
+    "drift_left_m": -0.0354,
+    "speed_mm_s": 2.4,
+    "max_tilt_deg": 9.47,
+    "single_support_fraction": 0.077,
+    "max_sole_lift_mm": 0.08,
+    "peak_torque_fraction": 0.827
    },
    {
     "period_s": 0.6,
@@ -503,13 +503,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0667,
-    "drift_left_m": -0.0224,
-    "speed_mm_s": 6.1,
+    "distance_forward_m": 0.0659,
+    "drift_left_m": -0.0239,
+    "speed_mm_s": 6.0,
     "max_tilt_deg": 6.18,
-    "single_support_fraction": 0.025,
+    "single_support_fraction": 0.035,
     "max_sole_lift_mm": 0.04,
-    "peak_torque_fraction": 0.302
+    "peak_torque_fraction": 0.299
    },
    {
     "period_s": 0.6,
@@ -520,13 +520,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1948,
-    "drift_left_m": 0.0254,
-    "speed_mm_s": 17.7,
-    "max_tilt_deg": 12.19,
-    "single_support_fraction": 0.203,
-    "max_sole_lift_mm": 0.85,
-    "peak_torque_fraction": 0.768
+    "distance_forward_m": 0.1979,
+    "drift_left_m": -0.0795,
+    "speed_mm_s": 18.0,
+    "max_tilt_deg": 11.98,
+    "single_support_fraction": 0.193,
+    "max_sole_lift_mm": 0.84,
+    "peak_torque_fraction": 0.788
    },
    {
     "period_s": 0.6,
@@ -537,13 +537,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1666,
-    "drift_left_m": -0.0223,
+    "distance_forward_m": 0.1662,
+    "drift_left_m": -0.0184,
     "speed_mm_s": 15.1,
     "max_tilt_deg": 9.19,
-    "single_support_fraction": 0.078,
-    "max_sole_lift_mm": 0.07,
-    "peak_torque_fraction": 0.35
+    "single_support_fraction": 0.102,
+    "max_sole_lift_mm": 0.08,
+    "peak_torque_fraction": 0.351
    },
    {
     "period_s": 0.6,
@@ -554,13 +554,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": -0.0104,
-    "drift_left_m": -0.0163,
-    "speed_mm_s": -0.9,
-    "max_tilt_deg": 13.2,
-    "single_support_fraction": 0.337,
-    "max_sole_lift_mm": 0.94,
-    "peak_torque_fraction": 0.675
+    "distance_forward_m": -0.007,
+    "drift_left_m": -0.0249,
+    "speed_mm_s": -0.6,
+    "max_tilt_deg": 14.02,
+    "single_support_fraction": 0.358,
+    "max_sole_lift_mm": 1.62,
+    "peak_torque_fraction": 0.653
    },
    {
     "period_s": 1.0,
@@ -588,13 +588,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0149,
-    "drift_left_m": 0.0025,
-    "speed_mm_s": 1.4,
-    "max_tilt_deg": 8.19,
+    "distance_forward_m": 0.013,
+    "drift_left_m": 0.0024,
+    "speed_mm_s": 1.2,
+    "max_tilt_deg": 8.31,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.571
+    "peak_torque_fraction": 0.573
    },
    {
     "period_s": 1.0,
@@ -605,13 +605,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0378,
-    "drift_left_m": -0.0115,
-    "speed_mm_s": 3.4,
+    "distance_forward_m": 0.038,
+    "drift_left_m": -0.0116,
+    "speed_mm_s": 3.5,
     "max_tilt_deg": 4.0,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.186
+    "peak_torque_fraction": 0.185
    },
    {
     "period_s": 1.0,
@@ -622,13 +622,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1051,
-    "drift_left_m": -0.0089,
+    "distance_forward_m": 0.1054,
+    "drift_left_m": -0.0085,
     "speed_mm_s": 9.6,
-    "max_tilt_deg": 8.56,
+    "max_tilt_deg": 8.51,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.577
+    "peak_torque_fraction": 0.558
    },
    {
     "period_s": 1.0,
@@ -639,13 +639,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0506,
-    "drift_left_m": -0.0246,
+    "distance_forward_m": 0.0509,
+    "drift_left_m": -0.0247,
     "speed_mm_s": 4.6,
     "max_tilt_deg": 7.77,
-    "single_support_fraction": 0.013,
+    "single_support_fraction": 0.018,
     "max_sole_lift_mm": 0.01,
-    "peak_torque_fraction": 0.243
+    "peak_torque_fraction": 0.24
    },
    {
     "period_s": 1.0,
@@ -656,13 +656,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1094,
-    "drift_left_m": -0.031,
-    "speed_mm_s": 9.9,
-    "max_tilt_deg": 9.72,
-    "single_support_fraction": 0.003,
-    "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.643
+    "distance_forward_m": 0.1112,
+    "drift_left_m": -0.0298,
+    "speed_mm_s": 10.1,
+    "max_tilt_deg": 9.83,
+    "single_support_fraction": 0.008,
+    "max_sole_lift_mm": 0.02,
+    "peak_torque_fraction": 0.64
    },
    {
     "period_s": 1.0,
@@ -690,13 +690,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0165,
-    "drift_left_m": -0.0002,
+    "distance_forward_m": 0.0166,
+    "drift_left_m": -0.0001,
     "speed_mm_s": 1.5,
     "max_tilt_deg": 8.86,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.587
+    "peak_torque_fraction": 0.596
    },
    {
     "period_s": 1.0,
@@ -707,13 +707,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.053,
+    "distance_forward_m": 0.0532,
     "drift_left_m": -0.01,
     "speed_mm_s": 4.8,
-    "max_tilt_deg": 4.77,
+    "max_tilt_deg": 4.76,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.171
+    "peak_torque_fraction": 0.172
    },
    {
     "period_s": 1.0,
@@ -724,11 +724,11 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0932,
-    "drift_left_m": -0.0082,
-    "speed_mm_s": 8.5,
-    "max_tilt_deg": 9.43,
-    "single_support_fraction": 0.0,
+    "distance_forward_m": 0.0967,
+    "drift_left_m": -0.0055,
+    "speed_mm_s": 8.8,
+    "max_tilt_deg": 9.4,
+    "single_support_fraction": 0.002,
     "max_sole_lift_mm": 0.0,
     "peak_torque_fraction": 0.615
    },
@@ -741,12 +741,12 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0816,
-    "drift_left_m": -0.0239,
-    "speed_mm_s": 7.4,
+    "distance_forward_m": 0.083,
+    "drift_left_m": -0.0241,
+    "speed_mm_s": 7.5,
     "max_tilt_deg": 8.1,
     "single_support_fraction": 0.008,
-    "max_sole_lift_mm": 0.0,
+    "max_sole_lift_mm": 0.01,
     "peak_torque_fraction": 0.209
    },
    {
@@ -758,13 +758,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1055,
-    "drift_left_m": -0.0175,
-    "speed_mm_s": 9.6,
-    "max_tilt_deg": 11.2,
-    "single_support_fraction": 0.01,
-    "max_sole_lift_mm": 0.01,
-    "peak_torque_fraction": 0.596
+    "distance_forward_m": 0.1075,
+    "drift_left_m": -0.0158,
+    "speed_mm_s": 9.8,
+    "max_tilt_deg": 11.0,
+    "single_support_fraction": 0.008,
+    "max_sole_lift_mm": 0.0,
+    "peak_torque_fraction": 0.611
    },
    {
     "period_s": 1.0,
@@ -792,13 +792,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0197,
-    "drift_left_m": -0.0049,
-    "speed_mm_s": 1.8,
-    "max_tilt_deg": 10.17,
+    "distance_forward_m": 0.0209,
+    "drift_left_m": -0.0031,
+    "speed_mm_s": 1.9,
+    "max_tilt_deg": 10.08,
     "single_support_fraction": 0.005,
     "max_sole_lift_mm": 0.01,
-    "peak_torque_fraction": 0.653
+    "peak_torque_fraction": 0.648
    },
    {
     "period_s": 1.0,
@@ -809,8 +809,8 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0585,
-    "drift_left_m": -0.0083,
+    "distance_forward_m": 0.0587,
+    "drift_left_m": -0.0085,
     "speed_mm_s": 5.3,
     "max_tilt_deg": 6.07,
     "single_support_fraction": 0.0,
@@ -826,13 +826,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0729,
-    "drift_left_m": -0.0001,
-    "speed_mm_s": 6.6,
-    "max_tilt_deg": 11.05,
-    "single_support_fraction": 0.017,
-    "max_sole_lift_mm": 0.01,
-    "peak_torque_fraction": 0.692
+    "distance_forward_m": 0.0747,
+    "drift_left_m": -0.0007,
+    "speed_mm_s": 6.8,
+    "max_tilt_deg": 10.7,
+    "single_support_fraction": 0.023,
+    "max_sole_lift_mm": 0.02,
+    "peak_torque_fraction": 0.687
    },
    {
     "period_s": 1.0,
@@ -843,13 +843,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.1087,
-    "drift_left_m": -0.0211,
-    "speed_mm_s": 9.9,
+    "distance_forward_m": 0.1102,
+    "drift_left_m": -0.0208,
+    "speed_mm_s": 10.0,
     "max_tilt_deg": 9.05,
-    "single_support_fraction": 0.023,
+    "single_support_fraction": 0.018,
     "max_sole_lift_mm": 0.01,
-    "peak_torque_fraction": 0.27
+    "peak_torque_fraction": 0.272
    },
    {
     "period_s": 1.0,
@@ -860,13 +860,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0499,
-    "drift_left_m": -0.0212,
-    "speed_mm_s": 4.5,
-    "max_tilt_deg": 9.64,
-    "single_support_fraction": 0.037,
-    "max_sole_lift_mm": 0.02,
-    "peak_torque_fraction": 0.58
+    "distance_forward_m": 0.0508,
+    "drift_left_m": -0.022,
+    "speed_mm_s": 4.6,
+    "max_tilt_deg": 9.47,
+    "single_support_fraction": 0.012,
+    "max_sole_lift_mm": 0.01,
+    "peak_torque_fraction": 0.579
    },
    {
     "period_s": 1.6,
@@ -897,7 +897,7 @@
     "distance_forward_m": 0.0036,
     "drift_left_m": 0.0105,
     "speed_mm_s": 0.3,
-    "max_tilt_deg": 2.19,
+    "max_tilt_deg": 2.16,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
     "peak_torque_fraction": 0.383
@@ -911,7 +911,7 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0222,
+    "distance_forward_m": 0.0223,
     "drift_left_m": -0.0028,
     "speed_mm_s": 2.0,
     "max_tilt_deg": 3.97,
@@ -928,13 +928,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.039,
+    "distance_forward_m": 0.0388,
     "drift_left_m": 0.0057,
     "speed_mm_s": 3.5,
-    "max_tilt_deg": 8.67,
+    "max_tilt_deg": 8.63,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.4
+    "peak_torque_fraction": 0.401
    },
    {
     "period_s": 1.6,
@@ -945,13 +945,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0257,
-    "drift_left_m": -0.0108,
-    "speed_mm_s": 2.3,
+    "distance_forward_m": 0.0261,
+    "drift_left_m": -0.0109,
+    "speed_mm_s": 2.4,
     "max_tilt_deg": 7.75,
-    "single_support_fraction": 0.0,
+    "single_support_fraction": 0.002,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.197
+    "peak_torque_fraction": 0.198
    },
    {
     "period_s": 1.6,
@@ -962,13 +962,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0475,
-    "drift_left_m": -0.0047,
+    "distance_forward_m": 0.0469,
+    "drift_left_m": -0.0044,
     "speed_mm_s": 4.3,
-    "max_tilt_deg": 8.8,
-    "single_support_fraction": 0.002,
-    "max_sole_lift_mm": 0.01,
-    "peak_torque_fraction": 0.431
+    "max_tilt_deg": 8.79,
+    "single_support_fraction": 0.0,
+    "max_sole_lift_mm": 0.0,
+    "peak_torque_fraction": 0.432
    },
    {
     "period_s": 1.6,
@@ -997,12 +997,12 @@
     "fell_at_s": null,
     "fell_how": null,
     "distance_forward_m": 0.0204,
-    "drift_left_m": 0.0206,
+    "drift_left_m": 0.0205,
     "speed_mm_s": 1.9,
-    "max_tilt_deg": 8.36,
+    "max_tilt_deg": 8.31,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.414
+    "peak_torque_fraction": 0.417
    },
    {
     "period_s": 1.6,
@@ -1030,13 +1030,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0383,
-    "drift_left_m": 0.0108,
+    "distance_forward_m": 0.0382,
+    "drift_left_m": 0.0109,
     "speed_mm_s": 3.5,
-    "max_tilt_deg": 8.36,
+    "max_tilt_deg": 8.35,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.396
+    "peak_torque_fraction": 0.397
    },
    {
     "period_s": 1.6,
@@ -1047,11 +1047,11 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0464,
-    "drift_left_m": -0.0063,
+    "distance_forward_m": 0.0463,
+    "drift_left_m": -0.0061,
     "speed_mm_s": 4.2,
     "max_tilt_deg": 8.09,
-    "single_support_fraction": 0.0,
+    "single_support_fraction": 0.003,
     "max_sole_lift_mm": 0.0,
     "peak_torque_fraction": 0.185
    },
@@ -1065,12 +1065,12 @@
     "fell_at_s": null,
     "fell_how": null,
     "distance_forward_m": 0.0488,
-    "drift_left_m": 0.0006,
+    "drift_left_m": 0.0009,
     "speed_mm_s": 4.4,
-    "max_tilt_deg": 8.03,
-    "single_support_fraction": 0.002,
+    "max_tilt_deg": 8.02,
+    "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.407
+    "peak_torque_fraction": 0.409
    },
    {
     "period_s": 1.6,
@@ -1087,7 +1087,7 @@
     "max_tilt_deg": 4.71,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.125
+    "peak_torque_fraction": 0.126
    },
    {
     "period_s": 1.6,
@@ -1098,10 +1098,10 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0203,
+    "distance_forward_m": 0.0205,
     "drift_left_m": 0.0289,
-    "speed_mm_s": 1.8,
-    "max_tilt_deg": 8.68,
+    "speed_mm_s": 1.9,
+    "max_tilt_deg": 8.67,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
     "peak_torque_fraction": 0.38
@@ -1132,13 +1132,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0413,
-    "drift_left_m": 0.0191,
-    "speed_mm_s": 3.8,
-    "max_tilt_deg": 7.9,
+    "distance_forward_m": 0.0409,
+    "drift_left_m": 0.0189,
+    "speed_mm_s": 3.7,
+    "max_tilt_deg": 7.85,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.349
+    "peak_torque_fraction": 0.351
    },
    {
     "period_s": 1.6,
@@ -1149,9 +1149,9 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0608,
-    "drift_left_m": 0.0016,
-    "speed_mm_s": 5.5,
+    "distance_forward_m": 0.0614,
+    "drift_left_m": 0.002,
+    "speed_mm_s": 5.6,
     "max_tilt_deg": 9.0,
     "single_support_fraction": 0.0,
     "max_sole_lift_mm": 0.0,
@@ -1166,13 +1166,13 @@
     "fell": false,
     "fell_at_s": null,
     "fell_how": null,
-    "distance_forward_m": 0.0445,
-    "drift_left_m": 0.0089,
+    "distance_forward_m": 0.0444,
+    "drift_left_m": 0.009,
     "speed_mm_s": 4.0,
     "max_tilt_deg": 8.29,
     "single_support_fraction": 0.005,
     "max_sole_lift_mm": 0.0,
-    "peak_torque_fraction": 0.413
+    "peak_torque_fraction": 0.414
    }
   ]
  },
@@ -1191,68 +1191,68 @@
   "fell_at_s": null,
   "fell_how": null,
   "upright_s": 12.0,
-  "distance_forward_m": 0.1087,
-  "drift_left_m": -0.0211,
+  "distance_forward_m": 0.1102,
+  "drift_left_m": -0.0208,
   "max_tilt_deg_while_upright": 9.05,
-  "final_tilt_deg": 8.21,
+  "final_tilt_deg": 8.22,
   "clamped_commands": 0,
   "feet": {
-   "both_loaded_fraction": 0.977,
-   "single_support_fraction": 0.023,
+   "both_loaded_fraction": 0.982,
+   "single_support_fraction": 0.018,
    "airborne_fraction": 0.0,
    "max_whole_sole_lift_mm": {
-    "left": 0.01,
+    "left": 0.0,
     "right": 0.01
    }
   },
   "torque": {
    "left_hip_roll": {
-    "mean_nm": 0.089,
-    "peak_nm": 0.3225,
+    "mean_nm": 0.0886,
+    "peak_nm": 0.3254,
     "limit_nm": 1.1964,
-    "peak_fraction_of_limit": 0.27,
+    "peak_fraction_of_limit": 0.272,
     "saturated_fraction_of_time": 0.0
    },
    "left_hip_pitch": {
-    "mean_nm": 0.1231,
-    "peak_nm": 0.266,
+    "mean_nm": 0.1233,
+    "peak_nm": 0.267,
     "limit_nm": 1.1964,
-    "peak_fraction_of_limit": 0.222,
+    "peak_fraction_of_limit": 0.223,
     "saturated_fraction_of_time": 0.0
    },
    "left_knee": {
     "mean_nm": 0.0284,
-    "peak_nm": 0.0667,
+    "peak_nm": 0.0677,
     "limit_nm": 0.304,
-    "peak_fraction_of_limit": 0.22,
+    "peak_fraction_of_limit": 0.223,
     "saturated_fraction_of_time": 0.0
    },
    "right_hip_roll": {
-    "mean_nm": 0.0881,
-    "peak_nm": 0.3233,
+    "mean_nm": 0.0888,
+    "peak_nm": 0.3251,
     "limit_nm": 1.1964,
-    "peak_fraction_of_limit": 0.27,
+    "peak_fraction_of_limit": 0.272,
     "saturated_fraction_of_time": 0.0
    },
    "right_hip_pitch": {
-    "mean_nm": 0.1191,
-    "peak_nm": 0.2608,
+    "mean_nm": 0.1194,
+    "peak_nm": 0.2639,
     "limit_nm": 1.1964,
-    "peak_fraction_of_limit": 0.218,
+    "peak_fraction_of_limit": 0.221,
     "saturated_fraction_of_time": 0.0
    },
    "right_knee": {
     "mean_nm": 0.0277,
-    "peak_nm": 0.0662,
+    "peak_nm": 0.0665,
     "limit_nm": 0.304,
-    "peak_fraction_of_limit": 0.218,
+    "peak_fraction_of_limit": 0.219,
     "saturated_fraction_of_time": 0.0
    }
   },
-  "speed_mm_s": 9.9,
+  "speed_mm_s": 10.0,
   "supply_estimate": {
    "mean_a": 0.89,
-   "sum_of_peaks_a": 2.4
+   "sum_of_peaks_a": 2.42
   }
  },
  "friction_sensitivity": [
@@ -1260,21 +1260,21 @@
    "floor_friction": 0.3,
    "fell": false,
    "fell_at_s": null,
-   "distance_forward_m": 0.1199,
-   "speed_mm_s": 10.9
+   "distance_forward_m": 0.1187,
+   "speed_mm_s": 10.8
   },
   {
    "floor_friction": 0.6,
    "fell": false,
    "fell_at_s": null,
-   "distance_forward_m": 0.1087,
-   "speed_mm_s": 9.9
+   "distance_forward_m": 0.1102,
+   "speed_mm_s": 10.0
   },
   {
    "floor_friction": 1.0,
    "fell": false,
    "fell_at_s": null,
-   "distance_forward_m": 0.0879,
+   "distance_forward_m": 0.0882,
    "speed_mm_s": 8.0
   }
  ],
@@ -1294,7 +1294,7 @@
  "verdict": {
   "stand": "Stands for the whole 10.0 s run at the stand pose; peak tilt 0.22 deg.",
   "neutral": "With the legs straight down it falls backward at 0.42 s, as the assembly test predicted.",
-  "gait": "The default gait stays up for 12.0 s and moves 46 mm forward (4.1 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 99 percent of the time.",
-  "best": "Best of 54 parameter sets that stay inside the speed limit as written: 109 mm in 12.0 s (9.9 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller."
+  "gait": "The default gait stays up for 12.0 s and moves 45 mm forward (4.1 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 99 percent of the time.",
+  "best": "Best of 54 parameter sets that stay inside the speed limit as written: 110 mm in 12.0 s (10.0 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller."
  }
 }

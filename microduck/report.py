@@ -227,6 +227,16 @@ def findings(rep: dict) -> list:
     else:
         text += " No joint brings a leg into it anywhere inside its limits."
     out.append({"id": "camera-view", "level": "ok" if clear else "fit", "text": text})
+    lg = rep["lego_compatible"]
+    good = (all(h["open_for_a_nominal_pin"] and h["wall_fill_fraction"] > 0.99 for h in lg["holes"])
+            and all(s["present"] for s in lg["studs"]) and not lg["features_in_the_camera_cone_at_neutral"])
+    out.append({"id": "lego-compatible", "level": "ok" if good else "fit",
+                "text": f"{len(lg['holes'])} pin holes and {len(lg['studs'])} studs compatible with LEGO Technic and System elements: "
+                        f"every hole is open for a {lg['nominal_mm']['pin_hole']} mm pin over {lg['nominal_mm']['beam']} mm with wall all round, "
+                        f"none is nearer than {min(x['from_nearest_joint_axis_mm'] for x in lg['holes'] + lg['studs'])} mm to a joint axis "
+                        f"or {min(x['gap_to_it_mm'] for x in lg['holes'] + lg['studs'])} mm to another part at the neutral pose, "
+                        "and none is in the camera's clear cone. Whether a real pin or brick holds in a printed one is not known."
+                        if good else "A pin hole or stud is blocked, thin-walled, missing or in the camera cone: see the table."})
     b = rep["balance"]
     n, s = b["neutral_two_feet"], b["stand_pose"]
     out.append({"id": "balance-neutral", "level": "ok" if n["inside"] else "balance",
@@ -384,6 +394,44 @@ def markdown(report: dict) -> str:
                     p["stand_margin_mm"]) for k, p in report["camera_presets"].items()]), "",
            "The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are",
            "and what is assumed about them is in `config/hardware.json` and the design README.", ""]
+
+    lg = rep["lego_compatible"]
+
+    def spread(rows, key):
+        values = [r[key] for r in rows]
+        return f"{min(values)} to {max(values)}" if values else "-"
+
+    parts = sorted(lg["counts"])
+    md += ["## Pin holes and studs", "",
+           "Attachment features compatible with LEGO Technic and System elements. LEGO, Technic, Mindstorms and SPIKE are",
+           "trademarks of the LEGO Group, which does not sponsor or endorse this. Geometry only: no printed hole or stud has been",
+           "tried with a real element.", "",
+           f"Nominal: pitch {lg['nominal_mm']['pitch']} mm, pin hole {lg['nominal_mm']['pin_hole']} mm with a counterbore of "
+           f"{lg['nominal_mm']['pin_counterbore'][0]} x {lg['nominal_mm']['pin_counterbore'][1]} mm at each end, hole length "
+           f"{lg['nominal_mm']['beam']} mm, stud {lg['nominal_mm']['stud'][0]} x {lg['nominal_mm']['stud'][1]} mm. Print allowance: "
+           f"holes {lg['print_allowance_mm']['hole_extra']} mm larger, studs {lg['print_allowance_mm']['stud_under']} mm smaller.", "",
+           _table(["part", "pin holes", "open for a nominal pin", "wall around the hole", "hole to nearest joint axis (mm)",
+                   "hole pad to nearest other part (mm)", "studs", "present", "pointing up at neutral", "stud to nearest other part (mm)"],
+                  [(p, lg["counts"][p]["holes"],
+                    all(h["open_for_a_nominal_pin"] for h in lg["holes"] if h["part"] == p),
+                    all(h["wall_fill_fraction"] > 0.99 for h in lg["holes"] if h["part"] == p),
+                    spread([h for h in lg["holes"] if h["part"] == p], "from_nearest_joint_axis_mm"),
+                    spread([h for h in lg["holes"] if h["part"] == p], "gap_to_it_mm"),
+                    lg["counts"][p]["studs"],
+                    all(s["present"] for s in lg["studs"] if s["part"] == p),
+                    all(s["points_up_at_neutral"] for s in lg["studs"] if s["part"] == p),
+                    spread([s for s in lg["studs"] if s["part"] == p], "gap_to_it_mm")) for p in parts]), "",
+           f"Features inside the camera's clear cone at the neutral pose: {lg['features_in_the_camera_cone_at_neutral']}.",
+           "The joint sweeps above were run with the pads and studs in place.", "",
+           "### How much decoration the stand pose carries", "",
+           "Extra mass placed at one spot, robot at the stand pose on two feet. Static balance only: the mass at which the centre of",
+           "mass reaches the edge of the support polygon. Servo torque, walking and the stiffness of the plates are not in it, and",
+           "the gait was not rerun with added mass.", "",
+           _table(["where", "margin with 50 g (mm)", "with 100 g (mm)", "with 200 g (mm)", "mass that uses up the margin (g)"],
+                  [(d["where"], d["margin_with_50_g_mm"], d["margin_with_100_g_mm"], d["margin_with_200_g_mm"],
+                    "more than 3000" if d["mass_that_uses_up_the_margin_g"] is None else d["mass_that_uses_up_the_margin_g"])
+                   for d in rep["decoration_budget"]]), "",
+           f"The margin with nothing added is {rep['balance']['stand_pose']['margin_mm']} mm.", ""]
 
     m = rep["mass"]
     md += ["## Mass and centre of mass", "",

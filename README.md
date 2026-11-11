@@ -19,8 +19,11 @@ Braccio kit. Four SR431 servos at the hips (two on the torso for hip roll,
 one on each yoke for hip pitch), two SR311 servos at the far end of the
 thighs for knee pitch, shins with fixed feet, an Arduino UNO Q and the
 Braccio shield strapped to a deck, a camera board in a mount at the front
-edge of the deck, servos held by cable ties. Seven printed parts and six
-fit-test pieces. There is no head: the torso carries the camera mount
+edge of the deck, servos held by cable ties. Seven printed parts and seven
+fit-test pieces. The torso, thighs, shins and feet carry pin holes and studs
+compatible with LEGO Technic and System elements, for decoration. LEGO,
+Technic, Mindstorms and SPIKE are trademarks of the LEGO Group, which does
+not sponsor or endorse this. There is no head: the torso carries the camera mount
 instead, with presets for the AI-Thinker ESP32-CAM (the default), the
 Espressif ESP-EYE and the ESP32-S3-EYE. See [docs/camera.md](docs/camera.md).
 
@@ -58,9 +61,14 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   the right): inward, the shins meet. The knee is free from -137 to +115
   degrees. With 3 degrees of margin and the servos' 180 degrees of travel the
   limits are hip roll -52 to +90, hip pitch and knee -90 to +90.
-- **Mass.** 502 g: servos 302 g (published), printed parts 135 g (PLA at 60
+- **Pin holes and studs.** 23 pin holes in pads of beam thickness and 40
+  studs. Every hole is open for a 4.8 mm pin over 7.8 mm, at least 24 mm
+  from a joint axis; none cost any joint range. At the stand pose, static
+  balance carries about 400 g of decoration on the rear of the deck before
+  the margin is gone; 100 g there leaves 23 mm of the 37 mm.
+- **Mass.** 504 g: servos 302 g (published), printed parts 137 g (PLA at 60
   percent of solid, assumed), board 30 g and shield 25 g (assumed), camera
-  10 g (published). 592 g if printed solid.
+  10 g (published). 595 g if printed solid.
 - **Balance.** With the legs straight down the centre of mass is 6.6 mm
   behind the heels: it falls backward. With the thighs swung 42 degrees back
   and the knees turned to keep the soles level it is 37 mm inside the support
@@ -82,9 +90,9 @@ Full results: [docs/simulation.md](docs/simulation.md). Numbers:
 - **Straight legs fall.** At the neutral pose it tips backward in 0.4 s, as
   the assembly test predicted.
 - **The gait shuffles.** The open-loop weight shift and step keeps the robot
-  up for the whole run and moves it 46 mm in 11 s. Both feet stay on the
+  up for the whole run and moves it 45 mm in 11 s. Both feet stay on the
   floor the whole time. The best of 54 parameter sets inside the speed limit
-  manages 109 mm in 11 s (10 mm/s). None fell. With no ankle and feet 172 mm
+  manages 110 mm in 11 s (10 mm/s). None fell. With no ankle and feet 172 mm
   apart the weight never gets onto one foot, so there is no step.
 - **Watchdog.** Commands cut in mid gait: the controller holds and the robot
   stays up. Relaxed instead, it falls in 0.3 s.
@@ -162,6 +170,8 @@ design directory.
 
 - Physical fit of anything: no part has been printed against a servo or a
   camera board.
+- The pin holes and studs: no printed one has been tried with a real pin,
+  beam or brick. Their nominal dimensions are from secondary sources.
 - The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
   outline are the makers' figures. Lens, button, connector and pin positions,
   board thickness and the other masses are assumed or scaled from pictures.

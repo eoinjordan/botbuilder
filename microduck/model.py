@@ -42,6 +42,7 @@ PART_FILES = {
     "right_shin": "right_shin_fixed_foot.stl",
 }
 FIT_FILES = {"SR431": "fit_SR431.stl", "SR311": "fit_SR311.stl", "horn": "fit_horn_drill_blank.stl",
+             "lego_compatible_coupon": "fit_lego_compatible_coupon.stl",
              **{"cam_" + name: f"fit_cam_{name}.stl" for name in CAMERAS}}
 # Torsos for the camera presets the assembly does not use, and the record of
 # the generator parameters; fetched with the rest.
@@ -70,6 +71,12 @@ def load_json(name: str) -> dict:
 def stl_dir() -> Path:
     """Where the seven printable STLs are read from (never committed)."""
     return Path(os.environ.get("MICRODUCK_STL_DIR", ROOT / "build" / "stl"))
+
+
+def design_parameters() -> dict:
+    """What the generator recorded about the parts it made."""
+    with open(stl_dir() / "parameters.json", encoding="utf-8") as handle:
+        return json.load(handle)
 
 
 def have_stls() -> bool:
