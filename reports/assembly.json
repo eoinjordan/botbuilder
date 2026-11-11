@@ -4,10 +4,10 @@
  "stl_sha256": {
   "01_torso_unoq_eyes_above_esp32cam.stl": "2f5c31d0da4921f4e60cd2458848876f94541d03fb815938c38cd82fc19b7dda",
   "left_hip_roll_pitch_yoke.stl": "b899508a0f4e8c4447ff17974de14b710e6902a658099ba24c25afd735ba70bb",
-  "left_shin_fixed_foot.stl": "dbab835a1440485f367ee976652806cf00cf3bfc5a6c69e1b4e368fab77b8cb9",
+  "left_shin_comb_foot.stl": "020f05af60a97c2f15f36c2609ed94c9a443e5eb7ed990d82d294179fbf8890b",
   "left_thigh_knee_cradle.stl": "1b9ec853bf373191f53bbd7c456b5650e1ea0006faa06998dc73084632840251",
   "right_hip_roll_pitch_yoke.stl": "e3cbee6d3397bd4fa7e435879b5270f496b3dccca05f1ec3ba48c61a6842559f",
-  "right_shin_fixed_foot.stl": "1dd97910be3c125978fccfaf365c8cdae86c0cd36f615919f7c05df14f886691",
+  "right_shin_comb_foot.stl": "feb95e1f7c9f5172db3910d596caffba7e68c0b84a5738c041efeaa95f392dd4",
   "right_thigh_knee_cradle.stl": "60df128db9f8a70b03c0f9cde4a2a02d9fdddc1bced0d7a444cee65240c6ff27"
  },
  "selected": "rail",
@@ -24,6 +24,7 @@
    "shin_face": "The shin blank is symmetric; the face towards the knee servo meets the horn and the foot points +x.",
    "neutral": "Thighs straight down, shins vertical, soles level, horns at mid travel.",
    "camera": "The camera board stands in the mount at the front edge of the deck, lower edge on the corner seats, back face on the ledges, lens towards +x. The numbers repeat CAMERA, CAM_BACK_X, CAM_BASE_Z and CAM_TILT of build.py in the design directory; a test compares them with the parameters.json the generator writes.",
+   "feet": "'comb' soles have fingers that cross the centre line between the fingers of the other sole; 'flat' is the plate as first drawn. FEET in build.py chooses the same. Joint limits are taken from sweeps that leave contact between the two shin parts out, because whether the soles meet depends on both legs together; the feet section of the report says how far the legs may move against each other.",
    "face": "The default head is the round display as the eyes with the camera board above it ('eyes_above'); 'eyes_below' puts the camera under the display. FACE and CAMERA in build.py choose the same. Where the display, the camera board and the battery are is read from the parameters.json the generator writes. Without a face the camera stands alone in the fixed mount, placed by the numbers under 'camera'.",
    "front": "Forward is the way the toes point: each foot plate reaches 46.5 mm ahead of the shin and 28.5 mm behind it (build.py moves it 9 mm towards +x), and the design README says toes forward. The hip roll cradles open towards +x, so the hips and legs stand ahead of the deck by construction.",
    "board": "UNO Q long side along x, centred between the deck rails, on spacers; Braccio shield stacked on top."
@@ -315,27 +316,27 @@
   {
    "id": "camera-view",
    "level": "ok",
-   "text": "The lens looks along +x, the way the toes point, 10.0 degrees below level, 277.45 mm above the floor at the stand pose. A cone of 40.0 degrees half angle in front of it is clear at the neutral and stand poses. A leg comes into the cone with left_hip_pitch between -90.0 and -39.0 degrees; right_hip_pitch between -90.0 and -39.0 degrees (one joint moved, the others at the stand or neutral pose)."
+   "text": "The lens looks along +x, the way the toes point, 10.0 degrees below level, 266.95 mm above the floor at the stand pose. A cone of 40.0 degrees half angle in front of it is clear at the neutral and stand poses. A leg comes into the cone with left_hip_pitch between -90.0 and -21.0 degrees; right_hip_pitch between -90.0 and -24.0 degrees (one joint moved, the others at the stand or neutral pose)."
   },
   {
    "id": "lego-compatible",
    "level": "ok",
-   "text": "23 pin holes and 40 studs compatible with LEGO Technic and System elements: every hole is open for a 4.8 mm pin over 7.8 mm with wall all round, none is nearer than 14.78 mm to a joint axis or 2.71 mm to another part at the neutral pose, and none is in the camera's clear cone. Whether a real pin or brick holds in a printed one is not known."
+   "text": "23 pin holes and 32 studs compatible with LEGO Technic and System elements: every hole is open for a 4.8 mm pin over 7.8 mm with wall all round, none is nearer than 14.78 mm to a joint axis or 2.71 mm to another part at the neutral pose, and none is in the camera's clear cone. Whether a real pin or brick holds in a printed one is not known."
   },
   {
    "id": "balance-neutral",
    "level": "balance",
-   "text": "Legs straight down: the centre of mass is 6.93 mm outside the support polygon of the two feet (behind the heels); it falls backward."
+   "text": "Legs straight down: the centre of mass is 2.74 mm outside the support polygon of the two feet (behind the heels); it falls backward."
   },
   {
    "id": "balance-stand",
    "level": "ok",
-   "text": "With the thighs swung back 42.0 degrees and the knees turned the other way to keep the soles level, the centre of mass is 37.36 mm inside the polygon. This is the stand pose."
+   "text": "With the thighs swung back 52.0 degrees and the knees turned the other way to keep the soles level, the centre of mass is 46.8 mm inside the polygon. This is the stand pose."
   },
   {
    "id": "balance-one-foot",
-   "level": "balance",
-   "text": "On one foot the centre of mass is 61.99 mm outside the foot at the stand pose and still 41.04 mm outside with the stance hip rolled up to 30 degrees: there is no ankle, so hip roll tilts the body instead of shifting it. It only comes over the foot with the stance hip rolled 74.0 degrees, which lays the body on its side."
+   "level": "ok",
+   "text": "On one foot the centre of mass is inside the sole at the stand pose: 32.07 mm on the left foot alone and 21.26 mm on the right, with the other foot level with it. The soles reach across the centre line, so no weight shift is needed. This is static and rigid: the fingers, the shin plate and the servos give under the load."
   }
  ],
  "camera_presets": {
@@ -353,7 +354,7 @@
     0.0,
     61.68
    ],
-   "lens_height_above_floor_at_stand_mm": 226.42,
+   "lens_height_above_floor_at_stand_mm": 214.77,
    "clearance_each_side_mm": 0.5,
    "play_towards_the_lips_mm": 0.3,
    "play_towards_the_ledges_mm": 0.0,
@@ -377,15 +378,15 @@
    "cone_blocked_at_neutral": [],
    "cone_blocked_at_stand": [],
    "neutral_interferences": [],
-   "total_g": 498.3,
+   "total_g": 530.0,
    "com_neutral_mm": [
-    53.97,
-    0.0,
-    -33.63
+    56.81,
+    0.05,
+    -41.5
    ],
-   "neutral_margin_mm": -6.53,
-   "stand_thigh_swing_deg": 42.0,
-   "stand_margin_mm": 37.3
+   "neutral_margin_mm": -2.19,
+   "stand_thigh_swing_deg": 53.0,
+   "stand_margin_mm": 47.0
   },
   "esp32_s3_eye": {
    "preset": "esp32_s3_eye",
@@ -401,7 +402,7 @@
     0.0,
     78.82
    ],
-   "lens_height_above_floor_at_stand_mm": 243.55,
+   "lens_height_above_floor_at_stand_mm": 233.05,
    "clearance_each_side_mm": 0.5,
    "play_towards_the_lips_mm": 0.3,
    "play_towards_the_ledges_mm": 0.0,
@@ -425,15 +426,15 @@
    "cone_blocked_at_neutral": [],
    "cone_blocked_at_stand": [],
    "neutral_interferences": [],
-   "total_g": 516.0,
+   "total_g": 547.6,
    "com_neutral_mm": [
-    53.92,
-    -0.01,
-    -30.16
+    56.66,
+    0.04,
+    -37.98
    ],
-   "neutral_margin_mm": -6.58,
-   "stand_thigh_swing_deg": 42.0,
-   "stand_margin_mm": 37.37
+   "neutral_margin_mm": -2.34,
+   "stand_thigh_swing_deg": 52.0,
+   "stand_margin_mm": 46.73
   },
   "esp32cam alone in the fixed mount": {
    "preset": "esp32cam",
@@ -449,7 +450,7 @@
     0.0,
     61.19
    ],
-   "lens_height_above_floor_at_stand_mm": 225.92,
+   "lens_height_above_floor_at_stand_mm": 214.28,
    "clearance_each_side_mm": 0.5,
    "play_towards_the_lips_mm": 0.3,
    "play_towards_the_ledges_mm": 0.0,
@@ -473,15 +474,15 @@
    "cone_blocked_at_neutral": [],
    "cone_blocked_at_stand": [],
    "neutral_interferences": [],
-   "total_g": 502.5,
+   "total_g": 534.1,
    "com_neutral_mm": [
-    53.89,
-    -0.0,
-    -33.08
+    56.71,
+    0.05,
+    -40.92
    ],
-   "neutral_margin_mm": -6.61,
-   "stand_thigh_swing_deg": 42.0,
-   "stand_margin_mm": 37.31
+   "neutral_margin_mm": -2.29,
+   "stand_thigh_swing_deg": 53.0,
+   "stand_margin_mm": 46.97
   }
  },
  "faces": {
@@ -501,7 +502,7 @@
     0.0,
     112.72
    ],
-   "lens_height_above_floor_at_stand_mm": 277.45,
+   "lens_height_above_floor_at_stand_mm": 266.95,
    "highest_point_above_deck_mm": 123.85,
    "camera_clearance_each_side_mm": 0.5,
    "camera_overlap_with_print_mm3": 0.0,
@@ -509,22 +510,22 @@
    "cone_blocked_at_stand": [],
    "hip_pitch_in_cone_from_neutral_deg": [
     -90.0,
-    -54.0
+    -45.0
    ],
    "hip_pitch_in_cone_from_stand_deg": [
     -90.0,
-    -39.0
+    -21.0
    ],
    "hip_roll_in_cone_from_stand_deg": null,
-   "total_g": 532.9,
+   "total_g": 564.5,
    "com_neutral_mm": [
-    53.57,
-    -0.08,
-    -27.68
+    56.26,
+    -0.03,
+    -35.4
    ],
-   "neutral_margin_mm": -6.93,
-   "stand_thigh_swing_deg": 42.0,
-   "stand_margin_mm": 37.36
+   "neutral_margin_mm": -2.74,
+   "stand_thigh_swing_deg": 52.0,
+   "stand_margin_mm": 46.8
   },
   "eyes_below_esp32cam": {
    "face": "eyes_below",
@@ -542,7 +543,7 @@
     0.0,
     61.19
    ],
-   "lens_height_above_floor_at_stand_mm": 225.92,
+   "lens_height_above_floor_at_stand_mm": 215.42,
    "highest_point_above_deck_mm": 119.07,
    "camera_clearance_each_side_mm": 0.5,
    "camera_overlap_with_print_mm3": 0.0,
@@ -550,25 +551,25 @@
    "cone_blocked_at_stand": [],
    "hip_pitch_in_cone_from_neutral_deg": [
     -90.0,
-    -39.0
+    -30.0
    ],
    "hip_pitch_in_cone_from_stand_deg": [
     -90.0,
-    -21.0
+    -3.0
    ],
    "hip_roll_in_cone_from_stand_deg": [
-    86.0,
-    89.0
+    88.0,
+    88.0
    ],
-   "total_g": 528.9,
+   "total_g": 560.5,
    "com_neutral_mm": [
-    53.57,
-    -0.0,
-    -28.11
+    56.28,
+    0.05,
+    -35.86
    ],
-   "neutral_margin_mm": -6.93,
-   "stand_thigh_swing_deg": 42.0,
-   "stand_margin_mm": 37.45
+   "neutral_margin_mm": -2.72,
+   "stand_thigh_swing_deg": 52.0,
+   "stand_margin_mm": 46.7
   },
   "eyes_above_esp_eye": {
    "face": "eyes_above",
@@ -586,7 +587,7 @@
     0.0,
     137.83
    ],
-   "lens_height_above_floor_at_stand_mm": 302.57,
+   "lens_height_above_floor_at_stand_mm": 292.06,
    "highest_point_above_deck_mm": 148.97,
    "camera_clearance_each_side_mm": 0.5,
    "camera_overlap_with_print_mm3": 0.0,
@@ -594,27 +595,29 @@
    "cone_blocked_at_stand": [],
    "hip_pitch_in_cone_from_neutral_deg": [
     -90.0,
-    -63.0
+    -51.0
    ],
    "hip_pitch_in_cone_from_stand_deg": [
     -90.0,
-    -48.0
+    -33.0
    ],
    "hip_roll_in_cone_from_stand_deg": null,
-   "total_g": 531.9,
+   "total_g": 563.6,
    "com_neutral_mm": [
-    53.64,
-    -0.08,
-    -27.44
+    56.33,
+    -0.02,
+    -35.19
    ],
-   "neutral_margin_mm": -6.86,
-   "stand_thigh_swing_deg": 42.0,
-   "stand_margin_mm": 37.31
+   "neutral_margin_mm": -2.67,
+   "stand_thigh_swing_deg": 52.0,
+   "stand_margin_mm": 46.84
   }
  },
  "face_default": "eyes_above_esp32cam",
+ "feet_preset": "comb",
  "turning_head": {
   "camera_preset": "esp32cam",
+  "face": "none",
   "tilt_set_to_deg": 10.0,
   "neutral_interferences": [],
   "pan_travel_to_the_stops_deg": [
@@ -659,16 +662,16 @@
   },
   "leg_sweeps_collision_free_deg": {
    "left_hip_roll": [
-    -55.0,
+    -38.75,
     130.25
    ],
    "left_hip_pitch": [
     -180.0,
-    180.0
+    65.75
    ],
    "left_knee": [
-    -137.25,
-    115.25
+    -150.5,
+    111.5
    ]
   },
   "at_the_stand_pose": [
@@ -686,7 +689,7 @@
      },
      {
       "solid": "right_thigh_print",
-      "volume_mm3": 5082.6
+      "volume_mm3": 5274.6
      },
      {
       "solid": "right_pitch_horn",
@@ -694,11 +697,11 @@
      }
     ],
     "com_mm": [
-     43.49,
-     -0.24,
-     -27.02
+     41.29,
+     -0.18,
+     -31.2
     ],
-    "stand_margin_mm": 36.87,
+    "stand_margin_mm": 46.78,
     "lens_mm": [
      63.02,
      -17.15,
@@ -710,11 +713,11 @@
     "new_interferences": [],
     "in_the_cone": [],
     "com_mm": [
-     43.69,
-     0.0,
-     -27.02
+     41.47,
+     0.05,
+     -31.2
     ],
-    "stand_margin_mm": 36.68,
+    "stand_margin_mm": 46.6,
     "lens_mm": [
      76.23,
      0.0,
@@ -735,7 +738,7 @@
      },
      {
       "solid": "left_thigh_print",
-      "volume_mm3": 5026.4
+      "volume_mm3": 5171.5
      },
      {
       "solid": "left_pitch_horn",
@@ -743,11 +746,11 @@
      }
     ],
     "com_mm": [
-     43.5,
-     0.25,
-     -27.02
+     41.3,
+     0.29,
+     -31.2
     ],
-    "stand_margin_mm": 36.86,
+    "stand_margin_mm": 46.77,
     "lens_mm": [
      63.02,
      17.15,
@@ -755,13 +758,13 @@
     ]
    }
   ],
-  "total_g": 519.7,
+  "total_g": 551.2,
   "com_neutral_mm": [
-   54.53,
-   0.0,
-   -31.18
+   57.24,
+   0.05,
+   -38.89
   ],
-  "neutral_margin_mm": -5.97,
+  "neutral_margin_mm": -1.76,
   "head_parts": [
    {
     "solid": "pan_servo",
@@ -791,6 +794,532 @@
   ],
   "head_mass_g": 30.1
  },
+ "turning_head_with_faces": {
+  "eyes_above_esp32cam": {
+   "camera_preset": "esp32cam",
+   "face": "eyes_above",
+   "tilt_set_to_deg": 10.0,
+   "neutral_interferences": [],
+   "pan_travel_to_the_stops_deg": [
+    -75.25,
+    75.25
+   ],
+   "pan_stopped_by": {
+    "negative": [
+     {
+      "moving": "head_platform_print",
+      "fixed": "torso_print",
+      "volume_mm3": 0.7
+     }
+    ],
+    "positive": [
+     {
+      "moving": "head_platform_print",
+      "fixed": "torso_print",
+      "volume_mm3": 0.7
+     }
+    ]
+   },
+   "tilt_free_deg": [
+    -12.5,
+    12.5
+   ],
+   "tilt_stopped_by": {
+    "negative": [
+     {
+      "moving": "head_cradle_print",
+      "fixed": "head_platform_print",
+      "volume_mm3": 0.6
+     }
+    ],
+    "positive": [
+     {
+      "moving": "head_cradle_print",
+      "fixed": "head_platform_print",
+      "volume_mm3": 0.6
+     }
+    ]
+   },
+   "leg_sweeps_collision_free_deg": {
+    "left_hip_roll": [
+     -38.75,
+     126.5
+    ],
+    "left_hip_pitch": [
+     -157.75,
+     65.75
+    ],
+    "left_knee": [
+     -150.5,
+     111.5
+    ]
+   },
+   "at_the_stand_pose": [
+    {
+     "pan_deg": -75.25,
+     "new_interferences": [],
+     "in_the_cone": [],
+     "com_mm": [
+      41.43,
+      -1.08,
+      -23.71
+     ],
+     "stand_margin_mm": 46.64,
+     "lens_mm": [
+      66.69,
+      -31.12,
+      153.21
+     ]
+    },
+    {
+     "pan_deg": 0.0,
+     "new_interferences": [],
+     "in_the_cone": [],
+     "com_mm": [
+      42.36,
+      -0.02,
+      -23.71
+     ],
+     "stand_margin_mm": 45.71,
+     "lens_mm": [
+      90.68,
+      0.0,
+      153.21
+     ]
+    },
+    {
+     "pan_deg": 75.25,
+     "new_interferences": [],
+     "in_the_cone": [],
+     "com_mm": [
+      41.57,
+      1.14,
+      -23.71
+     ],
+     "stand_margin_mm": 46.5,
+     "lens_mm": [
+      66.69,
+      31.12,
+      153.21
+     ]
+    }
+   ],
+   "total_g": 586.2,
+   "com_neutral_mm": [
+    57.18,
+    -0.02,
+    -30.94
+   ],
+   "neutral_margin_mm": -1.82,
+   "head_parts": [
+    {
+     "solid": "pan_servo",
+     "link": "torso",
+     "mass_g": 9.0
+    },
+    {
+     "solid": "head_platform_print",
+     "link": "head_pan",
+     "mass_g": 4.7
+    },
+    {
+     "solid": "pan_horn",
+     "link": "head_pan",
+     "mass_g": 0.0
+    },
+    {
+     "solid": "head_cradle_print",
+     "link": "head_tilt",
+     "mass_g": 17.9
+    },
+    {
+     "solid": "round_display",
+     "link": "head_tilt",
+     "mass_g": 15.0
+    },
+    {
+     "solid": "camera_board",
+     "link": "head_tilt",
+     "mass_g": 10.0
+    }
+   ],
+   "head_mass_g": 56.6
+  },
+  "eyes_below_esp32cam": {
+   "camera_preset": "esp32cam",
+   "face": "eyes_below",
+   "tilt_set_to_deg": 10.0,
+   "neutral_interferences": [],
+   "pan_travel_to_the_stops_deg": [
+    -75.25,
+    75.25
+   ],
+   "pan_stopped_by": {
+    "negative": [
+     {
+      "moving": "head_platform_print",
+      "fixed": "torso_print",
+      "volume_mm3": 0.7
+     }
+    ],
+    "positive": [
+     {
+      "moving": "head_platform_print",
+      "fixed": "torso_print",
+      "volume_mm3": 0.7
+     }
+    ]
+   },
+   "tilt_free_deg": [
+    -12.5,
+    12.5
+   ],
+   "tilt_stopped_by": {
+    "negative": [
+     {
+      "moving": "head_cradle_print",
+      "fixed": "head_platform_print",
+      "volume_mm3": 0.6
+     }
+    ],
+    "positive": [
+     {
+      "moving": "head_cradle_print",
+      "fixed": "head_platform_print",
+      "volume_mm3": 0.6
+     }
+    ]
+   },
+   "leg_sweeps_collision_free_deg": {
+    "left_hip_roll": [
+     -38.75,
+     126.5
+    ],
+    "left_hip_pitch": [
+     -158.0,
+     65.75
+    ],
+    "left_knee": [
+     -150.5,
+     111.5
+    ]
+   },
+   "at_the_stand_pose": [
+    {
+     "pan_deg": -75.25,
+     "new_interferences": [],
+     "in_the_cone": [
+      {
+       "solid": "right_pitch_servo",
+       "volume_mm3": 5578.9
+      },
+      {
+       "solid": "right_thigh_print",
+       "volume_mm3": 1791.5
+      },
+      {
+       "solid": "right_pitch_horn",
+       "volume_mm3": 309.1
+      }
+     ],
+     "com_mm": [
+      41.35,
+      -0.95,
+      -24.36
+     ],
+     "stand_margin_mm": 46.72,
+     "lens_mm": [
+      64.12,
+      -21.35,
+      101.68
+     ]
+    },
+    {
+     "pan_deg": 0.0,
+     "new_interferences": [],
+     "in_the_cone": [],
+     "com_mm": [
+      42.12,
+      0.05,
+      -24.36
+     ],
+     "stand_margin_mm": 45.95,
+     "lens_mm": [
+      80.58,
+      0.0,
+      101.68
+     ]
+    },
+    {
+     "pan_deg": 75.25,
+     "new_interferences": [],
+     "in_the_cone": [
+      {
+       "solid": "left_pitch_servo",
+       "volume_mm3": 5578.9
+      },
+      {
+       "solid": "left_thigh_print",
+       "volume_mm3": 1791.6
+      },
+      {
+       "solid": "left_pitch_horn",
+       "volume_mm3": 309.1
+      }
+     ],
+     "com_mm": [
+      41.35,
+      1.05,
+      -24.36
+     ],
+     "stand_margin_mm": 46.71,
+     "lens_mm": [
+      64.12,
+      21.35,
+      101.68
+     ]
+    }
+   ],
+   "total_g": 582.1,
+   "com_neutral_mm": [
+    57.05,
+    0.05,
+    -31.64
+   ],
+   "neutral_margin_mm": -1.95,
+   "head_parts": [
+    {
+     "solid": "pan_servo",
+     "link": "torso",
+     "mass_g": 9.0
+    },
+    {
+     "solid": "head_platform_print",
+     "link": "head_pan",
+     "mass_g": 4.7
+    },
+    {
+     "solid": "pan_horn",
+     "link": "head_pan",
+     "mass_g": 0.0
+    },
+    {
+     "solid": "head_cradle_print",
+     "link": "head_tilt",
+     "mass_g": 13.8
+    },
+    {
+     "solid": "round_display",
+     "link": "head_tilt",
+     "mass_g": 15.0
+    },
+    {
+     "solid": "camera_board",
+     "link": "head_tilt",
+     "mass_g": 10.0
+    }
+   ],
+   "head_mass_g": 52.5
+  },
+  "stack_camera_forward": {
+   "camera_preset": "xiao_sense",
+   "face": "stack_camera_forward",
+   "tilt_set_to_deg": 10.0,
+   "neutral_interferences": [],
+   "pan_travel_to_the_stops_deg": [
+    -75.25,
+    75.25
+   ],
+   "pan_stopped_by": {
+    "negative": [
+     {
+      "moving": "head_platform_print",
+      "fixed": "torso_print",
+      "volume_mm3": 0.7
+     }
+    ],
+    "positive": [
+     {
+      "moving": "head_platform_print",
+      "fixed": "torso_print",
+      "volume_mm3": 0.7
+     }
+    ]
+   },
+   "tilt_free_deg": [
+    -12.5,
+    12.5
+   ],
+   "tilt_stopped_by": {
+    "negative": [
+     {
+      "moving": "head_cradle_print",
+      "fixed": "head_platform_print",
+      "volume_mm3": 0.6
+     }
+    ],
+    "positive": [
+     {
+      "moving": "head_cradle_print",
+      "fixed": "head_platform_print",
+      "volume_mm3": 0.6
+     }
+    ]
+   },
+   "leg_sweeps_collision_free_deg": {
+    "left_hip_roll": [
+     -38.75,
+     126.5
+    ],
+    "left_hip_pitch": [
+     -180.0,
+     65.75
+    ],
+    "left_knee": [
+     -150.5,
+     111.5
+    ]
+   },
+   "at_the_stand_pose": [
+    {
+     "pan_deg": -75.25,
+     "new_interferences": [],
+     "in_the_cone": [
+      {
+       "solid": "right_pitch_servo",
+       "volume_mm3": 3722.0
+      },
+      {
+       "solid": "right_thigh_print",
+       "volume_mm3": 1296.0
+      },
+      {
+       "solid": "right_pitch_horn",
+       "volume_mm3": 99.6
+      }
+     ],
+     "com_mm": [
+      41.0,
+      -0.87,
+      -27.97
+     ],
+     "stand_margin_mm": 46.94,
+     "lens_mm": [
+      67.48,
+      -34.11,
+      90.73
+     ]
+    },
+    {
+     "pan_deg": 0.0,
+     "new_interferences": [],
+     "in_the_cone": [],
+     "com_mm": [
+      41.72,
+      0.05,
+      -27.97
+     ],
+     "stand_margin_mm": 46.35,
+     "lens_mm": [
+      93.77,
+      0.0,
+      90.73
+     ]
+    },
+    {
+     "pan_deg": 75.25,
+     "new_interferences": [],
+     "in_the_cone": [
+      {
+       "solid": "left_pitch_servo",
+       "volume_mm3": 3722.0
+      },
+      {
+       "solid": "left_thigh_print",
+       "volume_mm3": 1296.0
+      },
+      {
+       "solid": "left_pitch_horn",
+       "volume_mm3": 99.6
+      }
+     ],
+     "com_mm": [
+      41.01,
+      0.98,
+      -27.97
+     ],
+     "stand_margin_mm": 46.94,
+     "lens_mm": [
+      67.48,
+      34.11,
+      90.73
+     ]
+    }
+   ],
+   "total_g": 571.5,
+   "com_neutral_mm": [
+    56.93,
+    0.05,
+    -35.39
+   ],
+   "neutral_margin_mm": -2.07,
+   "head_parts": [
+    {
+     "solid": "pan_servo",
+     "link": "torso",
+     "mass_g": 9.0
+    },
+    {
+     "solid": "head_platform_print",
+     "link": "head_pan",
+     "mass_g": 4.7
+    },
+    {
+     "solid": "pan_horn",
+     "link": "head_pan",
+     "mass_g": 0.0
+    },
+    {
+     "solid": "head_cradle_print",
+     "link": "head_tilt",
+     "mass_g": 10.2
+    },
+    {
+     "solid": "round_display",
+     "link": "head_tilt",
+     "mass_g": 18.0
+    }
+   ],
+   "head_mass_g": 41.9
+  }
+ },
+ "stack_camera_forward": {
+  "neutral_interferences": [],
+  "display_overlap_with_print_mm3": 0.0,
+  "display_to_unoq_mm": 30.97,
+  "display_to_stack_envelope_mm": 17.99,
+  "lens_mm": [
+   71.51,
+   0.0,
+   50.23
+  ],
+  "lens_height_above_floor_at_stand_mm": 204.46,
+  "cone_blocked_at_neutral": [],
+  "cone_blocked_at_stand": [],
+  "hip_pitch_in_cone_from_stand_deg": [
+   -90.0,
+   -3.0
+  ],
+  "total_g": 549.8,
+  "com_neutral_mm": [
+   56.56,
+   0.05,
+   -39.06
+  ],
+  "neutral_margin_mm": -2.44,
+  "stand_thigh_swing_deg": 52.0,
+  "stand_margin_mm": 46.69
+ },
  "controllers": {
   "pi_zero_2w": {
    "controller": "pi_zero_2w",
@@ -815,17 +1344,17 @@
    "gap_to_camera_board_mm": 13.18,
    "overhang_past_the_deck_mm": 0.0,
    "neutral_interferences": [],
-   "total_g": 467.2,
+   "total_g": 498.8,
    "com_neutral_mm": [
-    57.96,
-    -0.0,
-    -36.39
+    60.72,
+    0.05,
+    -44.58
    ],
-   "neutral_margin_mm": -2.54,
-   "stand_thigh_swing_deg": 38.0,
-   "stand_margin_mm": 37.1,
+   "neutral_margin_mm": 1.72,
+   "stand_thigh_swing_deg": 49.0,
+   "stand_margin_mm": 46.78,
    "stands_statically": true,
-   "one_foot_margin_at_stand_mm": -61.92,
+   "one_foot_margin_at_stand_mm": 32.15,
    "hip_pitch_hold_torque_nm_each": 0.072,
    "hip_pitch_torque_limit_nm": 1.196,
    "hip_pitch_torque_fraction": 0.06
@@ -853,17 +1382,17 @@
    "gap_to_camera_board_mm": 17.06,
    "overhang_past_the_deck_mm": 0.0,
    "neutral_interferences": [],
-   "total_g": 501.6,
+   "total_g": 533.3,
    "com_neutral_mm": [
-    54.01,
-    -0.01,
-    -32.6
+    56.82,
+    0.04,
+    -40.48
    ],
-   "neutral_margin_mm": -6.49,
-   "stand_thigh_swing_deg": 42.0,
-   "stand_margin_mm": 37.41,
+   "neutral_margin_mm": -2.18,
+   "stand_thigh_swing_deg": 53.0,
+   "stand_margin_mm": 46.89,
    "stands_statically": true,
-   "one_foot_margin_at_stand_mm": -61.92,
+   "one_foot_margin_at_stand_mm": 32.14,
    "hip_pitch_hold_torque_nm_each": 0.087,
    "hip_pitch_torque_limit_nm": 1.196,
    "hip_pitch_torque_fraction": 0.073
@@ -891,17 +1420,17 @@
    "gap_to_camera_board_mm": 18.86,
    "overhang_past_the_deck_mm": 0.0,
    "neutral_interferences": [],
-   "total_g": 580.2,
+   "total_g": 611.9,
    "com_neutral_mm": [
-    46.21,
-    -0.0,
-    -24.42
+    49.07,
+    0.04,
+    -31.72
    ],
-   "neutral_margin_mm": -14.29,
-   "stand_thigh_swing_deg": 50.0,
-   "stand_margin_mm": 37.28,
+   "neutral_margin_mm": -9.93,
+   "stand_thigh_swing_deg": 62.0,
+   "stand_margin_mm": 46.91,
    "stands_statically": true,
-   "one_foot_margin_at_stand_mm": -61.92,
+   "one_foot_margin_at_stand_mm": 32.14,
    "hip_pitch_hold_torque_nm_each": 0.123,
    "hip_pitch_torque_limit_nm": 1.196,
    "hip_pitch_torque_fraction": 0.103
@@ -929,17 +1458,17 @@
    "gap_to_camera_board_mm": 10.86,
    "overhang_past_the_deck_mm": 0.5,
    "neutral_interferences": [],
-   "total_g": 747.2,
+   "total_g": 778.9,
    "com_neutral_mm": [
-    34.63,
-    -0.0,
-    -10.43
+    37.35,
+    0.03,
+    -16.73
    ],
-   "neutral_margin_mm": -25.87,
-   "stand_thigh_swing_deg": 63.0,
-   "stand_margin_mm": 37.49,
+   "neutral_margin_mm": -21.65,
+   "stand_thigh_swing_deg": 62.0,
+   "stand_margin_mm": 38.6,
    "stands_statically": true,
-   "one_foot_margin_at_stand_mm": -61.92,
+   "one_foot_margin_at_stand_mm": 32.13,
    "hip_pitch_hold_torque_nm_each": 0.2,
    "hip_pitch_torque_limit_nm": 1.196,
    "hip_pitch_torque_fraction": 0.167
@@ -954,12 +1483,16 @@
   "roll_servo_seat": "images/roll-servo-seat.png",
   "camera_mount": "images/camera-mount.png",
   "sweep_left_hip_roll_negative": "images/sweep-left-hip-roll-negative.png",
+  "sweep_left_hip_pitch_positive": "images/sweep-left-hip-pitch-positive.png",
+  "sweep_left_hip_pitch_negative": "images/sweep-left-hip-pitch-negative.png",
   "sweep_left_knee_positive": "images/sweep-left-knee-positive.png",
   "sweep_left_knee_negative": "images/sweep-left-knee-negative.png",
   "assumption_thigh_face": "images/assumption-thigh-face.png",
   "assumption_cradle_SR431": "images/assumption-cradle-SR431.png",
   "assumption_cradle_SR311": "images/assumption-cradle-SR311.png",
   "balance": "images/balance.png",
+  "balance_one_foot": "images/balance-one-foot.png",
+  "soles": "images/soles.png",
   "turning_head": "images/turning-head.png"
  },
  "variants": {
@@ -972,16 +1505,16 @@
      -185.9
     ],
     "box_max_mm": [
-     135.5,
+     153.0,
      125.0,
      127.85
     ],
     "size_mm": [
-     180.5,
+     198.0,
      250.0,
      313.75
     ],
-    "stance_width_between_foot_centres_mm": 171.8,
+    "stance_width_between_foot_centres_mm": 59.8,
     "joint_origins_mm": {
      "left_hip_roll": [
       49.0,
@@ -1021,7 +1554,7 @@
     "left_hip_roll": {
      "joint": "left_hip_roll",
      "collision_free_deg": [
-      -55.0,
+      -3.0,
       180.0
      ],
      "positive": {
@@ -1030,77 +1563,161 @@
       "blocked_by": []
      },
      "negative": {
-      "free_deg": 55.0,
-      "first_contact_deg": -55.25,
+      "free_deg": 3.0,
+      "first_contact_deg": -3.25,
       "blocked_by": [
        {
         "moving": "left_shin_print",
         "fixed": "right_shin_print",
-        "volume_mm3": 1.3
+        "volume_mm3": 1.4
        }
       ]
+     },
+     "collision_free_soles_left_out_deg": [
+      -38.75,
+      180.0
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 38.75,
+       "first_contact_deg": -39.0,
+       "blocked_by": [
+        {
+         "moving": "left_shin_print",
+         "fixed": "right_thigh_print",
+         "volume_mm3": 0.6
+        }
+       ]
+      },
+      "positive": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      }
      }
     },
     "left_hip_pitch": {
      "joint": "left_hip_pitch",
      "collision_free_deg": [
-      -180.0,
-      180.0
+      -9.0,
+      11.0
      ],
      "positive": {
-      "free_deg": 180.0,
-      "first_contact_deg": null,
-      "blocked_by": []
+      "free_deg": 11.0,
+      "first_contact_deg": 11.25,
+      "blocked_by": [
+       {
+        "moving": "left_shin_print",
+        "fixed": "right_shin_print",
+        "volume_mm3": 58.9
+       }
+      ]
      },
      "negative": {
-      "free_deg": 180.0,
-      "first_contact_deg": null,
-      "blocked_by": []
+      "free_deg": 9.0,
+      "first_contact_deg": -9.25,
+      "blocked_by": [
+       {
+        "moving": "left_shin_print",
+        "fixed": "right_shin_print",
+        "volume_mm3": 62.6
+       }
+      ]
+     },
+     "collision_free_soles_left_out_deg": [
+      -180.0,
+      65.75
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      },
+      "positive": {
+       "free_deg": 65.75,
+       "first_contact_deg": 66.0,
+       "blocked_by": [
+        {
+         "moving": "left_shin_print",
+         "fixed": "torso_print",
+         "volume_mm3": 1.3
+        }
+       ]
+      }
      }
     },
     "left_knee": {
      "joint": "left_knee",
      "collision_free_deg": [
-      -137.25,
-      115.25
+      -18.0,
+      111.5
      ],
      "positive": {
-      "free_deg": 115.25,
-      "first_contact_deg": 115.5,
+      "free_deg": 111.5,
+      "first_contact_deg": 111.75,
       "blocked_by": [
        {
         "moving": "left_shin_print",
         "fixed": "left_roll_servo",
-        "volume_mm3": 0.9
+        "volume_mm3": 3.3
        }
       ]
      },
      "negative": {
-      "free_deg": 137.25,
-      "first_contact_deg": -137.5,
+      "free_deg": 18.0,
+      "first_contact_deg": -18.25,
       "blocked_by": [
        {
         "moving": "left_shin_print",
-        "fixed": "left_yoke_print",
-        "volume_mm3": 1.1
+        "fixed": "right_shin_print",
+        "volume_mm3": 3.6
        }
       ]
+     },
+     "collision_free_soles_left_out_deg": [
+      -154.25,
+      111.5
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 154.25,
+       "first_contact_deg": -154.5,
+       "blocked_by": [
+        {
+         "moving": "left_shin_print",
+         "fixed": "left_yoke_print",
+         "volume_mm3": 1.7
+        }
+       ]
+      },
+      "positive": {
+       "free_deg": 111.5,
+       "first_contact_deg": 111.75,
+       "blocked_by": [
+        {
+         "moving": "left_shin_print",
+         "fixed": "left_roll_servo",
+         "volume_mm3": 3.3
+        }
+       ]
+      }
      }
     },
     "right_hip_roll": {
      "joint": "right_hip_roll",
      "collision_free_deg": [
       -180.0,
-      55.0
+      3.0
      ],
      "positive": {
-      "free_deg": 55.0,
-      "first_contact_deg": 55.25,
+      "free_deg": 3.0,
+      "first_contact_deg": 3.25,
       "blocked_by": [
        {
         "moving": "right_shin_print",
         "fixed": "left_shin_print",
-        "volume_mm3": 1.3
+        "volume_mm3": 2.8
        }
       ]
      },
@@ -1108,67 +1725,151 @@
       "free_deg": 180.0,
       "first_contact_deg": null,
       "blocked_by": []
+     },
+     "collision_free_soles_left_out_deg": [
+      -180.0,
+      35.0
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      },
+      "positive": {
+       "free_deg": 35.0,
+       "first_contact_deg": 35.25,
+       "blocked_by": [
+        {
+         "moving": "right_shin_print",
+         "fixed": "left_thigh_print",
+         "volume_mm3": 0.6
+        }
+       ]
+      }
      }
     },
     "right_hip_pitch": {
      "joint": "right_hip_pitch",
      "collision_free_deg": [
-      -180.0,
-      180.0
+      -11.0,
+      9.0
      ],
      "positive": {
-      "free_deg": 180.0,
-      "first_contact_deg": null,
-      "blocked_by": []
+      "free_deg": 9.0,
+      "first_contact_deg": 9.25,
+      "blocked_by": [
+       {
+        "moving": "right_shin_print",
+        "fixed": "left_shin_print",
+        "volume_mm3": 62.6
+       }
+      ]
      },
      "negative": {
-      "free_deg": 180.0,
-      "first_contact_deg": null,
-      "blocked_by": []
+      "free_deg": 11.0,
+      "first_contact_deg": -11.25,
+      "blocked_by": [
+       {
+        "moving": "right_shin_print",
+        "fixed": "left_shin_print",
+        "volume_mm3": 58.9
+       }
+      ]
+     },
+     "collision_free_soles_left_out_deg": [
+      -180.0,
+      65.75
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      },
+      "positive": {
+       "free_deg": 65.75,
+       "first_contact_deg": 66.0,
+       "blocked_by": [
+        {
+         "moving": "right_shin_print",
+         "fixed": "torso_print",
+         "volume_mm3": 1.3
+        }
+       ]
+      }
      }
     },
     "right_knee": {
      "joint": "right_knee",
      "collision_free_deg": [
-      -137.25,
-      115.25
+      -154.25,
+      18.0
      ],
      "positive": {
-      "free_deg": 115.25,
-      "first_contact_deg": 115.5,
+      "free_deg": 18.0,
+      "first_contact_deg": 18.25,
       "blocked_by": [
        {
         "moving": "right_shin_print",
-        "fixed": "right_roll_servo",
-        "volume_mm3": 0.9
+        "fixed": "left_shin_print",
+        "volume_mm3": 3.6
        }
       ]
      },
      "negative": {
-      "free_deg": 137.25,
-      "first_contact_deg": -137.5,
+      "free_deg": 154.25,
+      "first_contact_deg": -154.5,
       "blocked_by": [
        {
         "moving": "right_shin_print",
         "fixed": "right_yoke_print",
-        "volume_mm3": 1.1
+        "volume_mm3": 1.7
        }
       ]
+     },
+     "collision_free_soles_left_out_deg": [
+      -154.25,
+      111.5
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 154.25,
+       "first_contact_deg": -154.5,
+       "blocked_by": [
+        {
+         "moving": "right_shin_print",
+         "fixed": "right_yoke_print",
+         "volume_mm3": 1.7
+        }
+       ]
+      },
+      "positive": {
+       "free_deg": 111.5,
+       "first_contact_deg": 111.75,
+       "blocked_by": [
+        {
+         "moving": "right_shin_print",
+         "fixed": "right_roll_servo",
+         "volume_mm3": 3.3
+        }
+       ]
+      }
      }
     }
    },
    "joint_limits_deg": {
     "left_hip_roll": {
-     "min_deg": -52.0,
+     "min_deg": -35.0,
      "max_deg": 90.0,
      "min_set_by": "collision",
      "max_set_by": "servo travel"
     },
     "left_hip_pitch": {
      "min_deg": -90.0,
-     "max_deg": 90.0,
+     "max_deg": 62.0,
      "min_set_by": "servo travel",
-     "max_set_by": "servo travel"
+     "max_set_by": "collision"
     },
     "left_knee": {
      "min_deg": -90.0,
@@ -1178,15 +1879,15 @@
     },
     "right_hip_roll": {
      "min_deg": -90.0,
-     "max_deg": 52.0,
+     "max_deg": 32.0,
      "min_set_by": "servo travel",
      "max_set_by": "collision"
     },
     "right_hip_pitch": {
      "min_deg": -90.0,
-     "max_deg": 90.0,
+     "max_deg": 62.0,
      "min_set_by": "servo travel",
-     "max_set_by": "servo travel"
+     "max_set_by": "collision"
     },
     "right_knee": {
      "min_deg": -90.0,
@@ -1570,24 +2271,24 @@
     "cradle_z_mm": -21.5
    },
    "mass": {
-    "total_g": 532.9,
+    "total_g": 564.5,
     "by_kind_g": {
-     "print": 142.4,
+     "print": 174.0,
      "board": 30.0,
      "shield": 25.0,
-     "display": 15.0,
      "battery": 8.5,
+     "display": 15.0,
      "camera": 10.0,
      "servo": 302.0
     },
-    "total_if_printed_solid_g": 627.8,
+    "total_if_printed_solid_g": 680.5,
     "print_material": "PLA",
     "print_density_g_cm3": 1.24,
     "print_solid_fraction": 0.6,
     "com_neutral_mm": [
-     53.57,
-     -0.08,
-     -27.68
+     56.26,
+     -0.03,
+     -35.4
     ],
     "links": {
      "torso": {
@@ -1615,11 +2316,11 @@
       ]
      },
      "left_shin": {
-      "mass_g": 21.6,
+      "mass_g": 40.0,
       "com_link_mm": [
-       5.61,
-       -2.1,
-       -61.79
+       9.04,
+       -35.38,
+       -62.72
       ]
      },
      "right_hip": {
@@ -1639,11 +2340,11 @@
       ]
      },
      "right_shin": {
-      "mass_g": 21.6,
+      "mass_g": 34.9,
       "com_link_mm": [
-       5.61,
-       2.1,
-       -61.79
+       7.88,
+       28.49,
+       -60.46
       ]
      }
     },
@@ -1667,16 +2368,16 @@
       "mass_g": 25.0
      },
      {
-      "solid": "round_display",
-      "link": "torso",
-      "kind": "display",
-      "mass_g": 15.0
-     },
-     {
       "solid": "battery",
       "link": "torso",
       "kind": "battery",
       "mass_g": 8.5
+     },
+     {
+      "solid": "round_display",
+      "link": "torso",
+      "kind": "display",
+      "mass_g": 15.0
      },
      {
       "solid": "camera_board",
@@ -1724,7 +2425,7 @@
       "solid": "left_shin_print",
       "link": "left_shin",
       "kind": "print",
-      "mass_g": 21.6
+      "mass_g": 40.0
      },
      {
       "solid": "right_yoke_print",
@@ -1754,7 +2455,7 @@
       "solid": "right_shin_print",
       "link": "right_shin",
       "kind": "print",
-      "mass_g": 21.6
+      "mass_g": 34.9
      }
     ]
    },
@@ -1766,1607 +2467,671 @@
      ],
      "feet_coplanar": true,
      "com_ground_mm": [
-      -35.43,
-      -87.98,
-      76.22
+      -32.74,
+      -87.93,
+      68.5
      ],
-     "com_height_above_sole_mm": 158.22,
+     "com_height_above_sole_mm": 150.5,
      "polygon_mm": [
       [
-       -28.5,
-       15.51
+       -17.0,
+       4.0
       ],
       [
-       -28.5,
-       -191.31
+       -30.0,
+       -32.0
       ],
       [
-       -28.49,
-       -191.65
+       -30.0,
+       -143.8
       ],
       [
-       -28.47,
-       -191.88
+       -17.0,
+       -179.8
       ],
       [
-       -28.46,
-       -191.99
+       17.0,
+       -179.8
       ],
       [
-       -28.42,
-       -192.28
+       64.0,
+       -143.8
       ],
       [
-       -28.38,
-       -192.47
+       64.0,
+       -32.0
       ],
       [
-       -28.33,
-       -192.67
-      ],
-      [
-       -28.23,
-       -193.01
-      ],
-      [
-       -28.22,
-       -193.06
-      ],
-      [
-       -28.11,
-       -193.34
-      ],
-      [
-       -28.07,
-       -193.44
-      ],
-      [
-       -27.97,
-       -193.67
-      ],
-      [
-       -27.81,
-       -193.99
-      ],
-      [
-       -27.63,
-       -194.3
-      ],
-      [
-       -27.43,
-       -194.6
-      ],
-      [
-       -27.21,
-       -194.9
-      ],
-      [
-       -26.97,
-       -195.18
-      ],
-      [
-       -26.72,
-       -195.45
-      ],
-      [
-       -26.45,
-       -195.71
-      ],
-      [
-       -26.16,
-       -195.96
-      ],
-      [
-       -25.85,
-       -196.19
-      ],
-      [
-       -25.53,
-       -196.41
-      ],
-      [
-       -25.52,
-       -196.42
-      ],
-      [
-       -25.18,
-       -196.63
-      ],
-      [
-       -24.84,
-       -196.82
-      ],
-      [
-       -24.48,
-       -196.99
-      ],
-      [
-       -24.11,
-       -197.15
-      ],
-      [
-       -23.74,
-       -197.29
-      ],
-      [
-       -23.35,
-       -197.41
-      ],
-      [
-       -22.96,
-       -197.51
-      ],
-      [
-       -22.56,
-       -197.6
-      ],
-      [
-       -22.15,
-       -197.67
-      ],
-      [
-       -22.13,
-       -197.67
-      ],
-      [
-       -21.72,
-       -197.72
-      ],
-      [
-       -21.31,
-       -197.76
-      ],
-      [
-       -20.9,
-       -197.77
-      ],
-      [
-       -13.87,
-       -197.78
-      ],
-      [
-       -7.29,
-       -197.79
-      ],
-      [
-       -0.72,
-       -197.8
-      ],
-      [
-       10.86,
-       -197.79
-      ],
-      [
-       36.75,
-       -197.76
-      ],
-      [
-       37.16,
-       -197.75
-      ],
-      [
-       37.42,
-       -197.74
-      ],
-      [
-       37.51,
-       -197.73
-      ],
-      [
-       37.73,
-       -197.72
-      ],
-      [
-       37.84,
-       -197.71
-      ],
-      [
-       38.25,
-       -197.66
-      ],
-      [
-       38.3,
-       -197.65
-      ],
-      [
-       38.65,
-       -197.6
-      ],
-      [
-       38.73,
-       -197.59
-      ],
-      [
-       38.83,
-       -197.57
-      ],
-      [
-       39.06,
-       -197.53
-      ],
-      [
-       39.08,
-       -197.52
-      ],
-      [
-       39.47,
-       -197.43
-      ],
-      [
-       39.64,
-       -197.39
-      ],
-      [
-       39.85,
-       -197.33
-      ],
-      [
-       40.17,
-       -197.24
-      ],
-      [
-       40.26,
-       -197.21
-      ],
-      [
-       40.43,
-       -197.15
-      ],
-      [
-       40.61,
-       -197.09
-      ],
-      [
-       40.69,
-       -197.06
-      ],
-      [
-       40.94,
-       -196.96
-      ],
-      [
-       41.02,
-       -196.93
-      ],
-      [
-       41.19,
-       -196.86
-      ],
-      [
-       41.33,
-       -196.8
-      ],
-      [
-       41.44,
-       -196.75
-      ],
-      [
-       41.68,
-       -196.63
-      ],
-      [
-       41.75,
-       -196.6
-      ],
-      [
-       41.92,
-       -196.51
-      ],
-      [
-       42.03,
-       -196.46
-      ],
-      [
-       42.1,
-       -196.42
-      ],
-      [
-       42.16,
-       -196.39
-      ],
-      [
-       42.35,
-       -196.28
-      ],
-      [
-       42.39,
-       -196.25
-      ],
-      [
-       42.49,
-       -196.19
-      ],
-      [
-       42.61,
-       -196.11
-      ],
-      [
-       42.69,
-       -196.07
-      ],
-      [
-       42.77,
-       -196.01
-      ],
-      [
-       42.8,
-       -196.0
-      ],
-      [
-       42.83,
-       -195.97
-      ],
-      [
-       43.05,
-       -195.82
-      ],
-      [
-       43.09,
-       -195.79
-      ],
-      [
-       43.26,
-       -195.67
-      ],
-      [
-       43.31,
-       -195.63
-      ],
-      [
-       43.47,
-       -195.51
-      ],
-      [
-       43.67,
-       -195.35
-      ],
-      [
-       43.86,
-       -195.18
-      ],
-      [
-       43.88,
-       -195.16
-      ],
-      [
-       44.05,
-       -195.01
-      ],
-      [
-       44.23,
-       -194.83
-      ],
-      [
-       44.4,
-       -194.65
-      ],
-      [
-       44.52,
-       -194.52
-      ],
-      [
-       44.74,
-       -194.27
-      ],
-      [
-       44.76,
-       -194.24
-      ],
-      [
-       44.88,
-       -194.1
-      ],
-      [
-       44.99,
-       -193.95
-      ],
-      [
-       45.05,
-       -193.88
-      ],
-      [
-       45.21,
-       -193.65
-      ],
-      [
-       45.3,
-       -193.52
-      ],
-      [
-       45.38,
-       -193.39
-      ],
-      [
-       45.57,
-       -193.06
-      ],
-      [
-       45.64,
-       -192.95
-      ],
-      [
-       45.65,
-       -192.91
-      ],
-      [
-       45.76,
-       -192.71
-      ],
-      [
-       45.8,
-       -192.62
-      ],
-      [
-       45.93,
-       -192.32
-      ],
-      [
-       45.95,
-       -192.28
-      ],
-      [
-       45.96,
-       -192.27
-      ],
-      [
-       46.04,
-       -192.06
-      ],
-      [
-       46.16,
-       -191.73
-      ],
-      [
-       46.16,
-       -191.72
-      ],
-      [
-       46.19,
-       -191.63
-      ],
-      [
-       46.26,
-       -191.39
-      ],
-      [
-       46.29,
-       -191.28
-      ],
-      [
-       46.34,
-       -191.03
-      ],
-      [
-       46.36,
-       -190.97
-      ],
-      [
-       46.41,
-       -190.7
-      ],
-      [
-       46.46,
-       -190.35
-      ],
-      [
-       46.46,
-       -190.3
-      ],
-      [
-       46.46,
-       -190.28
-      ],
-      [
-       46.49,
-       -189.88
-      ],
-      [
-       46.5,
-       -189.66
-      ],
-      [
-       46.5,
-       -189.62
-      ],
-      [
-       46.5,
-       -189.57
-      ],
-      [
-       46.5,
-       -189.56
-      ],
-      [
-       46.5,
-       -189.56
-      ],
-      [
-       46.5,
-       13.76
-      ],
-      [
-       46.49,
-       14.08
-      ],
-      [
-       46.48,
-       14.23
-      ],
-      [
-       46.46,
-       14.47
-      ],
-      [
-       46.44,
-       14.71
-      ],
-      [
-       46.39,
-       15.01
-      ],
-      [
-       46.35,
-       15.21
-      ],
-      [
-       46.29,
-       15.47
-      ],
-      [
-       46.22,
-       15.71
-      ],
-      [
-       46.15,
-       15.95
-      ],
-      [
-       46.06,
-       16.2
-      ],
-      [
-       45.99,
-       16.37
-      ],
-      [
-       45.87,
-       16.68
-      ],
-      [
-       45.79,
-       16.83
-      ],
-      [
-       45.63,
-       17.14
-      ],
-      [
-       45.57,
-       17.26
-      ],
-      [
-       45.32,
-       17.68
-      ],
-      [
-       45.04,
-       18.08
-      ],
-      [
-       44.74,
-       18.47
-      ],
-      [
-       44.4,
-       18.85
-      ],
-      [
-       44.23,
-       19.03
-      ],
-      [
-       44.05,
-       19.21
-      ],
-      [
-       43.86,
-       19.38
-      ],
-      [
-       43.66,
-       19.55
-      ],
-      [
-       43.46,
-       19.71
-      ],
-      [
-       43.26,
-       19.87
-      ],
-      [
-       43.05,
-       20.02
-      ],
-      [
-       42.83,
-       20.17
-      ],
-      [
-       42.61,
-       20.32
-      ],
-      [
-       42.39,
-       20.45
-      ],
-      [
-       42.16,
-       20.59
-      ],
-      [
-       41.92,
-       20.71
-      ],
-      [
-       41.68,
-       20.83
-      ],
-      [
-       41.44,
-       20.95
-      ],
-      [
-       41.2,
-       21.06
-      ],
-      [
-       40.95,
-       21.16
-      ],
-      [
-       40.69,
-       21.26
-      ],
-      [
-       40.44,
-       21.35
-      ],
-      [
-       40.18,
-       21.44
-      ],
-      [
-       39.91,
-       21.52
-      ],
-      [
-       39.65,
-       21.59
-      ],
-      [
-       39.38,
-       21.65
-      ],
-      [
-       38.84,
-       21.77
-      ],
-      [
-       38.29,
-       21.85
-      ],
-      [
-       38.27,
-       21.86
-      ],
-      [
-       37.71,
-       21.92
-      ],
-      [
-       37.16,
-       21.95
-      ],
-      [
-       34.93,
-       21.96
-      ],
-      [
-       17.05,
-       21.98
-      ],
-      [
-       -0.72,
-       22.0
-      ],
-      [
-       -7.29,
-       21.99
-      ],
-      [
-       -13.87,
-       21.98
-      ],
-      [
-       -20.9,
-       21.97
-      ],
-      [
-       -21.31,
-       21.96
-      ],
-      [
-       -21.72,
-       21.92
-      ],
-      [
-       -22.13,
-       21.87
-      ],
-      [
-       -22.15,
-       21.87
-      ],
-      [
-       -22.56,
-       21.8
-      ],
-      [
-       -22.96,
-       21.71
-      ],
-      [
-       -23.35,
-       21.61
-      ],
-      [
-       -23.74,
-       21.49
-      ],
-      [
-       -24.11,
-       21.35
-      ],
-      [
-       -24.48,
-       21.19
-      ],
-      [
-       -24.84,
-       21.02
-      ],
-      [
-       -25.18,
-       20.83
-      ],
-      [
-       -25.52,
-       20.62
-      ],
-      [
-       -25.53,
-       20.61
-      ],
-      [
-       -25.85,
-       20.39
-      ],
-      [
-       -26.16,
-       20.16
-      ],
-      [
-       -26.45,
-       19.91
-      ],
-      [
-       -26.72,
-       19.65
-      ],
-      [
-       -26.97,
-       19.38
-      ],
-      [
-       -27.21,
-       19.1
-      ],
-      [
-       -27.43,
-       18.8
-      ],
-      [
-       -27.63,
-       18.5
-      ],
-      [
-       -27.81,
-       18.19
-      ],
-      [
-       -27.97,
-       17.87
-      ],
-      [
-       -28.07,
-       17.64
-      ],
-      [
-       -28.11,
-       17.55
-      ],
-      [
-       -28.22,
-       17.26
-      ],
-      [
-       -28.23,
-       17.21
-      ],
-      [
-       -28.33,
-       16.87
-      ],
-      [
-       -28.38,
-       16.67
-      ],
-      [
-       -28.42,
-       16.48
-      ],
-      [
-       -28.46,
-       16.19
-      ],
-      [
-       -28.47,
-       16.08
-      ],
-      [
-       -28.49,
-       15.85
+       17.0,
+       4.0
       ]
      ],
-     "margin_mm": -6.93,
+     "margin_mm": -2.74,
      "inside": false
     },
     "stand_scan_deg_margin_mm": [
      [
       -90.0,
-      -73.52
+      -65.6
      ],
      [
       -89.0,
-      -73.51
+      -65.59
      ],
      [
       -88.0,
-      -73.48
+      -65.56
      ],
      [
       -87.0,
-      -73.43
+      -65.52
      ],
      [
       -86.0,
-      -73.36
+      -65.45
      ],
      [
       -85.0,
-      -73.27
+      -65.36
      ],
      [
       -84.0,
-      -73.16
+      -65.26
      ],
      [
       -83.0,
-      -73.03
+      -65.13
      ],
      [
       -82.0,
-      -72.88
+      -64.99
      ],
      [
       -81.0,
-      -72.7
+      -64.83
      ],
      [
       -80.0,
-      -72.51
+      -64.65
      ],
      [
       -79.0,
-      -72.3
+      -64.45
      ],
      [
       -78.0,
-      -72.07
+      -64.23
      ],
      [
       -77.0,
-      -71.82
+      -63.99
      ],
      [
       -76.0,
-      -71.55
+      -63.73
      ],
      [
       -75.0,
-      -71.25
+      -63.46
      ],
      [
       -74.0,
-      -70.94
+      -63.17
      ],
      [
       -73.0,
-      -70.61
+      -62.86
      ],
      [
       -72.0,
-      -70.26
+      -62.53
      ],
      [
       -71.0,
-      -69.9
+      -62.18
      ],
      [
       -70.0,
-      -69.51
+      -61.81
      ],
      [
       -69.0,
-      -69.1
+      -61.43
      ],
      [
       -68.0,
-      -68.67
+      -61.02
      ],
      [
       -67.0,
-      -68.23
+      -60.61
      ],
      [
       -66.0,
-      -67.77
+      -60.17
      ],
      [
       -65.0,
-      -67.28
+      -59.71
      ],
      [
       -64.0,
-      -66.78
+      -59.24
      ],
      [
       -63.0,
-      -66.26
+      -58.75
      ],
      [
       -62.0,
-      -65.73
+      -58.24
      ],
      [
       -61.0,
-      -65.17
+      -57.72
      ],
      [
       -60.0,
-      -64.6
+      -57.18
      ],
      [
       -59.0,
-      -64.01
+      -56.62
      ],
      [
       -58.0,
-      -63.4
+      -56.05
      ],
      [
       -57.0,
-      -62.78
+      -55.46
      ],
      [
       -56.0,
-      -62.14
+      -54.86
      ],
      [
       -55.0,
-      -61.48
+      -54.23
      ],
      [
       -54.0,
-      -60.8
+      -53.6
      ],
      [
       -53.0,
-      -60.11
+      -52.94
      ],
      [
       -52.0,
-      -59.41
+      -52.28
      ],
      [
       -51.0,
-      -58.68
+      -51.59
      ],
      [
       -50.0,
-      -57.94
+      -50.9
      ],
      [
       -49.0,
-      -57.19
+      -50.18
      ],
      [
       -48.0,
-      -56.42
+      -49.46
      ],
      [
       -47.0,
-      -55.63
+      -48.71
      ],
      [
       -46.0,
-      -54.83
+      -47.96
      ],
      [
       -45.0,
-      -54.02
+      -47.19
      ],
      [
       -44.0,
-      -53.19
+      -46.41
      ],
      [
       -43.0,
-      -52.35
+      -45.61
      ],
      [
       -42.0,
-      -51.49
+      -44.8
      ],
      [
       -41.0,
-      -50.62
+      -43.98
      ],
      [
       -40.0,
-      -49.73
+      -43.15
      ],
      [
       -39.0,
-      -48.84
+      -42.3
      ],
      [
       -38.0,
-      -47.93
+      -41.44
      ],
      [
       -37.0,
-      -47.01
+      -40.57
      ],
      [
       -36.0,
-      -46.07
+      -39.69
      ],
      [
       -35.0,
-      -45.12
+      -38.8
      ],
      [
       -34.0,
-      -44.17
+      -37.89
      ],
      [
       -33.0,
-      -43.2
+      -36.98
      ],
      [
       -32.0,
-      -42.22
+      -36.05
      ],
      [
       -31.0,
-      -41.23
+      -35.12
      ],
      [
       -30.0,
-      -40.22
+      -34.17
      ],
      [
       -29.0,
-      -39.21
+      -33.22
      ],
      [
       -28.0,
-      -38.19
+      -32.25
      ],
      [
       -27.0,
-      -37.16
+      -31.28
      ],
      [
       -26.0,
-      -36.12
+      -30.3
      ],
      [
       -25.0,
-      -35.07
+      -29.31
      ],
      [
       -24.0,
-      -34.01
+      -28.31
      ],
      [
       -23.0,
-      -32.95
+      -27.3
      ],
      [
       -22.0,
-      -31.87
+      -26.29
      ],
      [
       -21.0,
-      -30.79
+      -25.27
      ],
      [
       -20.0,
-      -29.7
+      -24.24
      ],
      [
       -19.0,
-      -28.61
+      -23.21
      ],
      [
       -18.0,
-      -27.51
+      -22.17
      ],
      [
       -17.0,
-      -26.4
+      -21.12
      ],
      [
       -16.0,
-      -25.28
+      -20.07
      ],
      [
       -15.0,
-      -24.16
+      -19.01
      ],
      [
       -14.0,
-      -23.04
+      -17.95
      ],
      [
       -13.0,
-      -21.91
+      -16.88
      ],
      [
       -12.0,
-      -20.77
+      -15.81
      ],
      [
       -11.0,
-      -19.63
+      -14.73
      ],
      [
       -10.0,
-      -18.49
+      -13.66
      ],
      [
       -9.0,
-      -17.34
+      -12.57
      ],
      [
       -8.0,
-      -16.19
+      -11.49
      ],
      [
       -7.0,
-      -15.04
+      -10.4
      ],
      [
       -6.0,
-      -13.89
+      -9.31
      ],
      [
       -5.0,
-      -12.73
+      -8.22
      ],
      [
       -4.0,
-      -11.57
+      -7.13
      ],
      [
       -3.0,
-      -10.41
+      -6.03
      ],
      [
       -2.0,
-      -9.25
+      -4.93
      ],
      [
       -1.0,
-      -8.09
+      -3.84
      ],
      [
       0.0,
-      -6.93
+      -2.74
      ],
      [
       1.0,
-      -5.76
+      -1.64
      ],
      [
       2.0,
-      -4.6
+      -0.55
      ],
      [
       3.0,
-      -3.44
+      0.55
      ],
      [
       4.0,
-      -2.28
+      1.64
      ],
      [
       5.0,
-      -1.12
+      2.74
      ],
      [
       6.0,
-      0.04
+      3.83
      ],
      [
       7.0,
-      1.19
+      4.92
      ],
      [
       8.0,
-      2.34
+      6.01
      ],
      [
       9.0,
-      3.49
+      7.09
      ],
      [
       10.0,
-      4.64
+      8.18
      ],
      [
       11.0,
-      5.78
+      9.25
      ],
      [
       12.0,
-      6.92
+      10.33
      ],
      [
       13.0,
-      8.06
+      11.4
      ],
      [
       14.0,
-      9.19
+      12.47
      ],
      [
       15.0,
-      10.31
+      13.53
      ],
      [
       16.0,
-      11.43
+      14.59
      ],
      [
       17.0,
-      12.55
+      15.64
      ],
      [
       18.0,
-      13.65
+      16.69
      ],
      [
       19.0,
-      14.76
+      17.73
      ],
      [
       20.0,
-      15.85
+      18.76
      ],
      [
       21.0,
-      16.94
+      19.79
      ],
      [
       22.0,
-      18.02
+      20.81
      ],
      [
       23.0,
-      19.1
+      21.82
      ],
      [
       24.0,
-      20.16
+      22.83
      ],
      [
       25.0,
-      21.22
+      23.83
      ],
      [
       26.0,
-      22.27
+      24.82
      ],
      [
       27.0,
-      23.31
+      25.8
      ],
      [
       28.0,
-      24.34
+      26.77
      ],
      [
       29.0,
-      25.36
+      27.74
      ],
      [
       30.0,
-      26.37
+      28.69
      ],
      [
       31.0,
-      27.37
+      29.64
      ],
      [
       32.0,
-      28.37
+      30.57
      ],
      [
       33.0,
-      29.35
+      31.5
      ],
      [
       34.0,
-      30.32
+      32.41
      ],
      [
       35.0,
-      31.27
+      33.32
      ],
      [
       36.0,
-      32.22
+      34.21
      ],
      [
       37.0,
-      33.15
+      35.09
      ],
      [
       38.0,
-      34.08
+      35.96
      ],
      [
       39.0,
-      34.99
+      36.82
      ],
      [
       40.0,
-      35.88
+      37.67
      ],
      [
       41.0,
-      36.77
+      38.5
      ],
      [
       42.0,
-      37.36
+      39.32
      ],
      [
       43.0,
-      36.51
+      40.13
      ],
      [
       44.0,
-      35.66
+      40.93
      ],
      [
       45.0,
-      34.83
+      41.71
      ],
      [
       46.0,
-      34.02
+      42.48
      ],
      [
       47.0,
-      33.22
+      43.23
      ],
      [
       48.0,
-      32.43
+      43.98
      ],
      [
       49.0,
-      31.66
+      44.7
      ],
      [
       50.0,
-      30.91
+      45.42
      ],
      [
       51.0,
-      30.17
+      46.11
      ],
      [
       52.0,
-      29.45
+      46.8
      ],
      [
       53.0,
-      28.74
+      46.54
      ],
      [
       54.0,
-      28.05
+      45.88
      ],
      [
       55.0,
-      27.37
+      45.25
      ],
      [
       56.0,
-      26.71
+      44.62
      ],
      [
       57.0,
-      26.07
+      44.02
      ],
      [
       58.0,
-      25.45
+      43.43
      ],
      [
       59.0,
-      24.84
+      42.86
      ],
      [
       60.0,
-      24.25
+      42.3
      ],
      [
       61.0,
-      23.68
+      41.76
      ],
      [
       62.0,
-      23.12
-     ],
-     [
-      63.0,
-      22.59
-     ],
-     [
-      64.0,
-      22.07
-     ],
-     [
-      65.0,
-      21.57
-     ],
-     [
-      66.0,
-      21.09
-     ],
-     [
-      67.0,
-      20.62
-     ],
-     [
-      68.0,
-      20.18
-     ],
-     [
-      69.0,
-      19.75
-     ],
-     [
-      70.0,
-      19.34
-     ],
-     [
-      71.0,
-      18.96
-     ],
-     [
-      72.0,
-      18.59
-     ],
-     [
-      73.0,
-      18.24
-     ],
-     [
-      74.0,
-      17.91
-     ],
-     [
-      75.0,
-      17.6
-     ],
-     [
-      76.0,
-      17.31
-     ],
-     [
-      77.0,
-      17.03
-     ],
-     [
-      78.0,
-      16.78
-     ],
-     [
-      79.0,
-      16.55
-     ],
-     [
-      80.0,
-      16.34
-     ],
-     [
-      81.0,
-      16.15
-     ],
-     [
-      82.0,
-      15.98
-     ],
-     [
-      83.0,
-      15.82
-     ],
-     [
-      84.0,
-      15.69
-     ],
-     [
-      85.0,
-      15.58
-     ],
-     [
-      86.0,
-      15.49
-     ],
-     [
-      87.0,
-      15.42
-     ],
-     [
-      88.0,
-      15.37
-     ],
-     [
-      89.0,
-      15.34
-     ],
-     [
-      90.0,
-      15.33
+      41.24
      ]
     ],
     "stand_pose": {
-     "thigh_swing_deg": 42.0,
+     "thigh_swing_deg": 52.0,
      "q_deg": {
       "left_hip_roll": 0.0,
-      "left_hip_pitch": 42.0,
-      "left_knee": -42.0,
+      "left_hip_pitch": 52.0,
+      "left_knee": -52.0,
       "right_hip_roll": 0.0,
-      "right_hip_pitch": 42.0,
-      "right_knee": -42.0
+      "right_hip_pitch": 52.0,
+      "right_knee": -52.0
      },
      "stance": [
       "left",
@@ -3374,870 +3139,46 @@
      ],
      "feet_coplanar": true,
      "com_ground_mm": [
-      9.14,
-      -87.98,
-      59.11
+      16.8,
+      -87.93,
+      44.34
      ],
-     "com_height_above_sole_mm": 141.11,
+     "com_height_above_sole_mm": 126.34,
      "polygon_mm": [
       [
-       -28.5,
-       15.51
+       -17.0,
+       4.0
       ],
       [
-       -28.5,
-       -191.31
+       -30.0,
+       -32.0
       ],
       [
-       -28.49,
-       -191.65
+       -30.0,
+       -143.8
       ],
       [
-       -28.47,
-       -191.88
+       -17.0,
+       -179.8
       ],
       [
-       -28.46,
-       -191.99
+       17.0,
+       -179.8
       ],
       [
-       -28.42,
-       -192.28
+       64.0,
+       -143.8
       ],
       [
-       -28.38,
-       -192.47
+       64.0,
+       -32.0
       ],
       [
-       -28.33,
-       -192.67
-      ],
-      [
-       -28.23,
-       -193.01
-      ],
-      [
-       -28.22,
-       -193.06
-      ],
-      [
-       -28.11,
-       -193.34
-      ],
-      [
-       -28.07,
-       -193.44
-      ],
-      [
-       -27.97,
-       -193.67
-      ],
-      [
-       -27.81,
-       -193.99
-      ],
-      [
-       -27.63,
-       -194.3
-      ],
-      [
-       -27.43,
-       -194.6
-      ],
-      [
-       -27.21,
-       -194.9
-      ],
-      [
-       -26.97,
-       -195.18
-      ],
-      [
-       -26.72,
-       -195.45
-      ],
-      [
-       -26.45,
-       -195.71
-      ],
-      [
-       -26.16,
-       -195.96
-      ],
-      [
-       -25.85,
-       -196.19
-      ],
-      [
-       -25.53,
-       -196.41
-      ],
-      [
-       -25.52,
-       -196.42
-      ],
-      [
-       -25.18,
-       -196.63
-      ],
-      [
-       -24.84,
-       -196.82
-      ],
-      [
-       -24.48,
-       -196.99
-      ],
-      [
-       -24.11,
-       -197.15
-      ],
-      [
-       -23.74,
-       -197.29
-      ],
-      [
-       -23.35,
-       -197.41
-      ],
-      [
-       -22.96,
-       -197.51
-      ],
-      [
-       -22.56,
-       -197.6
-      ],
-      [
-       -22.15,
-       -197.67
-      ],
-      [
-       -22.13,
-       -197.67
-      ],
-      [
-       -21.72,
-       -197.72
-      ],
-      [
-       -21.31,
-       -197.76
-      ],
-      [
-       -20.9,
-       -197.77
-      ],
-      [
-       -13.87,
-       -197.78
-      ],
-      [
-       -7.29,
-       -197.79
-      ],
-      [
-       -0.72,
-       -197.8
-      ],
-      [
-       10.86,
-       -197.79
-      ],
-      [
-       36.75,
-       -197.76
-      ],
-      [
-       37.16,
-       -197.75
-      ],
-      [
-       37.42,
-       -197.74
-      ],
-      [
-       37.51,
-       -197.73
-      ],
-      [
-       37.73,
-       -197.72
-      ],
-      [
-       37.84,
-       -197.71
-      ],
-      [
-       38.25,
-       -197.66
-      ],
-      [
-       38.3,
-       -197.65
-      ],
-      [
-       38.65,
-       -197.6
-      ],
-      [
-       38.73,
-       -197.59
-      ],
-      [
-       38.83,
-       -197.57
-      ],
-      [
-       39.06,
-       -197.53
-      ],
-      [
-       39.08,
-       -197.52
-      ],
-      [
-       39.47,
-       -197.43
-      ],
-      [
-       39.64,
-       -197.39
-      ],
-      [
-       39.85,
-       -197.33
-      ],
-      [
-       40.17,
-       -197.24
-      ],
-      [
-       40.26,
-       -197.21
-      ],
-      [
-       40.43,
-       -197.15
-      ],
-      [
-       40.61,
-       -197.09
-      ],
-      [
-       40.69,
-       -197.06
-      ],
-      [
-       40.94,
-       -196.96
-      ],
-      [
-       41.02,
-       -196.93
-      ],
-      [
-       41.19,
-       -196.86
-      ],
-      [
-       41.33,
-       -196.8
-      ],
-      [
-       41.44,
-       -196.75
-      ],
-      [
-       41.68,
-       -196.63
-      ],
-      [
-       41.75,
-       -196.6
-      ],
-      [
-       41.92,
-       -196.51
-      ],
-      [
-       42.03,
-       -196.46
-      ],
-      [
-       42.1,
-       -196.42
-      ],
-      [
-       42.16,
-       -196.39
-      ],
-      [
-       42.35,
-       -196.28
-      ],
-      [
-       42.39,
-       -196.25
-      ],
-      [
-       42.49,
-       -196.19
-      ],
-      [
-       42.61,
-       -196.11
-      ],
-      [
-       42.69,
-       -196.07
-      ],
-      [
-       42.77,
-       -196.01
-      ],
-      [
-       42.8,
-       -196.0
-      ],
-      [
-       42.83,
-       -195.97
-      ],
-      [
-       43.05,
-       -195.82
-      ],
-      [
-       43.09,
-       -195.79
-      ],
-      [
-       43.26,
-       -195.67
-      ],
-      [
-       43.31,
-       -195.63
-      ],
-      [
-       43.47,
-       -195.51
-      ],
-      [
-       43.67,
-       -195.35
-      ],
-      [
-       43.86,
-       -195.18
-      ],
-      [
-       43.88,
-       -195.16
-      ],
-      [
-       44.05,
-       -195.01
-      ],
-      [
-       44.23,
-       -194.83
-      ],
-      [
-       44.4,
-       -194.65
-      ],
-      [
-       44.52,
-       -194.52
-      ],
-      [
-       44.74,
-       -194.27
-      ],
-      [
-       44.76,
-       -194.24
-      ],
-      [
-       44.88,
-       -194.1
-      ],
-      [
-       44.99,
-       -193.95
-      ],
-      [
-       45.05,
-       -193.88
-      ],
-      [
-       45.21,
-       -193.65
-      ],
-      [
-       45.3,
-       -193.52
-      ],
-      [
-       45.38,
-       -193.39
-      ],
-      [
-       45.57,
-       -193.06
-      ],
-      [
-       45.64,
-       -192.95
-      ],
-      [
-       45.65,
-       -192.91
-      ],
-      [
-       45.76,
-       -192.71
-      ],
-      [
-       45.8,
-       -192.62
-      ],
-      [
-       45.93,
-       -192.32
-      ],
-      [
-       45.95,
-       -192.28
-      ],
-      [
-       45.96,
-       -192.27
-      ],
-      [
-       46.04,
-       -192.06
-      ],
-      [
-       46.16,
-       -191.73
-      ],
-      [
-       46.16,
-       -191.72
-      ],
-      [
-       46.19,
-       -191.63
-      ],
-      [
-       46.26,
-       -191.39
-      ],
-      [
-       46.29,
-       -191.28
-      ],
-      [
-       46.34,
-       -191.03
-      ],
-      [
-       46.36,
-       -190.97
-      ],
-      [
-       46.41,
-       -190.7
-      ],
-      [
-       46.46,
-       -190.35
-      ],
-      [
-       46.46,
-       -190.3
-      ],
-      [
-       46.46,
-       -190.28
-      ],
-      [
-       46.49,
-       -189.88
-      ],
-      [
-       46.5,
-       -189.66
-      ],
-      [
-       46.5,
-       -189.62
-      ],
-      [
-       46.5,
-       -189.57
-      ],
-      [
-       46.5,
-       -189.56
-      ],
-      [
-       46.5,
-       -189.56
-      ],
-      [
-       46.5,
-       13.76
-      ],
-      [
-       46.49,
-       14.08
-      ],
-      [
-       46.48,
-       14.23
-      ],
-      [
-       46.46,
-       14.47
-      ],
-      [
-       46.44,
-       14.71
-      ],
-      [
-       46.39,
-       15.01
-      ],
-      [
-       46.35,
-       15.21
-      ],
-      [
-       46.29,
-       15.47
-      ],
-      [
-       46.22,
-       15.71
-      ],
-      [
-       46.15,
-       15.95
-      ],
-      [
-       46.06,
-       16.2
-      ],
-      [
-       45.99,
-       16.37
-      ],
-      [
-       45.87,
-       16.68
-      ],
-      [
-       45.79,
-       16.83
-      ],
-      [
-       45.63,
-       17.14
-      ],
-      [
-       45.57,
-       17.26
-      ],
-      [
-       45.32,
-       17.68
-      ],
-      [
-       45.04,
-       18.08
-      ],
-      [
-       44.74,
-       18.47
-      ],
-      [
-       44.4,
-       18.85
-      ],
-      [
-       44.23,
-       19.03
-      ],
-      [
-       44.05,
-       19.21
-      ],
-      [
-       43.86,
-       19.38
-      ],
-      [
-       43.66,
-       19.55
-      ],
-      [
-       43.46,
-       19.71
-      ],
-      [
-       43.26,
-       19.87
-      ],
-      [
-       43.05,
-       20.02
-      ],
-      [
-       42.83,
-       20.17
-      ],
-      [
-       42.61,
-       20.32
-      ],
-      [
-       42.39,
-       20.45
-      ],
-      [
-       42.16,
-       20.59
-      ],
-      [
-       41.92,
-       20.71
-      ],
-      [
-       41.68,
-       20.83
-      ],
-      [
-       41.44,
-       20.95
-      ],
-      [
-       41.2,
-       21.06
-      ],
-      [
-       40.95,
-       21.16
-      ],
-      [
-       40.69,
-       21.26
-      ],
-      [
-       40.44,
-       21.35
-      ],
-      [
-       40.18,
-       21.44
-      ],
-      [
-       39.91,
-       21.52
-      ],
-      [
-       39.65,
-       21.59
-      ],
-      [
-       39.38,
-       21.65
-      ],
-      [
-       38.84,
-       21.77
-      ],
-      [
-       38.29,
-       21.85
-      ],
-      [
-       38.27,
-       21.86
-      ],
-      [
-       37.71,
-       21.92
-      ],
-      [
-       37.16,
-       21.95
-      ],
-      [
-       34.93,
-       21.96
-      ],
-      [
-       17.05,
-       21.98
-      ],
-      [
-       -0.72,
-       22.0
-      ],
-      [
-       -7.29,
-       21.99
-      ],
-      [
-       -13.87,
-       21.98
-      ],
-      [
-       -20.9,
-       21.97
-      ],
-      [
-       -21.31,
-       21.96
-      ],
-      [
-       -21.72,
-       21.92
-      ],
-      [
-       -22.13,
-       21.87
-      ],
-      [
-       -22.15,
-       21.87
-      ],
-      [
-       -22.56,
-       21.8
-      ],
-      [
-       -22.96,
-       21.71
-      ],
-      [
-       -23.35,
-       21.61
-      ],
-      [
-       -23.74,
-       21.49
-      ],
-      [
-       -24.11,
-       21.35
-      ],
-      [
-       -24.48,
-       21.19
-      ],
-      [
-       -24.84,
-       21.02
-      ],
-      [
-       -25.18,
-       20.83
-      ],
-      [
-       -25.52,
-       20.62
-      ],
-      [
-       -25.53,
-       20.61
-      ],
-      [
-       -25.85,
-       20.39
-      ],
-      [
-       -26.16,
-       20.16
-      ],
-      [
-       -26.45,
-       19.91
-      ],
-      [
-       -26.72,
-       19.65
-      ],
-      [
-       -26.97,
-       19.38
-      ],
-      [
-       -27.21,
-       19.1
-      ],
-      [
-       -27.43,
-       18.8
-      ],
-      [
-       -27.63,
-       18.5
-      ],
-      [
-       -27.81,
-       18.19
-      ],
-      [
-       -27.97,
-       17.87
-      ],
-      [
-       -28.07,
-       17.64
-      ],
-      [
-       -28.11,
-       17.55
-      ],
-      [
-       -28.22,
-       17.26
-      ],
-      [
-       -28.23,
-       17.21
-      ],
-      [
-       -28.33,
-       16.87
-      ],
-      [
-       -28.38,
-       16.67
-      ],
-      [
-       -28.42,
-       16.48
-      ],
-      [
-       -28.46,
-       16.19
-      ],
-      [
-       -28.47,
-       16.08
-      ],
-      [
-       -28.49,
-       15.85
+       17.0,
+       4.0
       ]
      ],
-     "margin_mm": 37.36,
+     "margin_mm": 46.8,
      "inside": true
     },
     "stand_pose_interferences": [],
@@ -4246,34 +3187,34 @@
      "at_stand_pose": {
       "stance_roll_deg": 0.0,
       "swing_roll_deg": 0.0,
-      "margin_mm": -61.99,
+      "margin_mm": 32.07,
       "swing_foot_lowest_mm": 0.0,
-      "stance_hip_roll_torque_nm": 0.349,
-      "torque_limit_nm": 1.196,
-      "inside": false,
-      "torque_ok": true
-     },
-     "best_within_30_deg_stance_roll": {
-      "stance_roll_deg": -28.0,
-      "swing_roll_deg": 51.0,
-      "margin_mm": -41.04,
-      "swing_foot_lowest_mm": 19.16,
-      "stance_hip_roll_torque_nm": 0.239,
-      "torque_limit_nm": 1.196,
-      "inside": false,
-      "torque_ok": true
-     },
-     "smallest_stance_roll_that_balances": {
-      "stance_roll_deg": 74.0,
-      "swing_roll_deg": -90.0,
-      "margin_mm": 1.7,
-      "swing_foot_lowest_mm": 412.94,
-      "stance_hip_roll_torque_nm": 0.016,
+      "stance_hip_roll_torque_nm": 0.358,
       "torque_limit_nm": 1.196,
       "inside": true,
       "torque_ok": true
      },
-     "balances_within_30_deg": false,
+     "best_within_30_deg_stance_roll": {
+      "stance_roll_deg": 28.0,
+      "swing_roll_deg": -90.0,
+      "margin_mm": 43.86,
+      "swing_foot_lowest_mm": 185.69,
+      "stance_hip_roll_torque_nm": 0.293,
+      "torque_limit_nm": 1.196,
+      "inside": true,
+      "torque_ok": true
+     },
+     "smallest_stance_roll_that_balances": {
+      "stance_roll_deg": 1.0,
+      "swing_roll_deg": 30.0,
+      "margin_mm": 38.49,
+      "swing_foot_lowest_mm": 3.06,
+      "stance_hip_roll_torque_nm": 0.323,
+      "torque_limit_nm": 1.196,
+      "inside": true,
+      "torque_ok": true
+     },
+     "balances_within_30_deg": true,
      "balances_anywhere_in_limits": true
     },
     "one_foot_right": {
@@ -4281,35 +3222,189 @@
      "at_stand_pose": {
       "stance_roll_deg": 0.0,
       "swing_roll_deg": 0.0,
-      "margin_mm": -61.83,
+      "margin_mm": 21.26,
       "swing_foot_lowest_mm": 0.0,
-      "stance_hip_roll_torque_nm": -0.348,
-      "torque_limit_nm": 1.196,
-      "inside": false,
-      "torque_ok": true
-     },
-     "best_within_30_deg_stance_roll": {
-      "stance_roll_deg": 30.0,
-      "swing_roll_deg": -52.0,
-      "margin_mm": -39.53,
-      "swing_foot_lowest_mm": 23.17,
-      "stance_hip_roll_torque_nm": -0.231,
-      "torque_limit_nm": 1.196,
-      "inside": false,
-      "torque_ok": true
-     },
-     "smallest_stance_roll_that_balances": {
-      "stance_roll_deg": -75.0,
-      "swing_roll_deg": 89.0,
-      "margin_mm": 2.72,
-      "swing_foot_lowest_mm": 413.47,
-      "stance_hip_roll_torque_nm": -0.011,
+      "stance_hip_roll_torque_nm": -0.361,
       "torque_limit_nm": 1.196,
       "inside": true,
       "torque_ok": true
      },
-     "balances_within_30_deg": false,
+     "best_within_30_deg_stance_roll": {
+      "stance_roll_deg": -30.0,
+      "swing_roll_deg": -35.0,
+      "margin_mm": 26.84,
+      "swing_foot_lowest_mm": 54.5,
+      "stance_hip_roll_torque_nm": -0.296,
+      "torque_limit_nm": 1.196,
+      "inside": true,
+      "torque_ok": true
+     },
+     "smallest_stance_roll_that_balances": {
+      "stance_roll_deg": 0.0,
+      "swing_roll_deg": -35.0,
+      "margin_mm": 25.24,
+      "swing_foot_lowest_mm": 5.93,
+      "stance_hip_roll_torque_nm": -0.314,
+      "torque_limit_nm": 1.196,
+      "inside": true,
+      "torque_ok": true
+     },
+     "balances_within_30_deg": true,
      "balances_anywhere_in_limits": true
+    },
+    "one_foot_left_support": {
+     "stance": [
+      "left"
+     ],
+     "feet_coplanar": true,
+     "com_ground_mm": [
+      16.8,
+      -87.93,
+      44.34
+     ],
+     "com_height_above_sole_mm": 126.34,
+     "polygon_mm": [
+      [
+       -30.0,
+       -120.0
+      ],
+      [
+       64.0,
+       -120.0
+      ],
+      [
+       64.0,
+       -32.0
+      ],
+      [
+       17.0,
+       4.0
+      ],
+      [
+       -17.0,
+       4.0
+      ],
+      [
+       -30.0,
+       -32.0
+      ]
+     ],
+     "margin_mm": 32.07,
+     "inside": true,
+     "swing_foot_lowest_mm": 0.0
+    },
+    "one_foot_right_support": {
+     "stance": [
+      "right"
+     ],
+     "feet_coplanar": true,
+     "com_ground_mm": [
+      16.8,
+      87.87,
+      44.34
+     ],
+     "com_height_above_sole_mm": 126.34,
+     "polygon_mm": [
+      [
+       -30.0,
+       32.0
+      ],
+      [
+       -17.0,
+       -4.0
+      ],
+      [
+       17.0,
+       -4.0
+      ],
+      [
+       64.0,
+       32.0
+      ],
+      [
+       64.0,
+       46.0
+      ],
+      [
+       24.0,
+       120.0
+      ],
+      [
+       10.0,
+       120.0
+      ],
+      [
+       -30.0,
+       46.0
+      ]
+     ],
+     "margin_mm": 21.26,
+     "inside": true,
+     "swing_foot_lowest_mm": 0.0
+    }
+   },
+   "feet": {
+    "overlap_at_stand_mm3": 0.0,
+    "gap_at_stand_mm": 9.8,
+    "overlap_at_neutral_mm3": 0.0,
+    "gap_at_neutral_mm": 9.8,
+    "one_leg_alone_from_stand": {
+     "left_hip_roll": {
+      "positive": {
+       "free_deg": 60.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+      },
+      "negative": {
+       "free_deg": 3.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+      }
+     },
+     "left_hip_pitch": {
+      "positive": {
+       "free_deg": 13.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": -9.7
+      },
+      "negative": {
+       "free_deg": 60.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 76.4
+      }
+     },
+     "left_knee": {
+      "positive": {
+       "free_deg": 60.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+      },
+      "negative": {
+       "free_deg": 18.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+      }
+     }
+    },
+    "both_hips_rolled_the_same_way": {
+     "positive": {
+      "free_deg": 50.0,
+      "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+     },
+     "negative": {
+      "free_deg": 60.0,
+      "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+     }
+    },
+    "right_sole_slid_in_the_floor_plane_until_contact_mm": {
+     "forward": 26.0,
+     "backward": 26.0,
+     "towards_the_left_sole": 9.5,
+     "away_from_it": 60.0
+    },
+    "one_foot_lifted_soles_level": {
+     "positive": {
+      "free_deg": 60.0,
+      "left_foot_ahead_of_right_at_the_last_free_step_mm": -11.5
+     },
+     "negative": {
+      "free_deg": 60.0,
+      "left_foot_ahead_of_right_at_the_last_free_step_mm": 76.4
+     }
     }
    },
    "camera": {
@@ -4332,10 +3427,10 @@
      0.0,
      -0.174
     ],
-    "toes_ahead_of_shin_mm": 46.5,
-    "heel_behind_shin_mm": 28.5,
+    "toes_ahead_of_shin_mm": 64.0,
+    "heel_behind_shin_mm": 30.0,
     "looks_the_way_the_toes_point": true,
-    "lens_height_above_floor_at_stand_mm": 277.45,
+    "lens_height_above_floor_at_stand_mm": 266.95,
     "clearance_each_side_mm": 0.5,
     "play_towards_the_lips_mm": 0.3,
     "play_towards_the_ledges_mm": 0.0,
@@ -4372,13 +3467,13 @@
       "from_neutral": {
        "angles_in_cone_deg": [
         -90.0,
-        -54.0
+        -45.0
        ]
       },
       "from_stand": {
        "angles_in_cone_deg": [
         -90.0,
-        -39.0
+        -21.0
        ]
       }
      },
@@ -4402,13 +3497,13 @@
       "from_neutral": {
        "angles_in_cone_deg": [
         -90.0,
-        -54.0
+        -45.0
        ]
       },
       "from_stand": {
        "angles_in_cone_deg": [
         -90.0,
-        -39.0
+        -24.0
        ]
       }
      },
@@ -4846,136 +3941,72 @@
       "part": "left_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
+      "from_nearest_joint_axis_mm": 74.95,
+      "nearest_other_part": "right_shin_print",
+      "gap_to_it_mm": 15.62
      },
      {
       "part": "left_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
+      "from_nearest_joint_axis_mm": 77.88,
+      "nearest_other_part": "right_shin_print",
+      "gap_to_it_mm": 17.31
      },
      {
       "part": "left_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
+      "from_nearest_joint_axis_mm": 81.49,
+      "nearest_other_part": "right_shin_print",
+      "gap_to_it_mm": 21.67
      },
      {
       "part": "left_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "left_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "left_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "left_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "left_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
+      "from_nearest_joint_axis_mm": 85.7,
+      "nearest_other_part": "right_shin_print",
+      "gap_to_it_mm": 27.58
      },
      {
       "part": "right_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
+      "from_nearest_joint_axis_mm": 74.95,
+      "nearest_other_part": "left_shin_print",
+      "gap_to_it_mm": 29.2
      },
      {
       "part": "right_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
+      "from_nearest_joint_axis_mm": 77.88,
+      "nearest_other_part": "left_shin_print",
+      "gap_to_it_mm": 23.04
      },
      {
       "part": "right_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
+      "from_nearest_joint_axis_mm": 81.49,
+      "nearest_other_part": "left_shin_print",
+      "gap_to_it_mm": 18.2
      },
      {
       "part": "right_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "right_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "right_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "right_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "right_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
+      "from_nearest_joint_axis_mm": 85.7,
+      "nearest_other_part": "left_shin_print",
+      "gap_to_it_mm": 15.73
      }
     ],
     "features_in_the_camera_cone_at_neutral": 0,
     "counts": {
      "left_shin": {
       "holes": 5,
-      "studs": 8
+      "studs": 4
      },
      "left_thigh": {
       "holes": 4,
@@ -4983,7 +4014,7 @@
      },
      "right_shin": {
       "holes": 5,
-      "studs": 8
+      "studs": 4
      },
      "right_thigh": {
       "holes": 4,
@@ -4999,49 +4030,49 @@
     {
      "where": "at the camera, on the mount",
      "point_in_ground_frame_mm": [
-      34.55,
+      44.34,
       -87.9,
-      195.45
+      184.95
      ],
-     "margin_with_50_g_mm": 35.18,
-     "margin_with_100_g_mm": 33.35,
-     "margin_with_200_g_mm": 30.43,
+     "margin_with_50_g_mm": 44.96,
+     "margin_with_100_g_mm": 43.06,
+     "margin_with_200_g_mm": 40.0,
      "mass_that_uses_up_the_margin_g": null
     },
     {
      "where": "on the rear pin holes of the deck",
      "point_in_ground_frame_mm": [
-      -74.86,
+      -65.07,
       -87.9,
-      94.74
+      84.23
      ],
-     "margin_with_50_g_mm": 30.43,
-     "margin_with_100_g_mm": 24.36,
-     "margin_with_200_g_mm": 14.71,
-     "mass_that_uses_up_the_margin_g": 432.0
+     "margin_with_50_g_mm": 40.14,
+     "margin_with_100_g_mm": 34.48,
+     "margin_with_200_g_mm": 25.38,
+     "mass_that_uses_up_the_margin_g": 753.0
     },
     {
      "where": "on the deck studs, shared between both sides",
      "point_in_ground_frame_mm": [
-      -57.86,
+      -48.07,
       -87.9,
-      92.74
+      82.23
      ],
-     "margin_with_50_g_mm": 31.89,
-     "margin_with_100_g_mm": 27.05,
-     "margin_with_200_g_mm": 19.35,
-     "mass_that_uses_up_the_margin_g": 683.0
+     "margin_with_50_g_mm": 41.52,
+     "margin_with_100_g_mm": 37.03,
+     "margin_with_200_g_mm": 29.83,
+     "mass_that_uses_up_the_margin_g": 1462.0
     },
     {
      "where": "on the thigh pin holes, shared between both thighs",
      "point_in_ground_frame_mm": [
-      31.05,
+      36.56,
       -87.9,
-      34.48
+      28.57
      ],
-     "margin_with_50_g_mm": 35.48,
-     "margin_with_100_g_mm": 33.9,
-     "margin_with_200_g_mm": 31.38,
+     "margin_with_50_g_mm": 45.6,
+     "margin_with_100_g_mm": 44.23,
+     "margin_with_200_g_mm": 42.03,
      "mass_that_uses_up_the_margin_g": null
     },
     {
@@ -5051,9 +4082,9 @@
       -87.9,
       -42.0
      ],
-     "margin_with_50_g_mm": 36.85,
-     "margin_with_100_g_mm": 36.19,
-     "margin_with_200_g_mm": 35.14,
+     "margin_with_50_g_mm": 45.43,
+     "margin_with_100_g_mm": 44.27,
+     "margin_with_200_g_mm": 42.4,
      "mass_that_uses_up_the_margin_g": null
     },
     {
@@ -5063,9 +4094,9 @@
       -87.9,
       -70.0
      ],
-     "margin_with_50_g_mm": 35.92,
-     "margin_with_100_g_mm": 34.7,
-     "margin_with_200_g_mm": 32.76,
+     "margin_with_50_g_mm": 46.46,
+     "margin_with_100_g_mm": 45.82,
+     "margin_with_200_g_mm": 44.8,
      "mass_that_uses_up_the_margin_g": null
     }
    ]
@@ -5075,20 +4106,20 @@
    "dimensions": {
     "box_min_mm": [
      -45.0,
-     -184.1,
+     -166.1,
      -185.9
     ],
     "box_max_mm": [
-     135.5,
-     184.1,
+     153.0,
+     166.1,
      127.85
     ],
     "size_mm": [
-     180.5,
-     368.2,
+     198.0,
+     332.2,
      313.75
     ],
-    "stance_width_between_foot_centres_mm": 320.2,
+    "stance_width_between_foot_centres_mm": 208.2,
     "joint_origins_mm": {
      "left_hip_roll": [
       49.0,
@@ -5128,7 +4159,7 @@
     "left_hip_roll": {
      "joint": "left_hip_roll",
      "collision_free_deg": [
-      -91.5,
+      -57.5,
       180.0
      ],
      "positive": {
@@ -5137,15 +4168,37 @@
       "blocked_by": []
      },
      "negative": {
-      "free_deg": 91.5,
-      "first_contact_deg": -91.75,
+      "free_deg": 57.5,
+      "first_contact_deg": -57.75,
       "blocked_by": [
        {
         "moving": "left_shin_print",
-        "fixed": "right_thigh_print",
-        "volume_mm3": 88.8
+        "fixed": "right_shin_print",
+        "volume_mm3": 2.6
        }
       ]
+     },
+     "collision_free_soles_left_out_deg": [
+      -91.5,
+      180.0
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 91.5,
+       "first_contact_deg": -91.75,
+       "blocked_by": [
+        {
+         "moving": "left_shin_print",
+         "fixed": "right_thigh_print",
+         "volume_mm3": 79.5
+        }
+       ]
+      },
+      "positive": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      }
      }
     },
     "left_hip_pitch": {
@@ -5163,39 +4216,95 @@
       "free_deg": 180.0,
       "first_contact_deg": null,
       "blocked_by": []
+     },
+     "collision_free_soles_left_out_deg": [
+      -180.0,
+      180.0
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      },
+      "positive": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      }
      }
     },
     "left_knee": {
      "joint": "left_knee",
      "collision_free_deg": [
-      -180.0,
-      180.0
+      -7.5,
+      7.5
      ],
      "positive": {
-      "free_deg": 180.0,
-      "first_contact_deg": null,
-      "blocked_by": []
+      "free_deg": 7.5,
+      "first_contact_deg": 7.75,
+      "blocked_by": [
+       {
+        "moving": "left_shin_print",
+        "fixed": "left_knee_servo",
+        "volume_mm3": 0.6
+       }
+      ]
      },
      "negative": {
-      "free_deg": 180.0,
-      "first_contact_deg": null,
-      "blocked_by": []
+      "free_deg": 7.5,
+      "first_contact_deg": -7.75,
+      "blocked_by": [
+       {
+        "moving": "left_shin_print",
+        "fixed": "left_knee_servo",
+        "volume_mm3": 0.6
+       }
+      ]
+     },
+     "collision_free_soles_left_out_deg": [
+      -7.5,
+      7.5
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 7.5,
+       "first_contact_deg": -7.75,
+       "blocked_by": [
+        {
+         "moving": "left_shin_print",
+         "fixed": "left_knee_servo",
+         "volume_mm3": 0.6
+        }
+       ]
+      },
+      "positive": {
+       "free_deg": 7.5,
+       "first_contact_deg": 7.75,
+       "blocked_by": [
+        {
+         "moving": "left_shin_print",
+         "fixed": "left_knee_servo",
+         "volume_mm3": 0.6
+        }
+       ]
+      }
      }
     },
     "right_hip_roll": {
      "joint": "right_hip_roll",
      "collision_free_deg": [
       -180.0,
-      91.5
+      57.75
      ],
      "positive": {
-      "free_deg": 91.5,
-      "first_contact_deg": 91.75,
+      "free_deg": 57.75,
+      "first_contact_deg": 58.0,
       "blocked_by": [
        {
         "moving": "right_shin_print",
-        "fixed": "left_thigh_print",
-        "volume_mm3": 88.8
+        "fixed": "left_shin_print",
+        "volume_mm3": 1.0
        }
       ]
      },
@@ -5203,6 +4312,28 @@
       "free_deg": 180.0,
       "first_contact_deg": null,
       "blocked_by": []
+     },
+     "collision_free_soles_left_out_deg": [
+      -180.0,
+      78.25
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      },
+      "positive": {
+       "free_deg": 78.25,
+       "first_contact_deg": 78.5,
+       "blocked_by": [
+        {
+         "moving": "right_shin_print",
+         "fixed": "left_pitch_servo",
+         "volume_mm3": 1.0
+        }
+       ]
+      }
      }
     },
     "right_hip_pitch": {
@@ -5220,23 +4351,79 @@
       "free_deg": 180.0,
       "first_contact_deg": null,
       "blocked_by": []
+     },
+     "collision_free_soles_left_out_deg": [
+      -180.0,
+      180.0
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      },
+      "positive": {
+       "free_deg": 180.0,
+       "first_contact_deg": null,
+       "blocked_by": []
+      }
      }
     },
     "right_knee": {
      "joint": "right_knee",
      "collision_free_deg": [
-      -180.0,
-      180.0
+      -7.5,
+      7.5
      ],
      "positive": {
-      "free_deg": 180.0,
-      "first_contact_deg": null,
-      "blocked_by": []
+      "free_deg": 7.5,
+      "first_contact_deg": 7.75,
+      "blocked_by": [
+       {
+        "moving": "right_shin_print",
+        "fixed": "right_knee_servo",
+        "volume_mm3": 0.6
+       }
+      ]
      },
      "negative": {
-      "free_deg": 180.0,
-      "first_contact_deg": null,
-      "blocked_by": []
+      "free_deg": 7.5,
+      "first_contact_deg": -7.75,
+      "blocked_by": [
+       {
+        "moving": "right_shin_print",
+        "fixed": "right_knee_servo",
+        "volume_mm3": 0.6
+       }
+      ]
+     },
+     "collision_free_soles_left_out_deg": [
+      -7.5,
+      7.5
+     ],
+     "soles_left_out": {
+      "negative": {
+       "free_deg": 7.5,
+       "first_contact_deg": -7.75,
+       "blocked_by": [
+        {
+         "moving": "right_shin_print",
+         "fixed": "right_knee_servo",
+         "volume_mm3": 0.6
+        }
+       ]
+      },
+      "positive": {
+       "free_deg": 7.5,
+       "first_contact_deg": 7.75,
+       "blocked_by": [
+        {
+         "moving": "right_shin_print",
+         "fixed": "right_knee_servo",
+         "volume_mm3": 0.6
+        }
+       ]
+      }
      }
     }
    },
@@ -5254,14 +4441,14 @@
      "max_set_by": "servo travel"
     },
     "left_knee": {
-     "min_deg": -90.0,
-     "max_deg": 90.0,
-     "min_set_by": "servo travel",
-     "max_set_by": "servo travel"
+     "min_deg": -4.0,
+     "max_deg": 4.0,
+     "min_set_by": "collision",
+     "max_set_by": "collision"
     },
     "right_hip_roll": {
      "min_deg": -90.0,
-     "max_deg": 88.0,
+     "max_deg": 75.0,
      "min_set_by": "servo travel",
      "max_set_by": "collision"
     },
@@ -5272,10 +4459,10 @@
      "max_set_by": "servo travel"
     },
     "right_knee": {
-     "min_deg": -90.0,
-     "max_deg": 90.0,
-     "min_set_by": "servo travel",
-     "max_set_by": "servo travel"
+     "min_deg": -4.0,
+     "max_deg": 4.0,
+     "min_set_by": "collision",
+     "max_set_by": "collision"
     }
    },
    "cradles": [
@@ -5653,24 +4840,24 @@
     "cradle_z_mm": -21.5
    },
    "mass": {
-    "total_g": 532.9,
+    "total_g": 564.5,
     "by_kind_g": {
-     "print": 142.4,
+     "print": 174.0,
      "board": 30.0,
      "shield": 25.0,
-     "display": 15.0,
      "battery": 8.5,
+     "display": 15.0,
      "camera": 10.0,
      "servo": 302.0
     },
-    "total_if_printed_solid_g": 627.8,
+    "total_if_printed_solid_g": 680.5,
     "print_material": "PLA",
     "print_density_g_cm3": 1.24,
     "print_solid_fraction": 0.6,
     "com_neutral_mm": [
-     53.57,
-     -0.08,
-     -27.68
+     56.26,
+     0.64,
+     -35.4
     ],
     "links": {
      "torso": {
@@ -5698,11 +4885,11 @@
       ]
      },
      "left_shin": {
-      "mass_g": 21.6,
+      "mass_g": 40.0,
       "com_link_mm": [
-       5.61,
-       1.9,
-       -61.79
+       9.04,
+       -31.38,
+       -62.72
       ]
      },
      "right_hip": {
@@ -5722,11 +4909,11 @@
       ]
      },
      "right_shin": {
-      "mass_g": 21.6,
+      "mass_g": 34.9,
       "com_link_mm": [
-       5.61,
-       -1.9,
-       -61.79
+       7.88,
+       24.49,
+       -60.46
       ]
      }
     },
@@ -5750,16 +4937,16 @@
       "mass_g": 25.0
      },
      {
-      "solid": "round_display",
-      "link": "torso",
-      "kind": "display",
-      "mass_g": 15.0
-     },
-     {
       "solid": "battery",
       "link": "torso",
       "kind": "battery",
       "mass_g": 8.5
+     },
+     {
+      "solid": "round_display",
+      "link": "torso",
+      "kind": "display",
+      "mass_g": 15.0
      },
      {
       "solid": "camera_board",
@@ -5807,7 +4994,7 @@
       "solid": "left_shin_print",
       "link": "left_shin",
       "kind": "print",
-      "mass_g": 21.6
+      "mass_g": 40.0
      },
      {
       "solid": "right_yoke_print",
@@ -5837,7 +5024,7 @@
       "solid": "right_shin_print",
       "link": "right_shin",
       "kind": "print",
-      "mass_g": 21.6
+      "mass_g": 34.9
      }
     ]
    },
@@ -5849,1607 +5036,95 @@
      ],
      "feet_coplanar": true,
      "com_ground_mm": [
-      -35.43,
-      -158.18,
-      76.22
+      -32.74,
+      -157.46,
+      68.5
      ],
-     "com_height_above_sole_mm": 158.22,
+     "com_height_above_sole_mm": 150.5,
      "polygon_mm": [
       [
-       -28.5,
-       19.51
+       -30.0,
+       -288.2
       ],
       [
-       -28.5,
-       -335.71
+       -17.0,
+       -324.2
       ],
       [
-       -28.49,
-       -336.05
+       17.0,
+       -324.2
       ],
       [
-       -28.47,
-       -336.28
+       64.0,
+       -288.2
       ],
       [
-       -28.46,
-       -336.39
+       64.0,
+       -28.0
       ],
       [
-       -28.42,
-       -336.68
+       17.0,
+       8.0
       ],
       [
-       -28.38,
-       -336.87
+       -17.0,
+       8.0
       ],
       [
-       -28.33,
-       -337.07
-      ],
-      [
-       -28.23,
-       -337.41
-      ],
-      [
-       -28.22,
-       -337.46
-      ],
-      [
-       -28.11,
-       -337.74
-      ],
-      [
-       -28.07,
-       -337.84
-      ],
-      [
-       -27.97,
-       -338.07
-      ],
-      [
-       -27.81,
-       -338.39
-      ],
-      [
-       -27.63,
-       -338.7
-      ],
-      [
-       -27.43,
-       -339.0
-      ],
-      [
-       -27.21,
-       -339.3
-      ],
-      [
-       -26.97,
-       -339.58
-      ],
-      [
-       -26.72,
-       -339.85
-      ],
-      [
-       -26.45,
-       -340.11
-      ],
-      [
-       -26.16,
-       -340.36
-      ],
-      [
-       -25.85,
-       -340.59
-      ],
-      [
-       -25.53,
-       -340.81
-      ],
-      [
-       -25.52,
-       -340.82
-      ],
-      [
-       -25.18,
-       -341.03
-      ],
-      [
-       -24.84,
-       -341.22
-      ],
-      [
-       -24.48,
-       -341.39
-      ],
-      [
-       -24.11,
-       -341.55
-      ],
-      [
-       -23.74,
-       -341.69
-      ],
-      [
-       -23.35,
-       -341.81
-      ],
-      [
-       -22.96,
-       -341.91
-      ],
-      [
-       -22.56,
-       -342.0
-      ],
-      [
-       -22.15,
-       -342.07
-      ],
-      [
-       -22.13,
-       -342.07
-      ],
-      [
-       -21.72,
-       -342.12
-      ],
-      [
-       -21.31,
-       -342.16
-      ],
-      [
-       -20.9,
-       -342.17
-      ],
-      [
-       -13.87,
-       -342.18
-      ],
-      [
-       -7.29,
-       -342.19
-      ],
-      [
-       -0.72,
-       -342.2
-      ],
-      [
-       10.86,
-       -342.19
-      ],
-      [
-       36.75,
-       -342.16
-      ],
-      [
-       37.16,
-       -342.15
-      ],
-      [
-       37.42,
-       -342.14
-      ],
-      [
-       37.51,
-       -342.13
-      ],
-      [
-       37.73,
-       -342.12
-      ],
-      [
-       37.84,
-       -342.11
-      ],
-      [
-       38.25,
-       -342.06
-      ],
-      [
-       38.3,
-       -342.05
-      ],
-      [
-       38.65,
-       -342.0
-      ],
-      [
-       38.73,
-       -341.99
-      ],
-      [
-       38.83,
-       -341.97
-      ],
-      [
-       39.06,
-       -341.93
-      ],
-      [
-       39.08,
-       -341.92
-      ],
-      [
-       39.47,
-       -341.83
-      ],
-      [
-       39.64,
-       -341.79
-      ],
-      [
-       39.85,
-       -341.73
-      ],
-      [
-       40.17,
-       -341.64
-      ],
-      [
-       40.26,
-       -341.61
-      ],
-      [
-       40.43,
-       -341.55
-      ],
-      [
-       40.61,
-       -341.49
-      ],
-      [
-       40.69,
-       -341.46
-      ],
-      [
-       40.94,
-       -341.36
-      ],
-      [
-       41.02,
-       -341.33
-      ],
-      [
-       41.19,
-       -341.26
-      ],
-      [
-       41.33,
-       -341.2
-      ],
-      [
-       41.44,
-       -341.15
-      ],
-      [
-       41.68,
-       -341.03
-      ],
-      [
-       41.75,
-       -341.0
-      ],
-      [
-       41.92,
-       -340.91
-      ],
-      [
-       42.03,
-       -340.86
-      ],
-      [
-       42.1,
-       -340.82
-      ],
-      [
-       42.16,
-       -340.79
-      ],
-      [
-       42.35,
-       -340.68
-      ],
-      [
-       42.39,
-       -340.65
-      ],
-      [
-       42.49,
-       -340.59
-      ],
-      [
-       42.61,
-       -340.51
-      ],
-      [
-       42.69,
-       -340.47
-      ],
-      [
-       42.77,
-       -340.41
-      ],
-      [
-       42.8,
-       -340.4
-      ],
-      [
-       42.83,
-       -340.37
-      ],
-      [
-       43.05,
-       -340.22
-      ],
-      [
-       43.09,
-       -340.19
-      ],
-      [
-       43.26,
-       -340.07
-      ],
-      [
-       43.31,
-       -340.03
-      ],
-      [
-       43.47,
-       -339.91
-      ],
-      [
-       43.67,
-       -339.75
-      ],
-      [
-       43.86,
-       -339.58
-      ],
-      [
-       43.88,
-       -339.56
-      ],
-      [
-       44.05,
-       -339.41
-      ],
-      [
-       44.23,
-       -339.23
-      ],
-      [
-       44.4,
-       -339.05
-      ],
-      [
-       44.52,
-       -338.92
-      ],
-      [
-       44.74,
-       -338.67
-      ],
-      [
-       44.76,
-       -338.64
-      ],
-      [
-       44.88,
-       -338.5
-      ],
-      [
-       44.99,
-       -338.35
-      ],
-      [
-       45.05,
-       -338.28
-      ],
-      [
-       45.21,
-       -338.05
-      ],
-      [
-       45.3,
-       -337.92
-      ],
-      [
-       45.38,
-       -337.79
-      ],
-      [
-       45.57,
-       -337.46
-      ],
-      [
-       45.64,
-       -337.35
-      ],
-      [
-       45.65,
-       -337.31
-      ],
-      [
-       45.76,
-       -337.11
-      ],
-      [
-       45.8,
-       -337.02
-      ],
-      [
-       45.93,
-       -336.72
-      ],
-      [
-       45.95,
-       -336.68
-      ],
-      [
-       45.96,
-       -336.67
-      ],
-      [
-       46.04,
-       -336.46
-      ],
-      [
-       46.16,
-       -336.13
-      ],
-      [
-       46.16,
-       -336.12
-      ],
-      [
-       46.19,
-       -336.03
-      ],
-      [
-       46.26,
-       -335.79
-      ],
-      [
-       46.29,
-       -335.68
-      ],
-      [
-       46.34,
-       -335.43
-      ],
-      [
-       46.36,
-       -335.37
-      ],
-      [
-       46.41,
-       -335.1
-      ],
-      [
-       46.46,
-       -334.75
-      ],
-      [
-       46.46,
-       -334.7
-      ],
-      [
-       46.46,
-       -334.68
-      ],
-      [
-       46.49,
-       -334.28
-      ],
-      [
-       46.5,
-       -334.06
-      ],
-      [
-       46.5,
-       -334.02
-      ],
-      [
-       46.5,
-       -333.97
-      ],
-      [
-       46.5,
-       -333.96
-      ],
-      [
-       46.5,
-       -333.96
-      ],
-      [
-       46.5,
-       17.76
-      ],
-      [
-       46.49,
-       18.08
-      ],
-      [
-       46.48,
-       18.23
-      ],
-      [
-       46.46,
-       18.47
-      ],
-      [
-       46.44,
-       18.71
-      ],
-      [
-       46.39,
-       19.01
-      ],
-      [
-       46.35,
-       19.21
-      ],
-      [
-       46.29,
-       19.47
-      ],
-      [
-       46.22,
-       19.71
-      ],
-      [
-       46.15,
-       19.95
-      ],
-      [
-       46.06,
-       20.2
-      ],
-      [
-       45.99,
-       20.37
-      ],
-      [
-       45.87,
-       20.68
-      ],
-      [
-       45.79,
-       20.83
-      ],
-      [
-       45.63,
-       21.14
-      ],
-      [
-       45.57,
-       21.26
-      ],
-      [
-       45.32,
-       21.68
-      ],
-      [
-       45.04,
-       22.08
-      ],
-      [
-       44.74,
-       22.47
-      ],
-      [
-       44.4,
-       22.85
-      ],
-      [
-       44.23,
-       23.03
-      ],
-      [
-       44.05,
-       23.21
-      ],
-      [
-       43.86,
-       23.38
-      ],
-      [
-       43.66,
-       23.55
-      ],
-      [
-       43.46,
-       23.71
-      ],
-      [
-       43.26,
-       23.87
-      ],
-      [
-       43.05,
-       24.02
-      ],
-      [
-       42.83,
-       24.17
-      ],
-      [
-       42.61,
-       24.32
-      ],
-      [
-       42.39,
-       24.45
-      ],
-      [
-       42.16,
-       24.59
-      ],
-      [
-       41.92,
-       24.71
-      ],
-      [
-       41.68,
-       24.83
-      ],
-      [
-       41.44,
-       24.95
-      ],
-      [
-       41.2,
-       25.06
-      ],
-      [
-       40.95,
-       25.16
-      ],
-      [
-       40.69,
-       25.26
-      ],
-      [
-       40.44,
-       25.35
-      ],
-      [
-       40.18,
-       25.44
-      ],
-      [
-       39.91,
-       25.52
-      ],
-      [
-       39.65,
-       25.59
-      ],
-      [
-       39.38,
-       25.65
-      ],
-      [
-       38.84,
-       25.77
-      ],
-      [
-       38.29,
-       25.85
-      ],
-      [
-       38.27,
-       25.86
-      ],
-      [
-       37.71,
-       25.92
-      ],
-      [
-       37.16,
-       25.95
-      ],
-      [
-       34.93,
-       25.96
-      ],
-      [
-       17.05,
-       25.98
-      ],
-      [
-       -0.72,
-       26.0
-      ],
-      [
-       -7.29,
-       25.99
-      ],
-      [
-       -13.87,
-       25.98
-      ],
-      [
-       -20.9,
-       25.97
-      ],
-      [
-       -21.31,
-       25.96
-      ],
-      [
-       -21.72,
-       25.92
-      ],
-      [
-       -22.13,
-       25.87
-      ],
-      [
-       -22.15,
-       25.87
-      ],
-      [
-       -22.56,
-       25.8
-      ],
-      [
-       -22.96,
-       25.71
-      ],
-      [
-       -23.35,
-       25.61
-      ],
-      [
-       -23.74,
-       25.49
-      ],
-      [
-       -24.11,
-       25.35
-      ],
-      [
-       -24.48,
-       25.19
-      ],
-      [
-       -24.84,
-       25.02
-      ],
-      [
-       -25.18,
-       24.83
-      ],
-      [
-       -25.52,
-       24.62
-      ],
-      [
-       -25.53,
-       24.61
-      ],
-      [
-       -25.85,
-       24.39
-      ],
-      [
-       -26.16,
-       24.16
-      ],
-      [
-       -26.45,
-       23.91
-      ],
-      [
-       -26.72,
-       23.65
-      ],
-      [
-       -26.97,
-       23.38
-      ],
-      [
-       -27.21,
-       23.1
-      ],
-      [
-       -27.43,
-       22.8
-      ],
-      [
-       -27.63,
-       22.5
-      ],
-      [
-       -27.81,
-       22.19
-      ],
-      [
-       -27.97,
-       21.87
-      ],
-      [
-       -28.07,
-       21.64
-      ],
-      [
-       -28.11,
-       21.55
-      ],
-      [
-       -28.22,
-       21.26
-      ],
-      [
-       -28.23,
-       21.21
-      ],
-      [
-       -28.33,
-       20.87
-      ],
-      [
-       -28.38,
-       20.67
-      ],
-      [
-       -28.42,
-       20.48
-      ],
-      [
-       -28.46,
-       20.19
-      ],
-      [
-       -28.47,
-       20.08
-      ],
-      [
-       -28.49,
-       19.85
+       -30.0,
+       -28.0
       ]
      ],
-     "margin_mm": -6.93,
+     "margin_mm": -2.74,
      "inside": false
     },
     "stand_scan_deg_margin_mm": [
      [
-      -90.0,
-      -73.52
-     ],
-     [
-      -89.0,
-      -73.51
-     ],
-     [
-      -88.0,
-      -73.48
-     ],
-     [
-      -87.0,
-      -73.43
-     ],
-     [
-      -86.0,
-      -73.36
-     ],
-     [
-      -85.0,
-      -73.27
-     ],
-     [
-      -84.0,
-      -73.16
-     ],
-     [
-      -83.0,
-      -73.03
-     ],
-     [
-      -82.0,
-      -72.88
-     ],
-     [
-      -81.0,
-      -72.7
-     ],
-     [
-      -80.0,
-      -72.51
-     ],
-     [
-      -79.0,
-      -72.3
-     ],
-     [
-      -78.0,
-      -72.07
-     ],
-     [
-      -77.0,
-      -71.82
-     ],
-     [
-      -76.0,
-      -71.55
-     ],
-     [
-      -75.0,
-      -71.25
-     ],
-     [
-      -74.0,
-      -70.94
-     ],
-     [
-      -73.0,
-      -70.61
-     ],
-     [
-      -72.0,
-      -70.26
-     ],
-     [
-      -71.0,
-      -69.9
-     ],
-     [
-      -70.0,
-      -69.51
-     ],
-     [
-      -69.0,
-      -69.1
-     ],
-     [
-      -68.0,
-      -68.67
-     ],
-     [
-      -67.0,
-      -68.23
-     ],
-     [
-      -66.0,
-      -67.77
-     ],
-     [
-      -65.0,
-      -67.28
-     ],
-     [
-      -64.0,
-      -66.78
-     ],
-     [
-      -63.0,
-      -66.26
-     ],
-     [
-      -62.0,
-      -65.73
-     ],
-     [
-      -61.0,
-      -65.17
-     ],
-     [
-      -60.0,
-      -64.6
-     ],
-     [
-      -59.0,
-      -64.01
-     ],
-     [
-      -58.0,
-      -63.4
-     ],
-     [
-      -57.0,
-      -62.78
-     ],
-     [
-      -56.0,
-      -62.14
-     ],
-     [
-      -55.0,
-      -61.48
-     ],
-     [
-      -54.0,
-      -60.8
-     ],
-     [
-      -53.0,
-      -60.11
-     ],
-     [
-      -52.0,
-      -59.41
-     ],
-     [
-      -51.0,
-      -58.68
-     ],
-     [
-      -50.0,
-      -57.94
-     ],
-     [
-      -49.0,
-      -57.19
-     ],
-     [
-      -48.0,
-      -56.42
-     ],
-     [
-      -47.0,
-      -55.63
-     ],
-     [
-      -46.0,
-      -54.83
-     ],
-     [
-      -45.0,
-      -54.02
-     ],
-     [
-      -44.0,
-      -53.19
-     ],
-     [
-      -43.0,
-      -52.35
-     ],
-     [
-      -42.0,
-      -51.49
-     ],
-     [
-      -41.0,
-      -50.62
-     ],
-     [
-      -40.0,
-      -49.73
-     ],
-     [
-      -39.0,
-      -48.84
-     ],
-     [
-      -38.0,
-      -47.93
-     ],
-     [
-      -37.0,
-      -47.01
-     ],
-     [
-      -36.0,
-      -46.07
-     ],
-     [
-      -35.0,
-      -45.12
-     ],
-     [
-      -34.0,
-      -44.17
-     ],
-     [
-      -33.0,
-      -43.2
-     ],
-     [
-      -32.0,
-      -42.22
-     ],
-     [
-      -31.0,
-      -41.23
-     ],
-     [
-      -30.0,
-      -40.22
-     ],
-     [
-      -29.0,
-      -39.21
-     ],
-     [
-      -28.0,
-      -38.19
-     ],
-     [
-      -27.0,
-      -37.16
-     ],
-     [
-      -26.0,
-      -36.12
-     ],
-     [
-      -25.0,
-      -35.07
-     ],
-     [
-      -24.0,
-      -34.01
-     ],
-     [
-      -23.0,
-      -32.95
-     ],
-     [
-      -22.0,
-      -31.87
-     ],
-     [
-      -21.0,
-      -30.79
-     ],
-     [
-      -20.0,
-      -29.7
-     ],
-     [
-      -19.0,
-      -28.61
-     ],
-     [
-      -18.0,
-      -27.51
-     ],
-     [
-      -17.0,
-      -26.4
-     ],
-     [
-      -16.0,
-      -25.28
-     ],
-     [
-      -15.0,
-      -24.16
-     ],
-     [
-      -14.0,
-      -23.04
-     ],
-     [
-      -13.0,
-      -21.91
-     ],
-     [
-      -12.0,
-      -20.77
-     ],
-     [
-      -11.0,
-      -19.63
-     ],
-     [
-      -10.0,
-      -18.49
-     ],
-     [
-      -9.0,
-      -17.34
-     ],
-     [
-      -8.0,
-      -16.19
-     ],
-     [
-      -7.0,
-      -15.04
-     ],
-     [
-      -6.0,
-      -13.89
-     ],
-     [
-      -5.0,
-      -12.73
-     ],
-     [
       -4.0,
-      -11.57
+      -7.13
      ],
      [
       -3.0,
-      -10.41
+      -6.03
      ],
      [
       -2.0,
-      -9.25
+      -4.93
      ],
      [
       -1.0,
-      -8.09
+      -3.84
      ],
      [
       0.0,
-      -6.93
+      -2.74
      ],
      [
       1.0,
-      -5.76
+      -1.64
      ],
      [
       2.0,
-      -4.6
+      -0.55
      ],
      [
       3.0,
-      -3.44
+      0.55
      ],
      [
       4.0,
-      -2.28
-     ],
-     [
-      5.0,
-      -1.12
-     ],
-     [
-      6.0,
-      0.04
-     ],
-     [
-      7.0,
-      1.19
-     ],
-     [
-      8.0,
-      2.34
-     ],
-     [
-      9.0,
-      3.49
-     ],
-     [
-      10.0,
-      4.64
-     ],
-     [
-      11.0,
-      5.78
-     ],
-     [
-      12.0,
-      6.92
-     ],
-     [
-      13.0,
-      8.06
-     ],
-     [
-      14.0,
-      9.19
-     ],
-     [
-      15.0,
-      10.31
-     ],
-     [
-      16.0,
-      11.43
-     ],
-     [
-      17.0,
-      12.55
-     ],
-     [
-      18.0,
-      13.65
-     ],
-     [
-      19.0,
-      14.76
-     ],
-     [
-      20.0,
-      15.85
-     ],
-     [
-      21.0,
-      16.94
-     ],
-     [
-      22.0,
-      18.02
-     ],
-     [
-      23.0,
-      19.1
-     ],
-     [
-      24.0,
-      20.16
-     ],
-     [
-      25.0,
-      21.22
-     ],
-     [
-      26.0,
-      22.27
-     ],
-     [
-      27.0,
-      23.31
-     ],
-     [
-      28.0,
-      24.34
-     ],
-     [
-      29.0,
-      25.36
-     ],
-     [
-      30.0,
-      26.37
-     ],
-     [
-      31.0,
-      27.37
-     ],
-     [
-      32.0,
-      28.37
-     ],
-     [
-      33.0,
-      29.35
-     ],
-     [
-      34.0,
-      30.32
-     ],
-     [
-      35.0,
-      31.27
-     ],
-     [
-      36.0,
-      32.22
-     ],
-     [
-      37.0,
-      33.15
-     ],
-     [
-      38.0,
-      34.08
-     ],
-     [
-      39.0,
-      34.99
-     ],
-     [
-      40.0,
-      35.88
-     ],
-     [
-      41.0,
-      36.77
-     ],
-     [
-      42.0,
-      37.36
-     ],
-     [
-      43.0,
-      36.51
-     ],
-     [
-      44.0,
-      35.66
-     ],
-     [
-      45.0,
-      34.83
-     ],
-     [
-      46.0,
-      34.02
-     ],
-     [
-      47.0,
-      33.22
-     ],
-     [
-      48.0,
-      32.43
-     ],
-     [
-      49.0,
-      31.66
-     ],
-     [
-      50.0,
-      30.91
-     ],
-     [
-      51.0,
-      30.17
-     ],
-     [
-      52.0,
-      29.45
-     ],
-     [
-      53.0,
-      28.74
-     ],
-     [
-      54.0,
-      28.05
-     ],
-     [
-      55.0,
-      27.37
-     ],
-     [
-      56.0,
-      26.71
-     ],
-     [
-      57.0,
-      26.07
-     ],
-     [
-      58.0,
-      25.45
-     ],
-     [
-      59.0,
-      24.84
-     ],
-     [
-      60.0,
-      24.25
-     ],
-     [
-      61.0,
-      23.68
-     ],
-     [
-      62.0,
-      23.12
-     ],
-     [
-      63.0,
-      22.59
-     ],
-     [
-      64.0,
-      22.07
-     ],
-     [
-      65.0,
-      21.57
-     ],
-     [
-      66.0,
-      21.09
-     ],
-     [
-      67.0,
-      20.62
-     ],
-     [
-      68.0,
-      20.18
-     ],
-     [
-      69.0,
-      19.75
-     ],
-     [
-      70.0,
-      19.34
-     ],
-     [
-      71.0,
-      18.96
-     ],
-     [
-      72.0,
-      18.59
-     ],
-     [
-      73.0,
-      18.24
-     ],
-     [
-      74.0,
-      17.91
-     ],
-     [
-      75.0,
-      17.6
-     ],
-     [
-      76.0,
-      17.31
-     ],
-     [
-      77.0,
-      17.03
-     ],
-     [
-      78.0,
-      16.78
-     ],
-     [
-      79.0,
-      16.55
-     ],
-     [
-      80.0,
-      16.34
-     ],
-     [
-      81.0,
-      16.15
-     ],
-     [
-      82.0,
-      15.98
-     ],
-     [
-      83.0,
-      15.82
-     ],
-     [
-      84.0,
-      15.69
-     ],
-     [
-      85.0,
-      15.58
-     ],
-     [
-      86.0,
-      15.49
-     ],
-     [
-      87.0,
-      15.42
-     ],
-     [
-      88.0,
-      15.37
-     ],
-     [
-      89.0,
-      15.34
-     ],
-     [
-      90.0,
-      15.33
+      1.64
      ]
     ],
     "stand_pose": {
-     "thigh_swing_deg": 42.0,
+     "thigh_swing_deg": 4.0,
      "q_deg": {
       "left_hip_roll": 0.0,
-      "left_hip_pitch": 42.0,
-      "left_knee": -42.0,
+      "left_hip_pitch": 4.0,
+      "left_knee": -4.0,
       "right_hip_roll": 0.0,
-      "right_hip_pitch": 42.0,
-      "right_knee": -42.0
+      "right_hip_pitch": 4.0,
+      "right_knee": -4.0
      },
      "stance": [
       "left",
@@ -7457,870 +5132,46 @@
      ],
      "feet_coplanar": true,
      "com_ground_mm": [
-      9.14,
-      -158.18,
-      59.11
+      -28.36,
+      -157.46,
+      68.34
      ],
-     "com_height_above_sole_mm": 141.11,
+     "com_height_above_sole_mm": 150.34,
      "polygon_mm": [
       [
-       -28.5,
-       19.51
+       -30.0,
+       -288.2
       ],
       [
-       -28.5,
-       -335.71
+       -17.0,
+       -324.2
       ],
       [
-       -28.49,
-       -336.05
+       17.0,
+       -324.2
       ],
       [
-       -28.47,
-       -336.28
+       64.0,
+       -288.2
       ],
       [
-       -28.46,
-       -336.39
+       64.0,
+       -28.0
       ],
       [
-       -28.42,
-       -336.68
+       17.0,
+       8.0
       ],
       [
-       -28.38,
-       -336.87
+       -17.0,
+       8.0
       ],
       [
-       -28.33,
-       -337.07
-      ],
-      [
-       -28.23,
-       -337.41
-      ],
-      [
-       -28.22,
-       -337.46
-      ],
-      [
-       -28.11,
-       -337.74
-      ],
-      [
-       -28.07,
-       -337.84
-      ],
-      [
-       -27.97,
-       -338.07
-      ],
-      [
-       -27.81,
-       -338.39
-      ],
-      [
-       -27.63,
-       -338.7
-      ],
-      [
-       -27.43,
-       -339.0
-      ],
-      [
-       -27.21,
-       -339.3
-      ],
-      [
-       -26.97,
-       -339.58
-      ],
-      [
-       -26.72,
-       -339.85
-      ],
-      [
-       -26.45,
-       -340.11
-      ],
-      [
-       -26.16,
-       -340.36
-      ],
-      [
-       -25.85,
-       -340.59
-      ],
-      [
-       -25.53,
-       -340.81
-      ],
-      [
-       -25.52,
-       -340.82
-      ],
-      [
-       -25.18,
-       -341.03
-      ],
-      [
-       -24.84,
-       -341.22
-      ],
-      [
-       -24.48,
-       -341.39
-      ],
-      [
-       -24.11,
-       -341.55
-      ],
-      [
-       -23.74,
-       -341.69
-      ],
-      [
-       -23.35,
-       -341.81
-      ],
-      [
-       -22.96,
-       -341.91
-      ],
-      [
-       -22.56,
-       -342.0
-      ],
-      [
-       -22.15,
-       -342.07
-      ],
-      [
-       -22.13,
-       -342.07
-      ],
-      [
-       -21.72,
-       -342.12
-      ],
-      [
-       -21.31,
-       -342.16
-      ],
-      [
-       -20.9,
-       -342.17
-      ],
-      [
-       -13.87,
-       -342.18
-      ],
-      [
-       -7.29,
-       -342.19
-      ],
-      [
-       -0.72,
-       -342.2
-      ],
-      [
-       10.86,
-       -342.19
-      ],
-      [
-       36.75,
-       -342.16
-      ],
-      [
-       37.16,
-       -342.15
-      ],
-      [
-       37.42,
-       -342.14
-      ],
-      [
-       37.51,
-       -342.13
-      ],
-      [
-       37.73,
-       -342.12
-      ],
-      [
-       37.84,
-       -342.11
-      ],
-      [
-       38.25,
-       -342.06
-      ],
-      [
-       38.3,
-       -342.05
-      ],
-      [
-       38.65,
-       -342.0
-      ],
-      [
-       38.73,
-       -341.99
-      ],
-      [
-       38.83,
-       -341.97
-      ],
-      [
-       39.06,
-       -341.93
-      ],
-      [
-       39.08,
-       -341.92
-      ],
-      [
-       39.47,
-       -341.83
-      ],
-      [
-       39.64,
-       -341.79
-      ],
-      [
-       39.85,
-       -341.73
-      ],
-      [
-       40.17,
-       -341.64
-      ],
-      [
-       40.26,
-       -341.61
-      ],
-      [
-       40.43,
-       -341.55
-      ],
-      [
-       40.61,
-       -341.49
-      ],
-      [
-       40.69,
-       -341.46
-      ],
-      [
-       40.94,
-       -341.36
-      ],
-      [
-       41.02,
-       -341.33
-      ],
-      [
-       41.19,
-       -341.26
-      ],
-      [
-       41.33,
-       -341.2
-      ],
-      [
-       41.44,
-       -341.15
-      ],
-      [
-       41.68,
-       -341.03
-      ],
-      [
-       41.75,
-       -341.0
-      ],
-      [
-       41.92,
-       -340.91
-      ],
-      [
-       42.03,
-       -340.86
-      ],
-      [
-       42.1,
-       -340.82
-      ],
-      [
-       42.16,
-       -340.79
-      ],
-      [
-       42.35,
-       -340.68
-      ],
-      [
-       42.39,
-       -340.65
-      ],
-      [
-       42.49,
-       -340.59
-      ],
-      [
-       42.61,
-       -340.51
-      ],
-      [
-       42.69,
-       -340.47
-      ],
-      [
-       42.77,
-       -340.41
-      ],
-      [
-       42.8,
-       -340.4
-      ],
-      [
-       42.83,
-       -340.37
-      ],
-      [
-       43.05,
-       -340.22
-      ],
-      [
-       43.09,
-       -340.19
-      ],
-      [
-       43.26,
-       -340.07
-      ],
-      [
-       43.31,
-       -340.03
-      ],
-      [
-       43.47,
-       -339.91
-      ],
-      [
-       43.67,
-       -339.75
-      ],
-      [
-       43.86,
-       -339.58
-      ],
-      [
-       43.88,
-       -339.56
-      ],
-      [
-       44.05,
-       -339.41
-      ],
-      [
-       44.23,
-       -339.23
-      ],
-      [
-       44.4,
-       -339.05
-      ],
-      [
-       44.52,
-       -338.92
-      ],
-      [
-       44.74,
-       -338.67
-      ],
-      [
-       44.76,
-       -338.64
-      ],
-      [
-       44.88,
-       -338.5
-      ],
-      [
-       44.99,
-       -338.35
-      ],
-      [
-       45.05,
-       -338.28
-      ],
-      [
-       45.21,
-       -338.05
-      ],
-      [
-       45.3,
-       -337.92
-      ],
-      [
-       45.38,
-       -337.79
-      ],
-      [
-       45.57,
-       -337.46
-      ],
-      [
-       45.64,
-       -337.35
-      ],
-      [
-       45.65,
-       -337.31
-      ],
-      [
-       45.76,
-       -337.11
-      ],
-      [
-       45.8,
-       -337.02
-      ],
-      [
-       45.93,
-       -336.72
-      ],
-      [
-       45.95,
-       -336.68
-      ],
-      [
-       45.96,
-       -336.67
-      ],
-      [
-       46.04,
-       -336.46
-      ],
-      [
-       46.16,
-       -336.13
-      ],
-      [
-       46.16,
-       -336.12
-      ],
-      [
-       46.19,
-       -336.03
-      ],
-      [
-       46.26,
-       -335.79
-      ],
-      [
-       46.29,
-       -335.68
-      ],
-      [
-       46.34,
-       -335.43
-      ],
-      [
-       46.36,
-       -335.37
-      ],
-      [
-       46.41,
-       -335.1
-      ],
-      [
-       46.46,
-       -334.75
-      ],
-      [
-       46.46,
-       -334.7
-      ],
-      [
-       46.46,
-       -334.68
-      ],
-      [
-       46.49,
-       -334.28
-      ],
-      [
-       46.5,
-       -334.06
-      ],
-      [
-       46.5,
-       -334.02
-      ],
-      [
-       46.5,
-       -333.97
-      ],
-      [
-       46.5,
-       -333.96
-      ],
-      [
-       46.5,
-       -333.96
-      ],
-      [
-       46.5,
-       17.76
-      ],
-      [
-       46.49,
-       18.08
-      ],
-      [
-       46.48,
-       18.23
-      ],
-      [
-       46.46,
-       18.47
-      ],
-      [
-       46.44,
-       18.71
-      ],
-      [
-       46.39,
-       19.01
-      ],
-      [
-       46.35,
-       19.21
-      ],
-      [
-       46.29,
-       19.47
-      ],
-      [
-       46.22,
-       19.71
-      ],
-      [
-       46.15,
-       19.95
-      ],
-      [
-       46.06,
-       20.2
-      ],
-      [
-       45.99,
-       20.37
-      ],
-      [
-       45.87,
-       20.68
-      ],
-      [
-       45.79,
-       20.83
-      ],
-      [
-       45.63,
-       21.14
-      ],
-      [
-       45.57,
-       21.26
-      ],
-      [
-       45.32,
-       21.68
-      ],
-      [
-       45.04,
-       22.08
-      ],
-      [
-       44.74,
-       22.47
-      ],
-      [
-       44.4,
-       22.85
-      ],
-      [
-       44.23,
-       23.03
-      ],
-      [
-       44.05,
-       23.21
-      ],
-      [
-       43.86,
-       23.38
-      ],
-      [
-       43.66,
-       23.55
-      ],
-      [
-       43.46,
-       23.71
-      ],
-      [
-       43.26,
-       23.87
-      ],
-      [
-       43.05,
-       24.02
-      ],
-      [
-       42.83,
-       24.17
-      ],
-      [
-       42.61,
-       24.32
-      ],
-      [
-       42.39,
-       24.45
-      ],
-      [
-       42.16,
-       24.59
-      ],
-      [
-       41.92,
-       24.71
-      ],
-      [
-       41.68,
-       24.83
-      ],
-      [
-       41.44,
-       24.95
-      ],
-      [
-       41.2,
-       25.06
-      ],
-      [
-       40.95,
-       25.16
-      ],
-      [
-       40.69,
-       25.26
-      ],
-      [
-       40.44,
-       25.35
-      ],
-      [
-       40.18,
-       25.44
-      ],
-      [
-       39.91,
-       25.52
-      ],
-      [
-       39.65,
-       25.59
-      ],
-      [
-       39.38,
-       25.65
-      ],
-      [
-       38.84,
-       25.77
-      ],
-      [
-       38.29,
-       25.85
-      ],
-      [
-       38.27,
-       25.86
-      ],
-      [
-       37.71,
-       25.92
-      ],
-      [
-       37.16,
-       25.95
-      ],
-      [
-       34.93,
-       25.96
-      ],
-      [
-       17.05,
-       25.98
-      ],
-      [
-       -0.72,
-       26.0
-      ],
-      [
-       -7.29,
-       25.99
-      ],
-      [
-       -13.87,
-       25.98
-      ],
-      [
-       -20.9,
-       25.97
-      ],
-      [
-       -21.31,
-       25.96
-      ],
-      [
-       -21.72,
-       25.92
-      ],
-      [
-       -22.13,
-       25.87
-      ],
-      [
-       -22.15,
-       25.87
-      ],
-      [
-       -22.56,
-       25.8
-      ],
-      [
-       -22.96,
-       25.71
-      ],
-      [
-       -23.35,
-       25.61
-      ],
-      [
-       -23.74,
-       25.49
-      ],
-      [
-       -24.11,
-       25.35
-      ],
-      [
-       -24.48,
-       25.19
-      ],
-      [
-       -24.84,
-       25.02
-      ],
-      [
-       -25.18,
-       24.83
-      ],
-      [
-       -25.52,
-       24.62
-      ],
-      [
-       -25.53,
-       24.61
-      ],
-      [
-       -25.85,
-       24.39
-      ],
-      [
-       -26.16,
-       24.16
-      ],
-      [
-       -26.45,
-       23.91
-      ],
-      [
-       -26.72,
-       23.65
-      ],
-      [
-       -26.97,
-       23.38
-      ],
-      [
-       -27.21,
-       23.1
-      ],
-      [
-       -27.43,
-       22.8
-      ],
-      [
-       -27.63,
-       22.5
-      ],
-      [
-       -27.81,
-       22.19
-      ],
-      [
-       -27.97,
-       21.87
-      ],
-      [
-       -28.07,
-       21.64
-      ],
-      [
-       -28.11,
-       21.55
-      ],
-      [
-       -28.22,
-       21.26
-      ],
-      [
-       -28.23,
-       21.21
-      ],
-      [
-       -28.33,
-       20.87
-      ],
-      [
-       -28.38,
-       20.67
-      ],
-      [
-       -28.42,
-       20.48
-      ],
-      [
-       -28.46,
-       20.19
-      ],
-      [
-       -28.47,
-       20.08
-      ],
-      [
-       -28.49,
-       19.85
+       -30.0,
+       -28.0
       ]
      ],
-     "margin_mm": 37.36,
+     "margin_mm": 1.64,
      "inside": true
     },
     "stand_pose_interferences": [],
@@ -8329,19 +5180,54 @@
      "at_stand_pose": {
       "stance_roll_deg": 0.0,
       "swing_roll_deg": 0.0,
-      "margin_mm": -136.19,
+      "margin_mm": -41.46,
       "swing_foot_lowest_mm": 0.0,
-      "stance_hip_roll_torque_nm": 0.373,
+      "stance_hip_roll_torque_nm": 0.393,
       "torque_limit_nm": 1.196,
       "inside": false,
       "torque_ok": true
      },
      "best_within_30_deg_stance_roll": {
       "stance_roll_deg": -28.0,
-      "swing_roll_deg": 87.0,
-      "margin_mm": -103.33,
-      "swing_foot_lowest_mm": 50.35,
-      "stance_hip_roll_torque_nm": 0.202,
+      "swing_roll_deg": 75.0,
+      "margin_mm": -5.91,
+      "swing_foot_lowest_mm": 54.48,
+      "stance_hip_roll_torque_nm": 0.196,
+      "torque_limit_nm": 1.196,
+      "inside": false,
+      "torque_ok": true
+     },
+     "smallest_stance_roll_that_balances": {
+      "stance_roll_deg": -40.0,
+      "swing_roll_deg": 75.0,
+      "margin_mm": 1.53,
+      "swing_foot_lowest_mm": 76.73,
+      "stance_hip_roll_torque_nm": 0.155,
+      "torque_limit_nm": 1.196,
+      "inside": true,
+      "torque_ok": true
+     },
+     "balances_within_30_deg": false,
+     "balances_anywhere_in_limits": true
+    },
+    "one_foot_right": {
+     "stance": "right",
+     "at_stand_pose": {
+      "stance_roll_deg": 0.0,
+      "swing_roll_deg": 0.0,
+      "margin_mm": -54.07,
+      "swing_foot_lowest_mm": 0.0,
+      "stance_hip_roll_torque_nm": -0.399,
+      "torque_limit_nm": 1.196,
+      "inside": false,
+      "torque_ok": true
+     },
+     "best_within_30_deg_stance_roll": {
+      "stance_roll_deg": 30.0,
+      "swing_roll_deg": -88.0,
+      "margin_mm": -34.91,
+      "swing_foot_lowest_mm": 103.75,
+      "stance_hip_roll_torque_nm": -0.176,
       "torque_limit_nm": 1.196,
       "inside": false,
       "torque_ok": true
@@ -8350,31 +5236,159 @@
      "balances_within_30_deg": false,
      "balances_anywhere_in_limits": false
     },
-    "one_foot_right": {
-     "stance": "right",
-     "at_stand_pose": {
-      "stance_roll_deg": 0.0,
-      "swing_roll_deg": 0.0,
-      "margin_mm": -136.03,
-      "swing_foot_lowest_mm": 0.0,
-      "stance_hip_roll_torque_nm": -0.373,
-      "torque_limit_nm": 1.196,
-      "inside": false,
-      "torque_ok": true
+    "one_foot_left_support": {
+     "stance": [
+      "left"
+     ],
+     "feet_coplanar": true,
+     "com_ground_mm": [
+      -28.36,
+      -157.46,
+      68.34
+     ],
+     "com_height_above_sole_mm": 150.34,
+     "polygon_mm": [
+      [
+       -30.0,
+       -116.0
+      ],
+      [
+       64.0,
+       -116.0
+      ],
+      [
+       64.0,
+       -28.0
+      ],
+      [
+       17.0,
+       8.0
+      ],
+      [
+       -17.0,
+       8.0
+      ],
+      [
+       -30.0,
+       -28.0
+      ]
+     ],
+     "margin_mm": -41.46,
+     "inside": false,
+     "swing_foot_lowest_mm": 0.0
+    },
+    "one_foot_right_support": {
+     "stance": [
+      "right"
+     ],
+     "feet_coplanar": true,
+     "com_ground_mm": [
+      -28.36,
+      158.74,
+      68.34
+     ],
+     "com_height_above_sole_mm": 150.34,
+     "polygon_mm": [
+      [
+       -30.0,
+       28.0
+      ],
+      [
+       -17.0,
+       -8.0
+      ],
+      [
+       17.0,
+       -8.0
+      ],
+      [
+       64.0,
+       28.0
+      ],
+      [
+       64.0,
+       42.0
+      ],
+      [
+       24.0,
+       116.0
+      ],
+      [
+       10.0,
+       116.0
+      ],
+      [
+       -30.0,
+       42.0
+      ]
+     ],
+     "margin_mm": -54.07,
+     "inside": false,
+     "swing_foot_lowest_mm": 0.0
+    }
+   },
+   "feet": {
+    "overlap_at_stand_mm3": 0.0,
+    "gap_at_stand_mm": 60.0,
+    "overlap_at_neutral_mm3": 0.0,
+    "gap_at_neutral_mm": 60.0,
+    "one_leg_alone_from_stand": {
+     "left_hip_roll": {
+      "positive": {
+       "free_deg": 60.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+      },
+      "negative": {
+       "free_deg": 57.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+      }
      },
-     "best_within_30_deg_stance_roll": {
-      "stance_roll_deg": 30.0,
-      "swing_roll_deg": -88.0,
-      "margin_mm": -101.98,
-      "swing_foot_lowest_mm": 57.05,
-      "stance_hip_roll_torque_nm": -0.195,
-      "torque_limit_nm": 1.196,
-      "inside": false,
-      "torque_ok": true
+     "left_hip_pitch": {
+      "positive": {
+       "free_deg": 60.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": -68.3
+      },
+      "negative": {
+       "free_deg": 60.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 74.1
+      }
      },
-     "smallest_stance_roll_that_balances": null,
-     "balances_within_30_deg": false,
-     "balances_anywhere_in_limits": false
+     "left_knee": {
+      "positive": {
+       "free_deg": 60.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+      },
+      "negative": {
+       "free_deg": 60.0,
+       "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+      }
+     }
+    },
+    "both_hips_rolled_the_same_way": {
+     "positive": {
+      "free_deg": 60.0,
+      "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+     },
+     "negative": {
+      "free_deg": 60.0,
+      "left_foot_ahead_of_right_at_the_last_free_step_mm": 0.0
+     }
+    },
+    "right_sole_slid_in_the_floor_plane_until_contact_mm": {
+     "forward": 60.0,
+     "backward": 60.0,
+     "towards_the_left_sole": 60.0,
+     "away_from_it": 60.0
+    },
+    "one_foot_lifted_soles_level": {
+     "positive": {
+      "free_deg": 60.0,
+      "left_foot_ahead_of_right_at_the_last_free_step_mm": -68.3
+     },
+     "negative": {
+      "free_deg": 60.0,
+      "left_foot_ahead_of_right_at_the_last_free_step_mm": 74.1
+     }
     }
    },
    "camera": {
@@ -8397,10 +5411,10 @@
      0.0,
      -0.174
     ],
-    "toes_ahead_of_shin_mm": 46.5,
-    "heel_behind_shin_mm": 28.5,
+    "toes_ahead_of_shin_mm": 64.0,
+    "heel_behind_shin_mm": 30.0,
     "looks_the_way_the_toes_point": true,
-    "lens_height_above_floor_at_stand_mm": 277.45,
+    "lens_height_above_floor_at_stand_mm": 298.42,
     "clearance_each_side_mm": 0.5,
     "play_towards_the_lips_mm": 0.3,
     "play_towards_the_ledges_mm": 0.0,
@@ -8437,13 +5451,13 @@
       "from_neutral": {
        "angles_in_cone_deg": [
         -90.0,
-        -72.0
+        -45.0
        ]
       },
       "from_stand": {
        "angles_in_cone_deg": [
         -90.0,
-        -78.0
+        -42.0
        ]
       }
      },
@@ -8467,13 +5481,13 @@
       "from_neutral": {
        "angles_in_cone_deg": [
         -90.0,
-        -72.0
+        -57.0
        ]
       },
       "from_stand": {
        "angles_in_cone_deg": [
         -90.0,
-        -78.0
+        -54.0
        ]
       }
      },
@@ -8911,7 +5925,7 @@
       "part": "left_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
+      "from_nearest_joint_axis_mm": 74.95,
       "nearest_other_part": "battery",
       "gap_to_it_mm": 30.0
      },
@@ -8919,7 +5933,7 @@
       "part": "left_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
+      "from_nearest_joint_axis_mm": 77.88,
       "nearest_other_part": "battery",
       "gap_to_it_mm": 30.0
      },
@@ -8927,7 +5941,7 @@
       "part": "left_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
+      "from_nearest_joint_axis_mm": 81.49,
       "nearest_other_part": "battery",
       "gap_to_it_mm": 30.0
      },
@@ -8935,39 +5949,7 @@
       "part": "left_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "left_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "left_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "left_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "left_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
+      "from_nearest_joint_axis_mm": 85.7,
       "nearest_other_part": "battery",
       "gap_to_it_mm": 30.0
      },
@@ -8975,7 +5957,7 @@
       "part": "right_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
+      "from_nearest_joint_axis_mm": 74.95,
       "nearest_other_part": "battery",
       "gap_to_it_mm": 30.0
      },
@@ -8983,7 +5965,7 @@
       "part": "right_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
+      "from_nearest_joint_axis_mm": 77.88,
       "nearest_other_part": "battery",
       "gap_to_it_mm": 30.0
      },
@@ -8991,7 +5973,7 @@
       "part": "right_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
+      "from_nearest_joint_axis_mm": 81.49,
       "nearest_other_part": "battery",
       "gap_to_it_mm": 30.0
      },
@@ -8999,39 +5981,7 @@
       "part": "right_shin",
       "present": true,
       "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 80.08,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "right_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "right_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "right_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
-      "nearest_other_part": "battery",
-      "gap_to_it_mm": 30.0
-     },
-     {
-      "part": "right_shin",
-      "present": true,
-      "points_up_at_neutral": true,
-      "from_nearest_joint_axis_mm": 82.64,
+      "from_nearest_joint_axis_mm": 85.7,
       "nearest_other_part": "battery",
       "gap_to_it_mm": 30.0
      }
@@ -9040,7 +5990,7 @@
     "counts": {
      "left_shin": {
       "holes": 5,
-      "studs": 8
+      "studs": 4
      },
      "left_thigh": {
       "holes": 4,
@@ -9048,7 +5998,7 @@
      },
      "right_shin": {
       "holes": 5,
-      "studs": 8
+      "studs": 4
      },
      "right_thigh": {
       "holes": 4,
@@ -9064,49 +6014,49 @@
     {
      "where": "at the camera, on the mount",
      "point_in_ground_frame_mm": [
-      34.55,
+      -14.84,
       -158.1,
-      195.45
+      216.42
      ],
-     "margin_with_50_g_mm": 35.18,
-     "margin_with_100_g_mm": 33.35,
-     "margin_with_200_g_mm": 30.43,
+     "margin_with_50_g_mm": 2.74,
+     "margin_with_100_g_mm": 3.68,
+     "margin_with_200_g_mm": 5.18,
      "mass_that_uses_up_the_margin_g": null
     },
     {
      "where": "on the rear pin holes of the deck",
      "point_in_ground_frame_mm": [
-      -74.86,
+      -124.25,
       -158.1,
-      94.74
+      115.7
      ],
-     "margin_with_50_g_mm": 30.43,
-     "margin_with_100_g_mm": 24.36,
-     "margin_with_200_g_mm": 14.71,
-     "mass_that_uses_up_the_margin_g": 432.0
+     "margin_with_50_g_mm": -6.16,
+     "margin_with_100_g_mm": -12.79,
+     "margin_with_200_g_mm": -23.44,
+     "mass_that_uses_up_the_margin_g": 10.0
     },
     {
      "where": "on the deck studs, shared between both sides",
      "point_in_ground_frame_mm": [
-      -57.86,
+      -107.25,
       -158.1,
-      92.74
+      113.7
      ],
-     "margin_with_50_g_mm": 31.89,
-     "margin_with_100_g_mm": 27.05,
-     "margin_with_200_g_mm": 19.35,
-     "mass_that_uses_up_the_margin_g": 683.0
+     "margin_with_50_g_mm": -4.77,
+     "margin_with_100_g_mm": -10.23,
+     "margin_with_200_g_mm": -18.99,
+     "mass_that_uses_up_the_margin_g": 12.0
     },
     {
      "where": "on the thigh pin holes, shared between both thighs",
      "point_in_ground_frame_mm": [
-      31.05,
+      3.24,
       -158.1,
-      34.48
+      46.29
      ],
-     "margin_with_50_g_mm": 35.48,
-     "margin_with_100_g_mm": 33.9,
-     "margin_with_200_g_mm": 31.38,
+     "margin_with_50_g_mm": 4.22,
+     "margin_with_100_g_mm": 6.4,
+     "margin_with_200_g_mm": 9.91,
      "mass_that_uses_up_the_margin_g": null
     },
     {
@@ -9116,9 +6066,9 @@
       -158.1,
       -42.0
      ],
-     "margin_with_50_g_mm": 36.85,
-     "margin_with_100_g_mm": 36.19,
-     "margin_with_200_g_mm": 35.14,
+     "margin_with_50_g_mm": 3.95,
+     "margin_with_100_g_mm": 5.91,
+     "margin_with_200_g_mm": 9.06,
      "mass_that_uses_up_the_margin_g": null
     },
     {
@@ -9128,9 +6078,9 @@
       -158.1,
       -70.0
      ],
-     "margin_with_50_g_mm": 35.92,
-     "margin_with_100_g_mm": 34.7,
-     "margin_with_200_g_mm": 32.76,
+     "margin_with_50_g_mm": 6.07,
+     "margin_with_100_g_mm": 9.82,
+     "margin_with_200_g_mm": 15.86,
      "mass_that_uses_up_the_margin_g": null
     }
    ]

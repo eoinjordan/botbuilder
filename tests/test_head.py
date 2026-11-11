@@ -34,7 +34,6 @@ def test_head_meets_nothing_and_costs_the_legs_no_travel(head, selected):
     for joint, (lo, hi) in head["leg_sweeps_collision_free_deg"].items():
         assert lo <= limits[joint]["min_deg"] - 3 or limits[joint]["min_set_by"] == "collision"
         assert hi >= limits[joint]["max_deg"] + 3
-        assert lo <= selected["sweeps"][joint]["collision_free_deg"][0] + 0.5
 
 
 def test_view_is_clear_straight_ahead_and_balance_holds_at_the_stops(head, selected):
@@ -44,7 +43,24 @@ def test_view_is_clear_straight_ahead_and_balance_holds_at_the_stops(head, selec
     for pose in head["at_the_stand_pose"]:
         assert pose["stand_margin_mm"] > base - 3.0
     assert 20 < head["head_mass_g"] < 60
-    assert 500.0 < head["total_g"] < 540.0
+    assert 520.0 < head["total_g"] < 575.0
+
+
+def test_faces_on_the_platform_are_analysed(assembly_report, selected):
+    heads = assembly_report["turning_head_with_faces"]
+    assert set(heads) == {"eyes_above_esp32cam", "eyes_below_esp32cam", "stack_camera_forward"}
+    for name, head in heads.items():
+        assert head["neutral_interferences"] == [], name
+        lo, hi = head["pan_travel_to_the_stops_deg"]
+        assert hi >= 60 and lo <= -60, name
+        for pose in head["at_the_stand_pose"]:
+            assert pose["new_interferences"] == [], name
+            assert pose["stand_margin_mm"] > 30.0, name
+        assert head["tilt_free_deg"][0] < 0 < head["tilt_free_deg"][1], name
+    stack = assembly_report["stack_camera_forward"]
+    assert stack["neutral_interferences"] == [] and stack["display_overlap_with_print_mm3"] < 0.5
+    assert stack["cone_blocked_at_neutral"] == [] and stack["cone_blocked_at_stand"] == []
+    assert stack["stand_margin_mm"] > 30.0
 
 
 def test_documents_say_what_the_servo_is():

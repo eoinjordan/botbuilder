@@ -6,6 +6,7 @@
   "knee_servo_flip": false,
   "board_x_offset_mm": 0.0,
   "face": "eyes_above",
+  "feet": "comb",
   "camera": {"preset": "esp32cam", "back_x_mm": 40.0, "base_z_mm": 32.0, "tilt_deg": 10.0},
   "sweep_step_deg": 2.0,
   "limit_margin_deg": 3.0,
@@ -22,6 +23,7 @@
     "shin_face": "The shin blank is symmetric; the face towards the knee servo meets the horn and the foot points +x.",
     "neutral": "Thighs straight down, shins vertical, soles level, horns at mid travel.",
     "camera": "The camera board stands in the mount at the front edge of the deck, lower edge on the corner seats, back face on the ledges, lens towards +x. The numbers repeat CAMERA, CAM_BACK_X, CAM_BASE_Z and CAM_TILT of build.py in the design directory; a test compares them with the parameters.json the generator writes.",
+    "feet": "'comb' soles have fingers that cross the centre line between the fingers of the other sole; 'flat' is the plate as first drawn. FEET in build.py chooses the same. Joint limits are taken from sweeps that leave contact between the two shin parts out, because whether the soles meet depends on both legs together; the feet section of the report says how far the legs may move against each other.",
     "face": "The default head is the round display as the eyes with the camera board above it ('eyes_above'); 'eyes_below' puts the camera under the display. FACE and CAMERA in build.py choose the same. Where the display, the camera board and the battery are is read from the parameters.json the generator writes. Without a face the camera stands alone in the fixed mount, placed by the numbers under 'camera'.",
     "front": "Forward is the way the toes point: each foot plate reaches 46.5 mm ahead of the shin and 28.5 mm behind it (build.py moves it 9 mm towards +x), and the design README says toes forward. The hip roll cradles open towards +x, so the hips and legs stand ahead of the deck by construction.",
     "board": "UNO Q long side along x, centred between the deck rails, on spacers; Braccio shield stacked on top."

@@ -83,10 +83,12 @@ def describe(name: str) -> tuple:
     if stem in table:
         return table[stem]
     for side in ("left", "right"):
-        for key, text in (("hip_roll_pitch_yoke", "hip yoke"), ("thigh_knee_cradle", "thigh with the knee servo cradle"),
-                          ("shin_fixed_foot", "shin with fixed foot")):
+        for key, text in (("hip_roll_pitch_yoke", "hip yoke"), ("thigh_knee_cradle", "thigh with the knee servo cradle")):
             if stem == f"{side}_{key}":
                 return f"{side} {text}", {"part": f"{side}_{key.split('_')[0]}"}
+        for feet, text in (("comb", "comb sole whose fingers cross the centre line"), ("flat", "flat sole plate as first drawn")):
+            if stem == f"{side}_shin_{feet}_foot":
+                return f"{side} shin with fixed foot: {text}", {"part": f"{side}_shin", "feet": feet}
     return "printable part", {}
 
 
@@ -116,7 +118,7 @@ def manifest(folder: Path, design: dict) -> dict:
             "design": design, "generator_parameters_file": "parameters.json",
             "generator_parameters_sha256": hashlib.sha256((folder / "parameters.json").read_bytes()).hexdigest(),
             "camera_default": parameters["camera_default"], "face_default": parameters.get("face_default"),
-            "controller_default": parameters.get("controller_default"),
+            "controller_default": parameters.get("controller_default"), "feet_default": parameters.get("feet", {}).get("default"),
             "total_bytes": sum(f["bytes"] for f in files), "files": files}
 
 

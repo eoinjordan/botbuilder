@@ -60,7 +60,7 @@ def test_report_was_made_from_these_stls(assembly_report):
 
 @needs_stls
 def test_left_and_right_parts_are_mirror_sized():
-    for part in ("yoke", "thigh", "shin"):
+    for part in ("yoke", "thigh"):      # the comb soles are not mirror images
         left = np.asarray(model.load_part(f"left_{part}").bounding_box()).reshape(2, 3)
         right = np.asarray(model.load_part(f"right_{part}").bounding_box()).reshape(2, 3)
         assert np.allclose(left[1] - left[0], right[1] - right[0], atol=0.01)

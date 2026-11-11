@@ -145,11 +145,19 @@ def render_images(robots: dict, reports: dict, selected: str) -> dict:
             f"assumption-cradle-{name}.png")
 
     images["balance"] = _save(_balance_plot(rep["balance"]), "balance.png")
+    one = rep["balance"]
+    images["balance_one_foot"] = _save(_balance_plot(one, [("left foot alone, stand pose", one["one_foot_left_support"]),
+                                                             ("right foot alone, stand pose", one["one_foot_right_support"])]),
+                                       "balance-one-foot.png")
+    soles = _items(robot.placed(stand_q), {"left_shin_print", "right_shin_print"})
+    images["soles"] = _save(_side_by_side(
+        [render.render(soles, "top", (700, 560)), render.render(soles, "front", (560, 560)), render.render(soles, "iso", (620, 560))],
+        ["the two soles at the stand pose, from above (toes up)", "from the front", ""]), "soles.png")
     return images
 
 
-def _balance_plot(balance: dict) -> Image.Image:
-    panels = [("neutral pose", balance["neutral_two_feet"]), ("stand pose", balance["stand_pose"])]
+def _balance_plot(balance: dict, panels=None) -> Image.Image:
+    panels = panels or [("neutral pose", balance["neutral_two_feet"]), ("stand pose", balance["stand_pose"])]
     w, h, scale = 460, 520, 2.0
     sheet = Image.new("RGB", (w * len(panels), h), (255, 255, 255))
     draw = ImageDraw.Draw(sheet)
@@ -163,7 +171,7 @@ def _balance_plot(balance: dict) -> Image.Image:
         c = px(s["com_ground_mm"][:2])
         colour = (8, 127, 96) if s["inside"] else RED
         draw.ellipse([c[0] - 6, c[1] - 6, c[0] + 6, c[1] + 6], fill=colour)
-        draw.text((i * w + 12, 10), f"{label}: support polygon (both feet), top view, toes up", fill=(30, 40, 40))
+        draw.text((i * w + 12, 10), f"{label}: support polygon, top view, toes up", fill=(30, 40, 40))
         draw.text((i * w + 12, 28), f"centre of mass margin {s['margin_mm']} mm ({'inside' if s['inside'] else 'OUTSIDE'})", fill=colour)
     return sheet
 
@@ -243,6 +251,14 @@ def findings(rep: dict) -> list:
         if side == "right":
             continue
         best = o["best_within_30_deg_stance_roll"]
+        right = b["one_foot_right"]["at_stand_pose"]
+        if o["at_stand_pose"]["inside"] and right["inside"]:
+            text = (f"On one foot the centre of mass is inside the sole at the stand pose: {o['at_stand_pose']['margin_mm']} mm "
+                    f"on the left foot alone and {right['margin_mm']} mm on the right, with the other foot level with it. "
+                    "The soles reach across the centre line, so no weight shift is needed. This is static and rigid: "
+                    "the fingers, the shin plate and the servos give under the load.")
+            out.append({"id": "balance-one-foot", "level": "ok", "text": text})
+            continue
         text = (f"On one foot the centre of mass is {abs(o['at_stand_pose']['margin_mm'])} mm outside the foot at the stand pose "
                 f"and still {abs(best['margin_mm'])} mm outside with the stance hip rolled up to 30 degrees: "
                 "there is no ankle, so hip roll tilts the body instead of shifting it.")
@@ -312,14 +328,43 @@ def markdown(report: dict) -> str:
            "One joint at a time from the neutral pose, others at zero, until a part that moves with the joint meets one that",
            "does not. 180 means a full half turn without contact. Limits are the free range less "
            f"{report['assumptions']['limit_margin_deg']} degrees where a collision ends it, intersected with +/-90 degrees of servo travel about neutral.", "",
-           _table(["joint", "collision free (deg)", "first contact, negative", "first contact, positive", "limit used (deg)"],
-                  [(j, rep["sweeps"][j]["collision_free_deg"],
+           "The two soles interleave, so one leg moved alone soon brings its sole against the other. Whether the soles meet",
+           "depends on both legs, which a limit per joint cannot say: the limits are taken from the sweep with contact between",
+           "the two shin parts left out, and the section on the soles below says how far the legs may move against each other.", "",
+           _table(["joint", "collision free, everything (deg)", "collision free, soles left out (deg)", "first contact, negative",
+                   "first contact, positive", "limit used (deg)"],
+                  [(j, rep["sweeps"][j]["collision_free_deg"], rep["sweeps"][j]["collision_free_soles_left_out_deg"],
                     ", ".join(f"{b['moving']} / {b['fixed']}" for b in rep["sweeps"][j]["negative"]["blocked_by"]) or "none",
                     ", ".join(f"{b['moving']} / {b['fixed']}" for b in rep["sweeps"][j]["positive"]["blocked_by"]) or "none",
                     [rep["joint_limits_deg"][j]["min_deg"], rep["joint_limits_deg"][j]["max_deg"]]) for j in JOINTS]), ""]
     md += [f"![{k}]({v})\n" for k, v in img.items() if k.startswith("sweep_")]
 
-    md += ["## Servos in their cradles", "",
+    ft = rep["feet"]
+
+    def reach(entry):
+        return f"{-entry['negative']['free_deg']} to {entry['positive']['free_deg']}"
+
+    md += ["## The two soles", "",
+           f"![soles]({img['soles']})", "",
+           f"Feet preset: `{report['feet_preset']}`. From the stand pose, in steps of one degree, until the two shin parts overlap.",
+           "60 means no contact within 60 degrees.", "",
+           _table(["movement", "free range (deg)", "note"], [
+               ("gap between the two shin parts at the stand pose (mm)", ft["gap_at_stand_mm"], f"overlap {ft['overlap_at_stand_mm3']} mm3"),
+               ("gap at the neutral pose (mm)", ft["gap_at_neutral_mm"], f"overlap {ft['overlap_at_neutral_mm3']} mm3"),
+               ("left hip roll alone", reach(ft["one_leg_alone_from_stand"]["left_hip_roll"]), "positive rolls the leg outward"),
+               ("left hip pitch alone", reach(ft["one_leg_alone_from_stand"]["left_hip_pitch"]), "the foot swings and tilts"),
+               ("left knee alone", reach(ft["one_leg_alone_from_stand"]["left_knee"]), ""),
+               ("both hips rolled the same way", reach(ft["both_hips_rolled_the_same_way"]), "as in a weight shift"),
+               ("right sole slid forward or backward on the floor (mm)",
+                f"{ft['right_sole_slid_in_the_floor_plane_until_contact_mm']['backward']} back, "
+                f"{ft['right_sole_slid_in_the_floor_plane_until_contact_mm']['forward']} forward",
+                "how far one foot may lead the other with both soles down"),
+               ("right sole slid sideways on the floor (mm)",
+                f"{ft['right_sole_slid_in_the_floor_plane_until_contact_mm']['towards_the_left_sole']} towards the left sole, "
+                f"{ft['right_sole_slid_in_the_floor_plane_until_contact_mm']['away_from_it']} away", "60 means none within 60 mm"),
+               ("left foot lifted, sole level (hip pitch +t, knee -2t)", reach(ft["one_foot_lifted_soles_level"]), ""),
+           ]), "",
+           "## Servos in their cradles", "",
            _table(["servo", "model", "rail clearance each side (mm)", "seated on plate", "tie slots open", "ties clear of shaft", "overlap with its printed part (mm3)"],
                   [(c["servo"], c["model"], c["rail_clearance_each_side_mm"], c["seat_support_fraction"], f"{c['tie_slots_open']}/{c['tie_slots_expected']}",
                     f"{sum(t['clear'] for t in c['ties'])}/{len(c['ties'])}", c["body_interference_mm3"]) for c in rep["cradles"]]), "",
@@ -357,8 +402,19 @@ def markdown(report: dict) -> str:
                     not f["cone_blocked_at_neutral"] and not f["cone_blocked_at_stand"],
                     f["hip_pitch_in_cone_from_stand_deg"] or "never", f["total_g"], f["com_neutral_mm"], f["neutral_margin_mm"],
                     f["stand_thigh_swing_deg"], f["stand_margin_mm"]) for k, f in report["faces"].items()]), "",
-           "The faces were not analysed on the turning head: the tilt cradles for them are generated, but the assembly test of",
-           "the turning head uses the camera alone.", "",
+           "The display stack turned round (`stack_camera_forward`: XIAO Sense camera forward, screen to the rear), on the fixed",
+           "head, with the lens taken on the display axis:", "",
+           _table(["check", "value"], [(k, v if v not in ([], None) else "none") for k, v in report["stack_camera_forward"].items()]), "",
+           "The same heads on the turning platform (pan servo, hand-set tilt). The battery stays strapped under the deck, so its",
+           "lead to the display crosses the pan joint and needs a loop for the travel; the lead is not modelled.", "",
+           _table(["head on the platform", "pan travel to the stops (deg)", "tilt free range (deg)", "interference at neutral",
+                   "new interference at the stand pose, pan at either stop or centre", "head mass with servo (g)", "total mass (g)",
+                   "stand margin at the stops and centre (mm)", "parts in the clear cone straight ahead"],
+                  [(k, t["pan_travel_to_the_stops_deg"], t["tilt_free_deg"], len(t["neutral_interferences"]),
+                    sum(len(p["new_interferences"]) for p in t["at_the_stand_pose"]), t["head_mass_g"], t["total_g"],
+                    [p["stand_margin_mm"] for p in t["at_the_stand_pose"]],
+                    ", ".join(h["solid"] for h in t["at_the_stand_pose"][1]["in_the_cone"]) or "none")
+                   for k, t in report["turning_head_with_faces"].items()]), "",
            "## Camera mount", "",
            "The torso has no head or neck. Two posts at the front edge of the deck hold a camera board by its long edges,",
            "lens forward. Forward is the way the toes point: the foot plates reach "
@@ -501,14 +557,16 @@ def markdown(report: dict) -> str:
            _table(["case", "margin (mm)", "inside the support polygon"], [
                ("two feet, legs straight down", bal["neutral_two_feet"]["margin_mm"], bal["neutral_two_feet"]["inside"]),
                (f"two feet, stand pose (thighs back {bal['stand_pose']['thigh_swing_deg']} deg)", bal["stand_pose"]["margin_mm"], bal["stand_pose"]["inside"]),
-               ("one foot, stand pose", o["at_stand_pose"]["margin_mm"], o["at_stand_pose"]["inside"]),
+               ("left foot alone, stand pose", o["at_stand_pose"]["margin_mm"], o["at_stand_pose"]["inside"]),
+               ("right foot alone, stand pose", bal["one_foot_right"]["at_stand_pose"]["margin_mm"], bal["one_foot_right"]["at_stand_pose"]["inside"]),
                ("one foot, best with stance hip roll within 30 deg", o["best_within_30_deg_stance_roll"]["margin_mm"], o["best_within_30_deg_stance_roll"]["inside"]),
            ]), "",
            "Margin is the distance from the ground projection of the centre of mass to the nearest edge of the support polygon;",
            "negative means outside. The stand pose keeps the shins vertical and the soles level: hip pitch = t, knee = -t.", "",
            f"Stand pose joint angles (deg): {bal['stand_pose']['q_deg']}", "",
            f"Parts that interfere at the stand pose and not at neutral: {len(bal['stand_pose_interferences'])}.", "",
-           f"![stand pose]({img['stand_left']})", ""]
+           f"![stand pose]({img['stand_left']})", "",
+           f"![one foot]({img['balance_one_foot']})", ""]
     return "\n".join(md) + "\n"
 
 
@@ -543,6 +601,15 @@ def run(progress=print) -> dict:
     progress("turning head")
     turning = build_robot(selected, hardware, dict(config, head="pan", face=None))
     head = assembly.head_checks(turning, reports[selected]["balance"]["stand_pose"]["q_deg"])
+    turning_faces = {}
+    for face, camera in (("eyes_above", "esp32cam"), ("eyes_below", "esp32cam"), ("stack_camera_forward", "esp32cam")):
+        progress(f"turning head with {face}")
+        key = face if face == "stack_camera_forward" else f"{face}_{camera}"
+        robot_tf = build_robot(selected, hardware, dict(config, head="pan", face=face, camera=dict(config["camera"], preset=camera)))
+        turning_faces[key] = assembly.head_checks(robot_tf, reports[selected]["balance"]["stand_pose"]["q_deg"])
+    progress("display stack turned round")
+    stack = assembly.stack_summary(build_robot(selected, hardware, dict(config, face="stack_camera_forward")),
+                                   reports[selected]["joint_limits_deg"])
     progress("rendering")
     images = render_images(robots, reports, selected)
     names = {"torso_print", "pan_servo", "pan_horn", "head_platform_print", "head_cradle_print", "camera_board", "unoq", "braccio_shield"}
@@ -584,7 +651,10 @@ def run(progress=print) -> dict:
         "camera_presets": presets,
         "faces": faces,
         "face_default": f"{config.get('face')}_{config['camera']['preset']}",
+        "feet_preset": model.FEET,
         "turning_head": head,
+        "turning_head_with_faces": turning_faces,
+        "stack_camera_forward": stack,
         "controllers": controllers,
         "images": images,
         "variants": reports,

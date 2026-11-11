@@ -7,10 +7,10 @@ Status: simulation only. The robot has never been assembled or powered.
 
 ## What happened
 
-- Stands for the whole 10.0 s run at the stand pose; peak tilt 0.22 deg.
-- With the legs straight down it falls backward at 0.42 s, as the assembly test predicted.
-- The default gait stays up for 12.0 s and moves 51 mm forward (4.6 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 100 percent of the time.
-- Best of 54 parameter sets that stay inside the speed limit as written: 108 mm in 12.0 s (9.8 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller.
+- Stands for the whole 10.0 s run at the stand pose; peak tilt 0.29 deg.
+- With the legs straight down it falls backward at 0.46 s, as the assembly test predicted.
+- The default gait stays up for 12.0 s and moves 236 mm forward (21.5 mm/s). The feet leave the floor in turn: the highest a whole sole comes off the floor is 27.09 mm, and both feet stay loaded 21 percent of the time.
+- Best of 54 parameter sets that stay inside the speed limit as written: 238 mm in 12.0 s (21.6 mm/s). 13 sets fell; 26 ask for more than the speed limit and are slowed by the controller.
 
 ## How the servos are modelled
 
@@ -23,118 +23,118 @@ No backlash, no cable-tie compliance, no flex in the printed parts.
 
 ## Standing
 
-Stands for the whole 10.0 s run at the stand pose; peak tilt 0.22 deg.
+Stands for the whole 10.0 s run at the stand pose; peak tilt 0.29 deg.
 
 | joint | mean (N m) | peak (N m) | limit (N m) | peak / limit | time at the limit |
 |---|---|---|---|---|---|
-| left_hip_roll | 0.011 | 0.011 | 1.1964 | 0.009 | 0.0 |
-| left_hip_pitch | 0.0937 | 0.0938 | 1.1964 | 0.078 | 0.0 |
-| left_knee | 0.0234 | 0.0234 | 0.304 | 0.077 | 0.0 |
-| right_hip_roll | 0.0111 | 0.0111 | 1.1964 | 0.009 | 0.0 |
-| right_hip_pitch | 0.0939 | 0.0939 | 1.1964 | 0.078 | 0.0 |
-| right_knee | 0.0234 | 0.0234 | 0.304 | 0.077 | 0.0 |
+| left_hip_roll | 0.0074 | 0.0074 | 1.1964 | 0.006 | 0.0 |
+| left_hip_pitch | 0.0935 | 0.0935 | 1.1964 | 0.078 | 0.0 |
+| left_knee | 0.0446 | 0.0446 | 0.304 | 0.147 | 0.0 |
+| right_hip_roll | 0.0072 | 0.0073 | 1.1964 | 0.006 | 0.0 |
+| right_hip_pitch | 0.0937 | 0.0938 | 1.1964 | 0.078 | 0.0 |
+| right_knee | 0.0447 | 0.0447 | 0.304 | 0.147 | 0.0 |
 
-Estimated supply current while standing: 0.5 A (stall current scaled by torque; stall currents are assumed, see docs/power.md).
+Estimated supply current while standing: 0.63 A (stall current scaled by torque; stall currents are assumed, see docs/power.md).
 
 ## Legs straight down
 
-With the legs straight down it falls backward at 0.42 s, as the assembly test predicted.
+With the legs straight down it falls backward at 0.46 s, as the assembly test predicted.
 
 ## Servos relaxed
 
-With the pulses stopped at the stand pose the robot falls backward 0.3 s later. So the watchdog's default action is hold, not relax.
+With the pulses stopped at the stand pose the robot stays up in the simulation, held by the assumed gear friction.
 
 ## Watchdog
 
-Commands stopped at 4.0 s in mid gait. Controller afterwards: `STAT mode=HOLD age_ms=6000 wd=500 q=0.0,34.0,-34.0,0.0,50.0,-50.0`. Fell: False.
+Commands stopped at 4.0 s in mid gait. Controller afterwards: `STAT mode=HOLD age_ms=6000 wd=500 q=0.0,44.0,-44.0,0.0,60.0,-60.0`. Fell: False.
 
 ## Open-loop gait
 
-The default gait stays up for 12.0 s and moves 51 mm forward (4.6 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 100 percent of the time.
+The default gait stays up for 12.0 s and moves 236 mm forward (21.5 mm/s). The feet leave the floor in turn: the highest a whole sole comes off the floor is 27.09 mm, and both feet stay loaded 21 percent of the time.
 
 Parameters: `{"period_s": 1.0, "roll_amplitude_deg": 8.0, "step_amplitude_deg": 8.0, "lift_deg": 6.0, "step_phase_deg": 90.0, "lead_in_s": 1.0}`
 
 | joint | mean (N m) | peak (N m) | limit (N m) | peak / limit | time at the limit |
 |---|---|---|---|---|---|
-| left_hip_roll | 0.0848 | 0.175 | 1.1964 | 0.146 | 0.0 |
-| left_hip_pitch | 0.141 | 0.347 | 1.1964 | 0.29 | 0.0 |
-| left_knee | 0.0559 | 0.1139 | 0.304 | 0.375 | 0.0 |
-| right_hip_roll | 0.0862 | 0.171 | 1.1964 | 0.143 | 0.0 |
-| right_hip_pitch | 0.1374 | 0.3496 | 1.1964 | 0.292 | 0.0 |
-| right_knee | 0.0568 | 0.119 | 0.304 | 0.391 | 0.0 |
+| left_hip_roll | 0.2025 | 0.5977 | 1.1964 | 0.5 | 0.0 |
+| left_hip_pitch | 0.1236 | 0.4056 | 1.1964 | 0.339 | 0.0 |
+| left_knee | 0.0638 | 0.2966 | 0.304 | 0.976 | 0.0 |
+| right_hip_roll | 0.2096 | 0.5916 | 1.1964 | 0.494 | 0.0 |
+| right_hip_pitch | 0.1249 | 0.415 | 1.1964 | 0.347 | 0.0 |
+| right_knee | 0.055 | 0.2115 | 0.304 | 0.696 | 0.0 |
 
-Feet: both loaded 1.0, one loaded 0.0, neither 0.0 of the time; highest lift of a whole sole {'left': 0.0, 'right': 0.0} mm.
+Feet: both loaded 0.21, one loaded 0.79, neither 0.0 of the time; highest lift of a whole sole {'left': 27.09, 'right': 24.06} mm.
 
 ![gait](images/sim-gait.gif)
 
 ## Parameter sweep
 
-Best of 54 parameter sets that stay inside the speed limit as written: 108 mm in 12.0 s (9.8 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller.
+Best of 54 parameter sets that stay inside the speed limit as written: 238 mm in 12.0 s (21.6 mm/s). 13 sets fell; 26 ask for more than the speed limit and are slowed by the controller.
 
 | period (s) | roll (deg) | step (deg) | lift (deg) | inside speed limit | fell | forward (mm) | left (mm) | max tilt (deg) | one-foot time | sole lift (mm) | peak torque / limit |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| 0.6 | 4.0 | 0.0 | 0.0 | yes | no | 2 | -7 | 1.36 | 0.0 | 0.0 | 0.121 |
-| 0.6 | 4.0 | 0.0 | 8.0 | no | no | 60 | -13 | 4.02 | 0.0 | 0.0 | 0.487 |
-| 0.6 | 4.0 | 6.0 | 0.0 | yes | no | 79 | -4 | 4.03 | 0.01 | 0.0 | 0.223 |
-| 0.6 | 4.0 | 6.0 | 8.0 | no | no | 131 | -20 | 7.12 | 0.093 | 0.24 | 0.547 |
-| 0.6 | 4.0 | 12.0 | 0.0 | no | no | 113 | -1 | 7.88 | 0.058 | 0.03 | 0.32 |
-| 0.6 | 4.0 | 12.0 | 8.0 | no | no | 130 | -20 | 11.42 | 0.173 | 0.34 | 0.637 |
-| 0.6 | 8.0 | 0.0 | 0.0 | yes | no | 2 | -14 | 2.74 | 0.0 | 0.0 | 0.134 |
-| 0.6 | 8.0 | 0.0 | 8.0 | no | no | 68 | -20 | 4.73 | 0.0 | 0.0 | 0.611 |
-| 0.6 | 8.0 | 6.0 | 0.0 | yes | no | 104 | -11 | 4.78 | 0.002 | 0.0 | 0.24 |
-| 0.6 | 8.0 | 6.0 | 8.0 | no | no | 236 | -26 | 9.0 | 0.132 | 0.46 | 0.589 |
-| 0.6 | 8.0 | 12.0 | 0.0 | no | no | 163 | -6 | 8.24 | 0.052 | 0.03 | 0.333 |
-| 0.6 | 8.0 | 12.0 | 8.0 | no | no | 53 | -28 | 11.62 | 0.248 | 0.88 | 0.553 |
-| 0.6 | 14.0 | 0.0 | 0.0 | no | no | 20 | -27 | 4.77 | 0.063 | 0.03 | 0.298 |
-| 0.6 | 14.0 | 0.0 | 8.0 | no | no | 18 | -28 | 9.69 | 0.082 | 0.19 | 0.948 |
-| 0.6 | 14.0 | 6.0 | 0.0 | no | no | 65 | -23 | 6.19 | 0.035 | 0.01 | 0.31 |
-| 0.6 | 14.0 | 6.0 | 8.0 | no | no | 244 | -36 | 13.55 | 0.247 | 1.15 | 0.92 |
-| 0.6 | 14.0 | 12.0 | 0.0 | no | no | 158 | -19 | 9.22 | 0.09 | 0.07 | 0.358 |
-| 0.6 | 14.0 | 12.0 | 8.0 | no | no | 94 | 26 | 13.94 | 0.363 | 2.5 | 0.751 |
-| 1.0 | 4.0 | 0.0 | 0.0 | yes | no | 1 | 1 | 1.35 | 0.0 | 0.0 | 0.102 |
-| 1.0 | 4.0 | 0.0 | 8.0 | yes | no | 16 | 3 | 7.32 | 0.0 | 0.0 | 0.582 |
-| 1.0 | 4.0 | 6.0 | 0.0 | yes | no | 38 | -12 | 4.0 | 0.0 | 0.0 | 0.199 |
-| 1.0 | 4.0 | 6.0 | 8.0 | yes | no | 93 | -20 | 8.71 | 0.0 | 0.0 | 0.578 |
-| 1.0 | 4.0 | 12.0 | 0.0 | yes | no | 51 | -25 | 7.78 | 0.022 | 0.01 | 0.25 |
-| 1.0 | 4.0 | 12.0 | 8.0 | no | no | 106 | -15 | 10.02 | 0.007 | 0.0 | 0.618 |
-| 1.0 | 8.0 | 0.0 | 0.0 | yes | no | 1 | 2 | 2.71 | 0.0 | 0.0 | 0.12 |
-| 1.0 | 8.0 | 0.0 | 8.0 | yes | no | 18 | -1 | 8.97 | 0.0 | 0.0 | 0.625 |
-| 1.0 | 8.0 | 6.0 | 0.0 | yes | no | 53 | -10 | 4.76 | 0.0 | 0.0 | 0.179 |
-| 1.0 | 8.0 | 6.0 | 8.0 | yes | no | 92 | -17 | 10.05 | 0.003 | 0.01 | 0.67 |
-| 1.0 | 8.0 | 12.0 | 0.0 | yes | no | 82 | -24 | 8.1 | 0.01 | 0.01 | 0.218 |
-| 1.0 | 8.0 | 12.0 | 8.0 | no | no | 104 | -6 | 11.43 | 0.007 | 0.01 | 0.631 |
-| 1.0 | 14.0 | 0.0 | 0.0 | yes | no | 2 | 4 | 4.73 | 0.0 | 0.0 | 0.149 |
-| 1.0 | 14.0 | 0.0 | 8.0 | yes | no | 20 | -16 | 11.59 | 0.005 | 0.01 | 0.714 |
-| 1.0 | 14.0 | 6.0 | 0.0 | yes | no | 58 | -9 | 6.06 | 0.0 | 0.0 | 0.234 |
-| 1.0 | 14.0 | 6.0 | 8.0 | yes | no | 70 | -17 | 10.82 | 0.01 | 0.02 | 0.743 |
-| 1.0 | 14.0 | 12.0 | 0.0 | yes | no | 108 | -21 | 9.06 | 0.015 | 0.0 | 0.274 |
-| 1.0 | 14.0 | 12.0 | 8.0 | no | no | 79 | -8 | 13.31 | 0.028 | 0.02 | 0.809 |
-| 1.6 | 4.0 | 0.0 | 0.0 | yes | no | 1 | 5 | 1.36 | 0.0 | 0.0 | 0.102 |
-| 1.6 | 4.0 | 0.0 | 8.0 | yes | no | 19 | 16 | 8.72 | 0.0 | 0.0 | 0.419 |
-| 1.6 | 4.0 | 6.0 | 0.0 | yes | no | 22 | -3 | 3.97 | 0.0 | 0.0 | 0.178 |
-| 1.6 | 4.0 | 6.0 | 8.0 | yes | no | 40 | 6 | 8.79 | 0.0 | 0.0 | 0.454 |
-| 1.6 | 4.0 | 12.0 | 0.0 | yes | no | 26 | -11 | 7.76 | 0.005 | 0.0 | 0.209 |
-| 1.6 | 4.0 | 12.0 | 8.0 | yes | no | 51 | -5 | 8.81 | 0.0 | 0.0 | 0.456 |
-| 1.6 | 8.0 | 0.0 | 0.0 | yes | no | 1 | 11 | 2.7 | 0.0 | 0.0 | 0.117 |
-| 1.6 | 8.0 | 0.0 | 8.0 | yes | no | 21 | 21 | 9.06 | 0.0 | 0.0 | 0.448 |
-| 1.6 | 8.0 | 6.0 | 0.0 | yes | no | 32 | 2 | 4.75 | 0.0 | 0.0 | 0.164 |
-| 1.6 | 8.0 | 6.0 | 8.0 | yes | no | 39 | 11 | 8.48 | 0.0 | 0.0 | 0.419 |
-| 1.6 | 8.0 | 12.0 | 0.0 | yes | no | 46 | -6 | 8.09 | 0.0 | 0.0 | 0.193 |
-| 1.6 | 8.0 | 12.0 | 8.0 | yes | no | 51 | 0 | 8.03 | 0.0 | 0.0 | 0.422 |
-| 1.6 | 14.0 | 0.0 | 0.0 | yes | no | 1 | 19 | 4.71 | 0.0 | 0.0 | 0.128 |
-| 1.6 | 14.0 | 0.0 | 8.0 | yes | no | 20 | 29 | 8.64 | 0.0 | 0.0 | 0.406 |
-| 1.6 | 14.0 | 6.0 | 0.0 | yes | no | 34 | 10 | 6.03 | 0.0 | 0.0 | 0.168 |
-| 1.6 | 14.0 | 6.0 | 8.0 | yes | no | 42 | 19 | 7.98 | 0.0 | 0.0 | 0.367 |
-| 1.6 | 14.0 | 12.0 | 0.0 | yes | no | 61 | 1 | 9.01 | 0.0 | 0.0 | 0.212 |
-| 1.6 | 14.0 | 12.0 | 8.0 | yes | no | 48 | 9 | 8.31 | 0.0 | 0.0 | 0.445 |
+| 0.6 | 4.0 | 0.0 | 0.0 | yes | no | 3 | 0 | 3.03 | 0.593 | 5.02 | 0.387 |
+| 0.6 | 4.0 | 0.0 | 8.0 | no | no | 83 | 6 | 3.49 | 0.782 | 12.41 | 0.533 |
+| 0.6 | 4.0 | 6.0 | 0.0 | yes | no | 28 | -30 | 17.49 | 0.79 | 51.94 | 0.97 |
+| 0.6 | 4.0 | 6.0 | 8.0 | no | backward at 3.14 s | -54 | -67 | 47.0 | 0.548 | 29.59 | 1.0 |
+| 0.6 | 4.0 | 12.0 | 0.0 | no | backward at 3.74 s | -123 | -15 | 46.33 | 0.642 | 59.99 | 1.0 |
+| 0.6 | 4.0 | 12.0 | 8.0 | no | forward at 2.44 s | 190 | -50 | 49.76 | 0.484 | 64.37 | 1.0 |
+| 0.6 | 8.0 | 0.0 | 0.0 | yes | no | 3 | 1 | 7.59 | 0.773 | 13.92 | 0.472 |
+| 0.6 | 8.0 | 0.0 | 8.0 | no | no | 83 | 1 | 7.46 | 0.843 | 20.27 | 0.523 |
+| 0.6 | 8.0 | 6.0 | 0.0 | yes | no | 238 | -18 | 7.7 | 0.777 | 19.18 | 0.757 |
+| 0.6 | 8.0 | 6.0 | 8.0 | no | forward at 2.94 s | 202 | 24 | 47.36 | 0.558 | 93.21 | 1.0 |
+| 0.6 | 8.0 | 12.0 | 0.0 | no | backward at 4.64 s | -51 | 45 | 45.61 | 0.72 | 81.7 | 1.0 |
+| 0.6 | 8.0 | 12.0 | 8.0 | no | forward at 2.34 s | 200 | 7 | 45.7 | 0.513 | 90.59 | 1.0 |
+| 0.6 | 14.0 | 0.0 | 0.0 | no | no | 16 | 16 | 14.47 | 0.827 | 27.86 | 0.668 |
+| 0.6 | 14.0 | 0.0 | 8.0 | no | no | 103 | 6 | 14.32 | 0.85 | 34.05 | 0.693 |
+| 0.6 | 14.0 | 6.0 | 0.0 | no | no | 275 | 6 | 13.78 | 0.857 | 27.57 | 0.713 |
+| 0.6 | 14.0 | 6.0 | 8.0 | no | forward at 3.52 s | 231 | 43 | 46.74 | 0.642 | 101.21 | 1.0 |
+| 0.6 | 14.0 | 12.0 | 0.0 | no | to the left at 7.7 s | 320 | 85 | 45.55 | 0.829 | 106.58 | 1.0 |
+| 0.6 | 14.0 | 12.0 | 8.0 | no | forward at 2.54 s | 206 | -26 | 46.76 | 0.528 | 87.18 | 1.0 |
+| 1.0 | 4.0 | 0.0 | 0.0 | yes | no | 1 | 5 | 2.79 | 0.575 | 4.63 | 0.372 |
+| 1.0 | 4.0 | 0.0 | 8.0 | yes | no | 1 | 5 | 2.82 | 0.782 | 10.93 | 0.435 |
+| 1.0 | 4.0 | 6.0 | 0.0 | yes | no | 103 | -1 | 4.38 | 0.735 | 12.42 | 0.415 |
+| 1.0 | 4.0 | 6.0 | 8.0 | yes | no | 215 | -1 | 7.45 | 0.738 | 20.63 | 1.0 |
+| 1.0 | 4.0 | 12.0 | 0.0 | no | no | 84 | -16 | 7.77 | 0.808 | 23.97 | 0.932 |
+| 1.0 | 4.0 | 12.0 | 8.0 | no | forward at 3.76 s | 170 | 62 | 47.53 | 0.633 | 66.42 | 1.0 |
+| 1.0 | 8.0 | 0.0 | 0.0 | yes | no | 1 | 4 | 6.82 | 0.748 | 12.68 | 0.44 |
+| 1.0 | 8.0 | 0.0 | 8.0 | yes | no | 2 | 4 | 6.84 | 0.795 | 18.95 | 0.476 |
+| 1.0 | 8.0 | 6.0 | 0.0 | yes | no | 150 | -9 | 6.97 | 0.78 | 17.62 | 0.47 |
+| 1.0 | 8.0 | 6.0 | 8.0 | yes | no | 189 | 4 | 7.24 | 0.79 | 25.03 | 1.0 |
+| 1.0 | 8.0 | 12.0 | 0.0 | no | to the left at 3.98 s | 99 | 143 | 47.69 | 0.643 | 118.75 | 0.829 |
+| 1.0 | 8.0 | 12.0 | 8.0 | no | forward at 4.72 s | 221 | 60 | 47.47 | 0.686 | 60.72 | 1.0 |
+| 1.0 | 14.0 | 0.0 | 0.0 | yes | no | 2 | 2 | 12.91 | 0.828 | 24.67 | 0.522 |
+| 1.0 | 14.0 | 0.0 | 8.0 | yes | no | -3 | 3 | 13.01 | 0.868 | 31.15 | 0.557 |
+| 1.0 | 14.0 | 6.0 | 0.0 | yes | no | 186 | -3 | 13.05 | 0.827 | 28.17 | 0.554 |
+| 1.0 | 14.0 | 6.0 | 8.0 | yes | no | 228 | 11 | 13.02 | 0.852 | 34.34 | 0.783 |
+| 1.0 | 14.0 | 12.0 | 0.0 | no | backward at 3.92 s | -69 | 67 | 45.93 | 0.663 | 36.17 | 0.863 |
+| 1.0 | 14.0 | 12.0 | 8.0 | no | no | 371 | 16 | 13.48 | 0.873 | 38.13 | 1.0 |
+| 1.6 | 4.0 | 0.0 | 0.0 | yes | no | 2 | 4 | 2.81 | 0.57 | 4.69 | 0.348 |
+| 1.6 | 4.0 | 0.0 | 8.0 | yes | no | -1 | 2 | 2.81 | 0.737 | 10.85 | 0.384 |
+| 1.6 | 4.0 | 6.0 | 0.0 | yes | no | 65 | 1 | 4.03 | 0.717 | 12.26 | 0.386 |
+| 1.6 | 4.0 | 6.0 | 8.0 | yes | no | 109 | 1 | 5.79 | 0.735 | 17.44 | 0.889 |
+| 1.6 | 4.0 | 12.0 | 0.0 | no | no | 66 | -1 | 5.69 | 0.785 | 22.98 | 0.455 |
+| 1.6 | 4.0 | 12.0 | 8.0 | no | no | 157 | -2 | 11.27 | 0.765 | 25.38 | 1.0 |
+| 1.6 | 8.0 | 0.0 | 0.0 | yes | no | 1 | 4 | 6.82 | 0.74 | 12.64 | 0.405 |
+| 1.6 | 8.0 | 0.0 | 8.0 | yes | no | 1 | 3 | 6.82 | 0.798 | 18.88 | 0.435 |
+| 1.6 | 8.0 | 6.0 | 0.0 | yes | no | 100 | 1 | 6.83 | 0.762 | 17.65 | 0.434 |
+| 1.6 | 8.0 | 6.0 | 8.0 | yes | no | 116 | 1 | 6.86 | 0.803 | 23.19 | 0.869 |
+| 1.6 | 8.0 | 12.0 | 0.0 | no | no | 122 | -6 | 8.13 | 0.812 | 28.12 | 0.437 |
+| 1.6 | 8.0 | 12.0 | 8.0 | no | no | 182 | 16 | 10.38 | 0.81 | 26.68 | 1.0 |
+| 1.6 | 14.0 | 0.0 | 0.0 | yes | no | 0 | 2 | 12.87 | 0.808 | 24.54 | 0.458 |
+| 1.6 | 14.0 | 0.0 | 8.0 | yes | no | 4 | 0 | 12.87 | 0.828 | 30.75 | 0.462 |
+| 1.6 | 14.0 | 6.0 | 0.0 | yes | no | 115 | 0 | 12.88 | 0.817 | 27.65 | 0.459 |
+| 1.6 | 14.0 | 6.0 | 8.0 | yes | no | 123 | 1 | 12.89 | 0.832 | 33.96 | 0.835 |
+| 1.6 | 14.0 | 12.0 | 0.0 | no | no | 180 | -1 | 13.18 | 0.833 | 35.53 | 0.668 |
+| 1.6 | 14.0 | 12.0 | 8.0 | no | no | 221 | 8 | 12.99 | 0.835 | 36.86 | 1.0 |
 
 ## Best set and floor friction
 
 | floor friction | fell | forward (mm) | speed (mm/s) |
 |---|---|---|---|
-| 0.3 | False | 123 | 11.2 |
-| 0.6 | False | 108 | 9.8 |
-| 1.0 | False | 88 | 8.0 |
+| 0.3 | False | 214 | 19.4 |
+| 0.6 | False | 238 | 21.6 |
+| 1.0 | False | 243 | 22.1 |
 
 ![best gait](images/sim-gait-best.gif)
 
@@ -146,8 +146,8 @@ Best of 54 parameter sets that stay inside the speed limit as written: 108 mm in
 
 Suggestions only; none of this has been done.
 
-- Move the hips back under the body. The hip pitch axis is 89 mm ahead of the torso origin, so with straight legs the centre of mass is behind the heels and the robot only stands with the thighs swung 42 degrees back.
-- Bring the feet together. The foot centres are 172 mm apart and the centre of mass is 62 mm outside either foot, so the weight cannot be put on one foot and the gait can only shuffle.
-- Add an ankle roll joint, or shape the soles as a rocker, so a weight shift tilts the body over a foot instead of tipping the feet onto their edges. With six servos this means giving up a knee or a hip joint on each leg.
-- Add hip yaw or accept that the robot cannot turn: with roll and pitch only it has no way to change heading except by slipping.
-- Check the soles on the real floor. The shuffle is a sliding gait, and the contact model is the least certain part of the simulation.
+- Move the hips back under the body. The hip pitch axis is 89 mm ahead of the torso origin, so with straight legs the centre of mass is behind the heels and the robot only stands with the thighs swung 52 degrees back.
+- The comb soles put the centre of mass 32 mm inside either sole alone, so a foot can be lifted. The gait here is the one written for the flat soles, with its parameters unchanged: it was not tuned for these feet. A gait study on this geometry is the next step.
+- Stiffness is not in the simulation. Standing on one foot bends the fingers, the shin plate and the servo mounts; the design README gives a hand calculation for the printed parts only.
+- Add hip yaw or accept that the robot cannot turn by joint motion alone: with roll and pitch only, heading changes come from slipping.
+- Check the soles on the real floor. The contact model is the least certain part of the simulation.

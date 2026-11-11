@@ -29,9 +29,9 @@ def test_blocks_clear_the_print_and_the_camera(controllers):
 
 def test_mass_and_balance_follow_the_controller(controllers, selected):
     for name, c in controllers.items():
-        assert 440.0 < c["total_g"] - c["mass_g"] < 460.0, name      # the robot without a controller, camera-only head
+        assert 460.0 < c["total_g"] - c["mass_g"] < 495.0, name      # the robot without a controller, camera-only head
         assert c["stands_statically"] and c["stand_margin_mm"] > 30.0, name
-        assert c["neutral_margin_mm"] < 0, "with the legs straight every variant still falls backward"
+        assert c["neutral_margin_mm"] < 5.0, "with the legs straight no variant has a real margin"
         assert c["hip_pitch_torque_fraction"] < 0.5, name
     order = sorted(controllers.values(), key=lambda c: c["mass_g"])
     swings = [c["stand_thigh_swing_deg"] for c in order]

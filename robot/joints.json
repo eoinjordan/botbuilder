@@ -28,7 +28,7 @@
     0.0,
     0.0
    ],
-   "min_deg": -52.0,
+   "min_deg": -35.0,
    "max_deg": 90.0,
    "min_set_by": "collision",
    "max_set_by": "servo travel",
@@ -57,9 +57,9 @@
     0.0
    ],
    "min_deg": -90.0,
-   "max_deg": 90.0,
+   "max_deg": 62.0,
    "min_set_by": "servo travel",
-   "max_set_by": "servo travel",
+   "max_set_by": "collision",
    "torque_limit_nm": 1.1964,
    "speed_limit_deg_s": 300.0,
    "spec_voltage_v": 4.8,
@@ -113,7 +113,7 @@
     0.0
    ],
    "min_deg": -90.0,
-   "max_deg": 52.0,
+   "max_deg": 32.0,
    "min_set_by": "servo travel",
    "max_set_by": "collision",
    "torque_limit_nm": 1.1964,
@@ -141,9 +141,9 @@
     0.0
    ],
    "min_deg": -90.0,
-   "max_deg": 90.0,
+   "max_deg": 62.0,
    "min_set_by": "servo travel",
-   "max_set_by": "servo travel",
+   "max_set_by": "collision",
    "torque_limit_nm": 1.1964,
    "speed_limit_deg_s": 300.0,
    "spec_voltage_v": 4.8,
@@ -180,14 +180,14 @@
  },
  "stand_pose_deg": {
   "left_hip_roll": 0.0,
-  "left_hip_pitch": 42.0,
-  "left_knee": -42.0,
+  "left_hip_pitch": 52.0,
+  "left_knee": -52.0,
   "right_hip_roll": 0.0,
-  "right_hip_pitch": 42.0,
-  "right_knee": -42.0
+  "right_hip_pitch": 52.0,
+  "right_knee": -52.0
  },
- "stand_torso_height_m": 0.16474,
+ "stand_torso_height_m": 0.15423,
  "neutral_torso_height_m": 0.1859,
- "mass_kg": 0.5329,
+ "mass_kg": 0.5645,
  "thigh_face": "rail"
 }

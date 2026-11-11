@@ -5,15 +5,16 @@
   "repository": "eoinjordan/3d-print-designs",
   "directory": "microduck-braccio-unoq",
   "generator": "build.py",
-  "commit": "94b44b3e550eeeb6742a42a0614cb6a6af66426f",
+  "commit": "ff8dbb80f1b43e8451adf36163285fc674cc0700",
   "uncommitted_changes": false
  },
  "generator_parameters_file": "parameters.json",
- "generator_parameters_sha256": "20762b7763539a678ba1cbb3dde316718d8375a7a94eb8c962cfeff6e3ffa854",
+ "generator_parameters_sha256": "149f12714400ee5db12a11b4555951a5d703ed78810fb1dc5272b55499ce64e7",
  "camera_default": "esp32cam",
  "face_default": "eyes_above",
  "controller_default": "unoq",
- "total_bytes": 8264024,
+ "feet_default": "comb",
+ "total_bytes": 8707592,
  "files": [
   {
    "file": "01_torso_hub51515_cam_esp32cam.stl",
@@ -271,8 +272,8 @@
     "face": "any",
     "camera": "any"
    },
-   "triangles": 9794,
-   "volume_mm3": 62178.2,
+   "triangles": 9874,
+   "volume_mm3": 62018.2,
    "bounding_box_mm": [
     [
      -45.0,
@@ -285,8 +286,8 @@
      17.5
     ]
    ],
-   "bytes": 489784,
-   "sha256": "731a6564514a98f2869f32c0bff7a25b3c378ebb2a9b4c459c7befa957307310"
+   "bytes": 493784,
+   "sha256": "261bcff0230f538a9f9caf57d430ce389512d2bb89ad10a76f37658cd4a619b4"
   },
   {
    "file": "01_torso_unoq_stack_camera_forward.stl",
@@ -810,10 +811,35 @@
    "sha256": "b899508a0f4e8c4447ff17974de14b710e6902a658099ba24c25afd735ba70bb"
   },
   {
-   "file": "left_shin_fixed_foot.stl",
-   "what": "left shin with fixed foot",
+   "file": "left_shin_comb_foot.stl",
+   "what": "left shin with fixed foot: comb sole whose fingers cross the centre line",
    "options": {
-    "part": "left_shin"
+    "part": "left_shin",
+    "feet": "comb"
+   },
+   "triangles": 4410,
+   "volume_mm3": 53799.9,
+   "bounding_box_mm": [
+    [
+     -30.0,
+     -118.0,
+     0.0
+    ],
+    [
+     64.0,
+     6.0,
+     99.0
+    ]
+   ],
+   "bytes": 220584,
+   "sha256": "020f05af60a97c2f15f36c2609ed94c9a443e5eb7ed990d82d294179fbf8890b"
+  },
+  {
+   "file": "left_shin_flat_foot.stl",
+   "what": "left shin with fixed foot: flat sole plate as first drawn",
+   "options": {
+    "part": "left_shin",
+    "feet": "flat"
    },
    "triangles": 5740,
    "volume_mm3": 29089.2,
@@ -879,10 +905,35 @@
    "sha256": "e3cbee6d3397bd4fa7e435879b5270f496b3dccca05f1ec3ba48c61a6842559f"
   },
   {
-   "file": "right_shin_fixed_foot.stl",
-   "what": "right shin with fixed foot",
+   "file": "right_shin_comb_foot.stl",
+   "what": "right shin with fixed foot: comb sole whose fingers cross the centre line",
    "options": {
-    "part": "right_shin"
+    "part": "right_shin",
+    "feet": "comb"
+   },
+   "triangles": 4378,
+   "volume_mm3": 46939.9,
+   "bounding_box_mm": [
+    [
+     -30.0,
+     -6.0,
+     0.0
+    ],
+    [
+     64.0,
+     118.0,
+     99.0
+    ]
+   ],
+   "bytes": 218984,
+   "sha256": "feb95e1f7c9f5172db3910d596caffba7e68c0b84a5738c041efeaa95f392dd4"
+  },
+  {
+   "file": "right_shin_flat_foot.stl",
+   "what": "right shin with fixed foot: flat sole plate as first drawn",
+   "options": {
+    "part": "right_shin",
+    "feet": "flat"
    },
    "triangles": 5896,
    "volume_mm3": 29089.5,
