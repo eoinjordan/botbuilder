@@ -1,0 +1,60 @@
+name: Mark a build as validated
+description: Record that a build or a part was printed and checked. Only the repository owner's submissions are applied.
+title: "Validated: "
+labels: ["validated"]
+body:
+  - type: markdown
+    attributes:
+      value: Use the Mark validated button on the site's Admin page, which fills in the build id and the date. A workflow reads this form, updates config/validated.json and closes the issue.
+  - type: input
+    id: build
+    attributes:
+      label: Build id
+      description: As the Admin page gives it, for example unoq-biped-braccio_shield.
+    validations:
+      required: true
+  - type: input
+    id: part
+    attributes:
+      label: Part file
+      description: Optional. A file from stl/manifest.json, to mark one part instead of the whole build.
+  - type: input
+    id: date
+    attributes:
+      label: Date
+      description: The day it was checked, as YYYY-MM-DD.
+    validations:
+      required: true
+  - type: textarea
+    id: checked
+    attributes:
+      label: What was checked
+      description: A line or two, for example "all parts printed in PLA, servos fit the cradles, stands".
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Result
+      options:
+        - fits and works
+        - fits with changes
+        - does not fit
+    validations:
+      required: true
+  - type: textarea
+    id: changes
+    attributes:
+      label: Notes on changes made
+      description: Optional. What had to be changed to make it fit.
+  - type: textarea
+    id: photo
+    attributes:
+      label: Photo
+      description: Optional. Drag one PNG or JPEG into this box; GitHub turns it into an attachment link.
+  - type: checkboxes
+    id: remove
+    attributes:
+      label: Remove
+      options:
+        - label: Remove this mark instead of recording one
