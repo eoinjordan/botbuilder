@@ -47,6 +47,10 @@ def main() -> int:
         if name == "model.json":
             content["meshes_published"] = bool(args.with_meshes)
         (data / name).write_text(json.dumps(content, separators=(",", ":")), encoding="utf-8", newline="\n")
+    # Control page: the motion manifest and the trajectories it names.
+    sys.path.insert(0, str(ROOT))
+    from microduck import motions
+    motions.export(data)
     count = 0
     for picture in sorted((ROOT / "docs" / "images").iterdir()):
         if picture.suffix in (".png", ".gif"):
