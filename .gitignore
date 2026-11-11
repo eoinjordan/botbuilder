@@ -21,3 +21,8 @@ output/
 # OS / editor
 .DS_Store
 .vscode/
+
+# Built by scripts/build_site.py from reports/, robot/ and docs/images/
+site/data/
+site/images/
+site/.nojekyll

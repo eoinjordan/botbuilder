@@ -173,8 +173,8 @@ def verdict(out: dict) -> dict:
     else:
         lift = max(gd["feet"]["max_whole_sole_lift_mm"].values())
         text["gait"] = (f"The default gait stays up for {gd['duration_s']} s and moves {round(gd['distance_forward_m'] * 1000)} mm forward "
-                        f"({gd['speed_mm_s']} mm/s). It is a shuffle, not a walk: a whole sole is never more than {lift} mm off the floor, "
-                        f"and one foot carries all the weight {round(gd['feet']['single_support_fraction'] * 100)} percent of the time.")
+                        f"({gd['speed_mm_s']} mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is "
+                        f"{lift} mm, and both feet stay loaded {round(gd['feet']['both_loaded_fraction'] * 100)} percent of the time.")
     if best:
         sweep = out["gait_sweep"]
         text["best"] = (f"Best of {sweep['runs']} parameter sets that stay inside the speed limit as written: "
@@ -259,5 +259,5 @@ def suggestions() -> list:
         "Add an ankle roll joint, or shape the soles as a rocker, so a weight shift tilts the body over a foot instead of tipping "
         "the feet onto their edges. With six servos this means giving up a knee or a hip joint on each leg.",
         "Add hip yaw or accept that the robot cannot turn: with roll and pitch only it has no way to change heading except by slipping.",
-        "Check the soles on the real floor. The shuffle depends on friction; the friction table above shows how much.",
+        "Check the soles on the real floor. The shuffle is a sliding gait, and the contact model is the least certain part of the simulation.",
     ]

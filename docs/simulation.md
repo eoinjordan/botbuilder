@@ -9,7 +9,7 @@ Status: simulation only. The robot has never been assembled or powered.
 
 - Stands for the whole 10.0 s run at the stand pose; peak tilt 0.23 deg.
 - With the legs straight down it falls backward at 0.4 s, as the assembly test predicted.
-- The default gait stays up for 12.0 s and moves 41 mm forward (3.7 mm/s). It is a shuffle, not a walk: a whole sole is never more than 0.0 mm off the floor, and one foot carries all the weight 0 percent of the time.
+- The default gait stays up for 12.0 s and moves 41 mm forward (3.7 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 100 percent of the time.
 - Best of 54 parameter sets that stay inside the speed limit as written: 101 mm in 12.0 s (9.2 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller.
 
 ## How the servos are modelled
@@ -50,7 +50,7 @@ Commands stopped at 4.0 s in mid gait. Controller afterwards: `STAT mode=HOLD ag
 
 ## Open-loop gait
 
-The default gait stays up for 12.0 s and moves 41 mm forward (3.7 mm/s). It is a shuffle, not a walk: a whole sole is never more than 0.0 mm off the floor, and one foot carries all the weight 0 percent of the time.
+The default gait stays up for 12.0 s and moves 41 mm forward (3.7 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 100 percent of the time.
 
 Parameters: `{"period_s": 1.0, "roll_amplitude_deg": 8.0, "step_amplitude_deg": 8.0, "lift_deg": 6.0, "step_phase_deg": 90.0, "lead_in_s": 1.0}`
 
@@ -150,4 +150,4 @@ Suggestions only; none of this has been done.
 - Bring the feet together. The foot centres are 173 mm apart and the centre of mass is 62 mm outside either foot, so the weight cannot be put on one foot and the gait can only shuffle.
 - Add an ankle roll joint, or shape the soles as a rocker, so a weight shift tilts the body over a foot instead of tipping the feet onto their edges. With six servos this means giving up a knee or a hip joint on each leg.
 - Add hip yaw or accept that the robot cannot turn: with roll and pitch only it has no way to change heading except by slipping.
-- Check the soles on the real floor. The shuffle depends on friction; the friction table above shows how much.
+- Check the soles on the real floor. The shuffle is a sliding gait, and the contact model is the least certain part of the simulation.
