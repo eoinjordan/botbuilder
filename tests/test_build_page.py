@@ -71,7 +71,7 @@ def test_page_shows_the_tag_first_and_the_trademarks():
     assert "does not sponsor" in html
     assert "Raspberry Pi is a trademark of Raspberry Pi Ltd" in html
     # No logo but the site's own mark in the masthead.
-    assert re.findall(r"<img[^>]*>", html) == ['<img class="brand-icon" src="./assets/logo-mark.svg" alt="" width="41" height="41">']
+    assert re.findall(r"<img[^>]*>", html) == ['<img class="brand-icon" src="./assets/logo-mark-light.svg" alt="" width="44" height="44">']
     assert "<svg" not in html
     script = read("build.js")
     assert "recipe.not_built" not in script and "recipe.status_label" in script and "recipe.trademarks" in script
@@ -120,7 +120,7 @@ def test_the_finished_builds_and_the_configurator_are_the_landing_page():
     assert 'id="picker"' in html and 'id="recipe"' in html
     assert not (SITE / "build.html").exists()
     # The card row is the first thing under the masthead; the configurator is a sidebar beside the recipe.
-    main = html.split("<main>")[1]
+    main = html.split('<main id="content">')[1]
     assert main.index('id="builds"') < main.index('id="customise"') < main.index('id="picker"') < main.index('id="recipe"')
     assert main.lstrip().startswith('<section class="builds')
     assert 'id="builds" class="build-cards" role="radiogroup" aria-labelledby="builds-heading"' in html
@@ -146,7 +146,7 @@ def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):
         html = read(name)
         nav = re.search(r'<nav id="site-nav" aria-label="Site">(.*?)</nav>', html, re.S).group(1)
         blocks.append(nav.replace(' aria-current="page"', ""))
-        assert html.count('aria-current="page"') == (0 if name in ("admin.html", "credits.html") else 1), name   # footer links
+        assert html.count('aria-current="page"') == (0 if name in ("admin.html", "credits.html", "about.html", "404.html") else 1), name   # footer links
         assert '<script type="module" src="./nav.js"></script>' in html, name
         targets = re.findall(r'<a href="\./([a-z]*\.html)"([^>]*)>', nav)
         # Tabs by robot type, then the tools, then the arm project as a marked link out, then the source.

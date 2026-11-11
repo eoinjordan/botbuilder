@@ -508,7 +508,6 @@ function buildForm(data, form, onChange) {
     chosen.className = "field-picture";
     chosen.width = 64;
     chosen.height = 48;
-    chosen.loading = "lazy";
     row.append(chosen, select);
     // The same options as pictures: buttons that set the select.
     const more = el("details", undefined, "option-pictures");
@@ -541,7 +540,14 @@ function buildForm(data, form, onChange) {
       cards.push({ id: option.id, card });
     }
     more.append(group);
-    wrap.append(name, row, more);
+    wrap.append(name);
+    if (dim.hint) {
+      const hint = el("p", dim.hint, "field-hint");
+      hint.id = `hint-${dim.id}`;
+      select.setAttribute("aria-describedby", hint.id);
+      wrap.append(hint);
+    }
+    wrap.append(row, more);
     form.append(wrap);
     controls[dim.id] = select;
     pictures[dim.id] = { chosen, cards };
@@ -811,6 +817,7 @@ function render(data, recipe, target) {
       target.append(block(SECTION_TITLES[name], steps));
     } else {
       const section = block(SECTION_TITLES[name], list(recipe[name]));
+      if (name === "power") section.classList.add("safety");
       if (name === "firmware" && recipe.base) {
         // The Flash page builds the commands for this controller, or says
         // that none are written.

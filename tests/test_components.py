@@ -183,7 +183,7 @@ def test_the_site_serves_the_pictures_and_shows_them():
     script = (ROOT / "site" / "build.js").read_text(encoding="utf-8")
     # Served from the site, never hot-linked; lazy; named by the component.
     assert "https://upload.wikimedia.org" not in script and "commons.wikimedia.org" not in script
-    assert 'chosen.loading = "lazy"' in script and "picture.alt = about.name" in script and "shown.chosen.alt = about.name" in script
+    assert script.count('picture.loading = "lazy"') >= 3 and "picture.alt = about.name" in script and "shown.chosen.alt = about.name" in script
     # The native select stays; the pictures are buttons that set it.
     assert 'select.dispatchEvent(new Event("change", { bubbles: true }));' in script and 'card.setAttribute("aria-pressed"' in script
     for entry in shipped["list"]:

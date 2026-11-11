@@ -36,7 +36,7 @@ import numpy as np
 import trimesh
 from PIL import Image, ImageDraw, ImageFont
 
-from . import render
+from . import render, sitechrome
 from .recipe import credit_line  # noqa: F401  (one wording for the page and the PDF)
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -531,7 +531,7 @@ def credits_html(root: Path = ROOT) -> str:
     around a table generated from the data file."""
     content = load(root)
     index = (root / "site" / "index.html").read_text(encoding="utf-8")
-    head = index[:index.index("<main>")].replace(' aria-current="page"', "")
+    head = index[:index.index('<main id="content">')]
     head = head.replace("<title>Botbuilder</title>", "<title>Botbuilder: picture credits</title>")
     start = head.index('<meta name="description" content="') + len('<meta name="description" content="')
     head = head[:start] + "Where every picture of a bought component on this site comes from: author, licence and source." + head[head.index('"', start):]
@@ -549,7 +549,7 @@ def credits_html(root: Path = ROOT) -> str:
         else:
             source, licence, who, what = _text(entry["origin"]), "MIT, with the repository", "Botbuilder", "Drawing, not a photograph"
         rows.append(f"          <tr><td>{picture}</td><td>{_text(entry['name'])}</td><td>{what}</td><td>{who}</td><td>{licence}</td><td>{source}</td></tr>")
-    body = f"""<main>
+    body = f"""<main id="content">
     <div class="title-row">
       <div><p class="eyebrow">WHERE THE PICTURES COME FROM</p><h1>Picture credits</h1></div>
     </div>
@@ -569,7 +569,7 @@ def credits_html(root: Path = ROOT) -> str:
     </section>
   </main>
 """
-    return head + body + foot
+    return sitechrome.apply(head + body + foot, "credits.html")
 
 
 def main(argv=None) -> int:

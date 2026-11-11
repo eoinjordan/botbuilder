@@ -180,7 +180,8 @@ function start() {
   baseNote.textContent = base.written
     ? `Controller: ${base.label}.`
     : `Controller: ${base.label}${base.given ? ` (base=${base.given})` : ""}. Not written.`;
-  byId("base-detail").textContent = base.written ? "" : (base.note || "No firmware and no flash steps exist for it in this repository. No command is shown rather than a made-up one.");
+  byId("base-detail").textContent = base.written ? "" : (base.note || "No firmware and no flash steps exist for it in this repository, so no command is shown rather than a made-up one. " +
+      "What you can do: use the programs listed below if there are any for this controller, or go back to Build yours and pick the Arduino UNO Q, the one board with flash steps.");
   byId("flash-form").hidden = !base.written;
   // Programs written for this controller's builds, with how each is loaded.
   fetch("./data/recipe.json").then((reply) => (reply.ok ? reply.json() : null)).then((data) => {

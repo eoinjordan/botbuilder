@@ -21,9 +21,6 @@ code { font-size: 0.92em; background: #eef4f1; border-radius: 4px; padding: 1px 
 .facts dd { overflow-wrap: anywhere; }
 #wheeled-facts dd { font-size: 14px; }
 select:focus-visible { outline: 3px solid #76b4ee; outline-offset: 3px; }
-@media (max-width: 860px) {
-  .masthead nav { gap: 14px; }
-}
 #wheeled > p { margin-top: 14px; }
 h4 { font-size: 14px; font-weight: 600; margin: 16px 0 6px; }
 #downloads > div { margin-top: 26px; }

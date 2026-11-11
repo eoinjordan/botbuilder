@@ -2,14 +2,16 @@
 
 # Botbuilder: build your own bot from the parts you have
 
-Printed robots for the controllers, motors and cameras you already own. The
-site's first page shows five finished builds to pick from, and a
-configurator beside them: pick a controller (Arduino UNO Q,
-Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack Core), a locomotion
-(six-servo biped, two-motor crank walker, two driven wheels), a drive and a
-camera, and it answers with what can honestly be said about that robot:
-status first, then the files to print, parts, wiring, power and software.
-See [Build yours](#build-yours).
+Small printed robots for the controllers, motors and cameras you already
+own. The site, https://eoinjordan.github.io/botbuilder/, opens with five
+finished builds to pick from, and a configurator beside them: pick a
+controller (Arduino UNO Q, Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick,
+M5Stack Core), a locomotion (six-servo biped, two-motor crank walker, two
+driven wheels), a drive and a camera, and it answers with a recipe for that
+robot: status first, then the files to print, parts, wiring, power and
+software, as a page, a PDF or a zip. See [Build yours](#build-yours).
+
+![The landing page: five finished builds as cards](docs/images/site-landing.png)
 
 The biped is the one design analysed so far, and most of this README is about
 it. Site: https://eoinjordan.github.io/botbuilder/. What has been simulated,

@@ -7,6 +7,7 @@ From that list this script writes
 
     site/assets/logo-mark.svg        the mark alone, in colour
     site/assets/logo-mark-mono.svg   the mark in currentColor, for any background
+    site/assets/logo-mark-light.svg  the same in white, for the masthead
     site/assets/logo.svg             the mark and the word Botbuilder as live text
     site/assets/favicon.svg          the mark, for the browser tab
     site/assets/favicon-32.png       the same shapes drawn with Pillow
@@ -36,7 +37,7 @@ INK = "#172c2c"
 PAPER = "#ffffff"
 PALE = "#e1f5eb"          # the masthead icon's background
 PAGE = "#f7faf8"
-MUTED = "#687b75"
+MUTED = "#5f726c"
 TITLE = "Botbuilder: a robot head in a gear with a screwdriver"
 LINE = "Build your own bot from the parts you have"
 
@@ -279,7 +280,9 @@ def preview_html() -> str:
 def files() -> dict:
     """Every text file this script writes, by name."""
     return {"logo-mark.svg": mark_svg(), "logo-mark-mono.svg": mark_svg(mono=True), "logo.svg": wordmark_svg(),
-            "favicon.svg": mark_svg(title="Botbuilder"), "logo-preview.html": preview_html()}
+            "favicon.svg": mark_svg(title="Botbuilder"), "logo-preview.html": preview_html(),
+            # The one-colour mark in white, for the green masthead (an <img> cannot inherit currentColor).
+            "logo-mark-light.svg": mark_svg(mono=True).replace("currentColor", PAPER)}
 
 
 def main(argv=None) -> int:

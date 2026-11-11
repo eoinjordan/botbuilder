@@ -39,7 +39,7 @@ def test_the_committed_files_are_what_the_script_writes(logo):
 
 
 def test_the_svgs_are_small_valid_and_self_contained(logo):
-    for name in ("logo-mark.svg", "logo-mark-mono.svg", "logo.svg", "favicon.svg"):
+    for name in ("logo-mark.svg", "logo-mark-mono.svg", "logo-mark-light.svg", "logo.svg", "favicon.svg"):
         text = (ASSETS / name).read_text(encoding="utf-8")
         assert len(text) < 4000 and text.isascii(), name
         root = ET.fromstring(text)
@@ -122,7 +122,7 @@ def test_the_pngs_are_drawn_from_the_same_shapes(logo):
 
 
 def test_every_page_carries_the_mark_the_icons_and_the_preview_picture():
-    brand = ('<a class="brand" href="./"><img class="brand-icon" src="./assets/logo-mark.svg" alt="" width="41" height="41">'
+    brand = ('<a class="brand" href="./"><img class="brand-icon" src="./assets/logo-mark-light.svg" alt="" width="44" height="44">'
              "<span>Bot<b>builder</b></span></a>")
     for name in PAGES:
         html = (ROOT / "site" / name).read_text(encoding="utf-8")
@@ -132,10 +132,10 @@ def test_every_page_carries_the_mark_the_icons_and_the_preview_picture():
         assert '<link rel="icon" href="./assets/favicon-32.png" sizes="32x32" type="image/png">' in head, name
         assert '<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">' in head, name
         assert '<meta property="og:image" content="https://eoinjordan.github.io/botbuilder/assets/social-preview.png">' in head, name
-        assert '<meta property="og:title" content="Botbuilder">' in head and '<meta name="twitter:card" content="summary_large_image">' in head
+        assert '<meta property="og:site_name" content="Botbuilder">' in head and '<meta name="twitter:card" content="summary_large_image">' in head
         assert "logo-preview.html" not in html, "the preview is not linked"
     css = (ROOT / "site" / "style.css").read_text(encoding="utf-8")
-    assert ".brand-icon { width: 41px; height: 41px;" in css
+    assert ".brand-icon { width: 44px; height: 44px;" in css
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert readme.startswith("![Botbuilder](site/assets/logo.svg)\n")
     preview = (ASSETS / "logo-preview.html").read_text(encoding="utf-8")

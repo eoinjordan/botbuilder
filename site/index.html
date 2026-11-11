@@ -6,45 +6,51 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#087f60">
   <meta name="description" content="Printed robots for the controllers, motors and cameras you already own: pick a finished build or customise your own, with files to print, a parts list, wiring and software.">
+  <!-- shared:head -->
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="./assets/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Botbuilder">
   <meta property="og:title" content="Botbuilder">
-  <meta property="og:description" content="Build your own bot from the parts you have">
+  <meta property="og:description" content="Printed robots for the controllers, motors and cameras you already own: pick a finished build or customise your own, with files to print, a parts list, wiring and software.">
   <meta property="og:image" content="https://eoinjordan.github.io/botbuilder/assets/social-preview.png">
   <meta name="twitter:card" content="summary_large_image">
+  <!-- /shared:head -->
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./recipe.css">
   <title>Botbuilder</title>
 </head>
 <body>
+  <!-- shared:masthead -->
+  <a class="skip-link" href="#content">Skip to content</a>
   <header class="masthead">
-    <a class="brand" href="./"><img class="brand-icon" src="./assets/logo-mark.svg" alt="" width="41" height="41"><span>Bot<b>builder</b></span></a>
+    <a class="brand" href="./"><img class="brand-icon" src="./assets/logo-mark-light.svg" alt="" width="44" height="44"><span>Bot<b>builder</b></span></a>
     <nav id="site-nav" aria-label="Site">
       <a href="./" aria-current="page">Build yours</a><a href="./biped.html">Biped</a><a href="./wheeled.html">Two-wheeled</a><a href="./walkers.html">Walkers</a><a href="./flash.html">Flash</a><a href="./control.html">Control</a>
       <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
       <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
     </nav>
   </header>
-  <main>
+  <!-- /shared:masthead -->
+  <main id="content">
     <section class="builds no-print" aria-labelledby="builds-heading">
       <div class="builds-head">
         <h1 id="builds-heading">Botbuilder</h1>
-        <p class="builds-lead">Pick a finished build, or customise your own from the parts you have.</p>
+        <p class="builds-lead">Welcome. Pick a robot to see everything you need to build it, or change the parts to match what you own.</p>
       </div>
       <div id="builds" class="build-cards" role="radiogroup" aria-labelledby="builds-heading">Loading the builds.</div>
-      <p id="custom-note" class="custom-note" role="status" hidden><span class="build-tag custom-tag">Custom</span> Your own
-        selection is on show. Pick a card to go back to a finished build.</p>
-      <p class="small-note flush">Each card is a complete robot: files to print, parts, wiring and software, as a PDF or a zip
-        with the files. Looking for a robot arm? See <a href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Sketchbot, opens in a new tab">Sketchbot</a>.</p>
+      <p id="custom-note" class="custom-note" role="status" hidden><span class="build-tag custom-tag">Custom</span> This is your own
+        mix of parts. Pick any card to go back to a finished build.</p>
+      <p class="small-note flush">Each card is a complete robot: the files to print, a parts list, wiring and software, to read
+        here or take away as a PDF or a zip. New here? <a href="./?tour=1" data-tour>Take the tour</a>. Looking for a robot arm? See <a href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Sketchbot, opens in a new tab">Sketchbot</a>.</p>
     </section>
 
     <div class="build-layout">
       <section class="sidebar no-print" aria-labelledby="pick-heading">
         <details id="customise" class="customise">
           <summary><span class="step">01</span><span id="pick-heading" class="customise-title">Customise</span></summary>
-          <p class="small-note flush">Change any field to make the build your own from the parts you have.</p>
+          <p class="small-note flush">Tell it what you have. Change any field and the recipe follows; anything that cannot work together is greyed out, with the reason.</p>
           <form id="picker" class="picker" autocomplete="off" aria-labelledby="pick-heading"></form>
           <details id="greyed" class="greyed" hidden></details>
           <div class="form-actions">
@@ -57,11 +63,11 @@
       <section aria-labelledby="recipe-heading">
         <div class="section-heading"><span class="step">02</span><h2 id="recipe-heading">Recipe</h2><span id="recipe-name" class="release-tag"></span></div>
         <div class="form-actions no-print">
-          <button id="copy-link" class="secondary" type="button">Copy link</button>
-          <button id="download" class="secondary" type="button">Download JSON</button>
-          <button id="download-pdf" class="primary" type="button">Download PDF</button>
-          <button id="download-all" class="primary" type="button">Download all (zip)</button>
-          <button id="print" class="secondary" type="button">Print</button>
+          <button id="copy-link" class="secondary icon icon-link" type="button">Copy link</button>
+          <button id="download" class="secondary icon icon-download" type="button">Download JSON</button>
+          <button id="download-pdf" class="primary icon icon-download" type="button">Download PDF</button>
+          <button id="download-all" class="primary icon icon-download" type="button">Download all (zip)</button>
+          <button id="print" class="secondary icon icon-print" type="button">Print</button>
           <span id="action-note" class="small-note" role="status"></span>
         </div>
         <div id="recipe" aria-live="polite">Loading the recipe data.</div>
@@ -71,8 +77,20 @@
     </div>
   </main>
   <footer>
-    <p id="trademarks">LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd.</p>
-    <p>Code under the MIT licence. No analytics, no cookies; the selection stays in this browser. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./?tour=1" data-tour>Take the tour</a>. <a href="./credits.html">Picture credits</a>. <a href="./admin.html">Admin</a>.</p>
+    <p class="foot-note">No analytics, no cookies; the selection stays in this browser.</p>
+    <!-- shared:footer -->
+    <nav class="foot-links" aria-label="About this site">
+      <a href="./?tour=1" data-tour>Take the tour</a>
+      <a href="./about.html">About</a>
+      <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>
+      <a href="./credits.html">Picture credits</a>
+      <a href="./admin.html">Admin</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+      <a href="https://github.com/eoinjordan/botbuilder/issues" rel="noopener noreferrer">Report a problem</a>
+    </nav>
+    <p class="foot-legal">Code and printable parts under the MIT licence; pictures as on the credits page. Fonts: Space Grotesk, SIL Open Font
+      License (<a href="./assets/licenses/space-grotesk.txt">text</a>). <span id="trademarks">LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. No affiliation with any of them.</span></p>
+    <!-- /shared:footer -->
   </footer>
   <script type="module" src="./nav.js"></script>
   <script type="module" src="./build.js"></script>

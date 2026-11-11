@@ -36,18 +36,18 @@
   },
   "sections": ["print", "parts", "wiring", "power", "firmware", "analysis", "assembly"],
   "dimensions": [
-    {"id": "controller", "label": "Controller", "options": [
+    {"id": "controller", "label": "Controller", "hint": "The board or brick that runs the robot.", "options": [
       {"id": "unoq", "label": "Arduino UNO Q"},
       {"id": "pi", "label": "Raspberry Pi Zero 2 W"},
       {"id": "pi_full", "label": "Raspberry Pi, full size"},
       {"id": "hub51515", "label": "LEGO Robot Inventor 51515 hub"},
       {"id": "ev3", "label": "LEGO EV3 brick"},
       {"id": "m5core", "label": "M5Stack Core (ESP32)"}]},
-    {"id": "locomotion", "label": "Locomotion", "options": [
+    {"id": "locomotion", "label": "Locomotion", "hint": "How it gets around: on legs or on wheels.", "options": [
       {"id": "biped", "label": "Six-servo biped"},
       {"id": "crank", "label": "Two-motor crank walker"},
       {"id": "wheeled", "label": "Two driven wheels"}]},
-    {"id": "drive", "label": "Actuators and driver", "options": [
+    {"id": "drive", "label": "Actuators and driver", "hint": "The motors or servos you have, and what they plug into.", "options": [
       {"id": "braccio_shield", "label": "Six Braccio servos on the Braccio shield"},
       {"id": "servo_driver", "label": "Six Braccio servos on a 16-channel I2C servo driver"},
       {"id": "buildhat_51515", "label": "51515 motors on the Raspberry Pi Build HAT"},
@@ -56,7 +56,7 @@
       {"id": "basex_ev3", "label": "EV3 motors on the M5Stack BaseX"},
       {"id": "m5_360_wheels", "label": "M5Stack 360 degree servos as wheel drives"},
       {"id": "tt_hbridge", "label": "Yellow TT DC gear motors on an H-bridge board"}]},
-    {"id": "camera", "label": "Camera", "options": [
+    {"id": "camera", "label": "Camera", "hint": "Optional. Pick the camera you own, or none.", "options": [
       {"id": "none", "label": "No camera (mount left empty)"},
       {"id": "xiao_sense", "label": "Seeed XIAO ESP32S3 Sense camera"},
       {"id": "esp32cam", "label": "AI-Thinker ESP32-CAM"},
@@ -64,31 +64,31 @@
       {"id": "esp32_s3_eye", "label": "Espressif ESP32-S3-EYE"},
       {"id": "pixy2", "label": "Pixy2 (standard) with pan-tilt kit and LEGO cable"},
       {"id": "picam2", "label": "Raspberry Pi Camera Module 2"}]},
-    {"id": "face", "label": "Face", "only_for": {"locomotion": ["biped"]}, "options": [
+    {"id": "face", "label": "Face", "hint": "What sits at the front of the biped's head.", "only_for": {"locomotion": ["biped"]}, "options": [
       {"id": "none", "label": "Camera mount only"},
       {"id": "eyes_above", "label": "Round display as the eyes, camera above"},
       {"id": "eyes_below", "label": "Round display as the eyes, camera below"},
       {"id": "stack_camera_forward", "label": "Display stack with the XIAO Sense camera forward"}]},
-    {"id": "feet", "label": "Feet", "only_for": {"locomotion": ["biped"]}, "options": [
+    {"id": "feet", "label": "Feet", "hint": "Comb feet let it lift one foot at a time; flat feet are plain plates.", "only_for": {"locomotion": ["biped"]}, "options": [
       {"id": "comb", "label": "Comb feet"},
       {"id": "flat", "label": "Flat feet"}]},
-    {"id": "head", "label": "Head articulation", "options": [
+    {"id": "head", "label": "Head articulation", "hint": "Whether the head turns, and what turns it.", "options": [
       {"id": "fixed", "label": "Camera mount, nothing moves"},
       {"id": "sg90_pan", "label": "SG90-class servo pans the head"},
       {"id": "m5_360", "label": "M5Stack 360 degree servo pans the head"},
       {"id": "pixy_pantilt", "label": "Pixy pan-tilt kit servos"},
       {"id": "lego_motor", "label": "A LEGO motor pans the head"}]},
-    {"id": "lego", "label": "Pin holes and studs (LEGO-compatible)", "options": [
+    {"id": "lego", "label": "Pin holes and studs (LEGO-compatible)", "hint": "Adds pin holes and studs that fit LEGO Technic parts.", "options": [
       {"id": "off", "label": "Off"},
       {"id": "on", "label": "On"}]},
-    {"id": "wheels", "label": "Driven wheels at", "only_for": {"locomotion": ["wheeled"]}, "options": [
+    {"id": "wheels", "label": "Driven wheels at", "hint": "Which end of the robot the two driven wheels are at.", "only_for": {"locomotion": ["wheeled"]}, "options": [
       {"id": "back", "label": "The back"},
       {"id": "front", "label": "The front"}]},
-    {"id": "support", "label": "Third support", "only_for": {"locomotion": ["wheeled"]}, "options": [
+    {"id": "support", "label": "Third support", "hint": "The third point that keeps a two-wheeler level: a ball, a skid or a small idler wheel.", "only_for": {"locomotion": ["wheeled"]}, "options": [
       {"id": "roller", "label": "Roller (ball)"},
       {"id": "skid", "label": "Drag skid"},
       {"id": "idler", "label": "Printed idler wheel"}]},
-    {"id": "wheel", "label": "Wheel type", "only_for": {"locomotion": ["wheeled"]}, "options": [
+    {"id": "wheel", "label": "Wheel type", "hint": "What the driven wheels are: printed, or bought.", "only_for": {"locomotion": ["wheeled"]}, "options": [
       {"id": "printed_ring", "label": "Printed solid wheel with an O-ring or rubber band"},
       {"id": "printed_tpu", "label": "Printed hub with a TPU tyre"},
       {"id": "lego", "label": "Stock LEGO wheels"},

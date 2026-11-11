@@ -229,11 +229,17 @@ the recipe's STL files.
 
 `index.html` is the finished builds and the configurator; `biped.html`, `wheeled.html` and
 `walkers.html` are the three robot types; `flash.html` and `control.html`
-are the tools; `admin.html` and the generated `credits.html` are linked from
-the footer. Every page carries
+are the tools; `about.html`, `admin.html` and the generated `credits.html`
+are linked from the footer; `404.html` is what GitHub Pages serves for an
+address that is not there.
+
+The icon and preview tags of the head, the masthead and the footer links
+are written into every page by `python -m microduck.sitechrome`, between
+comment marks named `shared:head`, `shared:masthead` and `shared:footer`. Change the masthead or the footer there and run
+it; a test fails for a page that differs. A new page copies the three empty
+marked regions from `about.html`. Every page carries
 the same navigation block, ending with the owner's robot-arm project as a
-link that opens in a new tab. A new page copies the `<nav id="site-nav">`
-block and loads `nav.js`; if it is listed in `OPTIONAL_PAGES` in
+link that opens in a new tab. A new page loads `nav.js`; if it is listed in `OPTIONAL_PAGES` in
 `scripts/build_site.py` its link may be written `hidden` with a `data-page`
 attribute and is then shown only when the page exists.
 
