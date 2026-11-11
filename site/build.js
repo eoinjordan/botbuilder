@@ -1009,7 +1009,15 @@ async function start() {
       }
       if (about.credit_line && !credits.includes(about.credit_line)) credits.push(about.credit_line);
     }
+    // The site's mark, for the first page.
+    const logo = "./assets/logo-mark-96.png";
+    try {
+      images[logo] = await bytesOf(logo);
+    } catch (error) {
+      images[logo] = null;
+    }
     return recipePdf(recipe, images, {
+      logo,
       parts: parts.map((about) => (about ? about.picture : null)),
       credits,
       creditsUrl: `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}credits.html`,
@@ -1059,6 +1067,12 @@ async function start() {
     const lines = ["Botbuilder recipe", pageUrl(), "",
       "recipe.pdf   the recipe with the part pictures", "recipe.json  the same recipe as data",
       `stl/         ${entries.length - 2} printable files, quantities in the recipe`];
+    try {
+      entries.push({ name: "botbuilder-logo.svg", data: await bytesOf("./assets/logo.svg") });
+      lines.push("botbuilder-logo.svg  the Botbuilder logo");
+    } catch (error) {
+      // The zip is complete without it.
+    }
     if (left.length) lines.push("", "Not in this zip (no file on the site):", ...left.map((name) => `  ${name}`));
     entries.push({ name: "README.txt", data: new TextEncoder().encode(`${lines.join("\n")}\n`) });
     save(zipStore(entries, new Date()), "application/zip", `${stem()}.zip`);

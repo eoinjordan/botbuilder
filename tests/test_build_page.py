@@ -54,7 +54,8 @@ def test_paths_are_relative_so_any_base_path_works():
 def test_no_external_script_style_or_tracker():
     html = read("index.html")
     assert re.findall(r'<script[^>]*src="([^"]+)"', html) == ["./nav.js", "./build.js"]
-    assert re.findall(r'<link[^>]*href="([^"]+)"', html) == ["./style.css", "./recipe.css"]
+    assert re.findall(r'<link[^>]*href="([^"]+)"', html) == [
+        "./assets/favicon.svg", "./assets/favicon-32.png", "./assets/apple-touch-icon.png", "./style.css", "./recipe.css"]
     assert "import " not in read("build.js").replace("import { ", "")
     text = "".join(read(name).lower() for name in PAGE_FILES)
     for needle in ("google-analytics", "googletagmanager", "gtag(", "plausible", "matomo", "facebook", "document.cookie",
@@ -69,7 +70,9 @@ def test_page_shows_the_tag_first_and_the_trademarks():
     assert "LEGO, Mindstorms and Technic are trademarks of the LEGO Group" in html
     assert "does not sponsor" in html
     assert "Raspberry Pi is a trademark of Raspberry Pi Ltd" in html
-    assert "<img" not in html and "<svg" not in html  # no logos
+    # No logo but the site's own mark in the masthead.
+    assert re.findall(r"<img[^>]*>", html) == ['<img class="brand-icon" src="./assets/logo-mark.svg" alt="" width="41" height="41">']
+    assert "<svg" not in html
     script = read("build.js")
     assert "recipe.not_built" not in script and "recipe.status_label" in script and "recipe.trademarks" in script
     # The verdict is rendered before anything else in the recipe.

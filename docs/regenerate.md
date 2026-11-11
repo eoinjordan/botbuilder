@@ -43,6 +43,7 @@ The design directory defaults to `$MICRODUCK_DESIGN_DIR`, then to
 | `scripts/run_motion.py` | `robot/`, `stl/`, `config/motion.json`, `config/presets.json`, `config/gaits.json`, `reports/clearance.json` | `reports/motion.json`, `docs/motion.md`, `trajectories/{walk,turn_left,turn_right,sit,stand_up}.csv`, `trajectories/restricted/jump.csv`, `trajectories/manifest.json`, `trajectories/gait_params.json`, `docs/images/motion-*.gif` |
 | `python -m microduck.buildpics` | `config/builds.json`, `stl/`, the assembly and walkers models, `robot/lego/wheeled/viewer.json` | `docs/images/build-*.png`, `reports/builds.json` (the card pictures; about 40 seconds; not part of `regenerate.py`) |
 | `python -m microduck.componentpics` | `config/component_images.json`, `config/hardware.json`, `config/bases.json`, `walkers/config/` | `docs/components/*.png` (the drawings), `reports/component_images.json`, `site/credits.html` (not part of `regenerate.py`) |
+| `scripts/make_logo.py` | its own list of shapes, the colours of `site/style.css` | `site/assets/logo*.svg`, `favicon.svg`, the PNG icons, `social-preview.png`, `logo-preview.html` (not part of `regenerate.py`) |
 | `scripts/build_site.py` | `reports/`, `robot/`, `docs/images/`, `stl/`, `config/hardware.json` | `site/data/`, `site/images/`, `site/stl/` (ignored by git; the Pages workflow runs this) |
 
 Run the design's `build.py` and commit there first: the manifest records the

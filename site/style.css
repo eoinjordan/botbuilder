@@ -45,7 +45,7 @@ img { max-width: 100%; height: auto; display: block; }
 .brand { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 600; color: var(--ink); }
 .brand:hover { text-decoration: none; }
 .brand b { font-weight: 400; color: var(--muted); }
-.brand-icon { width: 41px; height: 41px; display: grid; place-items: center; border-radius: 7px; background: #e1f5eb; color: var(--green); font-size: 14px; }
+.brand-icon { width: 41px; height: 41px; flex: 0 0 41px; }
 .masthead nav { display: flex; align-items: center; gap: 22px; font-size: 13px; flex-wrap: wrap; }
 .masthead nav a { color: var(--ink); }
 .masthead nav a:hover { color: var(--green); text-decoration: none; }

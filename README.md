@@ -1,3 +1,5 @@
+![Botbuilder](site/assets/logo.svg)
+
 # Botbuilder: build your own bot from the parts you have
 
 Printed robots for the controllers, motors and cameras you already own. The

@@ -160,7 +160,8 @@ class Layout {
 // bytes (a missing or unusable picture leaves its box empty). meta: { url,
 // date, titles } where titles names the text sections; optionally parts (a
 // picture path or null for each part of the recipe), credits (one line for
-// each credited picture) and creditsUrl.
+// each credited picture), creditsUrl, and logo (the path of the site's mark
+// among the images, drawn at the top right of the first page).
 export function recipePdf(recipe, images, meta) {
   const doc = new Layout();
   const pictures = [];             // { name, png }
@@ -175,6 +176,8 @@ export function recipePdf(recipe, images, meta) {
     return pictureOf[path];
   };
 
+  const mark = use(meta.logo);
+  if (mark >= 0) doc.ops.push(`q 40 0 0 40 ${PAGE_W - MARGIN - 40} ${PAGE_H - MARGIN - 40} cm /${pictures[mark].name} Do Q`);
   doc.para("Botbuilder recipe", { size: 9, grey: true, after: 0 });
   doc.para(`${recipe.labels.controller}: ${recipe.labels.locomotion}`, { size: 18, bold: true, after: 4 });
   doc.para(`Status: ${recipe.status_label}`, { size: 12, bold: true, after: 1 });

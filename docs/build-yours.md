@@ -222,6 +222,11 @@ block and loads `nav.js`; if it is listed in `OPTIONAL_PAGES` in
 `scripts/build_site.py` its link may be written `hidden` with a `data-page`
 attribute and is then shown only when the page exists.
 
+The logo in every masthead, the browser icons and the preview picture for
+links are written by `python scripts/make_logo.py` from one list of shapes:
+a robot head inside a gear with a screwdriver as its antenna, in the site's
+green and ink. `site/assets/logo-preview.html` shows it at several sizes.
+
 LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not
 sponsor, authorise or endorse this project. Raspberry Pi is a trademark of
 Raspberry Pi Ltd.
