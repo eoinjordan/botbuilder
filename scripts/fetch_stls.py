@@ -30,6 +30,7 @@ import trimesh
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from microduck import thumbs  # noqa: E402
 from microduck.model import CAMERAS, FIT_FILES, PART_FILES  # noqa: E402
 
 TARGET = ROOT / "stl"
@@ -128,6 +129,7 @@ def main() -> int:
         shutil.copyfile(source / name, TARGET / name)
     record = manifest(TARGET, design_commit(args.design_dir))
     (TARGET / "manifest.json").write_text(json.dumps(record, indent=1) + "\n", encoding="utf-8", newline="\n")
+    thumbs.update(TARGET, redraw_all=True, log=lambda line: None)      # a picture of every part, recorded in the manifest
     print(f"copied {len(names) - 1} STLs ({record['total_bytes'] / 1e6:.2f} MB) to {TARGET}")
     return 0
 

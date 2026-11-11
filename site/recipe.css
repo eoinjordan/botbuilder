@@ -32,6 +32,16 @@ select:focus-visible { outline: 3px solid #76b4ee; outline-offset: 3px; }
 .recipe-block h3 { margin-top: 0; }
 .recipe-block td, .recipe-block th { white-space: normal; vertical-align: top; }
 .recipe-block td:first-child { min-width: 150px; }
+.part-cards { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); gap: 14px; }
+.part-card { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+.part-card.fit { border-color: var(--green); }
+.part-card img { width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+.part-nopicture { aspect-ratio: 4 / 3; display: grid; place-items: center; font-size: 12px; color: var(--muted); background: #f1f5f3; border-bottom: 1px solid var(--line); }
+.part-text { padding: 10px 12px 12px; font-size: 13px; overflow-wrap: anywhere; }
+.part-text p { margin: 0 0 4px; }
+.part-text h4 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+.part-first { font-size: 11px; font-weight: 600; color: var(--green); text-transform: uppercase; }
+.part-facts { color: var(--muted); font-size: 12px; }
 .steps { margin: 14px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: 14px; }
 #recipe .facts dd { font-size: 14px; }
 
@@ -45,7 +55,12 @@ select:focus-visible { outline: 3px solid #76b4ee; outline-offset: 3px; }
   main { padding: 0; max-width: none; }
   .build-layout { display: block; }
   section { border: 0; padding: 0; margin: 0 0 12px; }
-  .verdict, .recipe-block, .facts div { break-inside: avoid; }
+  .verdict, .facts div, .part-card, .recipe-block li, .recipe-block tr { break-inside: avoid; }
+  .recipe-block h3 { break-after: avoid; }
+  .part-cards { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .part-card img { max-height: 42mm; object-fit: contain; }
+  .part-card a::after { content: none; }
+  @page { margin: 14mm; }
   .verdict { background: #fff; }
   a { color: #000; }
   .recipe-block td a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 11px; }

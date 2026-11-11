@@ -36,7 +36,12 @@
     ]
    ],
    "bytes": 864184,
-   "sha256": "a518032b54f693e491cbc840fcb4a9744e572f67603fedae1fbda7202710a1c7"
+   "sha256": "a518032b54f693e491cbc840fcb4a9744e572f67603fedae1fbda7202710a1c7",
+   "thumbnail": {
+    "file": "thumbs/01_torso_hub51515_cam_esp32cam.png",
+    "stl_sha256": "a518032b54f693e491cbc840fcb4a9744e572f67603fedae1fbda7202710a1c7",
+    "bytes": 4019
+   }
   },
   {
    "file": "01_torso_pi_cam_esp32cam.stl",
@@ -61,7 +66,12 @@
     ]
    ],
    "bytes": 298784,
-   "sha256": "26dac692a92ec405584ec4c8521cbda4b91698f43a39bd8f92786a1c76df10f9"
+   "sha256": "26dac692a92ec405584ec4c8521cbda4b91698f43a39bd8f92786a1c76df10f9",
+   "thumbnail": {
+    "file": "thumbs/01_torso_pi_cam_esp32cam.png",
+    "stl_sha256": "26dac692a92ec405584ec4c8521cbda4b91698f43a39bd8f92786a1c76df10f9",
+    "bytes": 3392
+   }
   },
   {
    "file": "01_torso_pi_zero_2w_cam_esp32cam.stl",
@@ -86,7 +96,12 @@
     ]
    ],
    "bytes": 529184,
-   "sha256": "5f07af04ebc8295795731dc95ae8e9c769b8ceee6056065720c410620cfb471a"
+   "sha256": "5f07af04ebc8295795731dc95ae8e9c769b8ceee6056065720c410620cfb471a",
+   "thumbnail": {
+    "file": "thumbs/01_torso_pi_zero_2w_cam_esp32cam.png",
+    "stl_sha256": "5f07af04ebc8295795731dc95ae8e9c769b8ceee6056065720c410620cfb471a",
+    "bytes": 3698
+   }
   },
   {
    "file": "01_torso_unoq_cam_esp32_s3_eye.stl",
@@ -111,7 +126,12 @@
     ]
    ],
    "bytes": 454684,
-   "sha256": "e875fe6fdf8ac0de55bc3de2f3c52924deedd1c5be0def407d71d990a9aa39ec"
+   "sha256": "e875fe6fdf8ac0de55bc3de2f3c52924deedd1c5be0def407d71d990a9aa39ec",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_cam_esp32_s3_eye.png",
+    "stl_sha256": "e875fe6fdf8ac0de55bc3de2f3c52924deedd1c5be0def407d71d990a9aa39ec",
+    "bytes": 3567
+   }
   },
   {
    "file": "01_torso_unoq_cam_esp32cam.stl",
@@ -136,7 +156,12 @@
     ]
    ],
    "bytes": 455284,
-   "sha256": "d5b4cca0e1f2097c7c6af7003d9d5a7032f9326133c085273272dedf393b6515"
+   "sha256": "d5b4cca0e1f2097c7c6af7003d9d5a7032f9326133c085273272dedf393b6515",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_cam_esp32cam.png",
+    "stl_sha256": "d5b4cca0e1f2097c7c6af7003d9d5a7032f9326133c085273272dedf393b6515",
+    "bytes": 3723
+   }
   },
   {
    "file": "01_torso_unoq_cam_esp_eye.stl",
@@ -161,7 +186,12 @@
     ]
    ],
    "bytes": 456084,
-   "sha256": "7237b395d12d24dff5296ba9b8f4ea29395b0f9255f9698868a226f072076fbf"
+   "sha256": "7237b395d12d24dff5296ba9b8f4ea29395b0f9255f9698868a226f072076fbf",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_cam_esp_eye.png",
+    "stl_sha256": "7237b395d12d24dff5296ba9b8f4ea29395b0f9255f9698868a226f072076fbf",
+    "bytes": 3853
+   }
   },
   {
    "file": "01_torso_unoq_pan_head.stl",
@@ -185,7 +215,12 @@
     ]
    ],
    "bytes": 489784,
-   "sha256": "731a6564514a98f2869f32c0bff7a25b3c378ebb2a9b4c459c7befa957307310"
+   "sha256": "731a6564514a98f2869f32c0bff7a25b3c378ebb2a9b4c459c7befa957307310",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_pan_head.png",
+    "stl_sha256": "731a6564514a98f2869f32c0bff7a25b3c378ebb2a9b4c459c7befa957307310",
+    "bytes": 4529
+   }
   },
   {
    "file": "fit_cam_esp32_s3_eye.stl",
@@ -209,7 +244,12 @@
     ]
    ],
    "bytes": 12284,
-   "sha256": "f2918fe4dd30985f1a7963869f6c44e73b5f3d147167d83edfe6425e46a79f65"
+   "sha256": "f2918fe4dd30985f1a7963869f6c44e73b5f3d147167d83edfe6425e46a79f65",
+   "thumbnail": {
+    "file": "thumbs/fit_cam_esp32_s3_eye.png",
+    "stl_sha256": "f2918fe4dd30985f1a7963869f6c44e73b5f3d147167d83edfe6425e46a79f65",
+    "bytes": 2446
+   }
   },
   {
    "file": "fit_cam_esp32cam.stl",
@@ -233,7 +273,12 @@
     ]
    ],
    "bytes": 13084,
-   "sha256": "fb6095a8da4e7867bced0d17cb7832f3842c5d16a191358e31e13d006b84db92"
+   "sha256": "fb6095a8da4e7867bced0d17cb7832f3842c5d16a191358e31e13d006b84db92",
+   "thumbnail": {
+    "file": "thumbs/fit_cam_esp32cam.png",
+    "stl_sha256": "fb6095a8da4e7867bced0d17cb7832f3842c5d16a191358e31e13d006b84db92",
+    "bytes": 2736
+   }
   },
   {
    "file": "fit_cam_esp_eye.stl",
@@ -257,7 +302,12 @@
     ]
    ],
    "bytes": 13684,
-   "sha256": "7cb410f716efaac6501a84b9cc2793b90edc066094fbd25310c449c9fb78ec14"
+   "sha256": "7cb410f716efaac6501a84b9cc2793b90edc066094fbd25310c449c9fb78ec14",
+   "thumbnail": {
+    "file": "thumbs/fit_cam_esp_eye.png",
+    "stl_sha256": "7cb410f716efaac6501a84b9cc2793b90edc066094fbd25310c449c9fb78ec14",
+    "bytes": 2831
+   }
   },
   {
    "file": "fit_horn_drill_blank.stl",
@@ -280,7 +330,12 @@
     ]
    ],
    "bytes": 19284,
-   "sha256": "e49ec681e71308779f1cde48d7926a78a730d96a37e90f879ba79b4ac0b9b365"
+   "sha256": "e49ec681e71308779f1cde48d7926a78a730d96a37e90f879ba79b4ac0b9b365",
+   "thumbnail": {
+    "file": "thumbs/fit_horn_drill_blank.png",
+    "stl_sha256": "e49ec681e71308779f1cde48d7926a78a730d96a37e90f879ba79b4ac0b9b365",
+    "bytes": 2430
+   }
   },
   {
    "file": "fit_lego_compatible_coupon.stl",
@@ -303,7 +358,12 @@
     ]
    ],
    "bytes": 242184,
-   "sha256": "2695d9b21b84c3ca104e956c0b2e6e57d87795894268ca77e5e33b5a1dcd3d75"
+   "sha256": "2695d9b21b84c3ca104e956c0b2e6e57d87795894268ca77e5e33b5a1dcd3d75",
+   "thumbnail": {
+    "file": "thumbs/fit_lego_compatible_coupon.png",
+    "stl_sha256": "2695d9b21b84c3ca104e956c0b2e6e57d87795894268ca77e5e33b5a1dcd3d75",
+    "bytes": 3718
+   }
   },
   {
    "file": "fit_sg90_cradle.stl",
@@ -327,7 +387,12 @@
     ]
    ],
    "bytes": 46084,
-   "sha256": "dea71f1133dd8ac93329a70484404a797b1313cbe4381bebbf11b4007898f192"
+   "sha256": "dea71f1133dd8ac93329a70484404a797b1313cbe4381bebbf11b4007898f192",
+   "thumbnail": {
+    "file": "thumbs/fit_sg90_cradle.png",
+    "stl_sha256": "dea71f1133dd8ac93329a70484404a797b1313cbe4381bebbf11b4007898f192",
+    "bytes": 2822
+   }
   },
   {
    "file": "fit_SR311.stl",
@@ -350,7 +415,12 @@
     ]
    ],
    "bytes": 10284,
-   "sha256": "d3e91e9fc838a273b768ec925fbe4243f4070a25cc1d6a3e256ff9ed97fde77b"
+   "sha256": "d3e91e9fc838a273b768ec925fbe4243f4070a25cc1d6a3e256ff9ed97fde77b",
+   "thumbnail": {
+    "file": "thumbs/fit_SR311.png",
+    "stl_sha256": "d3e91e9fc838a273b768ec925fbe4243f4070a25cc1d6a3e256ff9ed97fde77b",
+    "bytes": 2988
+   }
   },
   {
    "file": "fit_SR431.stl",
@@ -373,7 +443,12 @@
     ]
    ],
    "bytes": 10284,
-   "sha256": "84b200d520ee4139262d89d87f8709d5abb4ddd09ccbd61fd653f90261e01802"
+   "sha256": "84b200d520ee4139262d89d87f8709d5abb4ddd09ccbd61fd653f90261e01802",
+   "thumbnail": {
+    "file": "thumbs/fit_SR431.png",
+    "stl_sha256": "84b200d520ee4139262d89d87f8709d5abb4ddd09ccbd61fd653f90261e01802",
+    "bytes": 2978
+   }
   },
   {
    "file": "head_pan_platform.stl",
@@ -396,7 +471,12 @@
     ]
    ],
    "bytes": 168084,
-   "sha256": "9a15a7d2149a5c6c8ce1e470e27a0c2c1ace544f6ef99a1f333f054e71798fbe"
+   "sha256": "9a15a7d2149a5c6c8ce1e470e27a0c2c1ace544f6ef99a1f333f054e71798fbe",
+   "thumbnail": {
+    "file": "thumbs/head_pan_platform.png",
+    "stl_sha256": "9a15a7d2149a5c6c8ce1e470e27a0c2c1ace544f6ef99a1f333f054e71798fbe",
+    "bytes": 3368
+   }
   },
   {
    "file": "head_pixy_plate_pixy1.stl",
@@ -419,7 +499,12 @@
     ]
    ],
    "bytes": 122284,
-   "sha256": "7a20321342b0925510db9cd5dd41660efbc7967e5da93b30df751ea72fc118f5"
+   "sha256": "7a20321342b0925510db9cd5dd41660efbc7967e5da93b30df751ea72fc118f5",
+   "thumbnail": {
+    "file": "thumbs/head_pixy_plate_pixy1.png",
+    "stl_sha256": "7a20321342b0925510db9cd5dd41660efbc7967e5da93b30df751ea72fc118f5",
+    "bytes": 3183
+   }
   },
   {
    "file": "head_pixy_plate_pixy2.stl",
@@ -442,7 +527,12 @@
     ]
    ],
    "bytes": 151884,
-   "sha256": "adcd94dfa6ac2f8c53cedd2b92222bb19bc43fac9d7b22ce50f7971ed4cb44f9"
+   "sha256": "adcd94dfa6ac2f8c53cedd2b92222bb19bc43fac9d7b22ce50f7971ed4cb44f9",
+   "thumbnail": {
+    "file": "thumbs/head_pixy_plate_pixy2.png",
+    "stl_sha256": "adcd94dfa6ac2f8c53cedd2b92222bb19bc43fac9d7b22ce50f7971ed4cb44f9",
+    "bytes": 3350
+   }
   },
   {
    "file": "head_tilt_cradle_esp32_s3_eye.stl",
@@ -466,7 +556,12 @@
     ]
    ],
    "bytes": 22084,
-   "sha256": "3efb03a7bc6f01a0ec1e970f2f4f146dc48565189a37be647a9bc5ddd48b3ef1"
+   "sha256": "3efb03a7bc6f01a0ec1e970f2f4f146dc48565189a37be647a9bc5ddd48b3ef1",
+   "thumbnail": {
+    "file": "thumbs/head_tilt_cradle_esp32_s3_eye.png",
+    "stl_sha256": "3efb03a7bc6f01a0ec1e970f2f4f146dc48565189a37be647a9bc5ddd48b3ef1",
+    "bytes": 2283
+   }
   },
   {
    "file": "head_tilt_cradle_esp32cam.stl",
@@ -490,7 +585,12 @@
     ]
    ],
    "bytes": 23484,
-   "sha256": "780b9ebcedfd55b70af3c06006596c67d64d2e4c68090979d481f24b348ef9b0"
+   "sha256": "780b9ebcedfd55b70af3c06006596c67d64d2e4c68090979d481f24b348ef9b0",
+   "thumbnail": {
+    "file": "thumbs/head_tilt_cradle_esp32cam.png",
+    "stl_sha256": "780b9ebcedfd55b70af3c06006596c67d64d2e4c68090979d481f24b348ef9b0",
+    "bytes": 2567
+   }
   },
   {
    "file": "head_tilt_cradle_esp_eye.stl",
@@ -514,7 +614,12 @@
     ]
    ],
    "bytes": 23484,
-   "sha256": "6b58adb91716f2d62fa4feda631dfef8a1da8cfa732625a030529f8156eeac13"
+   "sha256": "6b58adb91716f2d62fa4feda631dfef8a1da8cfa732625a030529f8156eeac13",
+   "thumbnail": {
+    "file": "thumbs/head_tilt_cradle_esp_eye.png",
+    "stl_sha256": "6b58adb91716f2d62fa4feda631dfef8a1da8cfa732625a030529f8156eeac13",
+    "bytes": 2610
+   }
   },
   {
    "file": "left_hip_roll_pitch_yoke.stl",
@@ -537,7 +642,12 @@
     ]
    ],
    "bytes": 52884,
-   "sha256": "b899508a0f4e8c4447ff17974de14b710e6902a658099ba24c25afd735ba70bb"
+   "sha256": "b899508a0f4e8c4447ff17974de14b710e6902a658099ba24c25afd735ba70bb",
+   "thumbnail": {
+    "file": "thumbs/left_hip_roll_pitch_yoke.png",
+    "stl_sha256": "b899508a0f4e8c4447ff17974de14b710e6902a658099ba24c25afd735ba70bb",
+    "bytes": 3011
+   }
   },
   {
    "file": "left_shin_fixed_foot.stl",
@@ -560,7 +670,12 @@
     ]
    ],
    "bytes": 287084,
-   "sha256": "dbab835a1440485f367ee976652806cf00cf3bfc5a6c69e1b4e368fab77b8cb9"
+   "sha256": "dbab835a1440485f367ee976652806cf00cf3bfc5a6c69e1b4e368fab77b8cb9",
+   "thumbnail": {
+    "file": "thumbs/left_shin_fixed_foot.png",
+    "stl_sha256": "dbab835a1440485f367ee976652806cf00cf3bfc5a6c69e1b4e368fab77b8cb9",
+    "bytes": 2790
+   }
   },
   {
    "file": "left_thigh_knee_cradle.stl",
@@ -583,7 +698,12 @@
     ]
    ],
    "bytes": 169484,
-   "sha256": "1b9ec853bf373191f53bbd7c456b5650e1ea0006faa06998dc73084632840251"
+   "sha256": "1b9ec853bf373191f53bbd7c456b5650e1ea0006faa06998dc73084632840251",
+   "thumbnail": {
+    "file": "thumbs/left_thigh_knee_cradle.png",
+    "stl_sha256": "1b9ec853bf373191f53bbd7c456b5650e1ea0006faa06998dc73084632840251",
+    "bytes": 3616
+   }
   },
   {
    "file": "right_hip_roll_pitch_yoke.stl",
@@ -606,7 +726,12 @@
     ]
    ],
    "bytes": 52884,
-   "sha256": "e3cbee6d3397bd4fa7e435879b5270f496b3dccca05f1ec3ba48c61a6842559f"
+   "sha256": "e3cbee6d3397bd4fa7e435879b5270f496b3dccca05f1ec3ba48c61a6842559f",
+   "thumbnail": {
+    "file": "thumbs/right_hip_roll_pitch_yoke.png",
+    "stl_sha256": "e3cbee6d3397bd4fa7e435879b5270f496b3dccca05f1ec3ba48c61a6842559f",
+    "bytes": 2861
+   }
   },
   {
    "file": "right_shin_fixed_foot.stl",
@@ -629,7 +754,12 @@
     ]
    ],
    "bytes": 294884,
-   "sha256": "1dd97910be3c125978fccfaf365c8cdae86c0cd36f615919f7c05df14f886691"
+   "sha256": "1dd97910be3c125978fccfaf365c8cdae86c0cd36f615919f7c05df14f886691",
+   "thumbnail": {
+    "file": "thumbs/right_shin_fixed_foot.png",
+    "stl_sha256": "1dd97910be3c125978fccfaf365c8cdae86c0cd36f615919f7c05df14f886691",
+    "bytes": 2838
+   }
   },
   {
    "file": "right_thigh_knee_cradle.stl",
@@ -652,7 +782,14 @@
     ]
    ],
    "bytes": 169484,
-   "sha256": "60df128db9f8a70b03c0f9cde4a2a02d9fdddc1bced0d7a444cee65240c6ff27"
+   "sha256": "60df128db9f8a70b03c0f9cde4a2a02d9fdddc1bced0d7a444cee65240c6ff27",
+   "thumbnail": {
+    "file": "thumbs/right_thigh_knee_cradle.png",
+    "stl_sha256": "60df128db9f8a70b03c0f9cde4a2a02d9fdddc1bced0d7a444cee65240c6ff27",
+    "bytes": 3616
+   }
   }
- ]
+ ],
+ "thumbnail_view": "320 x 240 px, three-quarter view from the front left, 28 degrees above, in the part's own print frame",
+ "thumbnails": {}
 }

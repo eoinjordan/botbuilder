@@ -241,14 +241,17 @@ function pass(data, sel) {
     let name = item.file;
     if (item.folder && settings.preset) name = `${settings.preset}/${name}`;
     let link = null;
+    let about = { thumb: null, size: "", note: "" };
     for (const path of listing.paths) {
       if (path === name || path.endsWith(`/${name}`)) {
         // Files the site build copies are linked on the site; others in the repository.
         link = listing.served.includes(path) ? `./stl/${path}` : `${compat.repo_blob}stl/${path}`;
+        if (path in listing.info) about = listing.info[path];
         break;
       }
     }
-    files.push({ file: name, qty: item.qty, role: item.role, fit: Boolean(item.fit), link });
+    files.push({ file: name, qty: item.qty, role: item.role, fit: Boolean(item.fit), link,
+      thumb: about.thumb, size: about.size, note: about.note });
   }
   files = files.filter((item) => item.fit).concat(files.filter((item) => !item.fit));
   let note;
@@ -474,28 +477,39 @@ function render(data, recipe, target) {
   print.append(el("p", recipe.print.note, "small-note flush"));
   if (recipe.print.files.length) {
     if (recipe.preset) print.append(el("p", `Preset: ${recipe.preset}`, "small-note flush"));
-    const table = el("table");
-    const head = el("tr");
-    for (const name of ["File", "Print", "For"]) head.append(el("th", name));
-    table.append(head);
+    const cards = el("ul", undefined, "part-cards");
     for (const item of recipe.print.files) {
-      const tr = el("tr");
-      const cell = el("td");
+      const card = el("li", undefined, item.fit ? "part-card fit" : "part-card");
+      if (item.thumb) {
+        const picture = document.createElement("img");
+        picture.src = item.thumb;
+        picture.alt = item.role;
+        picture.width = 320;
+        picture.height = 240;
+        picture.loading = "lazy";
+        card.append(picture);
+      } else {
+        card.append(el("div", "No picture yet", "part-nopicture"));
+      }
+      const text = el("div", undefined, "part-text");
+      if (item.fit) text.append(el("p", "Print first: fit test", "part-first"));
+      const name = el("h4");
       if (item.link) {
         const link = el("a", item.file);
         link.href = item.link;
         if (item.link.startsWith("./")) link.download = "";
         else link.rel = "noopener noreferrer";
-        cell.append(link);
+        name.append(link);
       } else {
-        cell.textContent = item.file;
+        name.textContent = item.file;
       }
-      tr.append(cell, el("td", String(item.qty)), el("td", item.fit ? `${item.role} (print first)` : item.role));
-      table.append(tr);
+      text.append(name, el("p", item.role));
+      text.append(el("p", item.size ? `Print ${item.qty}, ${item.size}` : `Print ${item.qty}`, "part-facts"));
+      if (item.note) text.append(el("p", item.note, "part-facts"));
+      card.append(text);
+      cards.append(card);
     }
-    const scroll = el("div", undefined, "table-wrap");
-    scroll.append(table);
-    print.append(scroll);
+    print.append(cards);
   }
   target.append(block("Files to print", print));
 
@@ -618,16 +632,86 @@ async function start() {
       note.textContent = "Copy the address from the address bar.";
     }
   });
-  document.getElementById("download").addEventListener("click", () => {
-    const blob = new Blob([`${JSON.stringify(recipe, null, 1)}\n`], { type: "application/json" });
+  const stem = () => `botbuilder-recipe-${recipe.query.replace(/[^a-z0-9]+/gi, "-")}`;
+  const save = (bytes, type, name) => {
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `duckbot-recipe-${recipe.query.replace(/[^a-z0-9]+/gi, "-")}.json`;
+    link.href = URL.createObjectURL(new Blob([bytes], { type }));
+    link.download = name;
     document.body.append(link);
     link.click();
     link.remove();
     URL.revokeObjectURL(link.href);
-  });
+  };
+  const bytesOf = async (path) => {
+    const response = await fetch(path);
+    if (!response.ok) throw new Error(`${path}: ${response.status}`);
+    return new Uint8Array(await response.arrayBuffer());
+  };
+  const jsonText = () => `${JSON.stringify(recipe, null, 1)}\n`;
+  // The PDF is written in the page by export.js: no library, nothing sent anywhere.
+  const makePdf = async () => {
+    const { recipePdf } = await import("./export.js");
+    const images = {};
+    for (const item of recipe.print.files) {
+      if (!item.thumb || item.thumb in images) continue;
+      try {
+        images[item.thumb] = await bytesOf(item.thumb);
+      } catch (error) {
+        images[item.thumb] = null;                 // the PDF leaves that box empty
+      }
+    }
+    return recipePdf(recipe, images, {
+      url: `${window.location.origin}${window.location.pathname}?${recipe.query}`,
+      date: new Date().toISOString().slice(0, 10),
+      selection: compat.dimensions
+        .filter((dim) => !dim.only_for || matches(dim.only_for, recipe.selection))
+        .map((dim) => [dim.label, recipe.labels[dim.id]]),
+      titles: compat.sections.filter((name) => name in SECTION_TITLES).map((name) => [name, SECTION_TITLES[name]]),
+    });
+  };
+  const busy = async (button, work) => {
+    const note = document.getElementById("action-note");
+    button.disabled = true;
+    note.textContent = "Working.";
+    try {
+      note.textContent = await work();
+    } catch (error) {
+      note.textContent = `That did not work (${error.message}). The Print button and your browser's Save as PDF give the same recipe.`;
+    }
+    button.disabled = false;
+  };
+  document.getElementById("download").addEventListener("click", () => save(jsonText(), "application/json", `${stem()}.json`));
+  document.getElementById("download-pdf").addEventListener("click", (event) => busy(event.currentTarget, async () => {
+    save(await makePdf(), "application/pdf", `${stem()}.pdf`);
+    return "PDF saved.";
+  }));
+  document.getElementById("download-all").addEventListener("click", (event) => busy(event.currentTarget, async () => {
+    const { zipStore } = await import("./export.js");
+    const entries = [
+      { name: "recipe.pdf", data: await makePdf() },
+      { name: "recipe.json", data: new TextEncoder().encode(jsonText()) },
+    ];
+    const left = [];
+    for (const item of recipe.print.files) {
+      // Only files this site serves; a part that is only named, or kept elsewhere, is listed instead.
+      if (!item.link || !item.link.startsWith("./")) {
+        left.push(item.file);
+        continue;
+      }
+      try {
+        entries.push({ name: `stl/${item.file}`, data: await bytesOf(item.link) });
+      } catch (error) {
+        left.push(item.file);
+      }
+    }
+    const lines = ["Botbuilder recipe", `${window.location.origin}${window.location.pathname}?${recipe.query}`, "",
+      "recipe.pdf   the recipe with the part pictures", "recipe.json  the same recipe as data",
+      `stl/         ${entries.length - 2} printable files, quantities in the recipe`];
+    if (left.length) lines.push("", "Not in this zip (no file on the site):", ...left.map((name) => `  ${name}`));
+    entries.push({ name: "README.txt", data: new TextEncoder().encode(`${lines.join("\n")}\n`) });
+    save(zipStore(entries, new Date()), "application/zip", `${stem()}.zip`);
+    return left.length ? `Zip saved; ${left.length} files are not on the site and are listed in its README.` : "Zip saved.";
+  }));
   document.getElementById("print").addEventListener("click", () => window.print());
 }
 

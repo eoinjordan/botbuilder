@@ -183,9 +183,24 @@ def manifest(compat: dict, root: Path = ROOT) -> dict:
                                   "head": options.get("head"), "camera": options.get("camera")})
             found: list[str] = []
             _collect_stl_names(content, found)
+            # Picture, size and print note of every part, by its path under stl/.
+            info = {}
+            extras = content.get("thumbnails", {}) if isinstance(content, dict) else {}
+            described = [(entry.get("file"), entry) for entry in entries if isinstance(entry, dict)] + list(extras.items())
+            for name, entry in described:
+                if not isinstance(name, str) or not isinstance(entry, dict):
+                    continue
+                picture = entry.get("thumbnail", entry) if "thumbnail" in entry or "stl_sha256" in entry else {}
+                box = entry.get("bounding_box_mm")
+                size = ""
+                if isinstance(box, list) and len(box) == 2:
+                    size = " x ".join(f"{hi - lo:.0f}" for lo, hi in zip(box[0], box[1])) + " mm"
+                info[name] = {"thumb": "./stl/" + picture["file"] if isinstance(picture.get("file"), str) else None,
+                              "size": size, "note": str(entry.get("print_note", ""))}
             return {"present": True, "paths": sorted(set(found)), "served": [item["file"] for item in files],
-                    "files": files, "camera_default": default, "controller_default": home}
-    return {"present": False, "paths": [], "served": [], "files": [], "camera_default": default, "controller_default": "unoq"}
+                    "files": files, "info": info, "camera_default": default, "controller_default": home}
+    return {"present": False, "paths": [], "served": [], "files": [], "info": {}, "camera_default": default,
+            "controller_default": "unoq"}
 
 
 def _collect_stl_names(node, found: list[str]) -> None:
@@ -577,13 +592,15 @@ def _pass(data: dict, sel: dict) -> dict:
         if item.get("folder") and settings["preset"]:
             name = settings["preset"] + "/" + name
         link = None
+        about = {"thumb": None, "size": "", "note": ""}
         for path in listing["paths"]:
             if path == name or path.endswith("/" + name):
                 # Files the site build copies are linked on the site; others in the repository.
                 link = "./stl/" + path if path in listing["served"] else compat["repo_blob"] + "stl/" + path
+                about = listing["info"].get(path, about)
                 break
         files.append({"file": name, "qty": item["qty"], "role": item["role"], "fit": bool(item.get("fit")),
-                      "link": link})
+                      "link": link, "thumb": about["thumb"], "size": about["size"], "note": about["note"]})
     files = [item for item in files if item["fit"]] + [item for item in files if not item["fit"]]
     if not files:
         note = "No printable files are named for this selection yet: the design is in progress on another branch."

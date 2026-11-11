@@ -412,7 +412,7 @@ def test_files_link_only_when_the_manifest_names_them(data):
     assert links["ev3-pixy2/chassis.stl"] == data["compat"]["repo_blob"] + "stl/lego/ev3-pixy2/chassis.stl"
     assert links["ev3-pixy2/left_leg.stl"] is None
     bare = copy.deepcopy(data)
-    bare["manifest"] = {"present": False, "paths": [], "served": [], "files": [], "camera_default": "none",
+    bare["manifest"] = {"present": False, "paths": [], "served": [], "files": [], "info": {}, "camera_default": "none",
                         "controller_default": "unoq"}
     assert recipe.evaluate(bare, {})["print"]["files"] == []
     assert "no STL manifest" in recipe.evaluate(bare, base)["print"]["note"]
@@ -516,7 +516,7 @@ def test_summary_and_manifest_files_are_read_when_present(tmp_path, compat):
     for folder in ("config", "reports"):
         shutil.copytree(ROOT / folder, tmp_path / folder)
     assert recipe.bundle(tmp_path)["variants"] == []
-    assert recipe.bundle(tmp_path)["manifest"] == {"present": False, "paths": [], "served": [], "files": [],
+    assert recipe.bundle(tmp_path)["manifest"] == {"present": False, "paths": [], "served": [], "files": [], "info": {},
                                                    "camera_default": compat["defaults"]["camera"], "controller_default": "unoq"}
     (tmp_path / "reports" / "variants").mkdir()
     (tmp_path / "reports" / "variants" / "summary.json").write_text(json.dumps({"variants": [

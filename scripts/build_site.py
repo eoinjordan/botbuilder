@@ -67,6 +67,8 @@ def main() -> int:
         manifest = json.load(handle)
     for name in [entry["file"] for entry in manifest["files"]] + ["manifest.json", "parameters.json"]:
         shutil.copyfile(ROOT / "stl" / name, parts / name)
+    if (ROOT / "stl" / "thumbs").is_dir():                  # the part pictures the recipes show
+        shutil.copytree(ROOT / "stl" / "thumbs", parts / "thumbs")
     size = sum(p.stat().st_size for p in SITE.rglob("*") if p.is_file())
     print(f"site built: {len(DATA)} data files, {count} pictures, {len(manifest['files'])} STLs, {size / 1e6:.2f} MB")
     return 0

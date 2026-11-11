@@ -102,7 +102,7 @@ def test_keyboard_print_and_phone_width():
     css = read("recipe.css")
     assert 'name="viewport"' in html
     assert 'aria-live="polite"' in html
-    assert html.count('type="button"') == 4 and "<div onclick" not in html
+    assert html.count('type="button"') == 6 and "<div onclick" not in html
     assert "label.htmlFor" in read("build.js").replace("name.htmlFor", "label.htmlFor")
     assert "@media print" in css and ".no-print" in css
     assert "@media (max-width: 860px)" in css
