@@ -147,7 +147,7 @@ Best of 54 parameter sets that stay inside the speed limit as written: 101 mm in
 Suggestions only; none of this has been done.
 
 - Move the hips back under the body. The hip pitch axis is 89 mm ahead of the torso origin, so with straight legs the centre of mass is behind the heels and the robot only stands with the thighs swung 45 degrees back.
-- Bring the feet together. The foot centres are 173 mm apart and the centre of mass is 62 mm outside either foot, so the weight cannot be put on one foot and the gait can only shuffle.
+- Bring the feet together. The foot centres are 172 mm apart and the centre of mass is 62 mm outside either foot, so the weight cannot be put on one foot and the gait can only shuffle.
 - Add an ankle roll joint, or shape the soles as a rocker, so a weight shift tilts the body over a foot instead of tipping the feet onto their edges. With six servos this means giving up a knee or a hip joint on each leg.
 - Add hip yaw or accept that the robot cannot turn: with roll and pitch only it has no way to change heading except by slipping.
 - Check the soles on the real floor. The shuffle is a sliding gait, and the contact model is the least certain part of the simulation.

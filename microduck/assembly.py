@@ -494,7 +494,10 @@ def dimensions(robot: Robot) -> dict:
     lo = np.min([_bbox(m)[0] for m in placed], axis=0)
     hi = np.max([_bbox(m)[1] for m in placed], axis=0)
     frames = robot.fk()
-    feet = {side: model.point(frames[f"{side}_shin"], sole_points(robot, side).mean(axis=0)) for side in ("left", "right")}
+    feet = {}
+    for side in ("left", "right"):
+        sole = sole_points(robot, side)
+        feet[side] = model.point(frames[f"{side}_shin"], 0.5 * (sole.min(axis=0) + sole.max(axis=0)))
     return {"box_min_mm": _r(lo), "box_max_mm": _r(hi), "size_mm": _r(hi - lo),
             "stance_width_between_foot_centres_mm": _r(feet["left"][1] - feet["right"][1]),
             "joint_origins_mm": {link.joint: _r(frames[name][:3, 3]) for name, link in robot.links.items() if link.joint},

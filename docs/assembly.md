@@ -7,8 +7,8 @@ Status: geometry only. Nothing here has been printed, assembled or powered.
 
 ## Findings
 
-- **interference**: left_roll_servo overlaps the torso deck by 1054.7 mm3 at its centred position in the cradle: the case end and the upper mounting ear run 4.0 mm into the 4 mm deck plate (z 0.0 to 4.0 mm).
-- **interference**: right_roll_servo overlaps the torso deck by 1054.7 mm3 at its centred position in the cradle: the case end and the upper mounting ear run 4.0 mm into the 4 mm deck plate (z 0.0 to 4.0 mm).
+- **interference**: left_roll_servo overlaps the torso deck by 1054.7 mm3 at its centred position in the cradle: the case end and the upper mounting ear run 4.0 mm into the 4 mm deck plate (z 0.0 to 4.0 mm). The published case alone accounts for 993.5 mm3, so this does not rest on the assumed ear.
+- **interference**: right_roll_servo overlaps the torso deck by 1054.7 mm3 at its centred position in the cradle: the case end and the upper mounting ear run 4.0 mm into the 4 mm deck plate (z 0.0 to 4.0 mm). The published case alone accounts for 993.5 mm3, so this does not rest on the assumed ear.
 - **interference**: The UNO Q centred between the deck rails overlaps the neck root by 49.0 mm3 (3.29 mm along x). Moving the board 3.25 mm forward clears it and keeps it on the deck.
 - **interference**: The Braccio shield above the board overlaps the neck by 26.3 mm3 at the same position.
 - **fit**: On all 6 cradles one of the two cable ties crosses the output shaft: the slot pair at 10.92 mm from the cradle centre is in line with the shaft at 10.75 mm (SR431; depends on the assumed shaft position). Only the tie at the far end can go over the case.
@@ -104,7 +104,7 @@ Published dimensions and their sources:
 |  | rail face | flat face |
 |---|---|---|
 | overall width (mm) | 250.0 | 368.2 |
-| foot centre to foot centre (mm) | 172.83 | 321.23 |
+| foot centre to foot centre (mm) | 171.8 | 320.2 |
 | one-foot margin at the stand pose (mm) | -61.91 | -136.11 |
 | left hip roll free range (deg) | [-55.0, 180.0] | [-91.5, 180.0] |
 | left knee free range (deg) | [-137.25, 115.25] | [-180.0, 180.0] |

@@ -261,12 +261,12 @@
   {
    "id": "deck-left_roll_servo",
    "level": "interference",
-   "text": "left_roll_servo overlaps the torso deck by 1054.7 mm3 at its centred position in the cradle: the case end and the upper mounting ear run 4.0 mm into the 4 mm deck plate (z 0.0 to 4.0 mm)."
+   "text": "left_roll_servo overlaps the torso deck by 1054.7 mm3 at its centred position in the cradle: the case end and the upper mounting ear run 4.0 mm into the 4 mm deck plate (z 0.0 to 4.0 mm). The published case alone accounts for 993.5 mm3, so this does not rest on the assumed ear."
   },
   {
    "id": "deck-right_roll_servo",
    "level": "interference",
-   "text": "right_roll_servo overlaps the torso deck by 1054.7 mm3 at its centred position in the cradle: the case end and the upper mounting ear run 4.0 mm into the 4 mm deck plate (z 0.0 to 4.0 mm)."
+   "text": "right_roll_servo overlaps the torso deck by 1054.7 mm3 at its centred position in the cradle: the case end and the upper mounting ear run 4.0 mm into the 4 mm deck plate (z 0.0 to 4.0 mm). The published case alone accounts for 993.5 mm3, so this does not rest on the assumed ear."
   },
   {
    "id": "board-neck",
@@ -344,7 +344,7 @@
      250.0,
      283.4
     ],
-    "stance_width_between_foot_centres_mm": 172.83,
+    "stance_width_between_foot_centres_mm": 171.8,
     "joint_origins_mm": {
      "left_hip_roll": [
       49.0,
@@ -3680,7 +3680,7 @@
      368.2,
      283.4
     ],
-    "stance_width_between_foot_centres_mm": 321.23,
+    "stance_width_between_foot_centres_mm": 320.2,
     "joint_origins_mm": {
      "left_hip_roll": [
       49.0,

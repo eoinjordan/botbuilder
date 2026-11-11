@@ -174,7 +174,9 @@ def findings(rep: dict) -> list:
             out.append({"id": f"deck-{f['b']}", "level": "interference",
                         "text": f"{f['b']} overlaps the torso deck by {f['volume_mm3']} mm3 at its centred position in the cradle: "
                                 f"the case end and the upper mounting ear run {f['depth_mm']} mm into the 4 mm deck plate "
-                                f"(z {f['box_min_mm'][2]} to {f['box_max_mm'][2]} mm)."})
+                                f"(z {f['box_min_mm'][2]} to {f['box_max_mm'][2]} mm). The published case alone accounts for "
+                                f"{next(c['case_interference_mm3'] for c in rep['cradles'] if c['servo'] == f['b'])} mm3, "
+                                "so this does not rest on the assumed ear."})
         elif f["b"] == "unoq":
             out.append({"id": "board-neck", "level": "interference",
                         "text": f"The UNO Q centred between the deck rails overlaps the neck root by {f['volume_mm3']} mm3 "

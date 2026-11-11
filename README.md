@@ -61,7 +61,7 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   foot.
 - **An open choice.** The design does not say which face of the thigh meets
   the hip horn. Both were checked. With the horn on the rail face the feet
-  are 176 mm apart; on the flat face, 321 mm. The description uses the rail
+  are 172 mm apart; on the flat face, 320 mm. The description uses the rail
   face.
 
 ## What the simulation did
@@ -76,7 +76,7 @@ Full results: [docs/simulation.md](docs/simulation.md). Numbers:
 - **The gait shuffles.** The open-loop weight shift and step keeps the robot
   up for the whole run and moves it 41 mm in 11 s. Both feet stay on the
   floor the whole time. The best of 54 parameter sets inside the speed limit
-  manages 101 mm in 11 s (9 mm/s). None fell. With no ankle and feet 176 mm
+  manages 101 mm in 11 s (9 mm/s). None fell. With no ankle and feet 172 mm
   apart the weight never gets onto one foot, so there is no step.
 - **Watchdog.** Commands cut in mid gait: the controller holds and the robot
   stays up. Relaxed instead, it falls in 0.3 s.

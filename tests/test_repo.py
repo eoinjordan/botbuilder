@@ -72,7 +72,7 @@ def test_readme_numbers_match_the_reports(selected, sim_report):
     assert f"{round(mass['total_g'])} g" in readme
     assert f"{round(mass['total_if_printed_solid_g'])} g if" in readme
     stance = round(selected["dimensions"]["stance_width_between_foot_centres_mm"])
-    assert f"{stance} mm apart" in readme
+    assert f"are {stance} mm apart" in readme
     assert f"{round(sim_report['gait_default']['distance_forward_m'] * 1000)} mm in" in readme
     assert f"{round(sim_report['gait_best']['distance_forward_m'] * 1000)} mm in" in readme
     limits = selected["joint_limits_deg"]["left_hip_roll"]
