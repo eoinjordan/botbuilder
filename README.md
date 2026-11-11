@@ -107,6 +107,17 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 10 A (assumed stall currents; the maker publishes none) against the kit's
 5 V 4 A supply, and the UNO Q needs its own 5 V 3 A.
 
+## Flash and control
+
+The site has a Flash page that writes the SSH commands to install and flash
+the App Lab app on a UNO Q (commands only; nothing is flashed from the
+browser), and a Control page that drives the robot from a USB or Bluetooth
+game controller. Control plays back in the page by default; the real robot
+is reached through `app_lab/microduck_agent/control_server.py`, which serves
+the same page next to the robot's socket. Neither path has been run on
+hardware. See [docs/flash.md](docs/flash.md) and
+[docs/control.md](docs/control.md).
+
 ## Layout
 
 | Path | What |

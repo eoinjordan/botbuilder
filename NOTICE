@@ -32,6 +32,12 @@ comparison only.
     python/main.py follow the corresponding files of its braccio_remote_agent
     (servo output through RoboServo, soft start, staggered attach, TCP relay).
   - site/style.css reuses its palette and type.
+  - site/control.js: deadzone() is copied from its web/src/input.js and
+    PadGate follows GamepadGate there. site/flash.js follows the host check
+    of web/src/setup-model.js. microduck/webcontrol.py and
+    app_lab/microduck_agent/control_server.py follow web/control.py and
+    web/server.py (armed session, held enable, rate limit, same-origin
+    check); microduck-control.service follows sketchbot-studio.service.
 
 3. Fonts
 
