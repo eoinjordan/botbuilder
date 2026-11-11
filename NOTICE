@@ -72,6 +72,16 @@ outlines of meshes in the part pack described in section 1; none of those
 meshes is in this repository. Sources of the component data are listed in
 walkers/config/components.json.
 
+7. Pictures of bought components (docs/components/, site/credits.html)
+
+The photographs are openly licensed files from Wikimedia Commons, each under
+its own licence (CC0, public domain, CC BY or CC BY-SA), cropped, resized and
+reduced to a small palette and otherwise unchanged. The author, licence and
+source of every one are in config/component_images.json and on the generated
+page site/credits.html. The other pictures there are drawings made by
+microduck/componentpics.py from dimensions in this repository. No maker's or
+shop's product photograph is included.
+
 LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not
 sponsor or endorse this. Raspberry Pi is a trademark of Raspberry Pi Ltd.
 Pixy2 is a product of Charmed Labs. M5Stack is a trademark of M5Stack

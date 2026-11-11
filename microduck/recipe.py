@@ -28,6 +28,7 @@ MANIFEST_PATHS = ("stl/manifest.json", "stl/MANIFEST.json")
 PROGRAM_PATHS = ("programs/index.json",)
 VALIDATED_PATH = "config/validated.json"
 BUILDS_PATH = "config/builds.json"
+COMPONENTS_PATH = "config/component_images.json"
 SEARCH_DEPTH = 6
 
 
@@ -500,11 +501,75 @@ def builds(data: dict, root: Path = ROOT) -> dict:
     return {"default": default if default in ids else (ids[0] if ids else ""), "list": out}
 
 
+def credit_line(entry: dict) -> str:
+    """One plain line of credit for a component picture, as the PDF and the
+    credits page give it. A picture this project renders needs none."""
+    if entry.get("kind") == "photo":
+        parts = [f"{entry['name']}: photograph by {entry.get('author', '')}", entry.get("licence", ""), entry.get("origin", "")]
+        if entry.get("source_url"):
+            parts.append(entry["source_url"])
+        if entry.get("changes"):
+            parts.append(entry["changes"])
+        return ", ".join(part for part in parts if part) + "."
+    if entry.get("kind") == "drawing":
+        return f"{entry['name']}: {entry.get('origin', 'drawing')}; not a photograph."
+    return ""
+
+
+def components(data: dict, root: Path = ROOT) -> dict:
+    """The pictures of the bought components and of every choice in the
+    configurator, from config/component_images.json: 'list' in the order
+    parts are matched, each with the address of its picture on the site,
+    and 'options', the component of each choice."""
+    path = root / COMPONENTS_PATH
+    if not path.is_file():
+        return {"list": [], "options": {}, "not_bought": []}
+    content = _load(path)
+    listing = data["manifest"]
+    pictures = {item["id"]: item["picture"] for item in data.get("builds", {}).get("list", [])}
+    out = []
+    for entry in content.get("components", []):
+        picture = None
+        if entry.get("file"):
+            picture = "./components/" + entry["file"]
+        elif entry.get("stl"):
+            picture = listing["info"].get(entry["stl"], {}).get("thumb")
+        elif entry.get("manifest"):
+            for item in listing["files"]:
+                if all(item.get(key) == value for key, value in entry["manifest"].items()):
+                    picture = listing["info"].get(item["file"], {}).get("thumb")
+                    break
+        elif entry.get("build") in pictures:
+            picture = "./" + pictures[entry["build"]]
+        credit = ""
+        if entry.get("kind") == "photo":
+            credit = f"Photo: {entry.get('author', '')}, {entry.get('licence', '')}"
+        elif entry.get("kind") == "drawing":
+            credit = "Drawing"
+        out.append({"id": entry["id"], "name": entry["name"], "kind": entry.get("kind", ""), "picture": picture,
+                    "credit": credit, "credit_line": credit_line(entry), "match": list(entry.get("match", []))})
+    return {"list": out, "options": content.get("options", {}), "not_bought": list(content.get("not_bought", []))}
+
+
+def component_for(data: dict, name: str):
+    """The component whose picture a part of a recipe takes: the first in
+    the list with one of its patterns in the part's name. None for a part
+    with no picture (a printed part named in the parts list)."""
+    low = name.lower()
+    if any(low.startswith(prefix) for prefix in data["components"]["not_bought"]):
+        return None
+    for entry in data["components"]["list"]:
+        if any(pattern in low for pattern in entry["match"]):
+            return entry
+    return None
+
+
 def bundle(root: Path = ROOT) -> dict:
     """Everything evaluate() needs, as one JSON-serialisable object. The site
     build writes this to site/data/recipe.json for site/build.js."""
     data = _bundle(root)
     data["builds"] = builds(data, root)
+    data["components"] = components(data, root)
     return data
 
 

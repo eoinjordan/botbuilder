@@ -151,3 +151,53 @@ def test_phone_width_has_no_sideways_scroll_and_a_collapsed_sidebar(browser, sit
     finally:
         browser.call("Emulation.clearDeviceMetricsOverride")
     assert browser.errors == []
+
+
+def test_pictures_of_the_choices_and_the_bought_parts(browser, site_url, builds):  # noqa: F811
+    fresh(browser, f"{site_url}/?build={builds['list'][-1]['id']}")
+    # The chosen option's picture beside every field, named by the component.
+    shown = browser.js("[...document.querySelectorAll('#picker .field')].map((field) => {"
+                       " const img = field.querySelector('.field-picture'); return [field.querySelector('select').name, img.hidden, img.alt]; })")
+    assert len(shown) == 11 and all(not hidden and alt for _, hidden, alt in shown), shown
+    browser.wait("[...document.querySelectorAll('#picker .field-picture')].every((img) => img.complete && img.naturalWidth > 0)")
+    # The options as pictures: buttons that set the native select, greyed where the select is.
+    browser.js("document.querySelector('#picker .option-pictures').open = true; true")
+    labels = browser.js("[...document.querySelectorAll('#picker .field')[0].querySelectorAll('.option-card')].map((card) => card.textContent)")
+    assert labels == browser.js("[...document.getElementById('pick-controller').options].map((option) => option.textContent)")
+    browser.js("[...document.querySelectorAll('#picker .field')[0].querySelectorAll('.option-card')]"
+               ".find((card) => card.textContent.includes('EV3')).click(); true")
+    assert browser.js("document.getElementById('pick-controller').value") == "ev3"
+    assert browser.js("document.querySelector('#picker .option-card[aria-pressed=true]').textContent").startswith("LEGO EV3")
+    assert browser.js(CHECKED) == "", "choosing by picture makes a custom build like the list does"
+    off = browser.js("[...document.querySelectorAll('#picker .field')[2].querySelectorAll('.option-card')]"
+                     ".filter((card) => card.getAttribute('aria-disabled') === 'true').map((card) => card.title)")
+    assert off and all(off), "a greyed option keeps its reason"
+    before = browser.js("location.search")
+    browser.js("[...document.querySelectorAll('#picker .field')[2].querySelectorAll('.option-card')]"
+               ".find((card) => card.getAttribute('aria-disabled') === 'true').click(); true")
+    assert browser.js("location.search") == before, "a greyed picture does nothing"
+    # The parts list: a picture beside each bought part, and a link to the credits.
+    rows = browser.js("[...document.querySelectorAll('#recipe table tr')].slice(1).map((tr) => {"
+                      " const img = tr.querySelector('td.part-picture img'); return [tr.children[1].textContent, img ? img.alt : '']; })")
+    assert rows and all(alt for _, alt in rows), rows
+    assert browser.js("document.querySelector('#recipe a[href=\"./credits.html\"]') !== null")
+    browser.call("Browser.setDownloadBehavior", behavior="deny")
+    browser.js(SAVE_HOOK)
+    browser.js("document.getElementById('download-pdf').click(); true")
+    browser.wait("document.getElementById('action-note').textContent === 'PDF saved.'")
+    pdf = browser.js("await window.__saved[0].text()")
+    assert "(Picture credits) Tj" in pdf and "credits.html" in pdf and "photograph by" in pdf
+    browser.open(f"{site_url}/credits.html")
+    assert browser.js("document.querySelectorAll('table.credits tr').length") > 40
+    browser.wait("[...document.querySelectorAll('table.credits img')].slice(0, 6).every((img) => img.complete && img.naturalWidth === 320)")
+    browser.call("Emulation.setDeviceMetricsOverride", width=360, height=740, deviceScaleFactor=2, mobile=True)
+    try:
+        browser.open(f"{site_url}/credits.html")
+        assert browser.js("document.documentElement.scrollWidth") <= 360
+        fresh(browser, f"{site_url}/?build={builds['list'][0]['id']}")
+        browser.js("document.getElementById('customise').open = true;"
+                   "for (const more of document.querySelectorAll('#picker .option-pictures')) more.open = true; true")
+        assert browser.js("document.documentElement.scrollWidth") <= 360
+    finally:
+        browser.call("Emulation.clearDeviceMetricsOverride")
+    assert browser.errors == []

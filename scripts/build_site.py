@@ -87,6 +87,12 @@ def main() -> int:
         shutil.copyfile(ROOT / "stl" / name, parts / name)
     if (ROOT / "stl" / "thumbs").is_dir():
         shutil.copytree(ROOT / "stl" / "thumbs", parts / "thumbs")
+    # Pictures of the bought components: photographs and drawings, credited on credits.html.
+    if (SITE / "components").exists():
+        shutil.rmtree(SITE / "components")
+    (SITE / "components").mkdir()
+    for picture in sorted((ROOT / "docs" / "components").glob("*.png")) + sorted((ROOT / "docs" / "components").glob("*.jpg")):
+        shutil.copyfile(picture, SITE / "components" / picture.name)
     # Photos the owner attached to his checks, at the path the records name.
     if (SITE / "docs").exists():
         shutil.rmtree(SITE / "docs")

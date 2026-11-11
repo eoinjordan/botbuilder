@@ -362,6 +362,20 @@ export function buildSelection(data, entry) {
   return found === null ? start : found;
 }
 
+// The component whose picture a part of a recipe takes (data.components):
+// the first in the list with one of its patterns in the part's name, or null.
+export function componentFor(data, name) {
+  const low = name.toLowerCase();
+  if (data.components.not_bought.some((prefix) => low.startsWith(prefix))) return null;
+  return data.components.list.find((entry) => entry.match.some((pattern) => low.includes(pattern))) || null;
+}
+
+// The component that pictures one choice of the configurator, or null.
+export function optionComponent(data, dimId, optionId) {
+  const id = (data.components.options[dimId] || {})[optionId];
+  return data.components.list.find((entry) => entry.id === id) || null;
+}
+
 // Whether an option can be chosen with the current controller, and what the
 // selection becomes if it is. Not possible: the short reason.
 export function optionState(data, selection, dimId, optionId) {
@@ -470,6 +484,9 @@ function fromUrl() {
   return found;
 }
 
+// The picture beside each field and the picture buttons of its options.
+const pictures = {};
+
 function buildForm(data, form, onChange) {
   const controls = {};
   for (const dim of data.compat.dimensions) {
@@ -485,9 +502,49 @@ function buildForm(data, form, onChange) {
       select.append(item);
     }
     select.addEventListener("change", onChange);
-    wrap.append(name, select);
+    // The chosen option's picture beside the field; the list itself stays a native select.
+    const row = el("div", undefined, "field-row");
+    const chosen = document.createElement("img");
+    chosen.className = "field-picture";
+    chosen.width = 64;
+    chosen.height = 48;
+    chosen.loading = "lazy";
+    row.append(chosen, select);
+    // The same options as pictures: buttons that set the select.
+    const more = el("details", undefined, "option-pictures");
+    more.append(el("summary", "Pictures"));
+    const group = el("div", undefined, "option-cards");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-label", `${dim.label}, as pictures`);
+    const cards = [];
+    for (const option of dim.options) {
+      const about = optionComponent(data, dim.id, option.id);
+      const card = el("button", undefined, "option-card");
+      card.type = "button";
+      card.setAttribute("aria-pressed", "false");
+      if (about && about.picture) {
+        const picture = document.createElement("img");
+        picture.src = about.picture;
+        picture.alt = "";
+        picture.width = 96;
+        picture.height = 72;
+        picture.loading = "lazy";
+        card.append(picture);
+      }
+      card.append(el("span", option.label));
+      card.addEventListener("click", () => {
+        if (card.getAttribute("aria-disabled") === "true") return;
+        select.value = option.id;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      group.append(card);
+      cards.push({ id: option.id, card });
+    }
+    more.append(group);
+    wrap.append(name, row, more);
     form.append(wrap);
     controls[dim.id] = select;
+    pictures[dim.id] = { chosen, cards };
   }
   return controls;
 }
@@ -570,6 +627,21 @@ function syncForm(data, controls, sel) {
       item.disabled = !state.enabled;
       item.title = state.short;
       if (!state.enabled) greyed.push([item.textContent, state.short]);
+    }
+    const about = optionComponent(data, dim.id, sel[dim.id]);
+    const shown = pictures[dim.id];
+    shown.chosen.hidden = !(about && about.picture);
+    if (about && about.picture) {
+      shown.chosen.src = about.picture;
+      shown.chosen.alt = about.name;
+      shown.chosen.title = about.credit;
+    }
+    for (const { id, card } of shown.cards) {
+      const option = [...select.options].find((item) => item.value === id);
+      const off = select.disabled || option.disabled;
+      card.setAttribute("aria-pressed", id === sel[dim.id] ? "true" : "false");
+      card.setAttribute("aria-disabled", off ? "true" : "false");
+      card.title = option.title;
     }
   }
   return greyed;
@@ -698,16 +770,38 @@ function render(data, recipe, target) {
 
   const parts = el("table");
   const head = el("tr");
-  for (const name of ["Part", "Qty", "Note"]) head.append(el("th", name));
+  for (const name of ["Picture", "Part", "Qty", "Note"]) head.append(el("th", name));
   parts.append(head);
+  let credited = false;
   for (const item of recipe.parts) {
     const tr = el("tr");
-    tr.append(el("td", item.name), el("td", item.qty === null ? "not set" : String(item.qty)), el("td", item.note));
+    const cell = el("td", undefined, "part-picture");
+    const about = componentFor(data, item.name);
+    if (about && about.picture) {
+      const picture = document.createElement("img");
+      picture.src = about.picture;
+      picture.alt = about.name;
+      picture.title = about.credit;
+      picture.width = 96;
+      picture.height = 72;
+      picture.loading = "lazy";
+      cell.append(picture);
+      credited = credited || about.kind !== "render";
+    }
+    tr.append(cell, el("td", item.name), el("td", item.qty === null ? "not set" : String(item.qty)), el("td", item.note));
     parts.append(tr);
   }
   const partsScroll = el("div", undefined, "table-wrap wrap-cells");
   partsScroll.append(parts);
-  target.append(block("Parts", partsScroll));
+  const partsBlock = block("Parts", partsScroll);
+  if (credited) {
+    const credit = el("p", "Pictures of bought parts are openly licensed photographs or drawings: ", "small-note flush no-print");
+    const link = el("a", "picture credits");
+    link.href = "./credits.html";
+    credit.append(link, document.createTextNode("."));
+    partsBlock.append(credit);
+  }
+  target.append(partsBlock);
 
   for (const name of data.compat.sections) {
     if (!(name in SECTION_TITLES)) continue;
@@ -898,7 +992,27 @@ async function start() {
         images[item.thumb] = null;                 // the PDF leaves that box empty
       }
     }
+    // The pictures of the bought parts, and one credit line for each one used.
+    const parts = recipe.parts.map((part) => {
+      const about = componentFor(data, part.name);
+      return about && about.picture ? about : null;
+    });
+    const credits = [];
+    for (const about of parts) {
+      if (!about) continue;
+      if (!(about.picture in images)) {
+        try {
+          images[about.picture] = await bytesOf(about.picture);
+        } catch (error) {
+          images[about.picture] = null;
+        }
+      }
+      if (about.credit_line && !credits.includes(about.credit_line)) credits.push(about.credit_line);
+    }
     return recipePdf(recipe, images, {
+      parts: parts.map((about) => (about ? about.picture : null)),
+      credits,
+      creditsUrl: `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}credits.html`,
       url: pageUrl(),
       date: new Date().toISOString().slice(0, 10),
       selection: compat.dimensions

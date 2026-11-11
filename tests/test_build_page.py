@@ -143,7 +143,7 @@ def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):
         html = read(name)
         nav = re.search(r'<nav id="site-nav" aria-label="Site">(.*?)</nav>', html, re.S).group(1)
         blocks.append(nav.replace(' aria-current="page"', ""))
-        assert html.count('aria-current="page"') == (0 if name == "admin.html" else 1), name   # Admin is a footer link
+        assert html.count('aria-current="page"') == (0 if name in ("admin.html", "credits.html") else 1), name   # footer links
         assert '<script type="module" src="./nav.js"></script>' in html, name
         targets = re.findall(r'<a href="\./([a-z]*\.html)"([^>]*)>', nav)
         # Tabs by robot type, then the tools, then the arm project as a marked link out, then the source.

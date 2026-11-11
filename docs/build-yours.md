@@ -138,6 +138,23 @@ brick selects its crank walker and motors. A link that names every field is
 taken as written and may answer "Not possible" with the nearest alternative;
 a link that names only some (`?locomotion=wheeled`) is completed.
 
+## Pictures of the bought parts
+
+Every field of the sidebar shows a picture of the chosen option beside it,
+and "Pictures" under the field lists all its options as picture buttons;
+the field itself stays a native list, which is what a phone and a keyboard
+use. The parts list of a recipe shows each bought part with its picture,
+and the PDF carries the same pictures with their credits on its last page.
+
+`config/component_images.json` lists the components: openly licensed
+photographs from Wikimedia Commons, with author, licence and source as the
+file's own page gives them, and drawings made from the dimensions in
+`config/hardware.json`, `config/bases.json` and `walkers/config/`. Choices
+that are not bought parts (feet, face, wheel end) use the project's own
+renders. `site/credits.html`, linked from every footer, is generated from
+that file. To replace any picture with a photograph of your own, see
+[components/README.md](components/README.md).
+
 ## Where the data is
 
 | File | Holds |
@@ -146,6 +163,7 @@ a link that names only some (`?locomotion=wheeled`) is completed.
 | `config/bases.json` | The controller bases with the makers' figures and sources. |
 | `config/assembly.json` | The default camera, face and feet. |
 | `config/builds.json` | The finished builds on the cards. |
+| `config/component_images.json` | The picture of every choice and bought part, with origin, author and licence. |
 | `reports/builds.json` | The card pictures and what each was drawn from. |
 | `config/validated.json` | The owner's own checks. |
 | `stl/manifest.json` | Every printable file with its options and its picture. The biped's print list is chosen by those options: controller, head, face, camera, feet. |
@@ -196,7 +214,8 @@ the recipe's STL files.
 
 `index.html` is the finished builds and the configurator; `biped.html`, `wheeled.html` and
 `walkers.html` are the three robot types; `flash.html` and `control.html`
-are the tools; `admin.html` is linked from the footer. Every page carries
+are the tools; `admin.html` and the generated `credits.html` are linked from
+the footer. Every page carries
 the same navigation block, ending with the owner's robot-arm project as a
 link that opens in a new tab. A new page copies the `<nav id="site-nav">`
 block and loads `nav.js`; if it is listed in `OPTIONAL_PAGES` in

@@ -1,0 +1,821 @@
+{
+ "_comment": "Pictures of the bought components and of every choice in the configurator. 'components' is ordered: a part of a recipe takes the picture of the first component with one of its 'match' patterns in the part's name (lower case). 'kind' is photo (a file under docs/components/ with author, licence and source; the Wikimedia Commons ones are fetched and filled in by scripts/fetch_component_photos.py from the file's own page), drawing (made by python -m microduck.componentpics from the dimensions named in 'origin'; not a photograph) or render (a picture this project already makes: a part thumbnail by 'stl' or 'manifest', a build picture by 'build', a two-wheeled model by 'wheeled_model'). 'options' gives each choice of config/compat.json its component. To use your own photograph see docs/components/README.md. A part whose name starts with one of 'not_bought' is printed and takes no component picture.",
+ "not_bought": [
+  "printed ",
+  "tpu ",
+  "drag skid"
+ ],
+ "components": [
+  {
+   "id": "switch",
+   "name": "Toggle switch",
+   "kind": "photo",
+   "file": "switch.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:On-Off Switch.jpg",
+   "match": [
+    "switch in the"
+   ],
+   "author": "Jszack at English Wikipedia",
+   "licence": "CC BY-SA 2.5",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/2.5",
+   "source_url": "https://commons.wikimedia.org/wiki/File:On-Off_Switch.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "a8c8a7008c9e815a9f040846da643485d2241ce36c55afcb3404c51b367efccd"
+  },
+  {
+   "id": "supply",
+   "name": "USB-C power supply",
+   "kind": "photo",
+   "file": "supply.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Raspberry Pi Wall Adapter Power Supply - 5.1VDC, 3.0A, 15.3W (USB-C).jpg",
+   "match": [
+    "supply"
+   ],
+   "author": "SparkFun Electronics",
+   "licence": "CC BY 2.0",
+   "licence_url": "https://creativecommons.org/licenses/by/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Raspberry_Pi_Wall_Adapter_Power_Supply_-_5.1VDC,_3.0A,_15.3W_(USB-C).jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "20da1b30ab256bc5b7489ca924ba4b311789a635b8ada001a839d034817a0f95"
+  },
+  {
+   "id": "power_bank",
+   "name": "USB power bank",
+   "kind": "photo",
+   "file": "power_bank.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Portable power bank.jpg",
+   "match": [
+    "power bank"
+   ],
+   "author": "Santeri Viinam\u00e4ki",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Portable_power_bank.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "cc5a0f328d070810bbacca77686f7e084890d15e2e8860bc8b954e8e4bb0b682"
+  },
+  {
+   "id": "lipo",
+   "name": "LiPo cell",
+   "kind": "drawing",
+   "file": "lipo.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (battery)",
+   "match": [
+    "lipo"
+   ]
+  },
+  {
+   "id": "servo_horn",
+   "name": "Servo horn",
+   "kind": "photo",
+   "file": "servo_horn.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Futaba 6-Arm plastic servo horn.jpg",
+   "match": [
+    "servo horn"
+   ],
+   "author": "Suyash Dwivedi",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Futaba_6-Arm_plastic_servo_horn.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "a92af17a3b7ffc9881dbece6859c2a557f8abd0956d120652f9a0d72406e54aa"
+  },
+  {
+   "id": "cable_tie",
+   "name": "Cable tie",
+   "kind": "photo",
+   "file": "cable_tie.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Cable tie.jpg",
+   "match": [
+    "cable tie",
+    "ties",
+    "strap"
+   ],
+   "author": "Obli",
+   "licence": "Public domain",
+   "licence_url": "",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Cable_tie.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "23aec25843ac7f483651f4dd2252f1a1b8c2da7555c2210417fc1d2226117d04"
+  },
+  {
+   "id": "pca9685",
+   "name": "16-channel I2C servo driver board (PCA9685 type)",
+   "kind": "drawing",
+   "file": "pca9685.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (controllers.pi)",
+   "match": [
+    "pca9685",
+    "servo driver"
+   ]
+  },
+  {
+   "id": "hbridge",
+   "name": "TB6612FNG motor driver board",
+   "kind": "photo",
+   "file": "hbridge.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:TB6612FNG.jpg",
+   "match": [
+    "driver board",
+    "h-bridge"
+   ],
+   "author": "Krishnav25",
+   "licence": "CC0",
+   "licence_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "source_url": "https://commons.wikimedia.org/wiki/File:TB6612FNG.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "ce1326aec03ab116542dc85bb061c93e6f5a1473e2f28af643459cc6e75f7733"
+  },
+  {
+   "id": "screws",
+   "name": "M3 screws",
+   "kind": "photo",
+   "file": "screws.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:M3 x 30 mm Metal Screw.jpg",
+   "match": [
+    "screw",
+    "spacer"
+   ],
+   "author": "oomlout",
+   "licence": "CC BY-SA 2.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:M3_x_30_mm_Metal_Screw.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "8628250655fca0fbbd2e2433ce1126cb9c3b8bcd87dd4474c9609589c23aff5c"
+  },
+  {
+   "id": "unoq",
+   "name": "Arduino UNO Q",
+   "kind": "drawing",
+   "file": "unoq.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (board)",
+   "match": [
+    "arduino uno q"
+   ]
+  },
+  {
+   "id": "pi_zero_2w",
+   "name": "Raspberry Pi Zero 2 W",
+   "kind": "photo",
+   "file": "pi_zero_2w.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Raspberry Pi Zero 2 W.jpg",
+   "match": [
+    "pi zero 2 w"
+   ],
+   "author": "Laserlicht",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Raspberry_Pi_Zero_2_W.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "ac319f82b751c2758f5387a4452864bd1d3cbb973a63919b1f4de0109b5b4970"
+  },
+  {
+   "id": "pi_full",
+   "name": "Raspberry Pi, full size",
+   "kind": "photo",
+   "file": "pi_full.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Raspberry Pi 4 Model B - Top.jpg",
+   "match": [
+    "raspberry pi, full size"
+   ],
+   "author": "Laserlicht",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Raspberry_Pi_4_Model_B_-_Top.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "fd02f4aadcbcbf73b69a4640c09ab965e6812206c6e76ed76c8e39315d159b76"
+  },
+  {
+   "id": "buildhat",
+   "name": "Raspberry Pi Build HAT",
+   "kind": "drawing",
+   "file": "buildhat.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/components.json (build_hat)",
+   "match": [
+    "build hat"
+   ]
+  },
+  {
+   "id": "hub51515",
+   "name": "LEGO Robot Inventor 51515 hub",
+   "kind": "drawing",
+   "file": "hub51515.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/components.json (hub51515)",
+   "match": [
+    "51515 hub",
+    "hub rechargeable"
+   ]
+  },
+  {
+   "id": "ev3_brick",
+   "name": "LEGO EV3 brick",
+   "kind": "photo",
+   "file": "ev3_brick.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Lego Mindstorms EV3 brick.jpg",
+   "match": [
+    "ev3 brick"
+   ],
+   "author": "Klaus-Dieter Keller",
+   "licence": "CC BY-SA 3.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Lego_Mindstorms_EV3_brick.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "941eb62927bf867043e91a0533b73c48a1a598d60adcebfd8984a2f48e067767"
+  },
+  {
+   "id": "m5core",
+   "name": "M5Stack Core on the BaseX",
+   "kind": "drawing",
+   "file": "m5core.png",
+   "origin": "drawing by python -m microduck.componentpics from config/bases.json (m5_basex_ev3)",
+   "match": [
+    "m5stack core",
+    "basex"
+   ]
+  },
+  {
+   "id": "braccio_shield",
+   "name": "Braccio shield",
+   "kind": "drawing",
+   "file": "braccio_shield.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (shield)",
+   "match": [
+    "braccio shield"
+   ]
+  },
+  {
+   "id": "sr431",
+   "name": "SR431 servo",
+   "kind": "drawing",
+   "file": "sr431.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (servos.SR431)",
+   "match": [
+    "sr431"
+   ]
+  },
+  {
+   "id": "sr311",
+   "name": "SR311 servo",
+   "kind": "drawing",
+   "file": "sr311.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (servos.SR311)",
+   "match": [
+    "sr311"
+   ]
+  },
+  {
+   "id": "ev3_large_motor",
+   "name": "LEGO EV3 large motor",
+   "kind": "photo",
+   "file": "ev3_large_motor.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:EV3 Large Motor.jpg",
+   "match": [
+    "ev3 large"
+   ],
+   "author": "Jim McTurbo",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:EV3_Large_Motor.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "c4d68d281bc15b63737b81d1f8fdcb7f255721c3eb9718104363d467abd9d34e"
+  },
+  {
+   "id": "ev3_medium_motor",
+   "name": "LEGO EV3 medium motor",
+   "kind": "photo",
+   "file": "ev3_medium_motor.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:EV3 Medium Motor.jpg",
+   "match": [
+    "ev3 medium"
+   ],
+   "author": "Jim McTurbo",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:EV3_Medium_Motor.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "fa9ee49b762d89369254eb0dcfb22ecf51b19571858f4612a51f626bc6cfce02"
+  },
+  {
+   "id": "angular_motor",
+   "name": "LEGO 51515 medium angular motor",
+   "kind": "drawing",
+   "file": "angular_motor.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/components.json (angular_motor)",
+   "match": [
+    "angular motor"
+   ]
+  },
+  {
+   "id": "sg90",
+   "name": "SG90-class 9 g servo",
+   "kind": "photo",
+   "file": "sg90.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Tower Pro SG90 micro servo motor.jpg",
+   "match": [
+    "sg90"
+   ],
+   "author": "Suyash Dwivedi",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Tower_Pro_SG90_micro_servo_motor.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "4e6a7cbae05df571121eb4dcfc83c5e4994e173c81663dce1be4fa43ba16e9dd"
+  },
+  {
+   "id": "m5_360",
+   "name": "M5Stack 360 degree servo",
+   "kind": "drawing",
+   "file": "m5_360.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (head_servo)",
+   "match": [
+    "360 degree servo",
+    "360-degree servo"
+   ]
+  },
+  {
+   "id": "tt_wheel",
+   "name": "Stock 65 mm TT wheel",
+   "kind": "drawing",
+   "file": "tt_wheel.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/wheeled.json (wheels.tt_65)",
+   "match": [
+    "tt wheel"
+   ]
+  },
+  {
+   "id": "tt_motor",
+   "name": "Yellow TT gear motor",
+   "kind": "drawing",
+   "file": "tt_motor.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/wheeled.py (the TT motor box)",
+   "match": [
+    "tt gear motor",
+    "tt dc gear motor"
+   ]
+  },
+  {
+   "id": "pixy_pantilt",
+   "name": "Pixy2 pan-tilt kit",
+   "kind": "drawing",
+   "file": "pixy_pantilt.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/components.json (pixy2_pan_tilt)",
+   "match": [
+    "pan-tilt"
+   ]
+  },
+  {
+   "id": "pixy2",
+   "name": "Pixy2 camera",
+   "kind": "drawing",
+   "file": "pixy2.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (pixy)",
+   "match": [
+    "pixy2"
+   ]
+  },
+  {
+   "id": "esp32cam",
+   "name": "AI-Thinker ESP32-CAM",
+   "kind": "photo",
+   "file": "esp32cam.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:ESP32-CAM.jpg",
+   "match": [
+    "esp32-cam"
+   ],
+   "author": "Nowforever",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:ESP32-CAM.jpg",
+   "changes": "resized, set on a white card and reduced to a small palette; otherwise unchanged",
+   "sha256": "5b6e9540f610674a90747915f4433a283df9064e67fd64b3fa61a307076b1c4d",
+   "pad": true
+  },
+  {
+   "id": "esp_eye",
+   "name": "Espressif ESP-EYE",
+   "kind": "drawing",
+   "file": "esp_eye.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (cameras.esp_eye)",
+   "match": [
+    "esp-eye"
+   ]
+  },
+  {
+   "id": "esp32_s3_eye",
+   "name": "Espressif ESP32-S3-EYE",
+   "kind": "drawing",
+   "file": "esp32_s3_eye.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (cameras.esp32_s3_eye)",
+   "match": [
+    "esp32-s3-eye"
+   ]
+  },
+  {
+   "id": "xiao_sense",
+   "name": "Seeed XIAO ESP32S3 Sense",
+   "kind": "drawing",
+   "file": "xiao_sense.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (round_display)",
+   "match": [
+    "xiao esp32s3"
+   ]
+  },
+  {
+   "id": "round_display",
+   "name": "Seeed Round Display for XIAO",
+   "kind": "drawing",
+   "file": "round_display.png",
+   "origin": "drawing by python -m microduck.componentpics from config/hardware.json (round_display)",
+   "match": [
+    "round display"
+   ]
+  },
+  {
+   "id": "picam2",
+   "name": "Raspberry Pi Camera Module 2",
+   "kind": "photo",
+   "file": "picam2.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Raspberry Pi Camera Module v2 with ribbon.jpg",
+   "match": [
+    "camera module 2"
+   ],
+   "author": "the Raspberry Pi Foundation",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Raspberry_Pi_Camera_Module_v2_with_ribbon.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "a2e70cda24dddd44751a202c9a40293e06d4c949e9832de070fbba495763fdca"
+  },
+  {
+   "id": "ribbon",
+   "name": "Flat ribbon cable",
+   "kind": "photo",
+   "file": "ribbon.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:Flat-Flex-Cable.jpg",
+   "match": [
+    "ribbon"
+   ],
+   "author": "Marcus Wong Wongm",
+   "licence": "CC BY-SA 3.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:Flat-Flex-Cable.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "a809a4189b73e042b2dc666ade05a602464350d135c2b6de739296c22383a8f6"
+  },
+  {
+   "id": "lego_wheel",
+   "name": "LEGO wheel",
+   "kind": "drawing",
+   "file": "lego_wheel.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/wheeled.json (wheels.lego_56)",
+   "match": [
+    "lego wheel",
+    "lego tyre"
+   ]
+  },
+  {
+   "id": "o_ring",
+   "name": "O-ring",
+   "kind": "drawing",
+   "file": "o_ring.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/wheeled.json (o_rings)",
+   "match": [
+    "o-ring"
+   ]
+  },
+  {
+   "id": "ball",
+   "name": "Ball for the roller",
+   "kind": "drawing",
+   "file": "ball.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/wheeled.json (supports.ball)",
+   "match": [
+    "ball"
+   ]
+  },
+  {
+   "id": "aa",
+   "name": "AA cells in a holder",
+   "kind": "photo",
+   "file": "aa.png",
+   "origin": "Wikimedia Commons",
+   "title": "File:6x AA battery holder with DC plug.jpg",
+   "match": [
+    "aa cells",
+    "four aa",
+    "nimh aa",
+    "motor battery"
+   ],
+   "author": "Limor from New York CIty, USA",
+   "licence": "CC BY 2.0",
+   "licence_url": "https://creativecommons.org/licenses/by/2.0",
+   "source_url": "https://commons.wikimedia.org/wiki/File:6x_AA_battery_holder_with_DC_plug.jpg",
+   "changes": "cropped, resized and reduced to a small palette; otherwise unchanged",
+   "sha256": "e4ea1297ba16cf308014256f76f7505de2a690e707ee7e8a629be97756533f66"
+  },
+  {
+   "id": "technic_beam",
+   "name": "Technic beam",
+   "kind": "drawing",
+   "file": "technic_beam.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/components.json (technic)",
+   "match": [
+    "technic beams",
+    "liftarm"
+   ]
+  },
+  {
+   "id": "technic_bush",
+   "name": "Technic bush",
+   "kind": "drawing",
+   "file": "technic_bush.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/components.json (technic)",
+   "match": [
+    "bush"
+   ]
+  },
+  {
+   "id": "technic_axle",
+   "name": "Technic cross axle",
+   "kind": "drawing",
+   "file": "technic_axle.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/components.json (technic)",
+   "match": [
+    "cross axle"
+   ]
+  },
+  {
+   "id": "technic_pin",
+   "name": "Technic pin",
+   "kind": "drawing",
+   "file": "technic_pin.png",
+   "origin": "drawing by python -m microduck.componentpics from walkers/config/components.json (technic)",
+   "match": [
+    "technic pin"
+   ]
+  },
+  {
+   "id": "camera_none",
+   "name": "No camera",
+   "kind": "drawing",
+   "file": "camera_none.png",
+   "blank": "the mount is left empty",
+   "origin": "text card by python -m microduck.componentpics",
+   "match": []
+  },
+  {
+   "id": "lego_off",
+   "name": "Pin holes and studs",
+   "kind": "drawing",
+   "file": "lego_off.png",
+   "blank": "off: plain parts",
+   "origin": "text card by python -m microduck.componentpics",
+   "match": []
+  },
+  {
+   "id": "loco_biped",
+   "name": "Six-servo biped",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "build": "duck"
+  },
+  {
+   "id": "loco_crank",
+   "name": "Two-motor crank walker",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "build": "hub-walker"
+  },
+  {
+   "id": "loco_wheeled",
+   "name": "Two driven wheels",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "build": "pi-rover"
+  },
+  {
+   "id": "face_none",
+   "name": "Camera mount only",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "manifest": {
+    "part": "torso",
+    "face": "none",
+    "head": "fixed",
+    "controller": "unoq"
+   }
+  },
+  {
+   "id": "face_eyes_above",
+   "name": "Round display as the eyes, camera above",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "manifest": {
+    "part": "torso",
+    "face": "eyes_above",
+    "controller": "unoq"
+   }
+  },
+  {
+   "id": "face_eyes_below",
+   "name": "Round display as the eyes, camera below",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "manifest": {
+    "part": "torso",
+    "face": "eyes_below",
+    "controller": "unoq"
+   }
+  },
+  {
+   "id": "face_stack",
+   "name": "Display stack with the camera forward",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "manifest": {
+    "part": "torso",
+    "face": "stack_camera_forward",
+    "controller": "unoq"
+   }
+  },
+  {
+   "id": "feet_comb",
+   "name": "Comb feet",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "manifest": {
+    "feet": "comb"
+   }
+  },
+  {
+   "id": "feet_flat",
+   "name": "Flat feet",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "manifest": {
+    "feet": "flat"
+   }
+  },
+  {
+   "id": "lego_on",
+   "name": "Pin holes and studs",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "stl": "fit_lego_compatible_coupon.stl"
+  },
+  {
+   "id": "support_roller",
+   "name": "Roller (ball)",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "stl": "lego/wheeled/tip_ball_16p5.stl"
+  },
+  {
+   "id": "support_skid",
+   "name": "Drag skid",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "stl": "lego/wheeled/tip_skid.stl"
+  },
+  {
+   "id": "support_idler",
+   "name": "Printed idler wheel",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "stl": "lego/wheeled/tip_idler_fork.stl"
+  },
+  {
+   "id": "wheel_printed_ring",
+   "name": "Printed solid wheel",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "stl": "lego/wheeled/wheel_solid_cross_d56.stl"
+  },
+  {
+   "id": "wheel_printed_tpu",
+   "name": "Printed hub with a TPU tyre",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "stl": "lego/wheeled/hub_tpu_cross_d56.stl"
+  },
+  {
+   "id": "wheels_back",
+   "name": "Driven wheels at the back",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "wheeled_model": "pi-tt-solidttd65-skid-back",
+   "file": "wheels_back.png"
+  },
+  {
+   "id": "wheels_front",
+   "name": "Driven wheels at the front",
+   "kind": "render",
+   "origin": "rendered by this project from its own models",
+   "match": [],
+   "wheeled_model": "pi-tt-solidttd65-skid-front",
+   "file": "wheels_front.png"
+  }
+ ],
+ "options": {
+  "controller": {
+   "unoq": "unoq",
+   "pi": "pi_zero_2w",
+   "pi_full": "pi_full",
+   "hub51515": "hub51515",
+   "ev3": "ev3_brick",
+   "m5core": "m5core"
+  },
+  "locomotion": {
+   "biped": "loco_biped",
+   "crank": "loco_crank",
+   "wheeled": "loco_wheeled"
+  },
+  "drive": {
+   "braccio_shield": "braccio_shield",
+   "servo_driver": "pca9685",
+   "buildhat_51515": "buildhat",
+   "hub_motors": "angular_motor",
+   "ev3_motors": "ev3_large_motor",
+   "basex_ev3": "m5core",
+   "m5_360_wheels": "m5_360",
+   "tt_hbridge": "tt_motor"
+  },
+  "camera": {
+   "none": "camera_none",
+   "xiao_sense": "xiao_sense",
+   "esp32cam": "esp32cam",
+   "esp_eye": "esp_eye",
+   "esp32_s3_eye": "esp32_s3_eye",
+   "pixy2": "pixy2",
+   "picam2": "picam2"
+  },
+  "face": {
+   "none": "face_none",
+   "eyes_above": "face_eyes_above",
+   "eyes_below": "face_eyes_below",
+   "stack_camera_forward": "face_stack"
+  },
+  "feet": {
+   "comb": "feet_comb",
+   "flat": "feet_flat"
+  },
+  "head": {
+   "fixed": "face_none",
+   "sg90_pan": "sg90",
+   "m5_360": "m5_360",
+   "pixy_pantilt": "pixy_pantilt",
+   "lego_motor": "ev3_medium_motor"
+  },
+  "lego": {
+   "off": "lego_off",
+   "on": "lego_on"
+  },
+  "wheels": {
+   "back": "wheels_back",
+   "front": "wheels_front"
+  },
+  "support": {
+   "roller": "support_roller",
+   "skid": "support_skid",
+   "idler": "support_idler"
+  },
+  "wheel": {
+   "printed_ring": "wheel_printed_ring",
+   "printed_tpu": "wheel_printed_tpu",
+   "lego": "lego_wheel",
+   "tt65": "tt_wheel"
+  }
+ }
+}
