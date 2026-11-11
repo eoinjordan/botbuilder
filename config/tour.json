@@ -1,0 +1,84 @@
+{
+ "_comment": "The steps of the site's guided tour (site/tour.js), in order. 'page' is the page a step is on; 'anchor' is the control it points at, as one CSS selector or a list tried in order (none found: a centred card); 'open' is a <details> element to open first. The site build copies this file to site/data/tour.json. Keep the text short and concrete; the tone rule of tests/test_tone.py applies.",
+ "steps": [
+  {
+   "id": "welcome",
+   "page": "index.html",
+   "anchor": ".masthead .brand",
+   "title": "Botbuilder",
+   "text": "Printed robots for the controllers, motors and cameras you already own. Every build comes with the files to print, a parts list, wiring and software."
+  },
+  {
+   "id": "builds",
+   "page": "index.html",
+   "anchor": "#builds",
+   "title": "Finished builds",
+   "text": "Start here. Each card is a complete robot with its speed, mass and number of printed parts. Pick one with a click, or with the arrow keys."
+  },
+  {
+   "id": "recipe",
+   "page": "index.html",
+   "anchor": ["#recipe .verdict", "#recipe"],
+   "title": "The recipe",
+   "text": "The recipe of the chosen build is below: a status tag first, then every file to print with its picture. Print the fit pieces first."
+  },
+  {
+   "id": "downloads",
+   "page": "index.html",
+   "anchor": ["#download-pdf", "#recipe-heading"],
+   "title": "Take it with you",
+   "text": "Download PDF saves the recipe with its pictures. Download all adds the STL files in one zip. Copy link shares this exact build."
+  },
+  {
+   "id": "customise",
+   "page": "index.html",
+   "open": "#customise",
+   "anchor": "#picker",
+   "title": "Customise",
+   "text": "Change any field to make the build your own from the parts you have. An option that cannot work with your controller is greyed out, and the reason is listed under the form."
+  },
+  {
+   "id": "pictures",
+   "page": "index.html",
+   "open": "#customise",
+   "anchor": ["#picker .field-row", "#picker"],
+   "title": "Pictures of the parts",
+   "text": "Each field shows the chosen part. Open Pictures to choose by picture instead. The parts list of the recipe shows every bought part the same way."
+  },
+  {
+   "id": "types",
+   "page": "biped.html",
+   "anchor": ["#viewer", "main h1"],
+   "title": "A page for each robot type",
+   "text": "Biped shows the six-servo robot in 3D with its walking recording from the simulation. Two-wheeled and Walkers do the same for those builds."
+  },
+  {
+   "id": "flash",
+   "page": "flash.html",
+   "anchor": ["#flash-form", "main h1"],
+   "title": "Flash",
+   "text": "The commands or the program for your controller, written out for you to run. Programs for LEGO bricks open in Robot Creator."
+  },
+  {
+   "id": "control",
+   "page": "control.html",
+   "anchor": "main h1",
+   "title": "Control",
+   "text": "Drive from a game controller. It starts in the simulator in this page. The robot moves only while Enable is held; letting go stops it."
+  },
+  {
+   "id": "admin",
+   "page": "admin.html",
+   "anchor": ["#admin-list", "main h1"],
+   "title": "Printed and checked",
+   "text": "This page lists every build and part. The ones the maker has marked printed and checked carry that mark here, on their card and in their recipe."
+  },
+  {
+   "id": "arms",
+   "page": "index.html",
+   "anchor": "#site-nav a.out",
+   "title": "Arms, and this tour",
+   "text": "Arms opens Sketchbot, the robot arm project, in a new tab. That is the tour. Take the tour in any footer starts it again."
+  }
+ ]
+}

@@ -155,6 +155,20 @@ renders. `site/credits.html`, linked from every footer, is generated from
 that file. To replace any picture with a photograph of your own, see
 [components/README.md](components/README.md).
 
+## The tour
+
+`site/tour.js` is a guided tour of the site, loaded on every page after the
+page's own script. Its steps are content, in `config/tour.json`: the page a
+step is on, the control it points at, a title and a short text. A new
+visitor to the landing page gets a small "New here?" card to start it or
+send it away; it never opens over the page unasked. "Take the tour" in
+every footer and the address `?tour=1` start it at any time. It moves
+between pages by itself, keeping its place in the session and, in case
+nothing can be stored, in the address (`?tourstep=<n>`). A control that is
+hidden is opened first (the sidebar on a phone); one that is missing gets a
+centred card. `localStorage` `botbuilder-tour` set to `off`, or `?tour=0`,
+switches it off; the page tests run that way.
+
 ## Where the data is
 
 | File | Holds |
@@ -163,6 +177,7 @@ that file. To replace any picture with a photograph of your own, see
 | `config/bases.json` | The controller bases with the makers' figures and sources. |
 | `config/assembly.json` | The default camera, face and feet. |
 | `config/builds.json` | The finished builds on the cards. |
+| `config/tour.json` | The steps of the tour. |
 | `config/component_images.json` | The picture of every choice and bought part, with origin, author and licence. |
 | `reports/builds.json` | The card pictures and what each was drawn from. |
 | `config/validated.json` | The owner's own checks. |

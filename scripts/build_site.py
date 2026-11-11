@@ -43,6 +43,8 @@ DATA = {
     "wheeled-sim.json": ROOT / "reports" / "wheeled" / "sim.json",
     "wheeled-viewer.json": ROOT / "robot" / "lego" / "wheeled" / "viewer.json",
     "programs-index.json": ROOT / "programs" / "index.json",
+    # tour.js, on every page
+    "tour.json": ROOT / "config" / "tour.json",
 }
 
 

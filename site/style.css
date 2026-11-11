@@ -119,3 +119,24 @@ footer { max-width: 1400px; margin: auto; padding: 10px 5% 40px; font-size: 12px
   section { padding: 18px; }
   #view { height: 340px; }
 }
+
+/* The guided tour (tour.js): a card beside the control a step is about, and a small offer for a new visitor. */
+.tour-spot { position: fixed; z-index: 900; border-radius: 10px; box-shadow: 0 0 0 9999px rgba(23, 44, 44, 0.45), 0 0 0 3px #76b4ee; pointer-events: none; transition: left 0.2s, top 0.2s, width 0.2s, height 0.2s; }
+.tour-spot[hidden] { display: none; }
+.tour-card, .tour-offer { position: fixed; z-index: 901; width: min(360px, calc(100vw - 16px)); background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; box-shadow: 0 8px 28px rgba(23, 44, 44, 0.25); font-size: 14px; overflow-wrap: anywhere; }
+.tour-card h2 { font-size: 17px; margin-bottom: 6px; }
+.tour-card p, .tour-offer p { margin: 0 0 12px; }
+.tour-count { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.tour-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.tour-actions button { padding: 7px 14px; }
+.tour-actions button:disabled { opacity: 0.45; cursor: default; }
+.tour-skip { margin-left: auto; border: 0; background: none; color: var(--muted); font-weight: 600; font-size: 13px; text-decoration: underline; }
+.tour-card.tour-centred { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.tour-card.tour-docked { left: 8px; right: 8px; bottom: 8px; top: auto; width: auto; }
+.tour-offer { right: 16px; bottom: 16px; width: min(300px, calc(100vw - 32px)); }
+@media (prefers-reduced-motion: reduce) {
+  .tour-spot { transition: none; }
+}
+@media print {
+  .tour-spot, .tour-card, .tour-offer { display: none; }
+}

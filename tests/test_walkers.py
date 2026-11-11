@@ -244,7 +244,7 @@ def test_walker_and_wheeled_pages():
         assert "LEGO, Mindstorms and Technic are trademarks of the LEGO Group" in html
         assert "which does not sponsor or endorse this" in html and "Raspberry Pi is a trademark of Raspberry Pi Ltd" in html
         assert "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js" in html
-        assert re.findall(r"<script[^>]*src=\"([^\"]+)\"", html) == ["./nav.js", script]
+        assert re.findall(r"<script[^>]*src=\"([^\"]+)\"", html) == ["./nav.js", script, "./tour.js"]
         assert '<nav id="site-nav"' in html and 'href="./wheeled.html"' in html and 'href="./walkers.html"' in html
         assert "Bot<b>builder</b>" in html and "fit" in html.lower()
     everything = "".join(text.values())

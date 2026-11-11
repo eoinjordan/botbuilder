@@ -869,6 +869,9 @@ async function start() {
   // A linked recipe is the address alone; the remembered one is used only without it, and
   // without either the first finished build is shown.
   const linked = fromUrl();
+  // The tour's own parameters (tour.js) are not part of a selection.
+  delete linked.tour;
+  delete linked.tourstep;
   const linkedCard = cards.find((item) => item.id === linked.build);
   delete linked.build;
   const stored = readStored();

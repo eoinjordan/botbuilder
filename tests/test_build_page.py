@@ -53,7 +53,7 @@ def test_paths_are_relative_so_any_base_path_works():
 
 def test_no_external_script_style_or_tracker():
     html = read("index.html")
-    assert re.findall(r'<script[^>]*src="([^"]+)"', html) == ["./nav.js", "./build.js"]
+    assert re.findall(r'<script[^>]*src="([^"]+)"', html) == ["./nav.js", "./build.js", "./tour.js"]
     assert re.findall(r'<link[^>]*href="([^"]+)"', html) == [
         "./assets/favicon.svg", "./assets/favicon-32.png", "./assets/apple-touch-icon.png", "./style.css", "./recipe.css"]
     assert "import " not in read("build.js").replace("import { ", "")

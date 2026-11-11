@@ -44,8 +44,8 @@ def test_no_trackers_and_only_known_hosts(name):
 
 
 def test_external_scripts():
-    assert re.findall(r'<script[^>]*src="([^"]+)"', read("flash.html")) == ["./nav.js", "./flash.js"]
-    assert re.findall(r'<script[^>]*src="([^"]+)"', read("control.html")) == ["./nav.js", "./control.js"]
+    assert re.findall(r'<script[^>]*src="([^"]+)"', read("flash.html")) == ["./nav.js", "./flash.js", "./tour.js"]
+    assert re.findall(r'<script[^>]*src="([^"]+)"', read("control.html")) == ["./nav.js", "./control.js", "./tour.js"]
     assert "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js" in read("control.html")
     assert "cdn.jsdelivr.net" not in read("flash.html")
     assert "import " not in read("flash.js").split("// ---- page wiring")[0], "the flash logic is one file"
