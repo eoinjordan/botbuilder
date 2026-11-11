@@ -27,6 +27,7 @@ SUMMARY_PATHS = ("reports/variants/summary.json", "reports/lego/summary.json")
 MANIFEST_PATHS = ("stl/manifest.json", "stl/MANIFEST.json")
 PROGRAM_PATHS = ("programs/index.json",)
 VALIDATED_PATH = "config/validated.json"
+BUILDS_PATH = "config/builds.json"
 SEARCH_DEPTH = 6
 
 
@@ -441,9 +442,73 @@ def validated(root: Path = ROOT) -> list[dict]:
     return out
 
 
+def summary_entry(sel: dict, root: Path = ROOT):
+    """The entry of the variants summary for a selection, as written there,
+    or None. Wheeled entries are also matched on the wheel choices."""
+    for name in SUMMARY_PATHS:
+        path = root / name
+        if not path.is_file():
+            continue
+        content = _load(path)
+        for entry in content.get("entries", []) if isinstance(content, dict) else []:
+            keys = ["controller", "locomotion", "drive"] + [key for key in ("wheels", "support", "wheel") if key in entry]
+            if all(entry.get(key) == sel[key] for key in keys):
+                return entry
+    return None
+
+
+def build_figures(data: dict, sel: dict, root: Path = ROOT) -> dict:
+    """Mass and speed of a finished build for its card, from the reports:
+    the variants summary for a walker or a wheeled build, the assembly and
+    simulation reports for the biped. Empty when the reports have none."""
+    row = _find_row(data["compat"], sel)
+    out = {}
+    if row is not None and row["status"] == "summary":
+        entry = summary_entry(sel, root) or {}
+        if isinstance(entry.get("mass_g"), (int, float)):
+            out["mass_g"] = entry["mass_g"]
+        if isinstance(entry.get("speed_mm_s"), (int, float)):
+            out["speed_mm_s"] = entry["speed_mm_s"]
+        elif isinstance(entry.get("speed_m_s"), (int, float)):
+            out["speed_mm_s"] = round(entry["speed_m_s"] * 1000.0, 1)
+    elif row is not None and row["status"] == "report":
+        assembly = _load(root / "reports" / "assembly.json")
+        sim = _load(root / "reports" / "sim.json")
+        out["mass_g"] = assembly["variants"][assembly["selected"]]["mass"]["total_g"]
+        speed = (sim.get("gait_best") or sim.get("gait_default") or {}).get("speed_mm_s")
+        if isinstance(speed, (int, float)):
+            out["speed_mm_s"] = speed
+    return out
+
+
+def builds(data: dict, root: Path = ROOT) -> dict:
+    """The finished builds offered as cards at the top of the landing page,
+    from config/builds.json, in their order, each with its figures."""
+    path = root / BUILDS_PATH
+    if not path.is_file():
+        return {"default": "", "list": []}
+    content = _load(path)
+    listed = sorted(content.get("builds", []), key=lambda item: item.get("order", 0))
+    out = []
+    for item in listed:
+        entry = {"id": item["id"], "name": item["name"], "description": item["description"],
+                 "selection": dict(item["selection"]), "picture": item["picture"]}
+        entry["figures"] = build_figures(data, build_selection(data, entry), root)
+        out.append(entry)
+    default = content.get("default")
+    ids = [item["id"] for item in out]
+    return {"default": default if default in ids else (ids[0] if ids else ""), "list": out}
+
+
 def bundle(root: Path = ROOT) -> dict:
     """Everything evaluate() needs, as one JSON-serialisable object. The site
     build writes this to site/data/recipe.json for site/build.js."""
+    data = _bundle(root)
+    data["builds"] = builds(data, root)
+    return data
+
+
+def _bundle(root: Path) -> dict:
     compat = _load(root / "config" / "compat.json")
     # One switch: the default camera is config/assembly.json camera.preset.
     compat["defaults"].update(design_defaults(compat, root))
@@ -806,6 +871,14 @@ def search(data: dict, selection: dict, pinned: list) -> dict | None:
         return None
 
     return walk(start, SEARCH_DEPTH)
+
+
+def build_selection(data: dict, entry: dict) -> dict:
+    """The full selection of a finished build: the fields its entry names
+    are kept, the rest take the defaults and then compatible values."""
+    start = normalise(data["compat"], entry["selection"])
+    found = search(data, start, list(entry["selection"]))
+    return start if found is None else found
 
 
 def option_state(data: dict, selection: dict, dim_id: str, option_id: str) -> dict:

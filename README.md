@@ -1,7 +1,8 @@
 # Botbuilder: build your own bot from the parts you have
 
 Printed robots for the controllers, motors and cameras you already own. The
-site's first page is a configurator: pick a controller (Arduino UNO Q,
+site's first page shows five finished builds to pick from, and a
+configurator beside them: pick a controller (Arduino UNO Q,
 Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack Core), a locomotion
 (six-servo biped, two-motor crank walker, two driven wheels), a drive and a
 camera, and it answers with what can honestly be said about that robot:
@@ -213,7 +214,8 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 
 ## Build yours
 
-The site's landing page, `site/index.html`, is a configurator: pick a
+The site's landing page, `site/index.html`, opens with five finished builds
+as cards (`config/builds.json`) and has a configurator beside the recipe: pick a
 controller (UNO Q, Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick, M5Stack
 Core), a locomotion (the six-servo biped, the two-motor crank walker of the
 LEGO prototypes, or two driven wheels), drive, camera and head, and read what

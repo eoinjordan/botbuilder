@@ -1,7 +1,37 @@
 /* SPDX-License-Identifier: MIT */
 /* Build yours page: form, verdict box and print layout. Colours from style.css. */
-.build-layout { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 26px; align-items: start; }
+.build-layout { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 26px; align-items: start; }
 .build-layout > * { min-width: 0; }
+
+/* The finished builds: a row of cards, one radio group. */
+.builds-head { display: flex; align-items: baseline; gap: 6px 18px; flex-wrap: wrap; margin-bottom: 14px; }
+.builds-head h1 { font-size: 28px; }
+.builds-lead { margin: 0; color: var(--muted); font-size: 14px; }
+.build-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; padding: 4px; margin: 0 -4px 10px; }
+.build-card { display: flex; flex-direction: column; min-width: 0; padding: 0; text-align: left; font: inherit; color: var(--ink); background: #fff; border: 2px solid var(--line); border-radius: 10px; overflow: hidden; }
+.build-card:hover { border-color: var(--muted); }
+.build-card[aria-checked="true"] { border-color: var(--green); box-shadow: 0 0 0 2px var(--green); }
+.build-card img { width: 100%; height: auto; border-bottom: 1px solid var(--line); }
+.build-text { display: grid; gap: 6px; padding: 10px 12px 12px; font-size: 13px; overflow-wrap: anywhere; }
+.build-head { display: flex; align-items: center; justify-content: space-between; gap: 6px 8px; flex-wrap: wrap; }
+.build-name { font-size: 15px; font-weight: 600; }
+.build-tag { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.build-tag.tag-analysed { color: var(--green); border-color: var(--green); background: #e1f5eb; }
+.custom-tag { color: var(--blue); border-color: var(--blue); }
+.build-desc { color: var(--muted); }
+.build-facts { display: grid; gap: 2px; font-size: 12px; }
+.build-facts > span { display: grid; grid-template-columns: 68px minmax(0, 1fr); gap: 4px; }
+.build-facts b { font-weight: 600; color: var(--muted); }
+.custom-note { font-size: 13px; margin: 0 0 8px; }
+.custom-note[hidden] { display: none; }
+#recipe-name:empty { display: none; }
+
+/* The configurator as a sidebar: open on a wide screen, behind its control on a phone. */
+.sidebar { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; padding: 18px; }
+.customise > summary { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; cursor: default; list-style: none; }
+.customise > summary::-webkit-details-marker { display: none; }
+.customise > summary:focus-visible { outline: 3px solid #76b4ee; outline-offset: 3px; }
+.customise-title { font-size: 20px; font-weight: 600; }
 .picker { display: grid; gap: 12px; margin-bottom: 14px; }
 .field { display: grid; gap: 4px; font-size: 13px; }
 .field label { font-weight: 600; }
@@ -61,8 +91,20 @@ option:disabled { color: #a3b0ab; }
 .steps { margin: 14px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: 14px; }
 #recipe .facts dd { font-size: 14px; }
 
+@media (max-width: 1180px) {
+  /* The cards scroll sideways inside their own row; the page does not. */
+  .build-cards { display: flex; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 10px; }
+  .build-card { flex: 0 0 230px; scroll-snap-align: start; }
+}
+
 @media (max-width: 860px) {
   .build-layout { grid-template-columns: minmax(0, 1fr); }
+  .builds-head h1 { font-size: 24px; }
+  .sidebar { position: static; max-height: none; overflow: visible; }
+  .customise > summary { cursor: pointer; margin-bottom: 0; }
+  .customise[open] > summary { margin-bottom: 12px; }
+  .customise > summary::after { content: "Show"; margin-left: auto; font-size: 13px; font-weight: 600; color: var(--green); border: 1px solid var(--green); border-radius: 7px; padding: 6px 12px; }
+  .customise[open] > summary::after { content: "Hide"; }
 }
 
 @media print {

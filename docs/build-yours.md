@@ -1,10 +1,63 @@
-# Build yours: the configurator
+# Build yours: finished builds and the configurator
 
-The site's landing page, `site/index.html`, asks what parts you have and
-answers with a recipe for that robot: a short tag, the files to print with
-their pictures, the parts, wiring, power, software, the numbers from the
-analysis and the assembly steps. A recipe can be linked, printed, saved as a
-PDF, or downloaded as a zip with its STL files.
+The site's landing page, `site/index.html`, opens with a row of finished
+builds as cards. Choosing one shows its recipe: a short tag, the files to
+print with their pictures, the parts, wiring, power, software, the numbers
+from the analysis and the assembly steps. The configurator is the sidebar
+beside the recipe: it asks what parts you have and changes the recipe to
+that robot. A recipe can be linked, printed, saved as a PDF, or downloaded
+as a zip with its STL files.
+
+## Finished builds
+
+`config/builds.json` lists them: id, name, one-line description, the
+selection, the picture and the order. Nothing about them is written in the
+page. A selection names only the fields that make the build; the rest take
+the defaults, so the biped's camera follows `config/assembly.json`. Each
+must resolve to a recipe tagged Simulated with files, part pictures and,
+where one is written, a program: `tests/test_builds.py` fails for a build
+that no longer does, instead of the card showing a lesser tag.
+
+| Build | Selection | Picture drawn from |
+|---|---|---|
+| Microduck biped | UNO Q, six servos on the Braccio shield, round display eyes, comb feet | the assembly model at the stand pose |
+| EV3 crank walker | EV3 brick, its own motors, Pixy2 in the fixed mount | the walkers model `ev3-pixy2` |
+| 51515 hub crank walker | 51515 hub, its own motors, no camera | the walkers model `hub-51515` |
+| Pi Build HAT crank walker | Pi Zero 2 W, Build HAT, 51515 motors, Pi camera | the walkers model `pi-zero-2w-51515` |
+| Pi two-wheeled rover | Pi Zero 2 W, TT motors on an H-bridge, printed wheels with O-rings at the back, drag skid | `robot/lego/wheeled/viewer.json` |
+
+The two-wheeled build is the Pi with TT motors because, of the UNO Q and Pi
+builds in the variants summary with the wheels at the back, the TT drives
+are the fastest (0.59 m/s against 0.44 with the Build HAT motors and 0.23
+with the 360 degree servos), all climb 28 degrees, the skid takes an 8 mm
+step where the ball takes 4 mm, and the Pi has a program written
+(`programs/pi/wheeled/drive_tt.py`) where the UNO Q has none.
+
+A card shows the picture, the name, the tag, the description, the
+controller, how it moves, speed and mass from the reports, and the number of
+printed parts. It shows "Printed and checked on <date>" when
+`config/validated.json` has a record for the build, and nothing otherwise.
+
+The cards are one radio group: Tab reaches the chosen card, the arrow keys
+move through them and select. Choosing a card fills the sidebar with that
+build. Changing any field makes a custom build: no card is selected, a
+"Custom" note appears, and any card or "Back to the first finished build"
+returns. On a screen wider than 860 px the sidebar is open beside the
+recipe; narrower, it is behind its "Customise" control and the cards scroll
+sideways inside their own row.
+
+The address `?build=<id>` selects a finished build; `?build=<id>&lego=off`
+starts from it and changes the fields named. The long form with every field
+keeps working, and a long form that equals a finished build selects its
+card.
+
+`python -m microduck.buildpics` draws one 400 x 300 picture of each whole
+robot into `docs/images/build-<id>.png`, all in the same three-quarter
+view, and records in `reports/builds.json` the checksum of the picture and
+of everything it was drawn from. A test compares both, so a changed part or
+model cannot keep an old picture: run the command again after changing the
+geometry. A build with no model of the whole robot gets its part pictures
+side by side instead; none of the five needs that.
 
 What has been simulated, checked or assumed is in [status.md](status.md), not
 in the recipes.
@@ -92,6 +145,8 @@ a link that names only some (`?locomotion=wheeled`) is completed.
 | `config/compat.json` | The options, the `support` table (the one place that says which locomotion each controller supports and through which drive), the reasons for the rest, and the rules that add recipe content or block a selection. |
 | `config/bases.json` | The controller bases with the makers' figures and sources. |
 | `config/assembly.json` | The default camera, face and feet. |
+| `config/builds.json` | The finished builds on the cards. |
+| `reports/builds.json` | The card pictures and what each was drawn from. |
 | `config/validated.json` | The owner's own checks. |
 | `stl/manifest.json` | Every printable file with its options and its picture. The biped's print list is chosen by those options: controller, head, face, camera, feet. |
 | `reports/assembly.json`, `reports/sim.json` | What was run for the biped. |
@@ -139,7 +194,7 @@ the recipe's STL files.
 
 ## The site's pages
 
-`index.html` is the configurator; `biped.html`, `wheeled.html` and
+`index.html` is the finished builds and the configurator; `biped.html`, `wheeled.html` and
 `walkers.html` are the three robot types; `flash.html` and `control.html`
 are the tools; `admin.html` is linked from the footer. Every page carries
 the same navigation block, ending with the owner's robot-arm project as a

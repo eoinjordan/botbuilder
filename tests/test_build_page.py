@@ -111,11 +111,28 @@ def test_keyboard_print_and_phone_width():
     assert "overflow-wrap: anywhere" in css and "max-width: 100%" in css
 
 
-def test_the_configurator_is_the_landing_page():
+def test_the_finished_builds_and_the_configurator_are_the_landing_page():
     html = read("index.html")
-    assert "<h1>Build your own bot from the parts you have</h1>" in html
+    assert "<title>Botbuilder</title>" in html and '<h1 id="builds-heading">Botbuilder</h1>' in html and html.count("<h1") == 1
     assert 'id="picker"' in html and 'id="recipe"' in html
     assert not (SITE / "build.html").exists()
+    # The card row is the first thing under the masthead; the configurator is a sidebar beside the recipe.
+    main = html.split("<main>")[1]
+    assert main.index('id="builds"') < main.index('id="customise"') < main.index('id="picker"') < main.index('id="recipe"')
+    assert main.lstrip().startswith('<section class="builds')
+    assert 'id="builds" class="build-cards" role="radiogroup" aria-labelledby="builds-heading"' in html
+    assert '<details id="customise"' in html and ">Customise</span></summary>" in html
+    assert '<form id="picker" class="picker" autocomplete="off" aria-labelledby="pick-heading">' in html
+    assert 'id="custom-note"' in html and ">Custom</span>" in html and 'id="custom-note" class="custom-note" role="status" hidden' in html
+    script = read("build.js")
+    # Cards are radios with arrow-key movement; a selection that is no finished build leaves none checked.
+    assert 'button.setAttribute("role", "radio")' in script and "ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1" in script
+    assert 'card.button.setAttribute("aria-checked", card === current ? "true" : "false")' in script
+    assert 'document.getElementById("custom-note").hidden = current !== null;' in script
+    # Open on a wide screen, behind its control on a phone.
+    assert 'window.matchMedia("(min-width: 861px)")' in script and "panel.open = wide.matches ||" in script
+    css = read("recipe.css")
+    assert ".build-cards { display: flex; overflow-x: auto;" in css and '.build-card[aria-checked="true"]' in css
 
 
 def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):

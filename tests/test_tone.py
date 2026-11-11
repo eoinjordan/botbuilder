@@ -74,8 +74,10 @@ def test_no_mark_without_a_record_and_a_mark_with_one(data, recipes):
     assert recipe.evaluate(marked, {})["validated"]["date"] == "2026-12-01"
     script = (SITE / "build.js").read_text(encoding="utf-8")
     # The words appear in the page only behind the record.
-    assert script.count("Printed and checked on") == 2
+    assert script.count("Printed and checked on") == 3
     assert "if (recipe.validated) {" in script and "if (item.validated)" in script
+    # A finished build's card carries the mark only with a record, and nothing without one.
+    assert 'if (recipe.validated) text.append(el("span", `Printed and checked on ${recipe.validated.date}`, "checked-mark"));' in script
     export = (SITE / "export.js").read_text(encoding="utf-8")
     assert "if (recipe.validated) {" in export and "item.validated ? `Printed and checked on" in export
 
