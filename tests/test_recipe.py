@@ -376,16 +376,17 @@ def test_named_cases(data):
     torso = lambda rec: [item["file"] for item in rec["print"]["files"] if "torso" in item["file"]]
     special = lambda rec: [item["file"] for item in rec["print"]["files"]
                            if "cam" in item["file"] or "display" in item["file"] or "head" in item["file"] or "shin" in item["file"]]
-    assert special(base) == ["fit_cam_esp32cam.stl", "fit_round_display.stl", "01_torso_unoq_eyes_above_esp32cam.stl",
-                             "left_shin_comb_foot.stl", "right_shin_comb_foot.stl"]
+    assert special(base) == [f"fit_cam_{camera}.stl", "fit_round_display.stl", "left_shin_comb_foot.stl", "right_shin_comb_foot.stl"]
+    assert torso(base) == [f"01_torso_unoq_eyes_above_{camera}.stl"]
     assert any("Round Display" in part["name"] for part in base["parts"])
 
     # The faces: each has its own torso; the tag is what the reports hold for it.
-    assert (run(face="eyes_below")["status"], torso(run(face="eyes_below"))) == ("assembly_only", ["01_torso_unoq_eyes_below_esp32cam.stl"])
-    assert (run(camera="esp_eye")["status"], torso(run(camera="esp_eye"))) == ("assembly_only", ["01_torso_unoq_eyes_above_esp_eye.stl"])
+    assert (run(face="eyes_below")["status"], torso(run(face="eyes_below"))) == ("assembly_only", [f"01_torso_unoq_eyes_below_{camera}.stl"])
+    other_camera = "esp32cam" if camera != "esp32cam" else "esp_eye"
+    assert (run(camera=other_camera)["status"], torso(run(camera=other_camera))) == ("assembly_only", [f"01_torso_unoq_eyes_above_{other_camera}.stl"])
     stack = run(face="stack_camera_forward", camera="xiao_sense")
     assert (stack["status"], torso(stack)) == ("assembly_only", ["01_torso_unoq_stack_camera_forward.stl"])
-    assert "fit_round_display.stl" in special(stack) and "fit_cam_esp32cam.stl" not in special(stack)
+    assert "fit_round_display.stl" in special(stack) and f"fit_cam_{camera}.stl" not in special(stack)
     for cam in ("esp32cam", "esp_eye", "esp32_s3_eye"):
         plain = run(face="none", camera=cam)
         assert (plain["status"], special(plain)[:2]) == ("assembly_only", [f"fit_cam_{cam}.stl", f"01_torso_unoq_cam_{cam}.stl"])
@@ -393,20 +394,20 @@ def test_named_cases(data):
     for selection in (dict(face="stack_camera_forward"), dict(camera="xiao_sense")):
         refused = run(**selection)
         assert refused["status"] == "not_possible" and refused["refusal"] == ["face-needs-its-camera"]
-    assert run(face="eyes_below", camera="esp_eye")["status"] == "defined", "no torso is committed for that pair"
+    assert run(face="eyes_below", camera="esp32_s3_eye")["status"] == "defined", "no torso is committed for that pair"
     assert run(feet="flat")["status"] == "defined"
     assert [name for name in special(run(feet="flat")) if "shin" in name] == ["left_shin_flat_foot.stl", "right_shin_flat_foot.stl"]
 
-    for controller, name in (("pi", "01_torso_pi_zero_2w_cam_esp32cam.stl"), ("pi_full", "01_torso_pi_cam_esp32cam.stl")):
-        rec = run(controller=controller, drive="servo_driver", camera="esp32cam", face="none")
+    for controller, name in (("pi", f"01_torso_pi_zero_2w_cam_{camera}.stl"), ("pi_full", f"01_torso_pi_cam_{camera}.stl")):
+        rec = run(controller=controller, drive="servo_driver", camera=camera, face="none")
         assert rec["status"] == "assembly_only" and torso(rec) == [name]
-        other = run(controller=controller, drive="servo_driver", camera="esp_eye", face="none")
+        other = run(controller=controller, drive="servo_driver", camera="esp32_s3_eye", face="none")
         assert other["status"] == "defined" and any("No torso file is in stl/" in text for text in other["reasons"])
         assert torso(other) == []
 
     for head in ("sg90_pan", "m5_360"):
-        for face_id, cradle in (("none", "head_tilt_cradle_esp32cam.stl"), ("eyes_above", "head_tilt_cradle_eyes_above_esp32cam.stl")):
-            rec = run(head=head, camera="esp32cam", face=face_id)
+        for face_id, cradle in (("none", f"head_tilt_cradle_{camera}.stl"), ("eyes_above", f"head_tilt_cradle_eyes_above_{camera}.stl")):
+            rec = run(head=head, camera=camera, face=face_id)
             assert rec["status"] == "assembly_only", (head, face_id)
             names = [item["file"] for item in rec["print"]["files"]]
             assert [n for n in names if "torso" in n or "head" in n] == ["01_torso_unoq_pan_head.stl", "head_pan_platform.stl", cradle]
@@ -429,8 +430,8 @@ def test_named_cases(data):
     assert run(controller="m5core", drive="servo_driver")["status"] == "needs_part"
 
     empty = run(camera="none")
-    assert empty["status"] == "defined" and torso(empty) == ["01_torso_unoq_eyes_above_esp32cam.stl"]
-    assert "fit_cam_esp32cam.stl" not in special(empty)
+    assert empty["status"] == "defined" and torso(empty) == [f"01_torso_unoq_eyes_above_{camera}.stl"]
+    assert f"fit_cam_{camera}.stl" not in special(empty)
     assert run(lego="off")["status"] == "defined"
 
     wheels = run(controller="unoq", locomotion="wheeled", drive="tt_hbridge", wheels="front", support="skid", wheel="tt65")
@@ -611,7 +612,7 @@ def test_simulated_means_what_the_reports_cover(data, recipes):
     checked = {key(entry) for entry in entries if entry["status"] == "assembly_only"}
     expected = {("unoq", item["camera_preset"], "fixed", item["face"]) for item in report["faces"].values()}
     expected |= {("unoq", item["preset"], "fixed", "none") for item in report["camera_presets"].values()}
-    expected |= {("unoq", "xiao_sense", "fixed", "stack_camera_forward"), ("pi", "esp32cam", "fixed", "none"), ("pi_full", "esp32cam", "fixed", "none")}
+    expected |= {("unoq", "xiao_sense", "fixed", "stack_camera_forward"), ("pi", simulated, "fixed", "none"), ("pi_full", simulated, "fixed", "none")}
     for head in [report["turning_head"]] + list(report["turning_head_with_faces"].values()):
         expected |= {("unoq", head["camera_preset"], option, head["face"]) for option in ("sg90_pan", "m5_360")}
     expected.discard(("unoq", simulated, "fixed", default_face))

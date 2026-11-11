@@ -36,7 +36,7 @@
     "name": "walk",
     "file": "trajectories/walk.csv",
     "duration_s": 12.0,
-    "what": "walk forward, 41.9 mm/s in simulation",
+    "what": "walk forward, 44.4 mm/s in simulation",
     "max_speed_deg_s": 120.0,
     "needs_speed_limit_raised": false,
     "checks": {
@@ -51,8 +51,8 @@
     "passes_checks": true,
     "tested_in_simulation": {
      "stayed_up": true,
-     "speed_mm_s": 41.9,
-     "peak_torque_fraction": 0.658
+     "speed_mm_s": 44.4,
+     "peak_torque_fraction": 0.647
     },
     "loop": {
      "from_ms": 1500,
@@ -64,7 +64,7 @@
     "name": "turn_left",
     "file": "trajectories/turn_left.csv",
     "duration_s": 12.0,
-    "what": "walk with the turn input at +1: -5.37 deg/s in simulation",
+    "what": "walk with the turn input at +1: -4.92 deg/s in simulation",
     "max_speed_deg_s": 120.0,
     "needs_speed_limit_raised": false,
     "checks": {
@@ -79,7 +79,7 @@
     "passes_checks": true,
     "tested_in_simulation": {
      "ok_at_every_friction": true,
-     "yaw_rate_deg_s": -5.37
+     "yaw_rate_deg_s": -4.92
     },
     "loop": {
      "from_ms": 1500,
@@ -91,7 +91,7 @@
     "name": "turn_right",
     "file": "trajectories/turn_right.csv",
     "duration_s": 12.0,
-    "what": "walk with the turn input at -1: 1.29 deg/s in simulation",
+    "what": "walk with the turn input at -1: 0.99 deg/s in simulation",
     "max_speed_deg_s": 120.0,
     "needs_speed_limit_raised": false,
     "checks": {
@@ -106,7 +106,7 @@
     "passes_checks": true,
     "tested_in_simulation": {
      "ok_at_every_friction": true,
-     "yaw_rate_deg_s": 1.29
+     "yaw_rate_deg_s": 0.99
     },
     "loop": {
      "from_ms": 1500,
@@ -160,7 +160,7 @@
     "name": "jump",
     "file": "trajectories/restricted/jump.csv",
     "duration_s": 3.38,
-    "what": "crouch and push off: a hop in simulation, soles 3.89 mm off the floor for 0.06 s, centre of mass rising 0.39 mm in flight",
+    "what": "crouch and push off: a hop in simulation, soles 4.95 mm off the floor for 0.06 s, centre of mass rising 0.32 mm in flight",
     "max_speed_deg_s": 430.0,
     "needs_speed_limit_raised": true,
     "checks": {

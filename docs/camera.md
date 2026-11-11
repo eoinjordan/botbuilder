@@ -4,12 +4,12 @@ The default head is a Seeed Studio Round Display for XIAO with a XIAO ESP32S3
 in its socket, screen forward as the robot's eyes, and a camera board on the
 same head above it, lens forward and 10 degrees below level. `face` and
 `camera.preset` in `config/assembly.json` say which head the assembly test
-uses (`eyes_above`, `esp32cam`). The camera below the display, an ESP-EYE,
+uses (`eyes_above`, `esp_eye`). The camera below the display, an ESP32-CAM,
 the camera alone in a fixed mount and the display stack turned round are
 options with their own torso files; `stl/manifest.json` tags each.
 
-Nothing here has been flashed, powered or fitted. No firmware is part of this
-repository: no streaming firmware and no eyes.
+No firmware is part of this repository. The camera runs the sketch in the
+owner's sketchbot repository; the eyes have none yet.
 
 ## The display and what faces where
 
@@ -67,73 +67,85 @@ the bay is drawn for 36 x 20 x 5.5 mm and 8.5 g.
 
 ## The camera boards
 
-Three boards have a seat: the AI-Thinker ESP32-CAM (the default), the
-Espressif ESP-EYE and, on the camera-only torsos, the Espressif
-ESP32-S3-EYE.
+The default camera board is the Espressif ESP-EYE. It has a Micro-USB
+connector for power and flashing, and the owner's sketchbot repository has a
+working sketch for it. The AI-Thinker ESP32-CAM has a seat too and stays a
+preset; there is no firmware for it. The Espressif ESP32-S3-EYE has a seat
+on the camera-only torsos.
 
-## The arrangement this reuses
+The ESP-EYE is mounted with its USB connector up and its camera end down, so
+that nothing has to be kept clear under the board and the head stays low
+(124 mm above the deck instead of 149 mm). The design directory's README has
+the comparison of the arrangements. Mounted this way the picture is upside
+down, which the sketch corrects with two settings (below).
 
-The owner's unoq-braccio-sketchbot has a camera sketch,
-`firmware/esp_eye_camera/esp_eye_camera.ino`, and a host side that reads it.
-What that arrangement does, read from its source and README:
+## Flashing the ESP-EYE
 
-| Item | What the sketchbot does |
-|---|---|
-| Board the sketch is written for | Espressif ESP-EYE (ESP32, OV2640, 8 MB PSRAM); the pin map in the sketch is the ESP-EYE's (XCLK 4, SIOD 18, SIOC 23) |
-| Build | Arduino IDE, Espressif esp32 boards package, board "ESP32 Wrover Module", partition "Huge APP (3MB No OTA)", no extra libraries |
-| Wi-Fi credentials | `secrets.h` copied from `secrets.h.example`; an empty `WIFI_SSID` runs USB only |
-| Transport over Wi-Fi | HTTP on port 80: `GET /capture` returns one JPEG, `GET /stream` returns MJPEG, `GET /` a status page; mDNS name `esp-eye.local` |
-| Transport over USB | serial at 921600 baud; the host sends `C` and reads `0xA5 0x5A`, a 32-bit little-endian length and that many JPEG bytes |
-| Frame | SVGA 800 x 600 JPEG (`FRAME_SIZE`, `JPEG_QUALITY`, `VFLIP`, `HMIRROR` at the top of the sketch) |
-| Host side | `config/cameras.yaml`: `url: "http://esp-eye.local/capture"` for Wi-Fi or `serial: "auto"` for USB; read by `sketch_artist/cameras.py` |
+The sketch is the sketchbot's, used as it is:
+https://github.com/eoinjordan/unoq-braccio-sketchbot/tree/main/firmware/esp_eye_camera
 
-It streams MJPEG over HTTP. It is not RTSP. An RTSP client will not open it;
-a browser, `ffplay http://esp-eye.local/stream` or OpenCV will.
+1. Arduino IDE: install the Espressif esp32 boards package from the Boards
+   Manager.
+2. Open `esp_eye_camera.ino`. Board: "ESP32 Wrover Module" (or "ESP32 Dev
+   Module" with PSRAM enabled). Partition scheme: "Huge APP (3MB No OTA)". No
+   extra libraries.
+3. Copy `secrets.h.example` to `secrets.h` and put the Wi-Fi name and
+   password in it.
+4. At the top of the sketch set `VFLIP` and `HMIRROR` to 1, because the board
+   stands connector up on this robot. If the picture then comes out upside
+   down, set both back to 0.
+5. Plug the ESP-EYE into the computer by its Micro-USB connector, choose its
+   serial port and Upload. No adapter and no jumper are needed.
+6. Open the Serial Monitor at 921600 baud. It prints
+   `INFO Wi-Fi up: http://<ip>/ (http://esp-eye.local/)`.
 
-## Using it on this robot
+## The stream
 
-Flash the same sketch with the same settings and read it the same way:
+    stream     http://esp-eye.local/stream     MJPEG over HTTP, port 80
+    snapshot   http://esp-eye.local/capture    one JPEG
+    status     http://esp-eye.local/
 
-    stream     http://esp-eye.local/stream
-    snapshot   http://esp-eye.local/capture
+Frames are SVGA 800 x 600 JPEG (`FRAME_SIZE` and `JPEG_QUALITY` at the top
+of the sketch). It is MJPEG over HTTP, not RTSP: a browser,
+`ffplay http://esp-eye.local/stream` or OpenCV open it, an RTSP client does
+not. Over USB the same sketch answers a `C` on its serial port (921600 baud)
+with one length-framed JPEG; the sketchbot's `sketch_artist/cameras.py` reads
+either. This repository has no host-side camera consumer, and the walking
+controller does not use the camera.
 
-This repository has no host-side camera consumer, so there is no
-configuration here to point at the stream. The walking controller does not
-use the camera.
-
-## Which board: an open point
-
-The owner named the AI-Thinker ESP32-CAM as the board he used on the
-sketchbot, and it is the default preset here. The sketchbot's sketch and its
-`config/cameras.yaml` are written for the ESP-EYE. The two boards differ in
-ways that matter for "the same firmware":
-
-- The camera pins differ. The sketch's pin block has to be replaced by the
-  AI-Thinker one (the `CAMERA_MODEL_AI_THINKER` block of the esp32 package's
-  CameraWebServer example) before it will run on an ESP32-CAM. That change
-  has not been made or tested here.
-- The ESP32-CAM has no USB connector. The sketch's USB transport and the
-  `serial:` host setting do not apply; only Wi-Fi does. It is flashed through
-  a USB serial adapter on U0R, U0T and GND with IO0 held to GND at reset.
-- The ESP32-CAM has 4 MB of PSRAM against the ESP-EYE's 8 MB. The sketch's
-  double frame buffer at SVGA may need a smaller frame size.
-
-If the board on the sketchbot was the ESP-EYE, set `CAMERA = 'esp_eye'` in
-the design's `build.py` and `"preset": "esp_eye"` in `config/assembly.json`,
-then regenerate. The ESP-EYE torso and fit piece are generated either way.
-
-## Power
+## Power for the camera
 
 | Board | Supply | Current | Source |
 |---|---|---|---|
-| AI-Thinker ESP32-CAM | 5 V on the 5V and GND header pins | 180 mA with the flash LED off, 310 mA with it at maximum | AI-Thinker ESP32-CAM specification V1.0 (see `config/hardware.json`) |
 | ESP-EYE | 5 V on Micro-USB | not published; allow 0.5 A | Espressif ESP-EYE getting-started guide (the USB port powers the whole board) |
+| AI-Thinker ESP32-CAM | 5 V on the 5V and GND header pins | 180 mA with the flash LED off, 310 mA with it at maximum | AI-Thinker ESP32-CAM specification V1.0 (see `config/hardware.json`) |
 | ESP32-S3-EYE | 5 V on Micro-USB | not published; allow 0.5 A | Espressif ESP32-S3-EYE getting-started guide |
 
-Feed the camera from the UNO Q's 5 V supply side or its own 5 V source, not
-from the servo rail: a servo stall pulls that rail down and resets an ESP32.
-Add 0.3 A to the 5 V budget in [power.md](power.md) for the ESP32-CAM. Which
-pin of the UNO Q stack the 5 V is taken from has not been chosen or checked.
+The ESP-EYE takes 5 V on its Micro-USB connector and nothing else is
+documented. Two ways to feed it on the robot:
+
+- A USB cable to a 5 V USB source: a small power bank, or the UNO Q's USB-C
+  port as on the sketchbot, where the UNO Q is the USB host and can also read
+  frames over the same cable. The UNO Q then has to be powered another way
+  than through that port.
+- The head's own battery cannot feed it directly: the display's cell is
+  3.7 V and the ESP-EYE's connector wants 5 V. A 5 V boost converter between
+  the cell and a Micro-USB plug would do it and keep the head self-contained;
+  none is drawn or chosen.
+
+Do not take it from the servo rail: a servo stall pulls that rail down and
+resets an ESP32. Add 0.5 A to the 5 V budget in [power.md](power.md) if it
+shares the controller's supply.
+
+## The ESP32-CAM, if it is used instead
+
+Set `CAMERA = 'esp32cam'` in the design's `build.py` and
+`"preset": "esp32cam"` in `config/assembly.json`, then regenerate; its torso
+and fit piece are generated either way. The sketchbot's sketch does not run
+on it as it is: the camera pin block has to be replaced by the AI-Thinker
+one, there is no USB connector (flash through a USB serial adapter on U0R,
+U0T and GND with IO0 held to GND at reset), and it has 4 MB of PSRAM against
+8 MB. None of that has been written here.
 
 ## The mount
 

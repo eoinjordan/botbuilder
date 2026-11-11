@@ -69,7 +69,7 @@ test("no command asks for or carries a password, key or token", () => {
 
 test("base: only the UNO Q has steps; the others say not written and give no command", () => {
   for (const base of [undefined, "", "unoq", "UNO-Q", "arduino_uno_q", "arduino-unoq"]) assert.equal(flash.resolveBase(base).key, "unoq", String(base));
-  const cases = { "esp32-cam": "esp32cam", "ESP32_CAM_AI_THINKER": "esp32cam", "raspberry-pi-5": "raspberrypi", rpi: "raspberrypi",
+  const cases = { "esp-eye": "espeye", "ESP_EYE": "espeye", "esp32-cam": "esp32cam", "ESP32_CAM_AI_THINKER": "esp32cam", "raspberry-pi-5": "raspberrypi", rpi: "raspberrypi",
     "lego-spike": "lego", ev3: "lego", "m5stack-core2": "m5stack", m5stack_nxt: "m5stack", "something else": "other", "<script>": "other" };
   for (const [base, key] of Object.entries(cases)) {
     assert.equal(flash.resolveBase(base).key, key, base);
@@ -79,4 +79,8 @@ test("base: only the UNO Q has steps; the others say not written and give no com
     assert.match(plan.message, /not written/);
   }
   assert.match(flash.BASES.esp32cam.note, /Arduino IDE/);
+  // The camera board has a route, by hand: the note gives it and names where the stream is.
+  assert.match(flash.BASES.espeye.note, /Arduino IDE/);
+  assert.match(flash.BASES.espeye.note, /esp_eye_camera/);
+  assert.match(flash.BASES.espeye.note, /esp-eye\.local\/stream/);
 });

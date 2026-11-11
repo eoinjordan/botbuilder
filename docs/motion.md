@@ -10,27 +10,27 @@ The robot is the one in `robot/microduck.xml`: comb soles and the default head. 
 
 |  | Comb soles (the robot as built) | Flat soles (comparison) |
 |---|---|---|
-| mass (kg) | 0.5651 | 0.5404 |
+| mass (kg) | 0.5622 | 0.5375 |
 | stands on one foot (slow lift test) | yes | no |
 | truly steps | yes | no |
-| forward speed (mm/s) | 41.9 | 1.3 |
-| one foot loaded, fraction of time | 0.537 | 0.0 |
-| median swing clearance (mm) | 3.86 | 0.0 |
+| forward speed (mm/s) | 44.4 | 1.3 |
+| one foot loaded, fraction of time | 0.546 | 0.0 |
+| median swing clearance (mm) | 3.85 | 0.0 |
 | median swing time (s) | 0.1 | 0.0 |
-| standing-foot slip per step (mm) | 1.39 | 0.0 |
-| walk peak torque / limit | 0.658 | 0.205 |
-| heading drift walking straight (deg/s) | 1.31 | 0.0 |
+| standing-foot slip per step (mm) | 1.01 | 0.0 |
+| walk peak torque / limit | 0.647 | 0.203 |
+| heading drift walking straight (deg/s) | 0.81 | 0.0 |
 | stays up 120 s | yes | yes |
 | falls in the 30 perturbed runs | 0 | 0 |
 | perturbed runs that step | 30 | 0 |
-| worst peak torque / limit in those runs | 0.716 | 0.246 |
+| worst peak torque / limit in those runs | 0.696 | 0.25 |
 | turning proportional at full forward | no | no |
-| yaw rate at turn -1 / 0 / +1, full forward (deg/s) | 1.29 / 1.57 / -5.37 | -0.04 / -0.07 / -0.04 |
+| yaw rate at turn -1 / 0 / +1, full forward (deg/s) | 0.99 / 0.78 / -4.92 | -0.04 / -0.07 / -0.03 |
 | envelope: forward, turn | [0.0, 1.0], [0.0, 0.0] | [-1.0, 1.0], [0.0, 0.0] |
 | commands stop in mid gait: stays up | yes | yes |
 | power off in mid gait: stays up | yes | no |
 | jump | hop | hop |
-| flight (s), centre of mass rise in flight (mm) | 0.06, 0.39 | 0.1, 6.69 |
+| flight (s), centre of mass rise in flight (mm) | 0.06, 0.32 | 0.1, 6.07 |
 | lands upright | yes | yes |
 | sits down and stands up again | yes | yes |
 | power off in the squat: holds | yes | yes |
@@ -83,48 +83,48 @@ Head: a point mass of 0.0 g at [60.0, 0.0, 80.0] mm in the torso frame is added 
 
 The robot as generated: comb soles whose fingers cross the centre line.
 
-Mass 0.5651 kg, torso 154.2 mm above the floor at the stand pose. Slow one-foot test (lift a foot, hold 2.5 s): holds on either foot (clearance 1.1 and 1.1 mm).
+Mass 0.5622 kg, torso 154.2 mm above the floor at the stand pose. Slow one-foot test (lift a foot, hold 2.5 s): holds on either foot (clearance 1.1 and 1.1 mm).
 
 ### Walking
 
-It truly steps. 111 swings with a sole wholly off the floor in 30 s (97 percent of the steps the gait commands), median clearance 3.86 mm for 0.1 s, the swinging foot moving 7.72 mm while the standing foot slips 1.39 mm. One foot carries the load 54 percent of the time, both 45 percent, neither 1 percent. Forward speed 41.9 mm/s, heading drift 1.31 deg/s. Peak torque 0.658 of the limit (margin 0.342). The meshes of the two legs overlapped in 0.0 percent of the ticks; the legs were inside the clearance rule's margin of each other, measured on the angles the joints reached, in 0.0 percent.
+It truly steps. 113 swings with a sole wholly off the floor in 30 s (99 percent of the steps the gait commands), median clearance 3.85 mm for 0.1 s, the swinging foot moving 8.64 mm while the standing foot slips 1.01 mm. One foot carries the load 55 percent of the time, both 45 percent, neither 1 percent. Forward speed 44.4 mm/s, heading drift 0.81 deg/s. Peak torque 0.647 of the limit (margin 0.353). The meshes of the two legs overlapped in 0.0 percent of the ticks; the legs were inside the clearance rule's margin of each other, measured on the angles the joints reached, in 0.0 percent.
 
 Gait of `microduck/gait.py`, parameters `{'period_s': 0.5, 'roll_amplitude_deg': 7.78, 'step_amplitude_deg': 7.56, 'lift_deg': 2.78, 'step_phase_deg': 150.0, 'lead_in_s': 1.0}`.
 Search: seed 1, 40 generations of 14, 3360 simulated runs, 449.4 s of wall clock.
 
 | joint | peak torque (N m) | limit (N m) | peak / limit | time at limit | peak speed (deg/s) | limit (deg/s) |
 |---|---|---|---|---|---|---|
-| left_hip_roll | 0.58 | 1.196 | 0.485 | 0.0 | 95.5 | 300.0 |
-| left_hip_pitch | 0.168 | 1.196 | 0.14 | 0.0 | 87.8 | 300.0 |
-| left_knee | 0.2 | 0.304 | 0.658 | 0.0 | 144.1 | 428.6 |
-| right_hip_roll | 0.544 | 1.196 | 0.455 | 0.0 | 98.5 | 300.0 |
-| right_hip_pitch | 0.176 | 1.196 | 0.147 | 0.0 | 96.7 | 300.0 |
-| right_knee | 0.181 | 0.304 | 0.595 | 0.0 | 148.1 | 428.6 |
+| left_hip_roll | 0.562 | 1.196 | 0.47 | 0.0 | 97.7 | 300.0 |
+| left_hip_pitch | 0.17 | 1.196 | 0.142 | 0.0 | 88.6 | 300.0 |
+| left_knee | 0.197 | 0.304 | 0.647 | 0.0 | 147.5 | 428.6 |
+| right_hip_roll | 0.552 | 1.196 | 0.461 | 0.0 | 100.6 | 300.0 |
+| right_hip_pitch | 0.189 | 1.196 | 0.158 | 0.0 | 94.3 | 300.0 |
+| right_knee | 0.193 | 0.304 | 0.635 | 0.0 | 150.7 | 428.6 |
 
-Peak estimated supply current 3.96 A; the 4 A limit was active 0.0 percent of the time.
+Peak estimated supply current 4.05 A; the 4 A limit was active 0.1 percent of the time.
 
-Long run: stayed up over 120 s, 46.3 mm/s along its path, heading drift 1.55 deg/s (183.9 deg in all: with no steering it walks a curve).
-Numerical check at half the time step: stayed up, 43.8 mm/s, 99 percent of steps, clearance 3.74 mm, peak torque 0.631 of the limit.
+Long run: stayed up over 120 s, 46.0 mm/s along its path, heading drift 0.97 deg/s (115.0 deg in all: with no steering it walks a curve).
+Numerical check at half the time step: stayed up, 45.1 mm/s, 100 percent of steps, clearance 3.74 mm, peak torque 0.603 of the limit.
 
-Robustness: 30 runs of 30 s over floor friction 0.3 to 1.0, mass 0.9 to 1.1 times, and two disturbed starts (1.5 deg tilt, 0.03 m/s push). 0 fell; 30 of 30 stepped by the test above; the leg meshes overlapped in 0 runs; worst peak torque 0.716 of the limit.
+Robustness: 30 runs of 30 s over floor friction 0.3 to 1.0, mass 0.9 to 1.1 times, and two disturbed starts (1.5 deg tilt, 0.03 m/s push). 0 fell; 30 of 30 stepped by the test above; the leg meshes overlapped in 0 runs; worst peak torque 0.696 of the limit.
 
 | floor friction | runs | fell | stepping | speed (mm/s) | heading change in 30 s (deg) | worst peak torque / limit |
 |---|---|---|---|---|---|---|
-| 0.3 | 6 | 0 | 6 | 44.1 to 46.0 | 27.9 to 35.8 | 0.679 |
-| 0.45 | 6 | 0 | 6 | 40.5 to 43.9 | 30.4 to 64.1 | 0.697 |
-| 0.6 | 6 | 0 | 6 | 34.0 to 45.1 | 1.8 to 83.9 | 0.716 |
-| 0.8 | 6 | 0 | 6 | 37.6 to 46.1 | -1.6 to 63.6 | 0.712 |
-| 1.0 | 6 | 0 | 6 | 38.0 to 47.1 | -18.3 to 63.6 | 0.627 |
+| 0.3 | 6 | 0 | 6 | 43.5 to 45.3 | 28.6 to 42.9 | 0.664 |
+| 0.45 | 6 | 0 | 6 | 40.8 to 45.0 | 25.7 to 61.7 | 0.658 |
+| 0.6 | 6 | 0 | 6 | 37.4 to 44.8 | -6.6 to 64.5 | 0.696 |
+| 0.8 | 6 | 0 | 6 | 40.9 to 46.9 | -4.9 to 51.2 | 0.682 |
+| 1.0 | 6 | 0 | 6 | 41.4 to 47.2 | -35.2 to 52.3 | 0.623 |
 
 Head mass (a point mass added at the head, `config/motion.json`):
 
 | case | mass (kg) | outcome | speed (mm/s) | heading change in 30 s (deg) | steps made | clearance (mm) | peak torque / limit |
 |---|---|---|---|---|---|---|---|
-| default head | 0.5651 | stayed up | 41.9 | 37.3 | 0.974 | 3.86 | 0.658 |
-| 20 g more at the head | 0.5851 | stayed up | 31.9 | 85.1 | 0.974 | 3.78 | 0.702 |
-| 32 g more: the heaviest turning head, 57 g at the head | 0.5971 | stayed up | 23.6 | 113.0 | 0.982 | 3.62 | 0.679 |
-| 32 g more, 20 mm further forward | 0.5971 | stayed up | 23.0 | 116.7 | 0.974 | 3.6 | 0.685 |
-| 32 g more, 30 mm higher | 0.5971 | stayed up | 24.0 | 111.1 | 1.0 | 3.59 | 0.671 |
+| default head | 0.5622 | stayed up | 44.4 | 23.1 | 0.991 | 3.85 | 0.647 |
+| 20 g more at the head | 0.5822 | stayed up | 36.2 | 70.7 | 0.965 | 3.75 | 0.711 |
+| 32 g more: the heaviest turning head, 57 g at the head | 0.5942 | stayed up | 28.0 | 96.2 | 0.991 | 3.65 | 0.682 |
+| 32 g more, 20 mm further forward | 0.5942 | stayed up | 24.2 | 109.7 | 0.974 | 3.64 | 0.705 |
+| 32 g more, 30 mm higher | 0.5942 | stayed up | 24.1 | 111.4 | 0.991 | 3.65 | 0.658 |
 
 ![walk](images/motion-comb-walk.gif)
 
@@ -137,79 +137,79 @@ Yaw rate (deg/s) at floor friction 0.6, by forward and turn input; a dash is a p
 
 | forward (rows), turn (columns) | -1.0 | -0.5 | 0.0 | 0.5 | 1.0 |
 |---|---|---|---|---|---|
-| -1.0 | 0.46 | - | - | - | - |
-| -0.5 | -5.76 | 0.46 | - | - | - |
-| 0.0 | - | 0.29 | 0.52 | - | - |
-| 0.5 | - | 1.29 | -3.25 | -5.37 | 3.84 |
-| 1.0 | 1.29 | -3.97 | 1.57 | 3.98 | -5.37 |
+| -1.0 | 0.69 | - | - | - | - |
+| -0.5 | -5.38 | 0.69 | - | - | - |
+| 0.0 | - | 0.55 | 0.86 | 4.18 | - |
+| 0.5 | - | 0.99 | -3.87 | -4.92 | 3.69 |
+| 1.0 | 0.99 | -3.14 | 0.78 | 3.4 | -4.92 |
 
 Forward speed (mm/s) at the same points:
 
 | forward (rows), turn (columns) | -1.0 | -0.5 | 0.0 | 0.5 | 1.0 |
 |---|---|---|---|---|---|
-| -1.0 | -5.2 | 46.2 | -4.4 | -76.7 | 10.8 |
-| -0.5 | 4.1 | -5.2 | -4.8 | 10.8 | -62.7 |
-| 0.0 | -7.9 | 2.2 | 0.2 | 5.0 | 26.6 |
-| 0.5 | 11.5 | 20.0 | 18.6 | 17.3 | 8.9 |
-| 1.0 | 20.0 | 29.9 | 43.6 | 29.0 | 17.3 |
+| -1.0 | -6.1 | -57.3 | -85.0 | 34.5 | 31.6 |
+| -0.5 | 4.2 | -6.1 | -4.5 | 31.6 | 101.2 |
+| 0.0 | 98.6 | 1.9 | 0.6 | 5.2 | 41.0 |
+| 0.5 | 11.3 | 20.5 | 17.2 | 18.4 | 10.0 |
+| 1.0 | 20.5 | 32.8 | 45.2 | 29.9 | 18.4 |
 
 How the yaw rate follows the turn input at full forward:
 
 | floor friction | deg/s per unit of turn | deg/s at zero turn | rises with every step of the input | fit R squared |
 |---|---|---|---|---|
-| 0.4 | -2.11 | 0.09 | no | 0.283 |
-| 0.6 | -1.07 | -0.5 | no | 0.046 |
-| 0.9 | 0.61 | -0.97 | no | 0.016 |
+| 0.4 | -1.77 | 0.0 | no | 0.204 |
+| 0.6 | -1.06 | -0.58 | no | 0.061 |
+| 0.9 | 0.22 | -1.33 | no | 0.002 |
 
 Turning is not reliable: full left and full right do not go the right way at every tested friction.
-Turning on the spot (forward 0, turn -1 and +1): -2.55 and 13.09 deg/s.
+Turning on the spot (forward 0, turn -1 and +1): 14.7 and -6.58 deg/s.
 
-Envelope for the control page: forward [0.0, 1.0], turn [0.0, 0.0]. A point passes if it stayed up at friction [0.4, 0.6, 0.9] for 20 s with the leg meshes apart and no command refused (14 of 25 points passed). The turn range is offered only if full left and full right go the right way at every tested friction; otherwise turning is listed as unavailable and the forward range is the one that passes with the turn input at zero.
+Envelope for the control page: forward [0.0, 1.0], turn [0.0, 0.0]. A point passes if it stayed up at friction [0.4, 0.6, 0.9] for 20 s with the leg meshes apart and no command refused (15 of 25 points passed). The turn range is offered only if full left and full right go the right way at every tested friction; otherwise turning is listed as unavailable and the forward range is the one that passes with the turn input at zero.
 
 ![turn](images/motion-comb-turn.gif)
 
 ### Stop and power off in mid gait
 
 Commands stopped at four points of a step: the watchdog goes to hold after 500 ms and the robot stays up every time.
-Pulses stopped (power off) at the same four points: the model stays up every time, sinking 42.1 to 47.6 mm on to the servo travel stops. In 4 of the 4 the pose it sinks to has the two shins or soles overlapping in the meshes (up to 11860.3 mm3): the model lets parts pass through each other, so on the robot the legs meet first and one sole comes down on or against the other. Where it then rests is not predicted.
+Pulses stopped (power off) at the same four points: the model stays up every time, sinking 41.5 to 47.9 mm on to the servo travel stops. In 4 of the 4 the pose it sinks to has the two shins or soles overlapping in the meshes (up to 11920.6 mm3): the model lets parts pass through each other, so on the robot the legs meet first and one sole comes down on or against the other. Where it then rests is not predicted.
 
 ### Jump
 
-Crouch, then both hips and knees driven as fast as the servos go (firmware rate limit raised to 430 deg/s). Result: a **hop**. Nothing touches the floor for 0.06 s. In that time the centre of mass rises 0.39 mm (it leaves at 0.058 m/s upward) and the soles reach 3.89 mm, most of which is the legs being pulled up under the body. It lands upright, peak tilt 44.66 deg, 10.8 mm forward; leg meshes overlapped: no. By the definition used here a jump needs 0.1 s of flight and the centre of mass rising 10 mm in it; less, with real flight, is a hop.
+Crouch, then both hips and knees driven as fast as the servos go (firmware rate limit raised to 430 deg/s). Result: a **hop**. Nothing touches the floor for 0.06 s. In that time the centre of mass rises 0.32 mm (it leaves at 0.054 m/s upward) and the soles reach 4.95 mm, most of which is the legs being pulled up under the body. It lands upright, peak tilt 44.26 deg, 12.1 mm forward; leg meshes overlapped: no. By the definition used here a jump needs 0.1 s of flight and the centre of mass rising 10 mm in it; less, with real flight, is a hop.
 
 | joint | peak torque (N m) | limit | time at limit | peak speed (deg/s) | limit | peak / limit |
 |---|---|---|---|---|---|---|
-| left_hip_pitch | 1.196 | 1.196 | 0.133 | 396.7 | 300.0 | 1.322 |
-| left_knee | 0.304 | 0.304 | 0.189 | 314.3 | 428.6 | 0.733 |
-| right_hip_pitch | 1.196 | 1.196 | 0.133 | 398.9 | 300.0 | 1.33 |
-| right_knee | 0.304 | 0.304 | 0.189 | 318.2 | 428.6 | 0.743 |
+| left_hip_pitch | 1.196 | 1.196 | 0.133 | 386.9 | 300.0 | 1.29 |
+| left_knee | 0.304 | 0.304 | 0.189 | 322.9 | 428.6 | 0.753 |
+| right_hip_pitch | 1.196 | 1.196 | 0.133 | 391.4 | 300.0 | 1.305 |
+| right_knee | 0.304 | 0.304 | 0.189 | 327.2 | 428.6 | 0.764 |
 
-The servos ask for 5.69 A at the peak against a 4 A supply; the supply limit was active 7 percent of the push. With the firmware's default 120 deg/s limit the same motion gives: no flight. Upper bound: the hips can lift the body at 0.431 m/s with no load at all, a ballistic rise of 9.5 mm of the centre of mass; under load it is less. With the supply limit removed (not a result, only to show what limits it) the rise in flight is 0.18 mm.
+The servos ask for 5.68 A at the peak against a 4 A supply; the supply limit was active 7 percent of the push. With the firmware's default 120 deg/s limit the same motion gives: no flight. Upper bound: the hips can lift the body at 0.431 m/s with no load at all, a ballistic rise of 9.5 mm of the centre of mass; under load it is less. With the supply limit removed (not a result, only to show what limits it) the rise in flight is 0.07 mm.
 
 | case | verdict | rise in flight (mm) | soles off (mm) | flight (s) | lands upright |
 |---|---|---|---|---|---|
-| friction 0.3 | hop | 0.11 | 3.79 | 0.06 | yes |
-| friction 0.45 | hop | 0.11 | 4.02 | 0.06 | yes |
-| friction 0.6 | hop | 0.39 | 3.89 | 0.06 | yes |
-| friction 0.8 | hop | 0.2 | 3.79 | 0.06 | yes |
-| friction 1.0 | hop | 0.24 | 3.48 | 0.06 | yes |
-| default head | hop | 0.39 | 3.89 | 0.06 | yes |
-| 20 g more at the head | hop | 1.05 | 0.93 | 0.06 | yes |
-| 32 g more: the heaviest turning head, 57 g at the head | hop | 1.64 | 2.06 | 0.08 | yes |
-| 32 g more, 20 mm further forward | hop | 1.87 | 2.45 | 0.08 | yes |
-| 32 g more, 30 mm higher | hop | 1.87 | 2.27 | 0.08 | yes |
-| half the time step | hop | 0.0 | 3.55 | 0.06 | yes |
+| friction 0.3 | hop | 0.0 | 3.11 | 0.1 | yes |
+| friction 0.45 | hop | 0.0 | 3.75 | 0.06 | yes |
+| friction 0.6 | hop | 0.32 | 4.95 | 0.06 | yes |
+| friction 0.8 | hop | 0.02 | 3.86 | 0.06 | yes |
+| friction 1.0 | hop | 0.04 | 4.08 | 0.06 | yes |
+| default head | hop | 0.32 | 4.95 | 0.06 | yes |
+| 20 g more at the head | hop | 0.77 | 0.68 | 0.06 | yes |
+| 32 g more: the heaviest turning head, 57 g at the head | hop | 0.0 | 1.75 | 0.06 | yes |
+| 32 g more, 20 mm further forward | hop | 1.73 | 2.23 | 0.08 | yes |
+| 32 g more, 30 mm higher | hop | 1.73 | 2.05 | 0.08 | yes |
+| half the time step | hop | 1.87 | 4.08 | 0.08 | yes |
 
 ![jump, one fifth speed](images/motion-comb-jump.gif)
 
 ### Sit, power off and stand up
 
-Sitting is a squat to the hip pitch limit: hip pitch 62.0, knee -62.0 degrees, soles level, at 40 deg/s. The torso comes down 13.2 mm to 140.6 mm. The limit is there because between about 65 and 75 degrees the top of each shin grazes the torso when the soles are level (up to 13 mm3 of overlap in the meshes).
+Sitting is a squat to the hip pitch limit: hip pitch 62.0, knee -62.0 degrees, soles level, at 40 deg/s. The torso comes down 13.3 mm to 140.6 mm. The limit is there because between about 65 and 75 degrees the top of each shin grazes the torso when the soles are level (up to 13 mm3 of overlap in the meshes).
 
-- Lowering: reached the sit pose; peak torque 0.359 of the limit, peak speed 0.142 of the limit. Straight back up under power: reached the stand pose.
+- Lowering: reached the sit pose; peak torque 0.354 of the limit, peak speed 0.143 of the limit. Straight back up under power: reached the stand pose.
 - Pulses stopped in the sit pose: it sinks 37.3 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.3 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none. It holds there. With no joint friction at all: it sinks 37.3 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.3 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none. Shoved at 0.1 m/s forward and back while relaxed: holds, holds.
 - Standing up from there (enable, which drives the servos back to the sit pose from wherever the legs sank to, then up): reached the stand pose upright; peak torque 1.0 of the limit, peak speed 0.91 of the limit.
-- Pulses stopped at the stand pose instead: it sinks 49.5 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.3 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none, sinking at up to 0.387 m/s. With the heaviest head: it sinks 49.6 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.4 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none.
+- Pulses stopped at the stand pose instead: it sinks 49.5 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.3 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none, sinking at up to 0.391 m/s. With the heaviest head: it sinks 49.6 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.3 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none.
 - Power off and on again at the stand pose: it sinks 49.5 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.3 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none, and after enable it stands up, peak torque 1.0 of the limit. Parts overlapping in the meshes on the way up: none.
 - Parts overlapping in the meshes on the way down and up under power: none. The model does not collide part with part, so an overlap listed here is a place where the real parts rub or stop.
 - Parts that touched the floor at any time while sitting, resting and standing up: sole. Board, shield, battery, display, camera or head on the floor: no.
@@ -217,9 +217,9 @@ Sitting is a squat to the hip pitch limit: hip pitch 62.0, knee -62.0 degrees, s
 | joint | rising peak torque / limit | rising peak speed / limit |
 |---|---|---|
 | left_hip_pitch | 1.0 | 0.91 |
-| left_knee | 1.0 | 0.587 |
+| left_knee | 1.0 | 0.592 |
 | right_hip_pitch | 1.0 | 0.91 |
-| right_knee | 1.0 | 0.587 |
+| right_knee | 1.0 | 0.591 |
 
 Sit, rest and stand up by floor friction: 0.3: ok, 0.45: ok, 0.6: ok, 0.8: ok, 1.0: ok. By head: default head: ok, 20 g more at the head: ok, 32 g more: the heaviest turning head, 57 g at the head: ok, 32 g more, 20 mm further forward: ok, 32 g more, 30 mm higher: ok.
 
@@ -229,48 +229,48 @@ Sit, rest and stand up by floor friction: 0.3: ok, 0.45: ok, 0.6: ok, 0.8: ok, 1
 
 Comparison: the same robot with the flat sole plates as first drawn (75 by 48 by 5 mm) in place of the comb soles, the hip roll limits those soles had, and no leg clearance rule.
 
-Mass 0.5404 kg, torso 154.2 mm above the floor at the stand pose. Slow one-foot test (lift a foot, hold 2.5 s): does not hold (clearance -0.0 and -0.0 mm).
+Mass 0.5375 kg, torso 154.2 mm above the floor at the stand pose. Slow one-foot test (lift a foot, hold 2.5 s): does not hold (clearance -0.0 and -0.0 mm).
 
 ### Walking
 
-It does not truly step. 0 swings with a sole wholly off the floor in 30 s (0 percent of the steps the gait commands), median clearance 0.0 mm for 0.0 s, the swinging foot moving 0.0 mm while the standing foot slips 0.0 mm. One foot carries the load 0 percent of the time, both 100 percent, neither 0 percent. Forward speed 1.3 mm/s, heading drift 0.0 deg/s. Peak torque 0.205 of the limit (margin 0.795). The meshes of the two legs overlapped in 0.0 percent of the ticks; the legs were inside the clearance rule's margin of each other, measured on the angles the joints reached, in 0.0 percent.
+It does not truly step. 0 swings with a sole wholly off the floor in 30 s (0 percent of the steps the gait commands), median clearance 0.0 mm for 0.0 s, the swinging foot moving 0.0 mm while the standing foot slips 0.0 mm. One foot carries the load 0 percent of the time, both 100 percent, neither 0 percent. Forward speed 1.3 mm/s, heading drift 0.0 deg/s. Peak torque 0.203 of the limit (margin 0.797). The meshes of the two legs overlapped in 0.0 percent of the ticks; the legs were inside the clearance rule's margin of each other, measured on the angles the joints reached, in 0.0 percent.
 
 Gait of `microduck/gait.py`, parameters `{'period_s': 1.38, 'roll_amplitude_deg': 10.15, 'step_amplitude_deg': 2.0, 'lift_deg': 0.0, 'step_phase_deg': 87.82, 'lead_in_s': 1.0}`.
 Search: seed 1, 30 generations of 14, 2520 simulated runs, 226.6 s of wall clock.
 
 | joint | peak torque (N m) | limit (N m) | peak / limit | time at limit | peak speed (deg/s) | limit (deg/s) |
 |---|---|---|---|---|---|---|
-| left_hip_roll | 0.152 | 1.196 | 0.127 | 0.0 | 41.7 | 300.0 |
-| left_hip_pitch | 0.143 | 1.196 | 0.119 | 0.0 | 11.2 | 300.0 |
-| left_knee | 0.059 | 0.304 | 0.195 | 0.0 | 10.9 | 428.6 |
-| right_hip_roll | 0.156 | 1.196 | 0.13 | 0.0 | 41.3 | 300.0 |
-| right_hip_pitch | 0.147 | 1.196 | 0.123 | 0.0 | 10.8 | 300.0 |
-| right_knee | 0.062 | 0.304 | 0.205 | 0.0 | 10.6 | 428.6 |
+| left_hip_roll | 0.151 | 1.196 | 0.127 | 0.0 | 41.6 | 300.0 |
+| left_hip_pitch | 0.142 | 1.196 | 0.119 | 0.0 | 11.2 | 300.0 |
+| left_knee | 0.059 | 0.304 | 0.193 | 0.0 | 10.8 | 428.6 |
+| right_hip_roll | 0.156 | 1.196 | 0.13 | 0.0 | 41.4 | 300.0 |
+| right_hip_pitch | 0.146 | 1.196 | 0.122 | 0.0 | 10.8 | 300.0 |
+| right_knee | 0.062 | 0.304 | 0.203 | 0.0 | 10.6 | 428.6 |
 
 Peak estimated supply current 1.51 A; the 4 A limit was active 0.0 percent of the time.
 
 Long run: stayed up over 120 s, 1.3 mm/s along its path, heading drift -0.01 deg/s (-0.8 deg in all).
-Numerical check at half the time step: stayed up, 1.3 mm/s, 0 percent of steps, clearance 0.0 mm, peak torque 0.206 of the limit.
+Numerical check at half the time step: stayed up, 1.3 mm/s, 0 percent of steps, clearance 0.0 mm, peak torque 0.204 of the limit.
 
-Robustness: 30 runs of 30 s over floor friction 0.3 to 1.0, mass 0.9 to 1.1 times, and two disturbed starts (1.5 deg tilt, 0.03 m/s push). 0 fell; 0 of 30 stepped by the test above; the leg meshes overlapped in 0 runs; worst peak torque 0.246 of the limit.
+Robustness: 30 runs of 30 s over floor friction 0.3 to 1.0, mass 0.9 to 1.1 times, and two disturbed starts (1.5 deg tilt, 0.03 m/s push). 0 fell; 0 of 30 stepped by the test above; the leg meshes overlapped in 0 runs; worst peak torque 0.25 of the limit.
 
 | floor friction | runs | fell | stepping | speed (mm/s) | heading change in 30 s (deg) | worst peak torque / limit |
 |---|---|---|---|---|---|---|
-| 0.3 | 6 | 0 | 0 | -1.8 to -0.7 | -0.7 to 2.0 | 0.246 |
-| 0.45 | 6 | 0 | 0 | 0.3 to 1.4 | -0.3 to 2.0 | 0.22 |
-| 0.6 | 6 | 0 | 0 | 1.3 to 1.4 | -0.0 to 0.1 | 0.22 |
-| 0.8 | 6 | 0 | 0 | 1.2 to 1.3 | 0.1 to 0.1 | 0.223 |
-| 1.0 | 6 | 0 | 0 | 1.2 to 1.2 | 0.1 to 0.2 | 0.225 |
+| 0.3 | 6 | 0 | 0 | -1.7 to -0.8 | -0.3 to 1.1 | 0.25 |
+| 0.45 | 6 | 0 | 0 | 0.2 to 1.4 | -0.7 to 1.9 | 0.223 |
+| 0.6 | 6 | 0 | 0 | 1.3 to 1.4 | 0.0 to 0.1 | 0.218 |
+| 0.8 | 6 | 0 | 0 | 1.2 to 1.3 | 0.1 to 0.1 | 0.221 |
+| 1.0 | 6 | 0 | 0 | 1.2 to 1.2 | 0.1 to 0.2 | 0.222 |
 
 Head mass (a point mass added at the head, `config/motion.json`):
 
 | case | mass (kg) | outcome | speed (mm/s) | heading change in 30 s (deg) | steps made | clearance (mm) | peak torque / limit |
 |---|---|---|---|---|---|---|---|
-| default head | 0.5404 | stayed up | 1.3 | 0.0 | 0.0 | 0.0 | 0.205 |
-| 20 g more at the head | 0.5604 | stayed up | 1.4 | 0.1 | 0.0 | 0.0 | 0.217 |
-| 32 g more: the heaviest turning head, 57 g at the head | 0.5724 | stayed up | 1.4 | 0.1 | 0.0 | 0.0 | 0.225 |
-| 32 g more, 20 mm further forward | 0.5724 | stayed up | 1.4 | 0.0 | 0.0 | 0.0 | 0.236 |
-| 32 g more, 30 mm higher | 0.5724 | stayed up | 1.4 | 0.1 | 0.0 | 0.0 | 0.226 |
+| default head | 0.5375 | stayed up | 1.3 | 0.0 | 0.0 | 0.0 | 0.203 |
+| 20 g more at the head | 0.5575 | stayed up | 1.4 | 0.1 | 0.0 | 0.0 | 0.216 |
+| 32 g more: the heaviest turning head, 57 g at the head | 0.5695 | stayed up | 1.4 | 0.1 | 0.0 | 0.0 | 0.223 |
+| 32 g more, 20 mm further forward | 0.5695 | stayed up | 1.4 | 0.0 | 0.0 | 0.0 | 0.234 |
+| 32 g more, 30 mm higher | 0.5695 | stayed up | 1.4 | 0.1 | 0.0 | 0.0 | 0.224 |
 
 ![walk](images/motion-flat-feet-walk.gif)
 
@@ -286,8 +286,8 @@ Yaw rate (deg/s) at floor friction 0.6, by forward and turn input; a dash is a p
 | -1.0 | 0.03 | 0.04 | 0.07 | 0.04 | 0.03 |
 | -0.5 | 0.01 | 0.03 | 0.03 | 0.03 | 0.01 |
 | 0.0 | -0.0 | -0.0 | -0.0 | -0.01 | -0.01 |
-| 0.5 | -0.01 | -0.04 | -0.04 | -0.04 | -0.01 |
-| 1.0 | -0.04 | -0.05 | -0.07 | -0.05 | -0.04 |
+| 0.5 | -0.01 | -0.04 | -0.04 | -0.03 | -0.01 |
+| 1.0 | -0.04 | -0.05 | -0.07 | -0.05 | -0.03 |
 
 Forward speed (mm/s) at the same points:
 
@@ -303,9 +303,9 @@ How the yaw rate follows the turn input at full forward:
 
 | floor friction | deg/s per unit of turn | deg/s at zero turn | rises with every step of the input | fit R squared |
 |---|---|---|---|---|
-| 0.4 | 0.0 | -0.06 | no | 0.002 |
-| 0.6 | 0.0 | -0.05 | no | 0.0 |
-| 0.9 | 0.0 | -0.04 | no | 0.0 |
+| 0.4 | -0.02 | -0.04 | no | 0.327 |
+| 0.6 | 0.0 | -0.05 | no | 0.045 |
+| 0.9 | 0.0 | -0.05 | no | -0.0 |
 
 Turning is not reliable: full left and full right do not go the right way at every tested friction.
 Turning on the spot (forward 0, turn -1 and +1): -0.0 and -0.01 deg/s.
@@ -315,53 +315,53 @@ Envelope for the control page: forward [-1.0, 1.0], turn [0.0, 0.0]. A point pas
 ### Stop and power off in mid gait
 
 Commands stopped at four points of a step: the watchdog goes to hold after 500 ms and the robot stays up every time.
-Pulses stopped (power off) at the same four points: the model falls in some, sinking 50.9 to 51.4 mm on to the servo travel stops. The meshes of the legs do not overlap in the poses it sinks to.
+Pulses stopped (power off) at the same four points: the model falls in some, sinking 50.9 to 51.5 mm on to the servo travel stops. The meshes of the legs do not overlap in the poses it sinks to.
 
 ### Jump
 
-Crouch, then both hips and knees driven as fast as the servos go (firmware rate limit raised to 430 deg/s). Result: a **hop**. Nothing touches the floor for 0.1 s. In that time the centre of mass rises 6.69 mm (it leaves at 0.191 m/s upward) and the soles reach 9.62 mm, most of which is the legs being pulled up under the body. It lands upright, peak tilt 10.86 deg, -48.7 mm forward; leg meshes overlapped: no. By the definition used here a jump needs 0.1 s of flight and the centre of mass rising 10 mm in it; less, with real flight, is a hop.
+Crouch, then both hips and knees driven as fast as the servos go (firmware rate limit raised to 430 deg/s). Result: a **hop**. Nothing touches the floor for 0.1 s. In that time the centre of mass rises 6.07 mm (it leaves at 0.2 m/s upward) and the soles reach 8.34 mm, most of which is the legs being pulled up under the body. It lands upright, peak tilt 9.22 deg, -53.3 mm forward; leg meshes overlapped: no. By the definition used here a jump needs 0.1 s of flight and the centre of mass rising 10 mm in it; less, with real flight, is a hop.
 
 | joint | peak torque (N m) | limit | time at limit | peak speed (deg/s) | limit | peak / limit |
 |---|---|---|---|---|---|---|
-| left_hip_pitch | 1.196 | 1.196 | 0.093 | 291.0 | 300.0 | 0.97 |
-| left_knee | 0.304 | 0.304 | 0.105 | 351.4 | 428.6 | 0.82 |
-| right_hip_pitch | 1.196 | 1.196 | 0.093 | 291.0 | 300.0 | 0.97 |
-| right_knee | 0.304 | 0.304 | 0.105 | 351.3 | 428.6 | 0.82 |
+| left_hip_pitch | 1.196 | 1.196 | 0.093 | 291.2 | 300.0 | 0.971 |
+| left_knee | 0.304 | 0.304 | 0.105 | 355.1 | 428.6 | 0.829 |
+| right_hip_pitch | 1.196 | 1.196 | 0.093 | 291.2 | 300.0 | 0.971 |
+| right_knee | 0.304 | 0.304 | 0.105 | 355.1 | 428.6 | 0.828 |
 
-The servos ask for 8.23 A at the peak against a 4 A supply; the supply limit was active 13 percent of the push. With the firmware's default 120 deg/s limit the same motion gives: no flight. Upper bound: the hips can lift the body at 0.431 m/s with no load at all, a ballistic rise of 9.5 mm of the centre of mass; under load it is less. With the supply limit removed (not a result, only to show what limits it) the rise in flight is 7.02 mm.
+The servos ask for 8.34 A at the peak against a 4 A supply; the supply limit was active 13 percent of the push. With the firmware's default 120 deg/s limit the same motion gives: no flight. Upper bound: the hips can lift the body at 0.431 m/s with no load at all, a ballistic rise of 9.5 mm of the centre of mass; under load it is less. With the supply limit removed (not a result, only to show what limits it) the rise in flight is 6.53 mm.
 
 | case | verdict | rise in flight (mm) | soles off (mm) | flight (s) | lands upright |
 |---|---|---|---|---|---|
-| friction 0.3 | hop | 4.93 | 6.02 | 0.08 | yes |
-| friction 0.45 | hop | 6.53 | 8.96 | 0.1 | yes |
-| friction 0.6 | hop | 6.69 | 9.62 | 0.1 | yes |
-| friction 0.8 | hop | 7.28 | 8.82 | 0.1 | yes |
-| friction 1.0 | hop | 6.21 | 6.58 | 0.08 | yes |
-| default head | hop | 6.69 | 9.62 | 0.1 | yes |
-| 20 g more at the head | hop | 6.14 | 8.69 | 0.1 | yes |
-| 32 g more: the heaviest turning head, 57 g at the head | hop | 6.68 | 9.34 | 0.1 | yes |
-| 32 g more, 20 mm further forward | hop | 5.45 | 7.47 | 0.1 | yes |
-| 32 g more, 30 mm higher | hop | 3.87 | 3.08 | 0.06 | no |
-| half the time step | hop | 6.14 | 7.34 | 0.12 | yes |
+| friction 0.3 | hop | 3.03 | 1.28 | 0.06 | no |
+| friction 0.45 | hop | 6.89 | 9.47 | 0.1 | yes |
+| friction 0.6 | hop | 6.07 | 8.34 | 0.1 | yes |
+| friction 0.8 | hop | 6.49 | 7.63 | 0.1 | yes |
+| friction 1.0 | hop | 6.66 | 7.16 | 0.12 | yes |
+| default head | hop | 6.07 | 8.34 | 0.1 | yes |
+| 20 g more at the head | hop | 5.86 | 6.82 | 0.1 | yes |
+| 32 g more: the heaviest turning head, 57 g at the head | hop | 6.1 | 9.09 | 0.1 | yes |
+| 32 g more, 20 mm further forward | hop | 6.18 | 8.55 | 0.1 | yes |
+| 32 g more, 30 mm higher | hop | 4.2 | 4.19 | 0.08 | yes |
+| half the time step | hop | 6.23 | 7.5 | 0.12 | yes |
 
 ### Sit, power off and stand up
 
 Sitting is a squat to the hip pitch limit: hip pitch 62.0, knee -62.0 degrees, soles level, at 40 deg/s. The torso comes down 13.3 mm to 140.6 mm. The limit is there because between about 65 and 75 degrees the top of each shin grazes the torso when the soles are level (up to 13 mm3 of overlap in the meshes).
 
-- Lowering: reached the sit pose; peak torque 0.357 of the limit, peak speed 0.121 of the limit. Straight back up under power: reached the stand pose.
+- Lowering: reached the sit pose; peak torque 0.351 of the limit, peak speed 0.119 of the limit. Straight back up under power: reached the stand pose.
 - Pulses stopped in the sit pose: it sinks 37.4 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.3 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none. It holds there. With no joint friction at all: it sinks 37.4 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.3 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none. Shoved at 0.1 m/s forward and back while relaxed: holds, holds.
 - Standing up from there (enable, which drives the servos back to the sit pose from wherever the legs sank to, then up): reached the stand pose upright; peak torque 1.0 of the limit, peak speed 0.914 of the limit.
-- Pulses stopped at the stand pose instead: it falls forward, sinking at up to 0.389 m/s. With the heaviest head: it sinks 49.6 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.4 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none.
+- Pulses stopped at the stand pose instead: it falls forward, sinking at up to 0.387 m/s. With the heaviest head: it sinks 49.6 mm and comes to rest at hip pitch 90.2, knee -90.5 degrees, body pitched 0.4 degrees; on the floor: sole; at a servo travel stop: left_hip_pitch, left_knee, right_hip_pitch, right_knee; parts overlapping in the meshes there: none.
 - Power off and on again at the stand pose: it falls forward, and after enable it falls forward, peak torque 1.0 of the limit. Parts overlapping in the meshes on the way up: none.
 - Parts overlapping in the meshes on the way down and up under power: none. The model does not collide part with part, so an overlap listed here is a place where the real parts rub or stop.
 - Parts that touched the floor at any time while sitting, resting and standing up: sole. Board, shield, battery, display, camera or head on the floor: no.
 
 | joint | rising peak torque / limit | rising peak speed / limit |
 |---|---|---|
-| left_hip_pitch | 1.0 | 0.913 |
-| left_knee | 1.0 | 0.603 |
+| left_hip_pitch | 1.0 | 0.914 |
+| left_knee | 1.0 | 0.607 |
 | right_hip_pitch | 1.0 | 0.914 |
-| right_knee | 1.0 | 0.603 |
+| right_knee | 1.0 | 0.607 |
 
 Sit, rest and stand up by floor friction: 0.3: ok, 0.45: ok, 0.6: ok, 0.8: ok, 1.0: ok. By head: default head: ok, 20 g more at the head: ok, 32 g more: the heaviest turning head, 57 g at the head: ok, 32 g more, 20 mm further forward: fails, 32 g more, 30 mm higher: ok.
 
