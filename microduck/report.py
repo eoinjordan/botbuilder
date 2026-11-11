@@ -343,7 +343,23 @@ def markdown(report: dict) -> str:
 
     c = rep["camera"]
     g = c["gaps"]
-    md += ["## Camera mount", "",
+    md += ["## Face: round display and camera", "",
+           "The default head carries a Seeed Studio Round Display for XIAO in a ring at the deck front, screen forward as the",
+           "eyes, and a camera board on the same head above or below it. A LiPo cell for the display is strapped under the deck",
+           f"front. The assembly, description and simulation use `{report['face_default']}`. The display is drawn as a disc with",
+           "a block for the XIAO behind it; its diameter, thickness and mass are assumed (see `config/hardware.json`).", "",
+           _table(["face and camera", "torso file", "interference at neutral", "display overlap with print (mm3)", "lens (mm)",
+                   "lens above the floor at stand (mm)", "top of the head above the deck (mm)", "cone clear at neutral and stand",
+                   "thigh angles in the cone, others at stand (deg)", "total mass (g)", "centre of mass at neutral (mm)",
+                   "legs straight: margin (mm)", "stand: thighs back (deg)", "stand margin (mm)"],
+                  [(k, f["torso_file"], len(f["neutral_interferences"]), f["display_overlap_with_print_mm3"], f["lens_mm"],
+                    f["lens_height_above_floor_at_stand_mm"], f["highest_point_above_deck_mm"],
+                    not f["cone_blocked_at_neutral"] and not f["cone_blocked_at_stand"],
+                    f["hip_pitch_in_cone_from_stand_deg"] or "never", f["total_g"], f["com_neutral_mm"], f["neutral_margin_mm"],
+                    f["stand_thigh_swing_deg"], f["stand_margin_mm"]) for k, f in report["faces"].items()]), "",
+           "The faces were not analysed on the turning head: the tilt cradles for them are generated, but the assembly test of",
+           "the turning head uses the camera alone.", "",
+           "## Camera mount", "",
            "The torso has no head or neck. Two posts at the front edge of the deck hold a camera board by its long edges,",
            "lens forward. Forward is the way the toes point: the foot plates reach "
            f"{c['toes_ahead_of_shin_mm']} mm ahead of the shin and {c['heel_behind_shin_mm']} mm behind it. The hip cradles open",
@@ -374,7 +390,7 @@ def markdown(report: dict) -> str:
            _table(["joint", "others at neutral (deg)", "others at the stand pose (deg)"],
                   [(j, v["from_neutral"]["angles_in_cone_deg"] or "never", v["from_stand"]["angles_in_cone_deg"] or "never")
                    for j, v in c["cone_sweeps"].items()]), "",
-           "The other camera presets, each with its own torso file, checked in short form (same deck, legs and stand search):", "",
+           "The camera presets alone in the fixed mount, without the display, each with its own torso file, checked in short form:", "",
            _table(["preset", "board (mm)", "each side (mm)", "under the lips (mm)", "up to the catch (mm)", "on the seats",
                    "overlap with print (mm3)", "mount to UNO Q (mm)", "cone clear at neutral and stand", "total mass (g)",
                    "centre of mass at neutral (mm)", "stand margin (mm)"],
@@ -474,7 +490,8 @@ def markdown(report: dict) -> str:
            f"Total {m['total_g']} g: servos {m['by_kind_g']['servo']} g, printed parts {m['by_kind_g']['print']} g "
            f"({m['print_material']} at {m['print_density_g_cm3']} g/cm3, {int(m['print_solid_fraction'] * 100)} percent of solid; "
            f"{m['total_if_printed_solid_g']} g in total if printed solid), board {m['by_kind_g']['board']} g and shield {m['by_kind_g']['shield']} g (both assumed), "
-           f"camera {m['by_kind_g']['camera']} g.",
+           f"camera {m['by_kind_g']['camera']} g"
+           + (f", display with its XIAO {m['by_kind_g']['display']} g and battery {m['by_kind_g']['battery']} g (both assumed)." if "display" in m["by_kind_g"] else "."),
            f"Centre of mass at the neutral pose: {m['com_neutral_mm']} mm in the torso frame.", "",
            _table(["link", "mass (g)", "centre of mass in the link frame (mm)"], [(k, v["mass_g"], v["com_link_mm"]) for k, v in m["links"].items()]), ""]
 
@@ -508,15 +525,23 @@ def run(progress=print) -> dict:
         if name == config["camera"]["preset"]:
             continue
         progress(f"camera preset {name}")
-        other = dict(config, camera=dict(config["camera"], preset=name))
+        other = dict(config, face=None, camera=dict(config["camera"], preset=name))
         presets[name] = assembly.camera_preset_summary(build_robot(selected, hardware, other))
+    progress("camera preset without the display")
+    presets[config["camera"]["preset"] + " alone in the fixed mount"] = assembly.camera_preset_summary(
+        build_robot(selected, hardware, dict(config, face=None)))
+    faces = {}
+    for face, camera in (("eyes_above", "esp32cam"), ("eyes_below", "esp32cam"), ("eyes_above", "esp_eye")):
+        progress(f"face {face} {camera}")
+        other = dict(config, face=face, camera=dict(config["camera"], preset=camera))
+        faces[f"{face}_{camera}"] = assembly.face_summary(build_robot(selected, hardware, other), reports[selected]["joint_limits_deg"])
     controllers = {}
     for name in [k for k in hardware["controllers"] if not k.startswith("_")]:
         progress(f"controller {name}")
-        other = build_robot(selected, hardware, dict(config, controller=name))
+        other = build_robot(selected, hardware, dict(config, controller=name, face=None))
         controllers[name] = assembly.controller_summary(other, reports[selected]["joint_limits_deg"])
     progress("turning head")
-    turning = build_robot(selected, hardware, dict(config, head="pan"))
+    turning = build_robot(selected, hardware, dict(config, head="pan", face=None))
     head = assembly.head_checks(turning, reports[selected]["balance"]["stand_pose"]["q_deg"])
     progress("rendering")
     images = render_images(robots, reports, selected)
@@ -557,6 +582,8 @@ def run(progress=print) -> dict:
                     camera["name"]: camera["source"]},
         "findings": findings(reports[selected]),
         "camera_presets": presets,
+        "faces": faces,
+        "face_default": f"{config.get('face')}_{config['camera']['preset']}",
         "turning_head": head,
         "controllers": controllers,
         "images": images,

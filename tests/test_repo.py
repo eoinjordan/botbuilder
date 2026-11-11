@@ -62,9 +62,9 @@ def test_only_the_generated_printable_parts_are_tracked_as_meshes():
 
 def test_repository_stays_small():
     total = sum(path.stat().st_size for path in tracked())
-    assert total < 16_000_000
+    assert total < 20_000_000
     stls = sum(path.stat().st_size for path in tracked() if path.suffix == ".stl")
-    assert stls < 8_000_000
+    assert stls < 12_000_000
     for path in tracked():
         assert path.stat().st_size < 1_000_000, path.name
 

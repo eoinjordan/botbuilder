@@ -18,14 +18,16 @@ A Microduck-style biped rebuilt around the six servos of a stock TinkerKit
 Braccio kit. Four SR431 servos at the hips (two on the torso for hip roll,
 one on each yoke for hip pitch), two SR311 servos at the far end of the
 thighs for knee pitch, shins with fixed feet, an Arduino UNO Q and the
-Braccio shield strapped to a deck, a camera board in a mount at the front
-edge of the deck, servos held by cable ties. Seven printed parts and seven
+Braccio shield strapped to a deck, a head at the front edge of the deck
+with a round display as the eyes and a camera board above it, servos held by
+cable ties. Seven printed parts and seven
 fit-test pieces. The torso, thighs, shins and feet carry pin holes and studs
 compatible with LEGO Technic and System elements, for decoration. LEGO,
 Technic, Mindstorms and SPIKE are trademarks of the LEGO Group, which does
-not sponsor or endorse this. There is no head: the torso carries the camera mount
-instead, with presets for the AI-Thinker ESP32-CAM (the default), the
-Espressif ESP-EYE and the ESP32-S3-EYE. See [docs/camera.md](docs/camera.md).
+not sponsor or endorse this. The head is part of the torso: a Seeed Studio Round
+Display for XIAO, screen forward, with an AI-Thinker ESP32-CAM above it by
+default; the camera below, an ESP-EYE, the camera alone and a turning head
+are options. See [docs/camera.md](docs/camera.md).
 
 Six actuated joints: left and right hip roll, hip pitch, knee pitch. No yaw,
 no ankles.
@@ -33,7 +35,7 @@ no ankles.
 For comparison, Pollen Robotics' Microduck has five joints per leg (hip yaw,
 roll, pitch, knee, ankle) and four in the neck and head, weighs about 800 g
 and stands about 25 cm tall. This one has three per leg, weighs about 500 g
-by the model and stands 262 mm.
+by the model and stands 314 mm to the top of the camera mount.
 
 ## What the digital assembly test found
 
@@ -45,11 +47,15 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   cradles now hang 2.5 mm lower and the deck corner is cut away for the ear,
   which leaves 0.5 mm under the deck and 0.75 mm beside the assumed ear. The
   neck that the UNO Q ran into is gone with the head.
-- **Camera mount.** The ESP32-CAM stands between two posts with 0.5 mm each
-  side, 1.1 mm ahead of the UNO Q. The lens looks the way the toes point,
-  10 degrees below level, 226 mm above the floor at the stand pose. A cone
-  of 40 degrees half angle in front of it is clear at the neutral and stand
-  poses; a thigh swung more than 21 degrees forward comes into it.
+- **Face.** A round display stands in a ring at the deck front, screen
+  forward as the eyes, with the ESP32-CAM on a shelf above it between two
+  posts with 0.5 mm each side. Display, camera and print do not overlap. The
+  lens looks the way the toes point, 10 degrees below level, 277 mm above
+  the floor at the stand pose. A cone of 40 degrees half angle in front of
+  it is clear at the neutral and stand poses; a thigh swung more than 39
+  degrees forward comes into it. With the camera below the display instead
+  the lens is at 226 mm and the thigh enters at 21 degrees. The display's
+  size and mass are assumed, and its battery is strapped under the deck.
 - **Other controllers.** The deck has torso variants for a Raspberry Pi Zero
   2 W, a full-size Raspberry Pi and the LEGO 51515 hub. As blocks of their
   mass they clear the print and the camera, and the robot still balances at
@@ -81,12 +87,13 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
 - **Pin holes and studs.** 23 pin holes in pads of beam thickness and 40
   studs. Every hole is open for a 4.8 mm pin over 7.8 mm, at least 24 mm
   from a joint axis; none cost any joint range. At the stand pose, static
-  balance carries about 400 g of decoration on the rear of the deck before
-  the margin is gone; 100 g there leaves 23 mm of the 37 mm.
-- **Mass.** 502 g: servos 302 g (published), printed parts 136 g (PLA at 60
+  balance carries about 430 g of decoration on the rear of the deck before
+  the margin is gone; 100 g there leaves 24 mm of the 37 mm.
+- **Mass.** 533 g: servos 302 g (published), printed parts 142 g (PLA at 60
   percent of solid, assumed), board 30 g and shield 25 g (assumed), camera
-  10 g (published). 593 g if printed solid.
-- **Balance.** With the legs straight down the centre of mass is 6.6 mm
+  10 g (published), display with its XIAO 15 g and its battery 8.5 g (both
+  assumed). 628 g if printed solid.
+- **Balance.** With the legs straight down the centre of mass is 6.9 mm
   behind the heels: it falls backward. With the thighs swung 42 degrees back
   and the knees turned to keep the soles level it is 37 mm inside the support
   polygon. That is the stand pose. On one foot it is 62 mm outside, and still
@@ -107,9 +114,9 @@ Full results: [docs/simulation.md](docs/simulation.md). Numbers:
 - **Straight legs fall.** At the neutral pose it tips backward in 0.4 s, as
   the assembly test predicted.
 - **The gait shuffles.** The open-loop weight shift and step keeps the robot
-  up for the whole run and moves it 45 mm in 11 s. Both feet stay on the
+  up for the whole run and moves it 51 mm in 11 s. Both feet stay on the
   floor the whole time. The best of 54 parameter sets inside the speed limit
-  manages 110 mm in 11 s (10 mm/s). None fell. With no ankle and feet 172 mm
+  manages 108 mm in 11 s (10 mm/s). None fell. With no ankle and feet 172 mm
   apart the weight never gets onto one foot, so there is no step.
 - **Watchdog.** Commands cut in mid gait: the controller holds and the robot
   stays up. Relaxed instead, it falls in 0.3 s.
@@ -197,6 +204,9 @@ local design directory after its generator has run. None has been printed.
 - The turning head: the servo body, shaft position and horn height are
   assumed from SG90 data sheets, the adapter hole pattern is a guess to be
   measured, and no firmware drives it.
+- The round display: its glass diameter, rim thickness, depth and mass, and
+  the size of its battery, are assumed. The faces were not analysed on the
+  turning head.
 - The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
   outline are the makers' figures. Lens, button, connector and pin positions,
   board thickness and the other masses are assumed or scaled from pictures.

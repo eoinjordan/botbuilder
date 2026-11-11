@@ -321,7 +321,7 @@ def roll_seat_checks(robot: Robot) -> dict:
             "upper_ear_gap_to_deck_mm": _r(upper.min_gap(deck, 20.0)) if (upper ^ deck).volume() < 1e-6 else 0.0,
             "upper_ear_overlap_with_deck_mm3": _r((upper ^ deck).volume(), 1),
             "overlap_with_torso_mm3": _r((body ^ torso).volume(), 1),
-            "deck_width_behind_the_cut_mm": _r(width_at(20.0)), "deck_width_at_the_cut_mm": _r(width_at(34.0)),
+            "deck_width_behind_the_cut_mm": _r(width_at(20.0)), "deck_width_at_the_cut_mm": _r(width_at(36.5)),
             "cradle_z_mm": model.TORSO_CRADLE_Z}
 
 
@@ -352,9 +352,9 @@ def camera_checks(robot: Robot, limits: dict, stand_q: dict) -> dict:
         return apply(box([min(shift_x, 0.0), -w / 2 - grow_y, min(shift_z, 0.0)],
                          [t + max(shift_x, 0.0), w / 2 + grow_y, l + max(shift_z, 0.0)]), to_torso)
 
-    side = _largest_clear(lambda g: (pcb(grow_y=g) ^ torso).volume() < 1e-3)
-    forward = _largest_clear(lambda g: (pcb(shift_x=g) ^ torso).volume() < 1e-3)
-    back = _largest_clear(lambda g: (pcb(shift_x=-g) ^ torso).volume() < 1e-3)
+    side = _largest_clear(lambda g: (pcb(grow_y=g) ^ torso).volume() < 1e-2)
+    forward = _largest_clear(lambda g: (pcb(shift_x=g) ^ torso).volume() < 1e-2)
+    back = _largest_clear(lambda g: (pcb(shift_x=-g) ^ torso).volume() < 1e-2)
     seated = (pcb(shift_z=-0.2) ^ torso).volume() > 1e-3
     lift = _largest_clear(lambda g: (pcb(shift_z=g) ^ torso).volume() < 1e-3, hi=10.0)
     # The printed mount alone: the torso above the deck, ahead of the board bay.
@@ -398,6 +398,35 @@ def camera_checks(robot: Robot, limits: dict, stand_q: dict) -> dict:
         "cone_blocked_at_stand": _cone_hits(robot, cone, stand_q),
         "cone_sweeps": sweeps,
     }
+
+
+def face_summary(robot: Robot, limits: dict) -> dict:
+    """A face (display and camera) on the fixed head: what the camera sees of
+    the legs, and mass and balance."""
+    threshold = robot.assumptions["interference_threshold_mm3"]
+    bal = balance(robot, limits)
+    stand_q = bal["stand_pose"]["q_deg"]
+    cam = camera_checks(robot, limits, stand_q)
+    total, com = centre_of_mass(robot)
+    torso = _solid(robot, "torso_print")[1].manifold
+    display = _solid(robot, "round_display")[1].manifold
+    top = max(_bbox(m)[1][2] for _, _, m in robot.placed() if not m.is_empty())
+    pitch = cam["cone_sweeps"]["left_hip_pitch"]
+    return {"face": robot.camera["face"], "camera_preset": robot.camera["preset"], "torso_file": robot.links["torso"].solids[0].part and
+            model.design_parameters()["faces"][f"{robot.camera['face']}_{robot.camera['preset']}"]["torso"],
+            "neutral_interferences": [(f["a"], f["b"], f["volume_mm3"]) for f in interferences(robot.placed(), threshold)],
+            "display_overlap_with_print_mm3": _r((display ^ torso).volume(), 1),
+            "display_centre_mm": _r(model.design_parameters()["faces"][f"{robot.camera['face']}_{robot.camera['preset']}"]["display"]["centre"]),
+            "lens_mm": cam["lens_mm"], "lens_height_above_floor_at_stand_mm": cam["lens_height_above_floor_at_stand_mm"],
+            "highest_point_above_deck_mm": _r(top - PLATE),
+            "camera_clearance_each_side_mm": cam["clearance_each_side_mm"], "camera_overlap_with_print_mm3": cam["board_overlap_with_mount_mm3"],
+            "cone_blocked_at_neutral": cam["cone_blocked_at_neutral"], "cone_blocked_at_stand": cam["cone_blocked_at_stand"],
+            "hip_pitch_in_cone_from_neutral_deg": pitch["from_neutral"]["angles_in_cone_deg"],
+            "hip_pitch_in_cone_from_stand_deg": pitch["from_stand"]["angles_in_cone_deg"],
+            "hip_roll_in_cone_from_stand_deg": cam["cone_sweeps"]["left_hip_roll"]["from_stand"]["angles_in_cone_deg"],
+            "total_g": _r(total, 1), "com_neutral_mm": _r(com),
+            "neutral_margin_mm": bal["neutral_two_feet"]["margin_mm"],
+            "stand_thigh_swing_deg": bal["stand_pose"]["thigh_swing_deg"], "stand_margin_mm": bal["stand_pose"]["margin_mm"]}
 
 
 def camera_preset_summary(robot: Robot) -> dict:

@@ -714,5 +714,100 @@
         }
       }
     }
+  },
+  "round_display": {
+    "name": "Seeed Studio Round Display for XIAO with a XIAO ESP32S3 in its socket",
+    "source": "https://wiki.seeedstudio.com/get_start_round_display/",
+    "sources": [
+      "https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/",
+      "https://wiki.seeedstudio.com/seeedstudio_round_display_usage/",
+      "https://www.seeedstudio.com/Seeed-Studio-Round-Display-for-XIAO-p-5638.html",
+      "https://files.seeedstudio.com/wiki/round_display_for_xiao/round-pinout.png",
+      "https://files.seeedstudio.com/wiki/SeeedStudio-XIAO-ESP32S3/res/XIAO_ESP32S3_ExpBoard_v1.0_top.dxf"
+    ],
+    "published": {
+      "display_outline": "39 mm disc (the product page also lists 43 x 43 mm)",
+      "screen": "1.28 inch, 240 x 240, capacitive touch",
+      "xiao_socket": "on the back; facing the screen, the XIAO's USB-C points right and the power switch is at the lower left",
+      "battery_connector": "JST 1.25 mm, 2 pin, at the rim under the XIAO's USB-C end",
+      "charging": "3.7 V lithium cell through the XIAO's USB port, about 485 mA",
+      "microsd": true,
+      "rtc_cell": "CR927",
+      "xiao_board_mm": [
+        21.0,
+        17.8
+      ],
+      "xiao_sense_stack_mm": [
+        21.0,
+        17.8,
+        15.0
+      ],
+      "sense_camera": "OV2640 discontinued; OV3660 or OV5640 on current stock; module about 8 x 8 mm on a flex about 21 mm long overall",
+      "sense_camera_fov_deg": "OV3660 module: 102 diagonal, 85 horizontal"
+    },
+    "third_party": {
+      "thickness_mm": {
+        "value": 7.2,
+        "source": "https://docs.cirkitdesigner.com/component/aba01e81-f4aa-560b-6d27-78eee22b3eca/seeed-studio-round-display-for-xiao"
+      }
+    },
+    "assumed": {
+      "glass_diameter_mm": {
+        "value": 40.0,
+        "why": "Seeed says 39 mm disc and its photos show the glass slightly larger than the board; measure"
+      },
+      "rim_thickness_mm": {
+        "value": 5.0,
+        "why": "glass front to the back of the board at the rim; not published; measure"
+      },
+      "stack_depth_mm": {
+        "value": 16.0,
+        "why": "glass front to the back of the XIAO; not published; measure"
+      },
+      "mass_g": {
+        "value": 15.0,
+        "why": "display and XIAO together; Seeed publishes neither; tolerance 8 g"
+      },
+      "camera_faces_away_from_the_screen": {
+        "value": true,
+        "why": "Seeed's text puts the XIAO on the back and its camera-project pictures show the lens looking out of the back; no sentence says so"
+      },
+      "mounting": {
+        "value": "by the edge",
+        "why": "three M2 standoffs show on the back in Seeed's picture but their positions are not published"
+      }
+    }
+  },
+  "battery": {
+    "name": "LiPo cell for the head",
+    "source": "https://www.adafruit.com/products/2750",
+    "published": {
+      "example_cell_mm": [
+        36.0,
+        19.6,
+        5.2
+      ],
+      "example_cell_mass_g": 8.2,
+      "example_capacity_mah": 350,
+      "note": "an example of the size class from another maker; its JST-PH plug does not fit the display's JST 1.25 socket"
+    },
+    "assumed": {
+      "length_mm": {
+        "value": 36.0,
+        "why": "the owner's cell is not known; measure"
+      },
+      "width_mm": {
+        "value": 20.0,
+        "why": "as above"
+      },
+      "thickness_mm": {
+        "value": 5.5,
+        "why": "as above"
+      },
+      "mass_g": {
+        "value": 8.5,
+        "why": "as above"
+      }
+    }
   }
 }

@@ -9,8 +9,8 @@ Status: simulation only. The robot has never been assembled or powered.
 
 - Stands for the whole 10.0 s run at the stand pose; peak tilt 0.22 deg.
 - With the legs straight down it falls backward at 0.42 s, as the assembly test predicted.
-- The default gait stays up for 12.0 s and moves 45 mm forward (4.1 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 100 percent of the time.
-- Best of 54 parameter sets that stay inside the speed limit as written: 110 mm in 12.0 s (10.0 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller.
+- The default gait stays up for 12.0 s and moves 51 mm forward (4.6 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 100 percent of the time.
+- Best of 54 parameter sets that stay inside the speed limit as written: 108 mm in 12.0 s (9.8 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller.
 
 ## How the servos are modelled
 
@@ -27,14 +27,14 @@ Stands for the whole 10.0 s run at the stand pose; peak tilt 0.22 deg.
 
 | joint | mean (N m) | peak (N m) | limit (N m) | peak / limit | time at the limit |
 |---|---|---|---|---|---|
-| left_hip_roll | 0.0093 | 0.0093 | 1.1964 | 0.008 | 0.0 |
-| left_hip_pitch | 0.0878 | 0.0878 | 1.1964 | 0.073 | 0.0 |
-| left_knee | 0.0211 | 0.0211 | 0.304 | 0.069 | 0.0 |
-| right_hip_roll | 0.0093 | 0.0093 | 1.1964 | 0.008 | 0.0 |
-| right_hip_pitch | 0.0877 | 0.0877 | 1.1964 | 0.073 | 0.0 |
-| right_knee | 0.0211 | 0.0211 | 0.304 | 0.069 | 0.0 |
+| left_hip_roll | 0.011 | 0.011 | 1.1964 | 0.009 | 0.0 |
+| left_hip_pitch | 0.0937 | 0.0938 | 1.1964 | 0.078 | 0.0 |
+| left_knee | 0.0234 | 0.0234 | 0.304 | 0.077 | 0.0 |
+| right_hip_roll | 0.0111 | 0.0111 | 1.1964 | 0.009 | 0.0 |
+| right_hip_pitch | 0.0939 | 0.0939 | 1.1964 | 0.078 | 0.0 |
+| right_knee | 0.0234 | 0.0234 | 0.304 | 0.077 | 0.0 |
 
-Estimated supply current while standing: 0.46 A (stall current scaled by torque; stall currents are assumed, see docs/power.md).
+Estimated supply current while standing: 0.5 A (stall current scaled by torque; stall currents are assumed, see docs/power.md).
 
 ## Legs straight down
 
@@ -50,90 +50,90 @@ Commands stopped at 4.0 s in mid gait. Controller afterwards: `STAT mode=HOLD ag
 
 ## Open-loop gait
 
-The default gait stays up for 12.0 s and moves 45 mm forward (4.1 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 100 percent of the time.
+The default gait stays up for 12.0 s and moves 51 mm forward (4.6 mm/s). It is a shuffle, not a walk: the highest a whole sole comes off the floor is 0.0 mm, and both feet stay loaded 100 percent of the time.
 
 Parameters: `{"period_s": 1.0, "roll_amplitude_deg": 8.0, "step_amplitude_deg": 8.0, "lift_deg": 6.0, "step_phase_deg": 90.0, "lead_in_s": 1.0}`
 
 | joint | mean (N m) | peak (N m) | limit (N m) | peak / limit | time at the limit |
 |---|---|---|---|---|---|
-| left_hip_roll | 0.0841 | 0.1695 | 1.1964 | 0.142 | 0.0 |
-| left_hip_pitch | 0.1395 | 0.3341 | 1.1964 | 0.279 | 0.0 |
-| left_knee | 0.0528 | 0.1075 | 0.304 | 0.354 | 0.0 |
-| right_hip_roll | 0.0858 | 0.1699 | 1.1964 | 0.142 | 0.0 |
-| right_hip_pitch | 0.1359 | 0.3336 | 1.1964 | 0.279 | 0.0 |
-| right_knee | 0.0534 | 0.1141 | 0.304 | 0.375 | 0.0 |
+| left_hip_roll | 0.0848 | 0.175 | 1.1964 | 0.146 | 0.0 |
+| left_hip_pitch | 0.141 | 0.347 | 1.1964 | 0.29 | 0.0 |
+| left_knee | 0.0559 | 0.1139 | 0.304 | 0.375 | 0.0 |
+| right_hip_roll | 0.0862 | 0.171 | 1.1964 | 0.143 | 0.0 |
+| right_hip_pitch | 0.1374 | 0.3496 | 1.1964 | 0.292 | 0.0 |
+| right_knee | 0.0568 | 0.119 | 0.304 | 0.391 | 0.0 |
 
-Feet: both loaded 0.997, one loaded 0.003, neither 0.0 of the time; highest lift of a whole sole {'left': 0.0, 'right': 0.0} mm.
+Feet: both loaded 1.0, one loaded 0.0, neither 0.0 of the time; highest lift of a whole sole {'left': 0.0, 'right': 0.0} mm.
 
 ![gait](images/sim-gait.gif)
 
 ## Parameter sweep
 
-Best of 54 parameter sets that stay inside the speed limit as written: 110 mm in 12.0 s (10.0 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller.
+Best of 54 parameter sets that stay inside the speed limit as written: 108 mm in 12.0 s (9.8 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller.
 
 | period (s) | roll (deg) | step (deg) | lift (deg) | inside speed limit | fell | forward (mm) | left (mm) | max tilt (deg) | one-foot time | sole lift (mm) | peak torque / limit |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| 0.6 | 4.0 | 0.0 | 0.0 | yes | no | 1 | -7 | 1.36 | 0.0 | 0.0 | 0.114 |
-| 0.6 | 4.0 | 0.0 | 8.0 | no | no | 53 | -8 | 4.44 | 0.0 | 0.0 | 0.442 |
-| 0.6 | 4.0 | 6.0 | 0.0 | yes | no | 79 | -4 | 4.01 | 0.01 | 0.01 | 0.212 |
-| 0.6 | 4.0 | 6.0 | 8.0 | no | no | 128 | -10 | 6.62 | 0.09 | 0.31 | 0.518 |
-| 0.6 | 4.0 | 12.0 | 0.0 | no | no | 115 | -1 | 7.85 | 0.087 | 0.03 | 0.298 |
-| 0.6 | 4.0 | 12.0 | 8.0 | no | no | 74 | -28 | 11.01 | 0.13 | 0.21 | 0.577 |
-| 0.6 | 8.0 | 0.0 | 0.0 | yes | no | 2 | -14 | 2.74 | 0.0 | 0.0 | 0.129 |
-| 0.6 | 8.0 | 0.0 | 8.0 | no | no | 63 | -28 | 6.18 | 0.003 | 0.0 | 0.537 |
-| 0.6 | 8.0 | 6.0 | 0.0 | yes | no | 106 | -11 | 4.78 | 0.008 | 0.01 | 0.228 |
-| 0.6 | 8.0 | 6.0 | 8.0 | no | no | 199 | -28 | 8.91 | 0.12 | 0.52 | 0.56 |
-| 0.6 | 8.0 | 12.0 | 0.0 | no | no | 170 | -12 | 8.22 | 0.048 | 0.02 | 0.314 |
-| 0.6 | 8.0 | 12.0 | 8.0 | no | no | 0 | -15 | 11.35 | 0.243 | 0.35 | 0.518 |
-| 0.6 | 14.0 | 0.0 | 0.0 | no | no | 20 | -24 | 4.78 | 0.038 | 0.0 | 0.293 |
-| 0.6 | 14.0 | 0.0 | 8.0 | no | no | 25 | -35 | 9.2 | 0.085 | 0.06 | 0.804 |
-| 0.6 | 14.0 | 6.0 | 0.0 | no | no | 67 | -22 | 6.19 | 0.035 | 0.03 | 0.298 |
-| 0.6 | 14.0 | 6.0 | 8.0 | no | no | 163 | 44 | 11.48 | 0.195 | 0.77 | 0.738 |
-| 0.6 | 14.0 | 12.0 | 0.0 | no | no | 167 | -19 | 9.18 | 0.073 | 0.18 | 0.345 |
-| 0.6 | 14.0 | 12.0 | 8.0 | no | no | -13 | -16 | 13.8 | 0.365 | 1.6 | 0.667 |
-| 1.0 | 4.0 | 0.0 | 0.0 | yes | no | 1 | 1 | 1.35 | 0.0 | 0.0 | 0.097 |
-| 1.0 | 4.0 | 0.0 | 8.0 | yes | no | 15 | 3 | 8.16 | 0.0 | 0.0 | 0.571 |
-| 1.0 | 4.0 | 6.0 | 0.0 | yes | no | 38 | -12 | 4.0 | 0.0 | 0.0 | 0.185 |
-| 1.0 | 4.0 | 6.0 | 8.0 | yes | no | 106 | -8 | 8.53 | 0.0 | 0.0 | 0.573 |
-| 1.0 | 4.0 | 12.0 | 0.0 | yes | no | 51 | -24 | 7.76 | 0.01 | 0.0 | 0.246 |
-| 1.0 | 4.0 | 12.0 | 8.0 | no | no | 112 | -26 | 9.99 | 0.008 | 0.02 | 0.562 |
-| 1.0 | 8.0 | 0.0 | 0.0 | yes | no | 1 | 2 | 2.71 | 0.0 | 0.0 | 0.115 |
-| 1.0 | 8.0 | 0.0 | 8.0 | yes | no | 16 | 0 | 8.72 | 0.0 | 0.0 | 0.589 |
-| 1.0 | 8.0 | 6.0 | 0.0 | yes | no | 53 | -10 | 4.77 | 0.0 | 0.0 | 0.172 |
-| 1.0 | 8.0 | 6.0 | 8.0 | yes | no | 98 | -6 | 9.4 | 0.003 | 0.0 | 0.61 |
-| 1.0 | 8.0 | 12.0 | 0.0 | yes | no | 82 | -25 | 8.1 | 0.015 | 0.02 | 0.211 |
-| 1.0 | 8.0 | 12.0 | 8.0 | no | no | 108 | -11 | 10.8 | 0.005 | 0.02 | 0.62 |
-| 1.0 | 14.0 | 0.0 | 0.0 | yes | no | 2 | 4 | 4.73 | 0.0 | 0.0 | 0.15 |
-| 1.0 | 14.0 | 0.0 | 8.0 | yes | no | 18 | -5 | 10.04 | 0.01 | 0.01 | 0.644 |
-| 1.0 | 14.0 | 6.0 | 0.0 | yes | no | 58 | -9 | 6.07 | 0.0 | 0.0 | 0.234 |
-| 1.0 | 14.0 | 6.0 | 8.0 | yes | no | 74 | 0 | 10.86 | 0.013 | 0.02 | 0.689 |
-| 1.0 | 14.0 | 12.0 | 0.0 | yes | no | 110 | -22 | 9.05 | 0.032 | 0.01 | 0.272 |
-| 1.0 | 14.0 | 12.0 | 8.0 | no | no | 51 | -22 | 9.53 | 0.037 | 0.03 | 0.568 |
-| 1.6 | 4.0 | 0.0 | 0.0 | yes | no | 1 | 5 | 1.36 | 0.0 | 0.0 | 0.096 |
-| 1.6 | 4.0 | 0.0 | 8.0 | yes | no | 4 | 11 | 2.16 | 0.0 | 0.0 | 0.381 |
-| 1.6 | 4.0 | 6.0 | 0.0 | yes | no | 22 | -3 | 3.97 | 0.0 | 0.0 | 0.17 |
-| 1.6 | 4.0 | 6.0 | 8.0 | yes | no | 39 | 6 | 8.67 | 0.0 | 0.0 | 0.4 |
-| 1.6 | 4.0 | 12.0 | 0.0 | yes | no | 26 | -11 | 7.75 | 0.0 | 0.0 | 0.198 |
-| 1.6 | 4.0 | 12.0 | 8.0 | yes | no | 47 | -5 | 8.8 | 0.0 | 0.0 | 0.431 |
-| 1.6 | 8.0 | 0.0 | 0.0 | yes | no | 1 | 11 | 2.7 | 0.0 | 0.0 | 0.112 |
-| 1.6 | 8.0 | 0.0 | 8.0 | yes | no | 21 | 21 | 8.33 | 0.0 | 0.0 | 0.412 |
-| 1.6 | 8.0 | 6.0 | 0.0 | yes | no | 32 | 2 | 4.74 | 0.0 | 0.0 | 0.157 |
-| 1.6 | 8.0 | 6.0 | 8.0 | yes | no | 39 | 11 | 8.37 | 0.0 | 0.0 | 0.396 |
-| 1.6 | 8.0 | 12.0 | 0.0 | yes | no | 46 | -6 | 8.08 | 0.0 | 0.0 | 0.185 |
-| 1.6 | 8.0 | 12.0 | 8.0 | yes | no | 49 | 1 | 8.03 | 0.0 | 0.0 | 0.407 |
-| 1.6 | 14.0 | 0.0 | 0.0 | yes | no | 1 | 19 | 4.71 | 0.0 | 0.0 | 0.125 |
-| 1.6 | 14.0 | 0.0 | 8.0 | yes | no | 21 | 29 | 8.69 | 0.0 | 0.0 | 0.38 |
+| 0.6 | 4.0 | 0.0 | 0.0 | yes | no | 2 | -7 | 1.36 | 0.0 | 0.0 | 0.121 |
+| 0.6 | 4.0 | 0.0 | 8.0 | no | no | 60 | -13 | 4.02 | 0.0 | 0.0 | 0.487 |
+| 0.6 | 4.0 | 6.0 | 0.0 | yes | no | 79 | -4 | 4.03 | 0.01 | 0.0 | 0.223 |
+| 0.6 | 4.0 | 6.0 | 8.0 | no | no | 131 | -20 | 7.12 | 0.093 | 0.24 | 0.547 |
+| 0.6 | 4.0 | 12.0 | 0.0 | no | no | 113 | -1 | 7.88 | 0.058 | 0.03 | 0.32 |
+| 0.6 | 4.0 | 12.0 | 8.0 | no | no | 130 | -20 | 11.42 | 0.173 | 0.34 | 0.637 |
+| 0.6 | 8.0 | 0.0 | 0.0 | yes | no | 2 | -14 | 2.74 | 0.0 | 0.0 | 0.134 |
+| 0.6 | 8.0 | 0.0 | 8.0 | no | no | 68 | -20 | 4.73 | 0.0 | 0.0 | 0.611 |
+| 0.6 | 8.0 | 6.0 | 0.0 | yes | no | 104 | -11 | 4.78 | 0.002 | 0.0 | 0.24 |
+| 0.6 | 8.0 | 6.0 | 8.0 | no | no | 236 | -26 | 9.0 | 0.132 | 0.46 | 0.589 |
+| 0.6 | 8.0 | 12.0 | 0.0 | no | no | 163 | -6 | 8.24 | 0.052 | 0.03 | 0.333 |
+| 0.6 | 8.0 | 12.0 | 8.0 | no | no | 53 | -28 | 11.62 | 0.248 | 0.88 | 0.553 |
+| 0.6 | 14.0 | 0.0 | 0.0 | no | no | 20 | -27 | 4.77 | 0.063 | 0.03 | 0.298 |
+| 0.6 | 14.0 | 0.0 | 8.0 | no | no | 18 | -28 | 9.69 | 0.082 | 0.19 | 0.948 |
+| 0.6 | 14.0 | 6.0 | 0.0 | no | no | 65 | -23 | 6.19 | 0.035 | 0.01 | 0.31 |
+| 0.6 | 14.0 | 6.0 | 8.0 | no | no | 244 | -36 | 13.55 | 0.247 | 1.15 | 0.92 |
+| 0.6 | 14.0 | 12.0 | 0.0 | no | no | 158 | -19 | 9.22 | 0.09 | 0.07 | 0.358 |
+| 0.6 | 14.0 | 12.0 | 8.0 | no | no | 94 | 26 | 13.94 | 0.363 | 2.5 | 0.751 |
+| 1.0 | 4.0 | 0.0 | 0.0 | yes | no | 1 | 1 | 1.35 | 0.0 | 0.0 | 0.102 |
+| 1.0 | 4.0 | 0.0 | 8.0 | yes | no | 16 | 3 | 7.32 | 0.0 | 0.0 | 0.582 |
+| 1.0 | 4.0 | 6.0 | 0.0 | yes | no | 38 | -12 | 4.0 | 0.0 | 0.0 | 0.199 |
+| 1.0 | 4.0 | 6.0 | 8.0 | yes | no | 93 | -20 | 8.71 | 0.0 | 0.0 | 0.578 |
+| 1.0 | 4.0 | 12.0 | 0.0 | yes | no | 51 | -25 | 7.78 | 0.022 | 0.01 | 0.25 |
+| 1.0 | 4.0 | 12.0 | 8.0 | no | no | 106 | -15 | 10.02 | 0.007 | 0.0 | 0.618 |
+| 1.0 | 8.0 | 0.0 | 0.0 | yes | no | 1 | 2 | 2.71 | 0.0 | 0.0 | 0.12 |
+| 1.0 | 8.0 | 0.0 | 8.0 | yes | no | 18 | -1 | 8.97 | 0.0 | 0.0 | 0.625 |
+| 1.0 | 8.0 | 6.0 | 0.0 | yes | no | 53 | -10 | 4.76 | 0.0 | 0.0 | 0.179 |
+| 1.0 | 8.0 | 6.0 | 8.0 | yes | no | 92 | -17 | 10.05 | 0.003 | 0.01 | 0.67 |
+| 1.0 | 8.0 | 12.0 | 0.0 | yes | no | 82 | -24 | 8.1 | 0.01 | 0.01 | 0.218 |
+| 1.0 | 8.0 | 12.0 | 8.0 | no | no | 104 | -6 | 11.43 | 0.007 | 0.01 | 0.631 |
+| 1.0 | 14.0 | 0.0 | 0.0 | yes | no | 2 | 4 | 4.73 | 0.0 | 0.0 | 0.149 |
+| 1.0 | 14.0 | 0.0 | 8.0 | yes | no | 20 | -16 | 11.59 | 0.005 | 0.01 | 0.714 |
+| 1.0 | 14.0 | 6.0 | 0.0 | yes | no | 58 | -9 | 6.06 | 0.0 | 0.0 | 0.234 |
+| 1.0 | 14.0 | 6.0 | 8.0 | yes | no | 70 | -17 | 10.82 | 0.01 | 0.02 | 0.743 |
+| 1.0 | 14.0 | 12.0 | 0.0 | yes | no | 108 | -21 | 9.06 | 0.015 | 0.0 | 0.274 |
+| 1.0 | 14.0 | 12.0 | 8.0 | no | no | 79 | -8 | 13.31 | 0.028 | 0.02 | 0.809 |
+| 1.6 | 4.0 | 0.0 | 0.0 | yes | no | 1 | 5 | 1.36 | 0.0 | 0.0 | 0.102 |
+| 1.6 | 4.0 | 0.0 | 8.0 | yes | no | 19 | 16 | 8.72 | 0.0 | 0.0 | 0.419 |
+| 1.6 | 4.0 | 6.0 | 0.0 | yes | no | 22 | -3 | 3.97 | 0.0 | 0.0 | 0.178 |
+| 1.6 | 4.0 | 6.0 | 8.0 | yes | no | 40 | 6 | 8.79 | 0.0 | 0.0 | 0.454 |
+| 1.6 | 4.0 | 12.0 | 0.0 | yes | no | 26 | -11 | 7.76 | 0.005 | 0.0 | 0.209 |
+| 1.6 | 4.0 | 12.0 | 8.0 | yes | no | 51 | -5 | 8.81 | 0.0 | 0.0 | 0.456 |
+| 1.6 | 8.0 | 0.0 | 0.0 | yes | no | 1 | 11 | 2.7 | 0.0 | 0.0 | 0.117 |
+| 1.6 | 8.0 | 0.0 | 8.0 | yes | no | 21 | 21 | 9.06 | 0.0 | 0.0 | 0.448 |
+| 1.6 | 8.0 | 6.0 | 0.0 | yes | no | 32 | 2 | 4.75 | 0.0 | 0.0 | 0.164 |
+| 1.6 | 8.0 | 6.0 | 8.0 | yes | no | 39 | 11 | 8.48 | 0.0 | 0.0 | 0.419 |
+| 1.6 | 8.0 | 12.0 | 0.0 | yes | no | 46 | -6 | 8.09 | 0.0 | 0.0 | 0.193 |
+| 1.6 | 8.0 | 12.0 | 8.0 | yes | no | 51 | 0 | 8.03 | 0.0 | 0.0 | 0.422 |
+| 1.6 | 14.0 | 0.0 | 0.0 | yes | no | 1 | 19 | 4.71 | 0.0 | 0.0 | 0.128 |
+| 1.6 | 14.0 | 0.0 | 8.0 | yes | no | 20 | 29 | 8.64 | 0.0 | 0.0 | 0.406 |
 | 1.6 | 14.0 | 6.0 | 0.0 | yes | no | 34 | 10 | 6.03 | 0.0 | 0.0 | 0.168 |
-| 1.6 | 14.0 | 6.0 | 8.0 | yes | no | 42 | 19 | 7.92 | 0.0 | 0.0 | 0.349 |
-| 1.6 | 14.0 | 12.0 | 0.0 | yes | no | 61 | 2 | 9.0 | 0.002 | 0.0 | 0.208 |
-| 1.6 | 14.0 | 12.0 | 8.0 | yes | no | 45 | 9 | 8.29 | 0.005 | 0.0 | 0.412 |
+| 1.6 | 14.0 | 6.0 | 8.0 | yes | no | 42 | 19 | 7.98 | 0.0 | 0.0 | 0.367 |
+| 1.6 | 14.0 | 12.0 | 0.0 | yes | no | 61 | 1 | 9.01 | 0.0 | 0.0 | 0.212 |
+| 1.6 | 14.0 | 12.0 | 8.0 | yes | no | 48 | 9 | 8.31 | 0.0 | 0.0 | 0.445 |
 
 ## Best set and floor friction
 
 | floor friction | fell | forward (mm) | speed (mm/s) |
 |---|---|---|---|
-| 0.3 | False | 125 | 11.3 |
-| 0.6 | False | 110 | 10.0 |
+| 0.3 | False | 123 | 11.2 |
+| 0.6 | False | 108 | 9.8 |
 | 1.0 | False | 88 | 8.0 |
 
 ![best gait](images/sim-gait-best.gif)

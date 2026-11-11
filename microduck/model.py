@@ -31,9 +31,12 @@ JOINTS = ["left_hip_roll", "left_hip_pitch", "left_knee",
           "right_hip_roll", "right_hip_pitch", "right_knee"]
 CAMERAS = ("esp32cam", "esp_eye", "esp32_s3_eye")
 with open(ROOT / "config" / "assembly.json", encoding="utf-8") as _handle:
-    CAMERA = json.load(_handle)["camera"]["preset"]
+    _config = json.load(_handle)
+CAMERA = _config["camera"]["preset"]
+FACE = _config.get("face")
+FACES = ("eyes_above_esp32cam", "eyes_above_esp_eye", "eyes_below_esp32cam", "stack_camera_forward")
 PART_FILES = {
-    "torso": f"01_torso_unoq_cam_{CAMERA}.stl",
+    "torso": f"01_torso_unoq_{FACE}_{CAMERA}.stl" if FACE else f"01_torso_unoq_cam_{CAMERA}.stl",
     "left_yoke": "left_hip_roll_pitch_yoke.stl",
     "right_yoke": "right_hip_roll_pitch_yoke.stl",
     "left_thigh": "left_thigh_knee_cradle.stl",
@@ -53,9 +56,11 @@ CONTROLLER_TORSOS = ("pi_zero_2w", "pi", "hub51515")
 OTHER_FILES = ([f"01_torso_unoq_cam_{name}.stl" for name in CAMERAS] + list(HEAD_FILES.values())
                + [f"01_torso_{name}_cam_{CAMERA}.stl" for name in CONTROLLER_TORSOS]
                + [f"head_tilt_cradle_{name}.stl" for name in CAMERAS]
-               + ["fit_sg90_cradle.stl", "head_pixy_plate_pixy2.stl", "head_pixy_plate_pixy1.stl"])
+               + [f"01_torso_unoq_{name}.stl" for name in FACES] + [f"head_tilt_cradle_{name}.stl" for name in FACES]
+               + ["fit_round_display.stl", "fit_sg90_cradle.stl", "head_pixy_plate_pixy2.stl", "head_pixy_plate_pixy1.stl"])
 COLORS = {"print": (236, 205, 120), "servo": (60, 66, 74), "horn": (225, 228, 230),
-          "board": (20, 120, 110), "shield": (40, 90, 160), "camera": (150, 40, 60)}
+          "board": (20, 120, 110), "shield": (40, 90, 160), "camera": (150, 40, 60),
+          "display": (30, 30, 36), "battery": (90, 110, 200)}
 # From build.py: cradle plate thickness, torso cradle position, yoke cradle
 # position, thigh cradle position, knee axis height in the shin, blank thickness.
 PLATE = 4.0
@@ -342,6 +347,13 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
     controller = assembly.get("controller", "unoq")
     other = hardware["controllers"][controller] if controller != "unoq" else None
     torso_file = other["torso"].format(camera=assembly["camera"]["preset"]) if other else None
+    # The face (round display with the camera above or below it) belongs to
+    # the UNO Q torso with the fixed head; the other variants are analysed
+    # with the plain camera mount.
+    face = assembly.get("face") if other is None and assembly.get("head", "fixed") == "fixed" else None
+    made = design_parameters()["faces"][f"{face}_{assembly['camera']['preset']}"] if face else None
+    if made:
+        torso_file = made["torso"]
 
     def printed(name: str, part: str, to_link: np.ndarray) -> Solid:
         if not load_meshes:
@@ -382,7 +394,22 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
     mount = assembly["camera"]
     cam = camera_spec(mount["preset"], hardware)
     pose = camera_pose(cam, mount)
-    camera = {"preset": mount["preset"], "spec": cam, "pose": pose, "link": "torso",
+    if made:
+        lean = np.radians(made["tilt_deg"])
+        forward, up = np.array([np.cos(lean), 0.0, -np.sin(lean)]), np.array([np.sin(lean), 0.0, np.cos(lean)])
+        origin = np.asarray(made["camera"]["board_origin"], float)
+        pose = {"origin": origin, "forward": forward, "up": up, "lens": np.asarray(made["camera"]["lens"], float),
+                "to_torso": frame(forward, [0.0, 1.0, 0.0], up, origin)}
+        disc = made["display"]
+        glass = np.asarray(disc["centre"], float)
+        to_torso = frame(forward, [0.0, 1.0, 0.0], up, glass)
+        rim = design_parameters()["round_display"]["rim"]
+        stack = (Manifold.cylinder(rim, disc["diameter"] / 2, disc["diameter"] / 2, 48).rotate([0, -90, 0])
+                 + box([-disc["depth"], -9.0, -10.5], [-rim, 9.0, 10.5]))
+        torso.solids.append(Solid("round_display", "display", apply(stack, to_torso), disc["mass_g"]))
+        cell = design_parameters()["battery"]
+        torso.solids.append(Solid("battery", "battery", box(*cell["box"]), cell["mass"]))
+    camera = {"preset": mount["preset"], "spec": cam, "pose": pose, "link": "torso", "face": face,
               "cone_half_angle_deg": hardware["camera_optics"]["assumed"]["clear_cone_half_angle_deg"]["value"]}
     if not turning:
         torso.solids.append(Solid("camera_board", "camera", camera_solid(cam, pose), cam["mass_g"]))
