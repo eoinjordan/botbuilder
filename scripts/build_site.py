@@ -32,9 +32,12 @@ DATA = {
     "lego-manifest.json": ROOT / "stl" / "lego" / "manifest.json",
     "lego-model-ev3-pixy2.json": ROOT / "robot" / "lego" / "ev3-pixy2.json",
     "lego-model-pi-zero-2w-51515.json": ROOT / "robot" / "lego" / "pi-zero-2w-51515.json",
+    "lego-model-hub-51515.json": ROOT / "robot" / "lego" / "hub-51515.json",
     "variants-summary.json": ROOT / "reports" / "variants" / "summary.json",
     "wheeled-analysis.json": ROOT / "reports" / "wheeled" / "analysis.json",
     "wheeled-sim.json": ROOT / "reports" / "wheeled" / "sim.json",
+    "wheeled-viewer.json": ROOT / "robot" / "lego" / "wheeled" / "viewer.json",
+    "programs-index.json": ROOT / "programs" / "index.json",
 }
 
 
@@ -67,6 +70,11 @@ def main() -> int:
         target = SITE / "stl" / "lego" / stl.relative_to(ROOT / "stl" / "lego")
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(stl, target)
+    # The programs the walker and wheeled pages offer as downloads.
+    for program in sorted((ROOT / "programs").rglob("*.py")):
+        target = SITE / "programs" / program.relative_to(ROOT / "programs")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(program, target)
     if args.with_meshes:
         source = ROOT / "build" / "stl"
         if not source.is_dir():

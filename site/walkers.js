@@ -1,75 +1,25 @@
 // SPDX-License-Identifier: MIT
 // Fills walkers.html from the generated reports and animates the crank cycle
-// from the kinematics. All paths are relative, so the page works from any
-// base path.
+// from the kinematics.
+import { COLORS, HELP, el, facts, figure, finding, getJson, programItem, row, stage, stlRow } from "./lego-common.js";
 
-const BUILDS = ["ev3-pixy2", "pi-zero-2w-51515"];
-const SHORT = { "ev3-pixy2": "EV3", "pi-zero-2w-51515": "Pi Zero 2 W" };
-const COLORS = { print: 0xecc878, crank: 0xd9664d, motor: 0x9aa0a8, controller: 0x4778aa, camera: 0x3f996e };
-
-async function getJson(name) {
-  const response = await fetch(`./data/${name}`);
-  if (!response.ok) throw new Error(`${name}: ${response.status}`);
-  return response.json();
-}
-
-function el(tag, text, className) {
-  const node = document.createElement(tag);
-  if (text !== undefined) node.textContent = text;
-  if (className) node.className = className;
-  return node;
-}
-
-function row(cells) {
-  const tr = document.createElement("tr");
-  for (const cell of cells) {
-    const td = document.createElement("td");
-    if (cell instanceof Node) td.append(cell); else td.textContent = String(cell);
-    tr.append(td);
-  }
-  return tr;
-}
-
-function finding(level, text, label) {
-  const li = el("li", undefined, level);
-  li.append(el("b", label || level), document.createTextNode(text));
-  return li;
-}
-
-function facts(target, items) {
-  target.replaceChildren();
-  for (const [name, value] of items) {
-    const box = document.createElement("div");
-    box.append(el("dt", name), el("dd", value));
-    target.append(box);
-  }
-}
-
-function figure(src, alt, caption, width, height) {
-  const fig = document.createElement("figure");
-  const img = document.createElement("img");
-  img.loading = "lazy";
-  img.src = `./${src}`;
-  img.alt = alt;
-  img.width = width;
-  img.height = height;
-  fig.append(img, el("figcaption", caption));
-  return fig;
-}
+const BUILDS = ["ev3-pixy2", "hub-51515", "pi-zero-2w-51515"];
+const SHORT = { "ev3-pixy2": "EV3", "hub-51515": "51515 hub", "pi-zero-2w-51515": "Pi Zero 2 W" };
+const TEXT = {
+  "ev3-pixy2": "EV3 brick strapped to the deck, two EV3 large motors on ports B and C, a Pixy2 on the head.",
+  "hub-51515": "Robot Inventor 51515 hub strapped to the deck, two medium angular motors on hub ports A and B, a head plate with pin holes.",
+  "pi-zero-2w-51515": "Raspberry Pi Zero 2 W with the Build HAT on the deck, two 51515 medium angular motors on ports A and B, a Camera Module 2 on the head.",
+};
 
 function fillBuilds(assembly, sim) {
   const cards = document.getElementById("build-cards");
-  const text = {
-    "ev3-pixy2": "EV3 brick strapped to the deck, two EV3 large motors on ports B and C, a Pixy2 on the head.",
-    "pi-zero-2w-51515": "Raspberry Pi Zero 2 W with the Build HAT on the deck, two 51515 medium angular motors on ports A and B, a Camera Module 2 on the head.",
-  };
   for (const build of BUILDS) {
     const a = assembly.builds[build];
     const s = sim.builds[build];
     const card = el("div", undefined, "build-card");
     const img = document.createElement("img");
     img.src = `./${a.pictures.iso}`;
-    img.alt = `Rendered view of the ${SHORT[build]} walker as placed for the assembly test`;
+    img.alt = `Rendered view of the ${SHORT[build]} walker`;
     img.width = 760;
     img.height = 600;
     const list = el("dl", undefined, "facts");
@@ -78,7 +28,12 @@ function fillBuilds(assembly, sim) {
       ["Size", `${Math.round(a.size_mm[0])} x ${Math.round(a.size_mm[1])} x ${Math.round(a.size_mm[2])} mm`],
       ["Walks at 60 rpm", `${walk.speed_mm_s} mm/s`],
       ["Balance margin", `${a.stability.min_margin_mm} mm`]]);
-    card.append(img, el("h3", a.title), el("p", text[build]), list);
+    const jump = document.createElement("a");
+    jump.href = `#get-${build}`;
+    jump.textContent = "Parts and programs";
+    const p = el("p");
+    p.append(jump);
+    card.append(img, el("h3", a.title), el("p", TEXT[build]), list, p);
     cards.append(card);
   }
 }
@@ -97,12 +52,15 @@ function fillAssembly(assembly) {
     gallery.append(figure(a.pictures.drive, `Drive train of the ${SHORT[build]} walker with the chassis hidden`, `${SHORT[build]}: motors, gears, cranks`, 760, 520));
   }
   gallery.append(figure(assembly.gear_mesh.picture, "Three printed gears in mesh on 16 mm centres", "Printed gears on the 16 mm axle spacing", 760, 300));
-  const p = assembly.builds["ev3-pixy2"].placement;
+  const notes = [];
+  for (const build of ["ev3-pixy2", "hub-51515"]) {
+    const p = assembly.builds[build].placement;
+    notes.push(`${p.item}: its centre may be anywhere from ${p.x_range_balanced_mm[0]} to ${p.x_range_balanced_mm[1]} mm fore and aft of the ` +
+      `centre axle, and from ${p.x_range_at_full_margin_mm[0]} to ${p.x_range_at_full_margin_mm[1]} mm keeps the full ${p.full_margin_mm} mm.`);
+  }
   document.getElementById("brick").textContent =
-    `Where the EV3 brick must sit: its centre anywhere from ${p.x_range_balanced_mm[0]} to ${p.x_range_balanced_mm[1]} mm fore and aft of ` +
-    `the centre axle keeps the robot balanced, and from ${p.x_range_at_full_margin_mm[0]} to ${p.x_range_at_full_margin_mm[1]} mm keeps the full ` +
-    `${p.full_margin_mm} mm. Centred on the deck is right, with the motors pointing backward. Sideways it must be centred. ` +
-    `No ballast is needed on either build.`;
+    `Where the controller sits. ${notes.join(" ")} Centred on the deck is right, with the motors pointing backward. ` +
+    `Sideways it must be centred. No build needs ballast.`;
 }
 
 function fillSimulation(sim) {
@@ -116,7 +74,6 @@ function fillSimulation(sim) {
     for (const [key, text] of Object.entries(s.verdict)) list.append(finding(level[key] || "fit", `${SHORT[build]}: ${text}`, key));
     if (s.recordings) {
       rec.append(figure(s.recordings.walk, `Recording of the simulated ${SHORT[build]} walker at 60 rpm`, `${SHORT[build]} at 60 rpm`, 320, 240));
-      rec.append(figure(s.recordings.fast, `Recording of the simulated ${SHORT[build]} walker at the motor's full speed`, `${SHORT[build]} at full motor speed`, 320, 240));
     }
     for (const r of s.forward.runs) {
       forward.append(row([SHORT[build], r.rpm, r.speed_mm_s, r.slip_fraction, r.max_tilt_deg, r.yaw_change_deg, r.torque.peak_nm, r.torque.stall_nm]));
@@ -127,159 +84,64 @@ function fillSimulation(sim) {
   }
 }
 
-function fillParts(manifest) {
-  const body = document.querySelector("#parts tbody");
-  for (const f of manifest.files) {
-    const link = document.createElement("a");
-    link.href = `./stl/lego/${f.file}`;
-    link.download = f.file.replace("/", "-");
-    link.textContent = f.file;
-    const tr = row([link, f.print_quantity, f.purpose, f.volume_cm3, f.bounding_box_mm.join(" x "), `${Math.round(f.bytes / 1024)} kB`]);
-    tr.children[2].className = "wrap";
-    body.append(tr);
+function fillDownloads(summary, manifest) {
+  const host = document.getElementById("downloads");
+  const bytes = Object.fromEntries(manifest.files.map((f) => [f.file, f.bytes]));
+  for (const build of BUILDS) {
+    const entry = summary.entries.find((e) => e.locomotion === "crank" && e.build === build);
+    const block = document.createElement("div");
+    block.id = `get-${build}`;
+    block.append(el("h3", entry.title));
+    const wrap = el("div", undefined, "table-wrap");
+    const table = document.createElement("table");
+    table.innerHTML = "<thead><tr><th>STL</th><th>Print</th><th>For</th><th>Size</th></tr></thead>";
+    const body = document.createElement("tbody");
+    for (const f of entry.files) body.append(stlRow(f.file, f.qty, f.role, bytes[f.file]));
+    table.append(body);
+    wrap.append(table);
+    block.append(wrap, el("h4", "Other parts"));
+    const parts = el("ul", undefined, "plain");
+    for (const p of entry.parts) parts.append(el("li", `${p.qty ? `${p.qty} x ` : ""}${p.name}: ${p.note}`));
+    block.append(parts, el("h4", "Programs"));
+    const programs = el("ul", undefined, "plain");
+    for (const p of entry.programs) programs.append(programItem(p));
+    block.append(programs);
+    host.append(block);
   }
-}
-
-function fillWheeled(summary, analysis, sim) {
-  const entries = summary.entries.filter((e) => e.locomotion === "wheeled");
-  const pick = document.getElementById("base-pick");
-  for (const [i, e] of entries.entries()) {
-    const option = el("option", `${e.base}: ${e.drive}`);
-    option.value = String(i);
-    pick.append(option);
-  }
-  const body = document.querySelector("#wheeled-options tbody");
-  function show() {
-    const e = entries[Number(pick.value)];
-    facts(document.getElementById("wheeled-facts"), [["Wheels offered", e.wheels.join("; ")], ["Default wheel", e.default_wheel],
-      ["Top speed, no load", `${e.top_speed_no_load_m_s} m/s`], ["Ground clearance", `${e.ground_clearance_mm} mm`],
-      ["Speed feedback", e.feedback], ["Sideways tilt to tip", `${e.balance.sideways_tilt_to_tip_deg} deg`]]);
-    body.replaceChildren();
-    for (const [name, o] of Object.entries(e.options)) {
-      body.append(row([name, o.mass_g, o.static_margin_mm, o.speed_m_s, o.spin_deg_s, o.max_slope_deg, o.max_step_mm]));
-    }
-    document.getElementById("wheeled-note").textContent =
-      `Drive: ${e.drive_mount}. Power: ${e.power}. Signals: ${e.signals}. ` +
-      (e.controller_sketch ? `Sketch: ${e.controller_sketch} (not run on hardware).` : "No controller sketch yet.");
-  }
-  pick.addEventListener("change", show);
-  show();
-
-  const ids = analysis.defaults;
-  const mean = (list, f) => (list.reduce((sum, id) => sum + f(id), 0) / list.length).toFixed(1);
-  const at = (end) => ids.filter((id) => analysis.variants[id].wheels_at === end);
-  const slope = (id) => sim.variants[id].slope.steepest_climbed_deg;
-  const list = document.getElementById("wheeled-findings");
-  list.append(finding("ok", `All ${ids.length} default builds have the centre of mass inside the triangle of the two wheels and the support, ` +
-    `with ${Math.min(...ids.map((id) => analysis.variants[id].static_margin_mm))} mm or more to the nearest edge.`, "balance"));
-  list.append(finding("ok", `Wheels at the back climb ${mean(at("back"), slope)} degrees on average in simulation, wheels at the front ` +
-    `${mean(at("front"), slope)}: climbing and accelerating press trailing wheels down and unload leading ones.`, "which end"));
-  list.append(finding("fit", "Wheels at the back can lift the support on a hard start and tip backward at the slope limit; wheels at the front " +
-    "lift the support on hard braking instead. Ramp the drive up. Recommended: wheels at the back.", "tipping"));
-  list.append(finding("fit", "A ball in a plain printed cup slides in the cup: it lowers the skid's drag but does not remove it. " +
-    "It helps most with the wheels at the front on a slope.", "support"));
-  const tyres = document.querySelector("#tyres tbody");
-  for (const id of analysis.tyre_comparison) {
-    const a = analysis.variants[id];
-    const s = sim.variants[id];
-    tyres.append(row([`${a.base} / ${a.drive}`, a.wheel, a.tyre.replace("_", " "), a.friction.wheel, s.straight.speed_m_s,
-      s.spin.fraction_of_ideal, s.slope.steepest_climbed_deg, s.slope.how || "-", s.step.highest_climbed_mm]));
-  }
-  const rec = document.getElementById("wheeled-recordings");
-  if (sim.recordings) {
-    rec.append(figure(sim.recordings.ev3_straight_and_turn, "Recording of the simulated EV3 wheeled build driving straight and turning", "EV3, skid, wheels at the back", 320, 240));
-    rec.append(figure(sim.recordings.ev3_step, "Recording of the simulated EV3 wheeled build stopped by a step", "EV3 stopped by a step", 320, 240));
-    rec.append(figure(sim.recordings.unoq_tt_ball_front, "Recording of the simulated UNO Q build on TT motors with the wheels at the front", "UNO Q, TT motors, ball, wheels at the front", 320, 240));
-  }
-}
-
-// Binary STL to a three.js geometry.
-function parseStl(THREE, buffer) {
-  const view = new DataView(buffer);
-  const count = view.getUint32(80, true);
-  const positions = new Float32Array(count * 9);
-  for (let i = 0; i < count; i++) {
-    const base = 84 + i * 50 + 12;
-    for (let k = 0; k < 9; k++) positions[i * 9 + k] = view.getFloat32(base + k * 4, true);
-  }
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.computeVertexNormals();
-  return geometry;
 }
 
 async function viewer(models) {
   const note = document.getElementById("view-note");
-  let THREE;
-  try {
-    THREE = await import("three");
-  } catch (error) {
-    note.textContent = "The 3D view needs three.js from the CDN, which did not load. The pictures below show the same model.";
-    return;
-  }
   const canvas = document.getElementById("view");
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  const scene = new THREE.Scene();
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a9a94, 1.6));
-  const sun = new THREE.DirectionalLight(0xffffff, 1.4);
-  sun.position.set(3, 6, 4);
-  scene.add(sun);
-  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-  const floor = new THREE.GridHelper(12, 50, 0x9fb5ab, 0xd6e3dc);
-  scene.add(floor);
-
-  // Robot frame (x forward, y left, z up, mm) to three.js (y up, units of 100 mm).
+  const view = await stage(canvas, note);
+  if (!view) return;
+  const { THREE } = view;
   const roots = {};
   const movers = {};
-  const cache = new Map();
-  function geometry(file) {
-    if (!cache.has(file)) {
-      cache.set(file, fetch(`./stl/lego/${file}`).then((r) => {
-        if (!r.ok) throw new Error(`${file}: ${r.status}`);
-        return r.arrayBuffer();
-      }).then((buffer) => parseStl(THREE, buffer)));
-    }
-    return cache.get(file);
-  }
 
   async function build(name) {
-    const view = models[name].viewer;
-    const root = new THREE.Group();
-    root.rotation.x = -Math.PI / 2;
-    root.scale.setScalar(0.01);
+    const data = models[name].viewer;
+    const root = view.root();
     root.visible = false;
-    scene.add(root);
     roots[name] = root;
     movers[name] = [];
-    for (const b of view.boxes) {
-      const size = b.max.map((v, i) => v - b.min[i]);
-      const mesh = new THREE.Mesh(new THREE.BoxGeometry(size[0], size[1], size[2]),
-        new THREE.MeshStandardMaterial({ color: COLORS[b.kind], roughness: 0.75, metalness: 0.05 }));
-      mesh.position.set((b.min[0] + b.max[0]) / 2, (b.min[1] + b.max[1]) / 2, (b.min[2] + b.max[2]) / 2);
-      root.add(mesh);
-    }
-    await Promise.all(view.printed.map(async (part) => {
+    for (const b of data.boxes) root.add(view.box(b, COLORS[b.kind]));
+    await Promise.all(data.printed.map(async (part) => {
       const crank = part.motion && part.motion[0] === "crank";
-      const mesh = new THREE.Mesh(await geometry(part.file),
-        new THREE.MeshStandardMaterial({ color: crank ? COLORS.crank : COLORS.print, roughness: 0.8, metalness: 0.02 }));
-      mesh.matrixAutoUpdate = false;
-      const base = new THREE.Matrix4().fromArray(part.matrix).transpose();
-      mesh.matrix.copy(base);
+      const mesh = await view.part(part.file, part.matrix, crank ? COLORS.crank : COLORS.print);
       root.add(mesh);
-      if (part.motion) movers[name].push({ mesh, base, motion: part.motion });
+      if (part.motion) movers[name].push({ mesh, base: mesh.matrix.clone(), motion: part.motion });
     }));
   }
 
   const state = { build: BUILDS[0], phase: 90, playing: false, follow: true, travel: 0 };
-  const orbit = { azimuth: 2.2, elevation: 0.3, distance: 8.5, target: new THREE.Vector3(0.2, 0.9, 0) };
   const shift = new THREE.Matrix4();
   const turn = new THREE.Matrix4();
   const lay = new THREE.Matrix4().makeRotationX(Math.PI / 2);
 
   function pose() {
-    const view = models[state.build].viewer;
-    const r = view.crank_radius_mm;
+    const data = models[state.build].viewer;
+    const r = data.crank_radius_mm;
     const a = (state.phase * Math.PI) / 180;
     for (const item of movers[state.build] || []) {
       const side = item.motion[1] === "left" ? 1 : -1;
@@ -287,14 +149,13 @@ async function viewer(models) {
         shift.makeTranslation(side * r * Math.cos(a), 0, -side * r * Math.sin(a));
         item.mesh.matrix.multiplyMatrices(shift, item.base);
       } else {
-        const angle = a + (side > 0 ? 0 : Math.PI);
         shift.makeTranslation(item.motion[2], item.motion[3], 0);
-        turn.makeRotationY(angle);
+        turn.makeRotationY(a + (side > 0 ? 0 : Math.PI));
         item.mesh.matrix.multiplyMatrices(shift, turn).multiply(lay);
       }
     }
     // The lower foot is on the floor: lift the body to match.
-    const height = view.leg_drop_mm + r * Math.abs(Math.sin(a));
+    const height = data.leg_drop_mm + r * Math.abs(Math.sin(a));
     for (const name of BUILDS) {
       if (!roots[name]) continue;
       roots[name].visible = name === state.build;
@@ -303,39 +164,11 @@ async function viewer(models) {
     const stance = Math.sin(a) > 0.02 ? "left" : Math.sin(a) < -0.02 ? "right" : "both";
     document.getElementById("phase-out").textContent = `${Math.round(state.phase)} deg`;
     facts(document.getElementById("phase-facts"), [["Foot on the floor", stance], ["Body height", `${height.toFixed(1)} mm`],
-      ["Per crank turn", `${view.stride_per_turn_mm} mm`], ["Travelled", `${Math.round(state.travel)} mm`]]);
+      ["Per crank turn", `${data.stride_per_turn_mm} mm`], ["Travelled", `${Math.round(state.travel)} mm`]]);
   }
+  function refresh() { pose(); view.draw(); }
 
-  function draw() {
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    if (canvas.width !== Math.floor(width * renderer.getPixelRatio()) || canvas.height !== Math.floor(height * renderer.getPixelRatio())) {
-      renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    }
-    const c = Math.cos(orbit.elevation);
-    camera.position.set(orbit.target.x + orbit.distance * c * Math.sin(orbit.azimuth),
-      orbit.target.y + orbit.distance * Math.sin(orbit.elevation),
-      orbit.target.z + orbit.distance * c * Math.cos(orbit.azimuth));
-    camera.lookAt(orbit.target);
-    renderer.render(scene, camera);
-  }
-
-  function refresh() { pose(); draw(); }
-
-  const slider = document.getElementById("phase");
-  slider.addEventListener("input", () => {
-    const next = Number(slider.value);
-    let delta = next - state.phase;
-    if (delta > 180) delta -= 360;
-    if (delta < -180) delta += 360;
-    advance(delta);
-    state.phase = next;
-    refresh();
-  });
-
-  // The stance foot moves back under the body: 4 r per turn, as |d cos| of the phase.
+  // The stance foot moves back under the body: 4 r per turn.
   function advance(deltaDeg) {
     const r = models[state.build].viewer.crank_radius_mm;
     const steps = Math.max(1, Math.ceil(Math.abs(deltaDeg) / 2));
@@ -346,7 +179,16 @@ async function viewer(models) {
       a += da;
     }
   }
-
+  const slider = document.getElementById("phase");
+  slider.addEventListener("input", () => {
+    const next = Number(slider.value);
+    let delta = next - state.phase;
+    if (delta > 180) delta -= 360;
+    if (delta < -180) delta += 360;
+    advance(delta);
+    state.phase = next;
+    refresh();
+  });
   let last = null;
   function frame(now) {
     if (!state.playing) { last = null; return; }
@@ -373,6 +215,11 @@ async function viewer(models) {
     follow.setAttribute("aria-pressed", String(state.follow));
     refresh();
   });
+  async function load(name) {
+    if (roots[name]) return;
+    note.textContent = "Loading the printable parts.";
+    try { await build(name); note.textContent = HELP; } catch (error) { note.textContent = `Could not load the parts: ${error.message}`; }
+  }
   for (const name of BUILDS) {
     document.getElementById(`pick-${name}`).addEventListener("click", async () => {
       state.build = name;
@@ -381,61 +228,24 @@ async function viewer(models) {
         button.setAttribute("aria-pressed", String(other === name));
         button.className = other === name ? "primary" : "secondary";
       }
-      if (!roots[name]) {
-        note.textContent = "Loading the printable parts.";
-        try { await build(name); note.textContent = "Drag or use the arrow keys to turn, scroll or plus and minus to zoom."; } catch (error) { note.textContent = `Could not load the parts: ${error.message}`; }
-      }
+      await load(name);
       refresh();
     });
   }
-
-  let drag = null;
-  canvas.addEventListener("pointerdown", (event) => { drag = { x: event.clientX, y: event.clientY }; canvas.setPointerCapture(event.pointerId); });
-  canvas.addEventListener("pointerup", () => { drag = null; });
-  canvas.addEventListener("pointermove", (event) => {
-    if (!drag) return;
-    orbit.azimuth -= (event.clientX - drag.x) * 0.008;
-    orbit.elevation = Math.min(1.4, Math.max(-0.2, orbit.elevation + (event.clientY - drag.y) * 0.006));
-    drag = { x: event.clientX, y: event.clientY };
-    draw();
-  });
-  canvas.addEventListener("wheel", (event) => {
-    event.preventDefault();
-    orbit.distance = Math.min(20, Math.max(3, orbit.distance * (event.deltaY > 0 ? 1.08 : 0.93)));
-    draw();
-  }, { passive: false });
-  canvas.addEventListener("keydown", (event) => {
-    const keys = { ArrowLeft: [0.1, 0, 1], ArrowRight: [-0.1, 0, 1], ArrowUp: [0, 0.06, 1], ArrowDown: [0, -0.06, 1], "+": [0, 0, 0.9], "=": [0, 0, 0.9], "-": [0, 0, 1.1] };
-    const k = keys[event.key];
-    if (!k) return;
-    event.preventDefault();
-    orbit.azimuth += k[0];
-    orbit.elevation = Math.min(1.4, Math.max(-0.2, orbit.elevation + k[1]));
-    orbit.distance = Math.min(20, Math.max(3, orbit.distance * k[2]));
-    draw();
-  });
-  window.addEventListener("resize", draw);
-
-  try {
-    await build(state.build);
-    note.textContent = "Drag or use the arrow keys to turn, scroll or plus and minus to zoom.";
-  } catch (error) {
-    note.textContent = `Could not load the parts: ${error.message}`;
-  }
+  await load(state.build);
   refresh();
   window.walkerViewer = { state, refresh, roots, movers };
 }
 
 async function main() {
   try {
-    const [assembly, sim, manifest, summary, wheeledAnalysis, wheeledSim, ...models] = await Promise.all(
-      ["lego-assembly.json", "lego-sim.json", "lego-manifest.json", "variants-summary.json", "wheeled-analysis.json",
-        "wheeled-sim.json", ...BUILDS.map((b) => `lego-model-${b}.json`)].map(getJson));
+    const [assembly, sim, manifest, summary, ...models] = await Promise.all(
+      ["lego-assembly.json", "lego-sim.json", "lego-manifest.json", "variants-summary.json",
+        ...BUILDS.map((b) => `lego-model-${b}.json`)].map(getJson));
     fillBuilds(assembly, sim);
     fillAssembly(assembly);
     fillSimulation(sim);
-    fillWheeled(summary, wheeledAnalysis, wheeledSim);
-    fillParts(manifest);
+    fillDownloads(summary, manifest);
     await viewer(Object.fromEntries(BUILDS.map((b, i) => [b, models[i]])));
   } catch (error) {
     document.getElementById("findings").append(finding("bad", `Could not load the report data: ${error.message}`));
