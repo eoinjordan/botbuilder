@@ -5,13 +5,13 @@
   "repository": "eoinjordan/3d-print-designs",
   "directory": "microduck-braccio-unoq",
   "generator": "build.py",
-  "commit": "1e45bd25848cbaa0526415322270b4c276db08fc",
+  "commit": "a600956d0555da5d4107bc35e80810786cce6826",
   "uncommitted_changes": false
  },
  "generator_parameters_file": "parameters.json",
- "generator_parameters_sha256": "38656ba28abaaf3d38eeed2dd4a2f363f4a740e9efb1d81e85ce964499fb9931",
+ "generator_parameters_sha256": "267da3ca297cfc979e52ce1f6b5cc9ddd3ecf67a8d94893e8004ce9391b7f85a",
  "camera_default": "esp32cam",
- "total_bytes": 2713844,
+ "total_bytes": 3761016,
  "files": [
   {
    "file": "01_torso_unoq_cam_esp32_s3_eye.stl",
@@ -84,6 +84,30 @@
    ],
    "bytes": 456084,
    "sha256": "7237b395d12d24dff5296ba9b8f4ea29395b0f9255f9698868a226f072076fbf"
+  },
+  {
+   "file": "01_torso_unoq_pan_head.stl",
+   "what": "torso with the UNO Q deck and the pan servo tab of the turning head",
+   "options": {
+    "part": "torso",
+    "head": "pan"
+   },
+   "triangles": 9794,
+   "volume_mm3": 62178.2,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     71.15,
+     75.25,
+     17.5
+    ]
+   ],
+   "bytes": 489784,
+   "sha256": "731a6564514a98f2869f32c0bff7a25b3c378ebb2a9b4c459c7befa957307310"
   },
   {
    "file": "fit_cam_esp32_s3_eye.stl",
@@ -204,6 +228,30 @@
    "sha256": "2695d9b21b84c3ca104e956c0b2e6e57d87795894268ca77e5e33b5a1dcd3d75"
   },
   {
+   "file": "fit_sg90_cradle.stl",
+   "what": "fit piece for the pan servo pocket, stops and switch seat",
+   "options": {
+    "fit_piece": true,
+    "head": "pan"
+   },
+   "triangles": 920,
+   "volume_mm3": 4560.5,
+   "bounding_box_mm": [
+    [
+     34.0,
+     -15.0,
+     -6.0
+    ],
+    [
+     71.15,
+     15.0,
+     17.5
+    ]
+   ],
+   "bytes": 46084,
+   "sha256": "dea71f1133dd8ac93329a70484404a797b1313cbe4381bebbf11b4007898f192"
+  },
+  {
    "file": "fit_SR311.stl",
    "what": "fit piece for an SR311 servo cradle",
    "options": {
@@ -248,6 +296,147 @@
    ],
    "bytes": 10284,
    "sha256": "84b200d520ee4139262d89d87f8709d5abb4ddd09ccbd61fd653f90261e01802"
+  },
+  {
+   "file": "head_pan_platform.stl",
+   "what": "turning head: platform on the pan servo horn",
+   "options": {
+    "head": "pan"
+   },
+   "triangles": 3360,
+   "volume_mm3": 6291.1,
+   "bounding_box_mm": [
+    [
+     -16.0,
+     -16.0,
+     -3.7
+    ],
+    [
+     16.0,
+     16.0,
+     20.8
+    ]
+   ],
+   "bytes": 168084,
+   "sha256": "9a15a7d2149a5c6c8ce1e470e27a0c2c1ace544f6ef99a1f333f054e71798fbe"
+  },
+  {
+   "file": "head_pixy_plate_pixy1.stl",
+   "what": "plate for a first-generation Pixy and its pan-tilt base on the 8 mm grid",
+   "options": {
+    "camera": "pixy1"
+   },
+   "triangles": 2444,
+   "volume_mm3": 14105.9,
+   "bounding_box_mm": [
+    [
+     -32.0,
+     -28.0,
+     0.0
+    ],
+    [
+     32.0,
+     28.0,
+     7.8
+    ]
+   ],
+   "bytes": 122284,
+   "sha256": "7a20321342b0925510db9cd5dd41660efbc7967e5da93b30df751ea72fc118f5"
+  },
+  {
+   "file": "head_pixy_plate_pixy2.stl",
+   "what": "plate for a Pixy2 and its pan-tilt base on the 8 mm grid",
+   "options": {
+    "camera": "pixy2"
+   },
+   "triangles": 3036,
+   "volume_mm3": 14009.7,
+   "bounding_box_mm": [
+    [
+     -32.0,
+     -28.0,
+     0.0
+    ],
+    [
+     32.0,
+     28.0,
+     7.8
+    ]
+   ],
+   "bytes": 151884,
+   "sha256": "adcd94dfa6ac2f8c53cedd2b92222bb19bc43fac9d7b22ce50f7971ed4cb44f9"
+  },
+  {
+   "file": "head_tilt_cradle_esp32_s3_eye.stl",
+   "what": "turning head: tilt cradle for the esp32_s3_eye preset",
+   "options": {
+    "head": "pan",
+    "camera": "esp32_s3_eye"
+   },
+   "triangles": 440,
+   "volume_mm3": 12160.8,
+   "bounding_box_mm": [
+    [
+     -9.0,
+     -32.0,
+     -6.0
+    ],
+    [
+     9.0,
+     32.0,
+     102.5
+    ]
+   ],
+   "bytes": 22084,
+   "sha256": "3efb03a7bc6f01a0ec1e970f2f4f146dc48565189a37be647a9bc5ddd48b3ef1"
+  },
+  {
+   "file": "head_tilt_cradle_esp32cam.stl",
+   "what": "turning head: tilt cradle for the esp32cam preset",
+   "options": {
+    "head": "pan",
+    "camera": "esp32cam"
+   },
+   "triangles": 468,
+   "volume_mm3": 8665.7,
+   "bounding_box_mm": [
+    [
+     -9.0,
+     -30.5,
+     -6.0
+    ],
+    [
+     9.0,
+     30.5,
+     58.0
+    ]
+   ],
+   "bytes": 23484,
+   "sha256": "780b9ebcedfd55b70af3c06006596c67d64d2e4c68090979d481f24b348ef9b0"
+  },
+  {
+   "file": "head_tilt_cradle_esp_eye.stl",
+   "what": "turning head: tilt cradle for the esp_eye preset",
+   "options": {
+    "head": "pan",
+    "camera": "esp_eye"
+   },
+   "triangles": 468,
+   "volume_mm3": 10573.8,
+   "bounding_box_mm": [
+    [
+     -9.0,
+     -27.5,
+     -6.0
+    ],
+    [
+     9.0,
+     27.5,
+     83.5
+    ]
+   ],
+   "bytes": 23484,
+   "sha256": "6b58adb91716f2d62fa4feda631dfef8a1da8cfa732625a030529f8156eeac13"
   },
   {
    "file": "left_hip_roll_pitch_yoke.stl",

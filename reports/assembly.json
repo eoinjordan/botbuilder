@@ -435,6 +435,184 @@
    "stand_margin_mm": 37.37
   }
  },
+ "turning_head": {
+  "camera_preset": "esp32cam",
+  "tilt_set_to_deg": 10.0,
+  "neutral_interferences": [],
+  "pan_travel_to_the_stops_deg": [
+   -75.25,
+   75.25
+  ],
+  "pan_stopped_by": {
+   "negative": [
+    {
+     "moving": "head_platform_print",
+     "fixed": "torso_print",
+     "volume_mm3": 0.7
+    }
+   ],
+   "positive": [
+    {
+     "moving": "head_platform_print",
+     "fixed": "torso_print",
+     "volume_mm3": 0.7
+    }
+   ]
+  },
+  "tilt_free_deg": [
+   -12.5,
+   12.5
+  ],
+  "tilt_stopped_by": {
+   "negative": [
+    {
+     "moving": "head_cradle_print",
+     "fixed": "head_platform_print",
+     "volume_mm3": 0.6
+    }
+   ],
+   "positive": [
+    {
+     "moving": "head_cradle_print",
+     "fixed": "head_platform_print",
+     "volume_mm3": 0.6
+    }
+   ]
+  },
+  "leg_sweeps_collision_free_deg": {
+   "left_hip_roll": [
+    -55.0,
+    130.25
+   ],
+   "left_hip_pitch": [
+    -180.0,
+    180.0
+   ],
+   "left_knee": [
+    -137.25,
+    115.25
+   ]
+  },
+  "at_the_stand_pose": [
+   {
+    "pan_deg": -75.25,
+    "new_interferences": [],
+    "in_the_cone": [
+     {
+      "solid": "right_yoke_print",
+      "volume_mm3": 1298.2
+     },
+     {
+      "solid": "right_pitch_servo",
+      "volume_mm3": 24368.6
+     },
+     {
+      "solid": "right_thigh_print",
+      "volume_mm3": 5082.6
+     },
+     {
+      "solid": "right_pitch_horn",
+      "volume_mm3": 959.8
+     }
+    ],
+    "com_mm": [
+     43.49,
+     -0.24,
+     -27.02
+    ],
+    "stand_margin_mm": 36.87,
+    "lens_mm": [
+     63.02,
+     -17.15,
+     77.06
+    ]
+   },
+   {
+    "pan_deg": 0.0,
+    "new_interferences": [],
+    "in_the_cone": [],
+    "com_mm": [
+     43.69,
+     0.0,
+     -27.02
+    ],
+    "stand_margin_mm": 36.68,
+    "lens_mm": [
+     76.23,
+     0.0,
+     77.06
+    ]
+   },
+   {
+    "pan_deg": 75.25,
+    "new_interferences": [],
+    "in_the_cone": [
+     {
+      "solid": "left_yoke_print",
+      "volume_mm3": 1298.2
+     },
+     {
+      "solid": "left_pitch_servo",
+      "volume_mm3": 24368.6
+     },
+     {
+      "solid": "left_thigh_print",
+      "volume_mm3": 5026.4
+     },
+     {
+      "solid": "left_pitch_horn",
+      "volume_mm3": 959.8
+     }
+    ],
+    "com_mm": [
+     43.5,
+     0.25,
+     -27.02
+    ],
+    "stand_margin_mm": 36.86,
+    "lens_mm": [
+     63.02,
+     17.15,
+     77.06
+    ]
+   }
+  ],
+  "total_g": 519.7,
+  "com_neutral_mm": [
+   54.53,
+   0.0,
+   -31.18
+  ],
+  "neutral_margin_mm": -5.97,
+  "head_parts": [
+   {
+    "solid": "pan_servo",
+    "link": "torso",
+    "mass_g": 9.0
+   },
+   {
+    "solid": "head_platform_print",
+    "link": "head_pan",
+    "mass_g": 4.7
+   },
+   {
+    "solid": "pan_horn",
+    "link": "head_pan",
+    "mass_g": 0.0
+   },
+   {
+    "solid": "head_cradle_print",
+    "link": "head_tilt",
+    "mass_g": 6.4
+   },
+   {
+    "solid": "camera_board",
+    "link": "head_tilt",
+    "mass_g": 10.0
+   }
+  ],
+  "head_mass_g": 30.1
+ },
  "images": {
   "assembly_iso": "images/assembly-iso.png",
   "assembly_front": "images/assembly-front.png",
@@ -449,7 +627,8 @@
   "assumption_thigh_face": "images/assumption-thigh-face.png",
   "assumption_cradle_SR431": "images/assumption-cradle-SR431.png",
   "assumption_cradle_SR311": "images/assumption-cradle-SR311.png",
-  "balance": "images/balance.png"
+  "balance": "images/balance.png",
+  "turning_head": "images/turning-head.png"
  },
  "variants": {
   "rail": {

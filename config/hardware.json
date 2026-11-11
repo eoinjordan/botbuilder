@@ -395,5 +395,131 @@
         "why": "free length needed in front of the access hole"
       }
     }
+  },
+  "head_servo": {
+    "name": "M5Stack Servo Kit 360 / 180 (SG90 class)",
+    "source": "https://docs.m5stack.com/en/accessory/servo_kit_360",
+    "sources": [
+      "https://docs.m5stack.com/en/accessory/servo_kit_360",
+      "https://docs.m5stack.com/en/accessory/servo_kit_180",
+      "https://docs.m5stack.com/en/app/balac",
+      "https://docs.m5stack.com/en/app/balac_plus",
+      "https://bit.nkust.edu.tw/~csshieh/teach/111A/mc/datasheet/SG90.pdf",
+      "https://static.rapidonline.com/pdf/37-1330t.pdf"
+    ],
+    "published": {
+      "kit_360_is_continuous_rotation": true,
+      "kit_180_is_positional": true,
+      "mass_g": 9.0,
+      "supply_v": [
+        4.8,
+        6.0
+      ],
+      "stall_torque_kgcm_4v8": 1.6,
+      "stall_current_ma": 750,
+      "no_load_current_ma": 60,
+      "signal": "50 Hz, 0.5 to 2.5 ms",
+      "kit_size_mm": [
+        40,
+        12,
+        36
+      ],
+      "sg90_body_mm": {
+        "length": [
+          22.2,
+          23.0
+        ],
+        "width": [
+          11.8,
+          12.5
+        ],
+        "overall_height": [
+          29.0,
+          31.0
+        ]
+      }
+    },
+    "assumed": {
+      "body_length_mm": {
+        "value": 23.0,
+        "why": "largest of the SG90 data sheet figures; M5Stack gives no body size for the servo alone"
+      },
+      "body_width_mm": {
+        "value": 12.5,
+        "why": "largest of the SG90 figures"
+      },
+      "body_below_ears_mm": {
+        "value": 19.5,
+        "why": "largest of the SG90 figures (17 to 19.5)"
+      },
+      "ear_span_mm": {
+        "value": 32.5,
+        "why": "SG90 figures give 32 to 32.5"
+      },
+      "shaft_from_body_centre_mm": {
+        "value": 5.6,
+        "why": "typical of the SG90; not on the data sheets read; measure"
+      },
+      "horn_face_above_deck_top_mm": {
+        "value": 14.5,
+        "why": "ears on the deck top, gear housing 10 mm, spline and horn about 4.5 mm; measure with the horn or adapter fitted"
+      },
+      "same_case_for_180_and_360": {
+        "value": true,
+        "why": "both are named SG90 by M5Stack; not stated"
+      },
+      "adapter_hole_pattern": {
+        "value": "four holes at 8 mm from the axis",
+        "why": "the kit's LEGO-compatible adapter is not dimensioned by M5Stack; measure with calipers"
+      }
+    }
+  },
+  "pixy": {
+    "name": "Charmed Labs Pixy2 and pan-tilt kit",
+    "source": "https://docs.pixycam.com/wiki/doku.php?id=wiki:v2:dimensions",
+    "published": {
+      "board_mm": [
+        38.25,
+        42.0
+      ],
+      "mass_g": 10.0,
+      "hole_diameter_mm": 3.0,
+      "holes_from_top_left_mm": [
+        [
+          5.1,
+          31.3
+        ],
+        [
+          16.0,
+          38.8
+        ],
+        [
+          22.4,
+          38.8
+        ]
+      ],
+      "lens_fov_deg": [
+        60,
+        40
+      ],
+      "pan_tilt_servos_plug_into": "the Pixy2's own two servo connectors"
+    },
+    "assumed": {
+      "pan_tilt_base_slot_spacing_mm": {
+        "value": 25.0,
+        "why": "the kit's base is not dimensioned by the maker; measure"
+      },
+      "pan_tilt_base_slot_length_mm": {
+        "value": 20.0,
+        "why": "allows for the unknown hole spacing; measure"
+      },
+      "first_pixy_board_mm": {
+        "value": [
+          53.3,
+          50.8
+        ],
+        "why": "2.1 x 2.0 inches as commonly quoted for the first Pixy; not read from Charmed Labs' pages"
+      }
+    }
   }
 }

@@ -49,5 +49,7 @@ SR431 and 1.0 A for an SR311.
 - The camera board adds about 0.3 A at 5 V (ESP32-CAM, maker's figure with
   the flash LED on). Feed it from the controller side, not the servo rail.
   See [camera.md](camera.md).
+- The optional turning head adds one 9 g servo: up to 0.75 A at 5 V when
+  stalled against a stop (M5Stack's figure). See [head.md](head.md).
 - The robot is tethered. No battery, regulator or charger is part of this
   design, and the mass and balance figures do not include one.

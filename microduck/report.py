@@ -385,6 +385,32 @@ def markdown(report: dict) -> str:
            "The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are",
            "and what is assumed about them is in `config/hardware.json` and the design README.", ""]
 
+    th = report["turning_head"]
+    md += ["## Turning head (option)", "",
+           "An optional head in place of the fixed mount: a 9 g SG90-class servo hangs by its ears in a tab at the deck front and",
+           "turns a platform; the camera cradle tilts on one M3 screw and is set by hand. Printed from `01_torso_unoq_pan_head.stl`,",
+           "`head_pan_platform.stl` and `head_tilt_cradle_<camera>.stl`. It is not part of the robot description or the simulation:",
+           "the URDF, the MJCF and the joint commands are for the fixed mount. Servo body, shaft position and horn height are",
+           "assumed (see the design README); nothing has been fitted.", "",
+           f"![turning head]({img['turning_head']})", "",
+           _table(["check", "value"], [
+               ("camera preset", th["camera_preset"]),
+               ("pan travel between the printed stops (deg)", th["pan_travel_to_the_stops_deg"]),
+               ("stopped by", ", ".join(f"{b['moving']} / {b['fixed']}" for b in th["pan_stopped_by"]["positive"]) or "nothing"),
+               ("tilt set to (deg below level)", th["tilt_set_to_deg"]),
+               ("tilt free range about level (deg, positive is down)", th["tilt_free_deg"]),
+               ("tilt stopped by", ", ".join(f"{b['moving']} / {b['fixed']}" for b in th["tilt_stopped_by"]["positive"] + th["tilt_stopped_by"]["negative"]) or "nothing"),
+               ("interference at the neutral pose", len(th["neutral_interferences"])),
+               ("left hip roll, hip pitch, knee free range with the head on (deg)", list(th["leg_sweeps_collision_free_deg"].values())),
+               ("mass of the head with its servo and camera (g)", th["head_mass_g"]),
+               ("total mass (g)", th["total_g"]),
+               ("centre of mass at neutral (mm)", th["com_neutral_mm"]),
+               ("margin with legs straight (mm)", th["neutral_margin_mm"]),
+           ]), "",
+           _table(["at the stand pose, pan (deg)", "new interference", "parts in the clear cone", "centre of mass (mm)", "stand margin (mm)", "lens (mm)"],
+                  [(p["pan_deg"], len(p["new_interferences"]), ", ".join(h["solid"] for h in p["in_the_cone"]) or "none",
+                    p["com_mm"], p["stand_margin_mm"], p["lens_mm"]) for p in th["at_the_stand_pose"]]), ""]
+
     lg = rep["lego_compatible"]
 
     def spread(rows, key):
@@ -464,8 +490,21 @@ def run(progress=print) -> dict:
         progress(f"camera preset {name}")
         other = dict(config, camera=dict(config["camera"], preset=name))
         presets[name] = assembly.camera_preset_summary(build_robot(selected, hardware, other))
+    progress("turning head")
+    turning = build_robot(selected, hardware, dict(config, head="pan"))
+    head = assembly.head_checks(turning, reports[selected]["balance"]["stand_pose"]["q_deg"])
     progress("rendering")
     images = render_images(robots, reports, selected)
+    names = {"torso_print", "pan_servo", "pan_horn", "head_platform_print", "head_cradle_print", "camera_board", "unoq", "braccio_shield"}
+    shots = []
+    for angle in (0.0, head["pan_travel_to_the_stops_deg"][1]):
+        posed = turning.placed({"head_pan": angle, "head_tilt": head["tilt_set_to_deg"]})
+        shots.append(render.render(_items(posed, names), "iso", (560, 520), bounds=_pad([20, -45, -20], [80, 45, 95], 4.0)))
+    posed = turning.placed({"head_tilt": head["tilt_set_to_deg"]})
+    shots.append(render.render(_items(posed, names), "left", (560, 520), bounds=_pad([20, -45, -20], [80, 45, 95], 4.0)))
+    shots.append(render.render(_items(posed), "iso", (700, 520)))
+    images["turning_head"] = _save(_side_by_side(shots, ["turning head, pan 0", f"at the stop, {head['pan_travel_to_the_stops_deg'][1]} deg",
+                                                         "left", "whole robot"]), "turning-head.png")
     assumed = []
     for group in ("servos",):
         for name, spec in hardware[group].items():
@@ -493,6 +532,7 @@ def run(progress=print) -> dict:
                     camera["name"]: camera["source"]},
         "findings": findings(reports[selected]),
         "camera_presets": presets,
+        "turning_head": head,
         "images": images,
         "variants": reports,
     }

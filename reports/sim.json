@@ -1278,8 +1278,12 @@
    "speed_mm_s": 8.0
   }
  ],
- "recordings": {},
- "offscreen_rendering": "failed: ValueError: Error: Error opening file 'stl/01_torso_unoq_cam_esp32cam.stl'",
+ "recordings": {
+  "gait": "images/sim-gait.gif",
+  "neutral": "images/sim-neutral-fall.gif",
+  "gait_best": "images/sim-gait-best.gif"
+ },
+ "offscreen_rendering": "worked",
  "suggestions": [
   "Move the hips back under the body. The hip pitch axis is 89 mm ahead of the torso origin, so with straight legs the centre of mass is behind the heels and the robot only stands with the thighs swung 42 degrees back.",
   "Bring the feet together. The foot centres are 172 mm apart and the centre of mass is 62 mm outside either foot, so the weight cannot be put on one foot and the gait can only shuffle.",

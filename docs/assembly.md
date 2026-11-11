@@ -245,6 +245,37 @@ The other camera presets, each with its own torso file, checked in short form (s
 The board is a plain plate with a lens barrel. Its connectors, buttons, pins and wires are not modelled; where they are
 and what is assumed about them is in `config/hardware.json` and the design README.
 
+## Turning head (option)
+
+An optional head in place of the fixed mount: a 9 g SG90-class servo hangs by its ears in a tab at the deck front and
+turns a platform; the camera cradle tilts on one M3 screw and is set by hand. Printed from `01_torso_unoq_pan_head.stl`,
+`head_pan_platform.stl` and `head_tilt_cradle_<camera>.stl`. It is not part of the robot description or the simulation:
+the URDF, the MJCF and the joint commands are for the fixed mount. Servo body, shaft position and horn height are
+assumed (see the design README); nothing has been fitted.
+
+![turning head](images/turning-head.png)
+
+| check | value |
+|---|---|
+| camera preset | esp32cam |
+| pan travel between the printed stops (deg) | [-75.25, 75.25] |
+| stopped by | head_platform_print / torso_print |
+| tilt set to (deg below level) | 10.0 |
+| tilt free range about level (deg, positive is down) | [-12.5, 12.5] |
+| tilt stopped by | head_cradle_print / head_platform_print, head_cradle_print / head_platform_print |
+| interference at the neutral pose | 0 |
+| left hip roll, hip pitch, knee free range with the head on (deg) | [[-55.0, 130.25], [-180.0, 180.0], [-137.25, 115.25]] |
+| mass of the head with its servo and camera (g) | 30.1 |
+| total mass (g) | 519.7 |
+| centre of mass at neutral (mm) | [54.53, 0.0, -31.18] |
+| margin with legs straight (mm) | -5.97 |
+
+| at the stand pose, pan (deg) | new interference | parts in the clear cone | centre of mass (mm) | stand margin (mm) | lens (mm) |
+|---|---|---|---|---|---|
+| -75.25 | 0 | right_yoke_print, right_pitch_servo, right_thigh_print, right_pitch_horn | [43.49, -0.24, -27.02] | 36.87 | [63.02, -17.15, 77.06] |
+| 0.0 | 0 | none | [43.69, 0.0, -27.02] | 36.68 | [76.23, 0.0, 77.06] |
+| 75.25 | 0 | left_yoke_print, left_pitch_servo, left_thigh_print, left_pitch_horn | [43.5, 0.25, -27.02] | 36.86 | [63.02, 17.15, 77.06] |
+
 ## Pin holes and studs
 
 Attachment features compatible with LEGO Technic and System elements. LEGO, Technic, Mindstorms and SPIKE are

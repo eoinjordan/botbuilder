@@ -228,7 +228,7 @@ def horn_checks(robot: Robot, placed) -> list:
     frames = robot.fk()
     out = []
     for name, link in robot.links.items():
-        if link.joint is None:
+        if link.joint not in JOINTS:
             continue
         to_world = frames[name] @ _axis_frame([0, 0, 0], link.shaft)
         printed = next(s for s in link.solids if s.kind == "print")
@@ -418,6 +418,53 @@ def camera_preset_summary(robot: Robot) -> dict:
                 "neutral_margin_mm": stand["margin_mm"], "stand_thigh_swing_deg": bal["stand_pose"]["thigh_swing_deg"],
                 "stand_margin_mm": bal["stand_pose"]["margin_mm"]})
     return out
+
+
+# --- turning head ------------------------------------------------------------
+
+def head_checks(robot: Robot, stand_q: dict) -> dict:
+    """The optional turning head: where the pan stops, how far the hand-set
+    tilt goes, what it meets, whether the legs still clear it, the cone in
+    front of the lens, and mass and balance with the head at its extremes."""
+    cfg = robot.assumptions
+    threshold = cfg["interference_threshold_mm3"]
+    tilt = float(cfg["camera"]["tilt_deg"])
+    rest = {"head_tilt": tilt}
+    neutral = interferences(robot.placed(rest), threshold)
+    ignore = {frozenset((f["a"], f["b"])) for f in neutral}
+    pan = sweep_joint(robot, "head_pan", 1.0, threshold, ignore, rest)
+    nod = sweep_joint(robot, "head_tilt", 1.0, threshold, ignore, {})
+    lo, hi = pan["collision_free_deg"]
+    legs = {j: sweep_joint(robot, j, cfg["sweep_step_deg"], threshold, ignore, rest)["collision_free_deg"]
+            for j in ("left_hip_roll", "left_hip_pitch", "left_knee")}
+    cone_local = model.view_cone(robot.camera["pose"], robot.camera["cone_half_angle_deg"])
+    poses = []
+    for angle in (lo, 0.0, hi):
+        q = {**stand_q, "head_pan": angle, "head_tilt": tilt}
+        frames = robot.fk(q)
+        cone = apply(cone_local, frames["head_tilt"])
+        placed = robot.placed(q)
+        hits = [{"solid": s.name, "volume_mm3": _r((cone ^ m).volume(), 1)} for link, s, m in placed
+                if link not in ("head_tilt", "head_pan") and not m.is_empty() and (cone ^ m).volume() > 0.5]
+        total, com = centre_of_mass(robot, q)
+        poses.append({"pan_deg": _r(angle), "new_interferences": [f for f in interferences(placed, threshold)
+                                                                  if frozenset((f["a"], f["b"])) not in ignore],
+                      "in_the_cone": hits, "com_mm": _r(com), "stand_margin_mm": support(robot, q, ("left", "right"))["margin_mm"],
+                      "lens_mm": _r(model.point(frames["head_tilt"], robot.camera["pose"]["lens"]))})
+    total, com = centre_of_mass(robot, rest)
+    rows = [{"solid": s.name, "link": link, "mass_g": _r(s.mass_g, 1)} for link, s in robot.solids()
+            if link in ("head_pan", "head_tilt") or s.name == "pan_servo"]
+    return {"camera_preset": robot.camera["preset"], "tilt_set_to_deg": tilt,
+            "neutral_interferences": neutral,
+            "pan_travel_to_the_stops_deg": pan["collision_free_deg"],
+            "pan_stopped_by": {"negative": pan["negative"]["blocked_by"], "positive": pan["positive"]["blocked_by"]},
+            "tilt_free_deg": nod["collision_free_deg"],
+            "tilt_stopped_by": {"negative": nod["negative"]["blocked_by"], "positive": nod["positive"]["blocked_by"]},
+            "leg_sweeps_collision_free_deg": legs,
+            "at_the_stand_pose": poses,
+            "total_g": _r(total, 1), "com_neutral_mm": _r(com),
+            "neutral_margin_mm": support(robot, rest, ("left", "right"))["margin_mm"],
+            "head_parts": rows, "head_mass_g": _r(sum(r["mass_g"] for r in rows), 1)}
 
 
 # --- attachment features compatible with LEGO elements -----------------------

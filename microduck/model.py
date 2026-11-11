@@ -41,11 +41,17 @@ PART_FILES = {
     "left_shin": "left_shin_fixed_foot.stl",
     "right_shin": "right_shin_fixed_foot.stl",
 }
+# The optional turning head: its own torso, a pan platform and a tilt cradle.
+HEAD_FILES = {"torso_pan": "01_torso_unoq_pan_head.stl", "head_platform": "head_pan_platform.stl",
+              "head_cradle": f"head_tilt_cradle_{CAMERA}.stl"}
+HEAD_JOINTS = ["head_pan", "head_tilt"]
 FIT_FILES = {"SR431": "fit_SR431.stl", "SR311": "fit_SR311.stl", "horn": "fit_horn_drill_blank.stl",
              "lego_compatible_coupon": "fit_lego_compatible_coupon.stl",
              **{"cam_" + name: f"fit_cam_{name}.stl" for name in CAMERAS}}
 # Torsos for the camera presets the assembly does not use.
-OTHER_FILES = [f"01_torso_unoq_cam_{name}.stl" for name in CAMERAS]
+OTHER_FILES = ([f"01_torso_unoq_cam_{name}.stl" for name in CAMERAS] + list(HEAD_FILES.values())
+               + [f"head_tilt_cradle_{name}.stl" for name in CAMERAS]
+               + ["fit_sg90_cradle.stl", "head_pixy_plate_pixy2.stl", "head_pixy_plate_pixy1.stl"])
 COLORS = {"print": (236, 205, 120), "servo": (60, 66, 74), "horn": (225, 228, 230),
           "board": (20, 120, 110), "shield": (40, 90, 160), "camera": (150, 40, 60)}
 # From build.py: cradle plate thickness, torso cradle position, yoke cradle
@@ -131,9 +137,11 @@ def trimesh_from_manifold(solid: Manifold) -> trimesh.Trimesh:
 
 
 def load_part(name: str, camera: str | None = None) -> Manifold:
-    files = {**PART_FILES, **{"fit_" + k: v for k, v in FIT_FILES.items()}}
+    files = {**PART_FILES, **HEAD_FILES, **{"fit_" + k: v for k, v in FIT_FILES.items()}}
     if name == "torso" and camera:
         files["torso"] = f"01_torso_unoq_cam_{camera}.stl"
+    if name == "head_cradle" and camera:
+        files["head_cradle"] = f"head_tilt_cradle_{camera}.stl"
     return manifold_from_trimesh(trimesh.load_mesh(stl_dir() / files[name]))
 
 
@@ -306,6 +314,16 @@ class Robot:
         return [(link, solid, apply(solid.manifold, frames[link])) for link, solid in self.solids()]
 
 
+def pan_servo_solid(sg: dict, axis_x: float) -> Manifold:
+    """A 9 g servo hanging by its ears on the deck tab, shaft up. The case is
+    drawn to its largest published size and 10 mm above the ears all over,
+    which is the height of its gear housing."""
+    cx = axis_x - sg["shaft"]
+    body = box([cx - sg["l"] / 2, -sg["w"] / 2, PLATE - sg["below"]], [cx + sg["l"] / 2, sg["w"] / 2, PLATE + 10.0])
+    ears = box([cx - sg["ear_span"] / 2, -sg["w"] / 2, PLATE], [cx + sg["ear_span"] / 2, sg["w"] / 2, PLATE + sg["ear_t"]])
+    return body + ears
+
+
 def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
                 assembly: dict | None = None, load_meshes: bool = True) -> Robot:
     """Assemble the robot. With load_meshes False the printed parts are left
@@ -328,7 +346,8 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
     links: dict = {}
     cradles: list = []
     torso = Link("torso", None, None, np.zeros(3), np.zeros(3), np.zeros(3))
-    torso.solids.append(printed("torso_print", "torso", np.eye(4)))
+    turning = assembly.get("head", "fixed") == "pan"
+    torso.solids.append(printed("torso_print", "torso_pan" if turning else "torso", np.eye(4)))
     links["torso"] = torso
 
     # UNO Q between the deck rails, long side along x, on spacers; the Braccio
@@ -350,9 +369,31 @@ def build_robot(thigh_face: str | None = None, hardware: dict | None = None,
     mount = assembly["camera"]
     cam = camera_spec(mount["preset"], hardware)
     pose = camera_pose(cam, mount)
-    torso.solids.append(Solid("camera_board", "camera", camera_solid(cam, pose), cam["mass_g"]))
-    camera = {"preset": mount["preset"], "spec": cam, "pose": pose,
+    camera = {"preset": mount["preset"], "spec": cam, "pose": pose, "link": "torso",
               "cone_half_angle_deg": hardware["camera_optics"]["assumed"]["clear_cone_half_angle_deg"]["value"]}
+    if not turning:
+        torso.solids.append(Solid("camera_board", "camera", camera_solid(cam, pose), cam["mass_g"]))
+    else:
+        # Pan servo under the deck tab, platform on its horn, tilt cradle on
+        # the platform. Frames and sizes are the generator's own record.
+        head = design_parameters()["head"]
+        sg = head["sg90"]
+        axis = np.asarray(head["pan_axis"], float)
+        torso.solids.append(Solid("pan_servo", "servo", pan_servo_solid(sg, axis[0]), sg["mass"]))
+        pan = Link("head_pan", "torso", "head_pan", axis, np.array([0, 0, 1.0]), np.array([0, 0, 1.0]))
+        pan.solids.append(printed("head_platform_print", "head_platform", np.eye(4)))
+        pan.solids.append(Solid("pan_horn", "horn", cylinder_z(10.0, -2.0, 0.0) + cylinder_z(2.4, PLATE + 10.0 - axis[2], -2.0), 0.0))
+        links["head_pan"] = pan
+        tilt = Link("head_tilt", "head_pan", "head_tilt", np.asarray(head["tilt_axis_in_platform"], float),
+                    np.array([0, 1.0, 0]), np.array([0, 1.0, 0]))
+        tilt.solids.append(printed("head_cradle_print", "head_cradle", np.eye(4)))
+        made = head["cradles"][mount["preset"]]
+        local = {"origin": np.asarray(made["board_origin"], float), "forward": np.array([1.0, 0, 0]), "up": np.array([0, 0, 1.0]),
+                 "lens": np.asarray(made["lens"], float)}
+        local["to_torso"] = frame(local["forward"], [0.0, 1.0, 0.0], local["up"], local["origin"])
+        tilt.solids.append(Solid("camera_board", "camera", camera_solid(cam, local), cam["mass_g"]))
+        links["head_tilt"] = tilt
+        camera.update(pose=local, link="head_tilt")
 
     for side, s in (("left", 1.0), ("right", -1.0)):
         # Hip roll servo on the torso cradle. build.py: cradle rotated 90

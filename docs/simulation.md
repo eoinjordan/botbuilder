@@ -65,6 +65,8 @@ Parameters: `{"period_s": 1.0, "roll_amplitude_deg": 8.0, "step_amplitude_deg": 
 
 Feet: both loaded 0.997, one loaded 0.003, neither 0.0 of the time; highest lift of a whole sole {'left': 0.0, 'right': 0.0} mm.
 
+![gait](images/sim-gait.gif)
+
 ## Parameter sweep
 
 Best of 54 parameter sets that stay inside the speed limit as written: 110 mm in 12.0 s (10.0 mm/s). 0 sets fell; 17 ask for more than the speed limit and are slowed by the controller.
@@ -133,6 +135,12 @@ Best of 54 parameter sets that stay inside the speed limit as written: 110 mm in
 | 0.3 | False | 125 | 11.3 |
 | 0.6 | False | 110 | 10.0 |
 | 1.0 | False | 88 | 8.0 |
+
+![best gait](images/sim-gait-best.gif)
+
+## Recordings
+
+![fall from neutral](images/sim-neutral-fall.gif)
 
 ## What the simulation suggests changing
 

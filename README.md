@@ -50,6 +50,13 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   10 degrees below level, 226 mm above the floor at the stand pose. A cone
   of 40 degrees half angle in front of it is clear at the neutral and stand
   poses; a thigh swung more than 21 degrees forward comes into it.
+- **Turning head, an option.** A second torso carries a 9 g servo under a tab
+  at the deck front; it turns the camera 75 degrees each way between printed
+  stops, and tilt is set by hand on one screw. It meets nothing, costs the
+  legs no travel inside their limits and leaves the stand margin at 36.7 mm or
+  more at either stop. It is geometry only, not in the simulation or the
+  joint commands. The owner's M5Stack 360 servos are continuous rotation:
+  [docs/head.md](docs/head.md) says what that means.
 - **Cable ties.** Each cradle has four slot pairs. The two away from the
   shaft end give two tie paths over the case clear of the shaft and horn on
   all six cradles (assumed shaft position and horn size). As first drawn
@@ -176,6 +183,9 @@ local design directory after its generator has run. None has been printed.
   camera board.
 - The pin holes and studs: no printed one has been tried with a real pin,
   beam or brick. Their nominal dimensions are from secondary sources.
+- The turning head: the servo body, shaft position and horn height are
+  assumed from SG90 data sheets, the adapter hole pattern is a guess to be
+  measured, and no firmware drives it.
 - The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
   outline are the makers' figures. Lens, button, connector and pin positions,
   board thickness and the other masses are assumed or scaled from pictures.
