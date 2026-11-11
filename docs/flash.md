@@ -67,7 +67,7 @@ What they do:
 The status command is the line `S` on port 8766. A freshly flashed board
 answers:
 
-    STAT mode=RELAX age_ms=1234 wd=500 q=0.0,42.0,-42.0,0.0,42.0,-42.0
+    STAT mode=RELAX age_ms=1234 wd=500 q=0.0,52.0,-52.0,0.0,52.0,-52.0
 
 `mode=RELAX` means no pulses, until an `E` line. `age_ms` is the time since
 the last joint command (on a fresh board, since boot). `wd=500` is the

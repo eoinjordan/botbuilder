@@ -82,7 +82,7 @@
       <div class="section-heading"><span class="step">03</span><h2 id="check-heading">After the flash</h2></div>
       <p>The status command is the line <code>S</code> on the agent's port 8766. A freshly flashed board answers with its
         mode, the age of the last command, the watchdog time and the six commanded joint angles at the stand pose:</p>
-      <pre tabindex="0" id="expected">STAT mode=RELAX age_ms=1234 wd=500 q=0.0,42.0,-42.0,0.0,42.0,-42.0</pre>
+      <pre tabindex="0" id="expected">STAT mode=RELAX age_ms=1234 wd=500 q=0.0,52.0,-52.0,0.0,52.0,-52.0</pre>
       <ul class="plain">
         <li><code>mode=RELAX</code>: no pulses. It stays that way until an <code>E</code> line.</li>
         <li><code>age_ms</code> is the time since the last joint command; on a fresh board, the time since boot.</li>

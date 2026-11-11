@@ -1,5 +1,5 @@
 {
-  "_comment": "Compatibility data for the Build yours configurator. microduck/recipe.py and site/build.js both evaluate this file with the same small algorithm; neither holds a combination of its own. 'support' is the single table that says which locomotion each controller supports and through which drive. 'why_not' explains the rest; an entry with 'needs' names a part that would make the row possible. 'rules' add recipe content, or block a selection with a reason and the alternatives that lift the block. Only physical or electrical impossibilities are blocked. The default camera is not written here: microduck/recipe.py reads it from config/assembly.json (camera.preset). 'manifest_map' and 'report_controller' give the names stl/manifest.json and reports/assembly.json use for a controller or head. Row status: 'report' (read from the reports for the selected controller, camera and head), 'defined', or 'summary' (read from the variants summary when it exists). Sources, assumptions and what has been checked are in docs/status.md, not in the recipe text. Currents are whole mA in multiples of 10.",
+  "_comment": "Compatibility data for the Build yours configurator. microduck/recipe.py and site/build.js both evaluate this file with the same small algorithm; neither holds a combination of its own. 'support' is the single table that says which locomotion each controller supports and through which drive. 'why_not' explains the rest; an entry with 'needs' names a part that would make the row possible. 'rules' add recipe content, or block a selection with a reason and the alternatives that lift the block. Only physical or electrical impossibilities are blocked. The default camera, face and feet are not written here: microduck/recipe.py reads them from config/assembly.json (camera.preset, face, feet). 'manifest_map' and 'report_controller' give the names stl/manifest.json and reports/assembly.json use for a controller or head. Row status: 'report' (read from the reports for the selected controller, camera and head), 'defined', or 'summary' (read from the variants summary when it exists). Sources, assumptions and what has been checked are in docs/status.md, not in the recipe text. Currents are whole mA in multiples of 10.",
   "trademarks": "LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. No affiliation with any of them.",
   "repo_url": "https://github.com/eoinjordan/botbuilder/",
   "repo_blob": "https://github.com/eoinjordan/botbuilder/blob/main/",
@@ -58,12 +58,20 @@
       {"id": "tt_hbridge", "label": "Yellow TT DC gear motors on an H-bridge board"}]},
     {"id": "camera", "label": "Camera", "options": [
       {"id": "none", "label": "No camera (mount left empty)"},
-      {"id": "xiao_eyes", "label": "Seeed XIAO ESP32S3 Sense with Round Display eyes"},
+      {"id": "xiao_sense", "label": "Seeed XIAO ESP32S3 Sense camera"},
       {"id": "esp32cam", "label": "AI-Thinker ESP32-CAM"},
       {"id": "esp_eye", "label": "Espressif ESP-EYE"},
       {"id": "esp32_s3_eye", "label": "Espressif ESP32-S3-EYE"},
       {"id": "pixy2", "label": "Pixy2 (standard) with pan-tilt kit and LEGO cable"},
       {"id": "picam2", "label": "Raspberry Pi Camera Module 2"}]},
+    {"id": "face", "label": "Face", "only_for": {"locomotion": ["biped"]}, "options": [
+      {"id": "none", "label": "Camera mount only"},
+      {"id": "eyes_above", "label": "Round display as the eyes, camera above"},
+      {"id": "eyes_below", "label": "Round display as the eyes, camera below"},
+      {"id": "stack_camera_forward", "label": "Display stack with the XIAO Sense camera forward"}]},
+    {"id": "feet", "label": "Feet", "only_for": {"locomotion": ["biped"]}, "options": [
+      {"id": "comb", "label": "Comb feet"},
+      {"id": "flat", "label": "Flat feet"}]},
     {"id": "head", "label": "Head articulation", "options": [
       {"id": "fixed", "label": "Camera mount, nothing moves"},
       {"id": "sg90_pan", "label": "SG90-class servo pans the head"},
@@ -86,14 +94,14 @@
       {"id": "lego", "label": "Stock LEGO wheels"},
       {"id": "tt65", "label": "Stock 65 mm TT wheel"}]}
   ],
-  "defaults": {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "camera": "", "head": "fixed", "lego": "on", "wheels": "back", "support": "roller", "wheel": "printed_ring"},
+  "defaults": {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "camera": "", "face": "", "feet": "", "head": "fixed", "lego": "on", "wheels": "back", "support": "roller", "wheel": "printed_ring"},
   "manifest_map": {
     "controller": {"unoq": "unoq", "pi": "pi_zero_2w", "pi_full": "pi"},
     "head": {"sg90_pan": "pan", "m5_360": "pan"}
   },
   "report_controller": {"pi": "pi_zero_2w", "pi_full": "pi", "hub51515": "hub51515", "ev3": "ev3"},
   "support": [
-    {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "base": "unoq_braccio", "status": "report", "reason": "The UNO Q biped: camera mount at the front of the deck, pin holes and studs on the parts. What was run for the selected camera and head is listed under Analysis."},
+    {"controller": "unoq", "locomotion": "biped", "drive": "braccio_shield", "base": "unoq_braccio", "status": "report", "reason": "The UNO Q biped: a head at the front of the deck with the round display as the eyes and a camera board, pin holes and studs on the parts. What was run for the selected face, camera and head is listed under Analysis."},
     {"controller": "unoq", "locomotion": "biped", "drive": "servo_driver", "base": "unoq_braccio", "status": "defined", "reason": "The UNO Q biped with the six servos on an I2C servo driver board in place of the Braccio shield."},
     {"controller": "unoq", "locomotion": "wheeled", "drive": "m5_360_wheels", "base": "unoq_braccio", "status": "summary", "reason": "Two-wheeled UNO Q build on two 360 degree servos."},
     {"controller": "unoq", "locomotion": "wheeled", "drive": "tt_hbridge", "base": "unoq_braccio", "status": "summary", "reason": "Two-wheeled UNO Q build on two TT gear motors."},
@@ -140,7 +148,7 @@
     {"code": "crank-needs-lego-motors", "short": "The crank walker runs on LEGO motors", "when": {"controller": ["unoq"], "locomotion": ["crank"]}, "reason": "The crank walker is built around LEGO motors and Technic axles; the UNO Q has no LEGO motor port. On a Raspberry Pi the Build HAT provides them."}
   ],
   "rules": [
-    {"id": "biped", "when": {"locomotion": ["biped"]}, "set": {"mechanism": "Six-servo biped: left and right hip roll, hip pitch and knee pitch, one hobby servo per joint. No yaw, no ankles, no head: the torso carries a camera mount at the front edge of the deck. Four SR431 at the hips, two SR311 at the knees.", "preset": "biped-braccio-unoq"},
+    {"id": "biped", "when": {"locomotion": ["biped"]}, "set": {"mechanism": "Six-servo biped: left and right hip roll, hip pitch and knee pitch, one hobby servo per joint. No yaw, no ankles. The torso carries the head at the front edge of the deck: a round display as the eyes with a camera board, or the camera mount alone. Four SR431 at the hips, two SR311 at the knees.", "preset": "biped-braccio-unoq"},
       "add": {
         "print": [{"from_manifest": true}],
         "parts": [
@@ -159,10 +167,30 @@
       "add": {"wiring": ["No camera: the mount at the front of the deck stays empty. The torso listed is the one for the default camera."]}},
     {"id": "biped-camera-board", "when": {"locomotion": ["biped"], "camera": ["esp32cam", "esp_eye", "esp32_s3_eye"]},
       "add": {
-        "wiring": ["The camera board stands in the mount at the front edge of the deck, lower edge on the corner seats, back against the ledges, held by the snap lips, lens the way the toes point and 10 degrees below level. Each board has its own torso file and fit piece."],
+        "wiring": ["The camera board stands in its mount, lower edge on the corner seats, back against the ledges, held by the snap lips, lens the way the toes point and 10 degrees below level. Each board has its own torso file and fit piece."],
         "assembly": ["Print the camera fit piece before the torso and try the board in it: 0.5 mm is allowed each side and 0.3 mm under the lips."]}},
-    {"id": "biped-camera-xiao", "when": {"locomotion": ["biped"], "camera": ["xiao_eyes"]},
-      "add": {"wiring": ["The XIAO head has its own mount, with the display facing forward and the camera above or below it. Its files are on the way; until they are in stl/ the torso listed is the default camera's."]}},
+    {"id": "biped-face-stack-needs-xiao", "when": {"locomotion": ["biped"], "face": ["stack_camera_forward"], "camera": ["none", "esp32cam", "esp_eye", "esp32_s3_eye", "pixy2", "picam2"]},
+      "code": "face-needs-its-camera", "short": "The display stack carries the XIAO Sense camera",
+      "block": "In this face the camera is the XIAO ESP32S3 Sense's own, on the stack behind the round display.",
+      "alternatives": [{"camera": "xiao_sense"}, {"face": "eyes_above"}, {"face": "none"}]},
+    {"id": "biped-xiao-needs-stack", "when": {"locomotion": ["biped"], "camera": ["xiao_sense"], "face": ["none", "eyes_above", "eyes_below"]},
+      "code": "face-needs-its-camera", "short": "The XIAO Sense camera sits on the display stack",
+      "block": "On the biped the XIAO ESP32S3 Sense camera is part of the display stack and looks forward from it.",
+      "alternatives": [{"face": "stack_camera_forward"}, {"camera": "esp32cam"}]},
+    {"id": "biped-face-display", "extra": true, "when": {"locomotion": ["biped"], "face": ["eyes_above", "eyes_below", "stack_camera_forward"]},
+      "add": {
+        "parts": [
+          {"name": "Seeed Round Display for XIAO", "qty": 1, "note": "faces forward as the robot's eyes; print fit_round_display.stl first and try the display in its ring"},
+          {"name": "Seeed XIAO ESP32S3 in the display's socket", "qty": 1, "note": "the Sense version if its camera is the one used"},
+          {"name": "LiPo cell for the Round Display's battery connector", "qty": 1, "note": "the pocket is drawn for about 36 x 20 x 5.5 mm: measure your cell"}],
+        "wiring": ["The round display stands in a ring at the front of the deck with the XIAO in its socket and the cell behind it. It runs on its own cell and reaches the controller over Wi-Fi or Bluetooth."],
+        "firmware": ["Eyes: not written."]}},
+    {"id": "biped-face-eyes", "extra": true, "when": {"locomotion": ["biped"], "face": ["eyes_above", "eyes_below"], "camera": ["esp32cam", "esp_eye", "esp32_s3_eye"]},
+      "add": {"wiring": ["The camera board stands in its mount above or below the display, lens the way the toes point."]}},
+    {"id": "biped-feet-comb", "when": {"locomotion": ["biped"], "feet": ["comb"]},
+      "add": {"wiring": ["Comb feet: each sole is a comb whose fingers cross the centre line between the other foot's, so each foot reaches under the body."]}},
+    {"id": "biped-feet-flat", "when": {"locomotion": ["biped"], "feet": ["flat"]},
+      "add": {"wiring": ["Flat feet: the sole plates as first drawn, one each side of the centre line."]}},
     {"id": "biped-camera-pixy", "when": {"locomotion": ["biped"], "camera": ["pixy2"]},
       "add": {
         "print": [{"file": "head_pixy_plate_pixy2.stl", "qty": 1, "role": "plate for a Pixy2 and its pan-tilt base on the 8 mm grid"}],
@@ -210,7 +238,7 @@
       "add": {"print": [{"file": "chassis.stl", "qty": 1, "role": "strap-slot chassis of the EV3 build; strap the Core and BaseX across the deck", "folder": true}]}},
     {"id": "crank-head-picam", "when": {"locomotion": ["crank"], "camera": ["picam2"]},
       "add": {"print": [{"file": "pi-zero-2w-51515/camera_head.stl", "qty": 1, "role": "head with the Camera Module 2 plate"}]}},
-    {"id": "crank-head-other", "when": {"locomotion": ["crank"], "camera": ["none", "xiao_eyes", "pixy2", "esp32cam", "esp_eye", "esp32_s3_eye"]},
+    {"id": "crank-head-other", "when": {"locomotion": ["crank"], "camera": ["none", "xiao_sense", "pixy2", "esp32cam", "esp_eye", "esp32_s3_eye"]},
       "add": {"print": [{"file": "ev3-pixy2/camera_head.stl", "qty": 1, "role": "head with a Technic beam face on the 8 mm grid"}]}},
     {"id": "crank-pixy-plate", "when": {"locomotion": ["crank", "wheeled"], "camera": ["pixy2"]},
       "add": {"print": [{"file": "head_pixy_plate_pixy2.stl", "qty": 1, "role": "plate for a Pixy2 and its pan-tilt base on the 8 mm grid"}]}},
@@ -402,23 +430,20 @@
     {"id": "camera-pixy-hub", "when": {"camera": ["pixy2"], "controller": ["hub51515"]},
       "code": "pixy-on-hub", "short": "The Pixy has no connection to the 51515 hub's LPF2 ports",
       "block": "The Pixy's LEGO cable is for NXT and EV3 sensor ports. The 51515 hub's ports are LEGO Power Functions 2.0, a different connector, and Charmed Labs documents no connection to them.",
-      "alternatives": [{"camera": "none"}, {"camera": "xiao_eyes"}]},
+      "alternatives": [{"camera": "none"}, {"camera": "xiao_sense"}]},
     {"id": "camera-picam-not-pi", "when": {"camera": ["picam2"], "controller": ["unoq", "hub51515", "ev3", "m5core"]},
       "code": "picam-needs-pi", "short": "The Pi camera needs a Raspberry Pi's CSI connector",
       "block": "The Raspberry Pi Camera Module connects to the CSI connector of a Raspberry Pi.",
       "alternatives": [{"camera": "none"}]},
-    {"id": "camera-standalone", "extra": true, "when": {"camera": ["xiao_eyes", "esp32cam", "esp_eye", "esp32_s3_eye"]},
+    {"id": "camera-standalone", "extra": true, "when": {"camera": ["xiao_sense", "esp32cam", "esp_eye", "esp32_s3_eye"]},
       "add": {"wiring": ["The camera board is standalone: it has its own supply and reaches the controller, or your computer, over Wi-Fi or Bluetooth. A UART link is optional where the controller has one."]}},
-    {"id": "camera-standalone-lego", "extra": true, "when": {"camera": ["xiao_eyes", "esp32cam", "esp_eye", "esp32_s3_eye"], "controller": ["hub51515", "ev3"]},
+    {"id": "camera-standalone-lego", "extra": true, "when": {"camera": ["xiao_sense", "esp32cam", "esp_eye", "esp32_s3_eye"], "controller": ["hub51515", "ev3"]},
       "add": {"wiring": ["On a LEGO controller the camera rides along on its own power; nothing plugs into a LEGO port."]}},
-    {"id": "camera-xiao", "extra": true, "when": {"camera": ["xiao_eyes"]},
+    {"id": "camera-xiao", "extra": true, "when": {"camera": ["xiao_sense"]},
       "add": {
-        "parts": [
-          {"name": "Seeed XIAO ESP32S3 Sense", "qty": 1, "note": "with its camera board"},
-          {"name": "Seeed Round Display for XIAO", "qty": 1, "note": "faces forward as the robot's eyes"},
-          {"name": "LiPo cell for the Round Display's battery connector", "qty": 1, "note": "measure the space behind the display before choosing a size"}],
-        "wiring": ["The XIAO plugs into the back of the Round Display, which carries the battery connector and charger. The camera sits above the display by default, or below it."],
-        "firmware": ["Camera and eyes: not written."]}},
+        "parts": [{"name": "Seeed XIAO ESP32S3 Sense", "qty": 1, "note": "with its camera board; measure the space around it before choosing a battery"}],
+        "wiring": ["The XIAO Sense carries its own camera and runs from a small LiPo cell or USB-C."],
+        "firmware": ["Camera: not written."]}},
     {"id": "camera-esp32cam", "extra": true, "when": {"camera": ["esp32cam"]},
       "rails": {"logic5v": {"label": "5 V servo and accessory supply", "limit_ma": null, "limit_label": ""}},
       "loads": [{"rail": "logic5v", "what": "ESP32-CAM with its flash LED at maximum", "qty": 1, "stall_ma": 310}],
@@ -466,7 +491,7 @@
         "wiring": ["Camera Module on the Pi's CSI-2 connector, ribbon routed loosely."],
         "firmware": ["Camera: not written."]}},
 
-    {"id": "head-pantilt-needs-pixy", "when": {"head": ["pixy_pantilt"], "camera": ["none", "xiao_eyes", "esp32cam", "esp_eye", "esp32_s3_eye", "picam2"]},
+    {"id": "head-pantilt-needs-pixy", "when": {"head": ["pixy_pantilt"], "camera": ["none", "xiao_sense", "esp32cam", "esp_eye", "esp32_s3_eye", "picam2"]},
       "code": "pantilt-needs-pixy", "short": "The pan-tilt kit carries the Pixy2",
       "block": "The pan-tilt kit is the Pixy2's own: its two servos plug into the Pixy2 and carry it.",
       "alternatives": [{"camera": "pixy2"}, {"head": "fixed"}]},

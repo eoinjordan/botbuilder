@@ -27,15 +27,18 @@ firmware and tools to play the same joint commands on the real robot.
 A Microduck-style biped rebuilt around the six servos of a stock TinkerKit
 Braccio kit. Four SR431 servos at the hips (two on the torso for hip roll,
 one on each yoke for hip pitch), two SR311 servos at the far end of the
-thighs for knee pitch, shins with fixed feet, an Arduino UNO Q and the
-Braccio shield strapped to a deck, a camera board in a mount at the front
-edge of the deck, servos held by cable ties. Seven printed parts and seven
+thighs for knee pitch, shins with fixed comb feet whose fingers cross the
+centre line, an Arduino UNO Q and the
+Braccio shield strapped to a deck, a head at the front edge of the deck
+with a round display as the eyes and a camera board above it, servos held by
+cable ties. Seven printed parts and seven
 fit-test pieces. The torso, thighs, shins and feet carry pin holes and studs
 compatible with LEGO Technic and System elements, for decoration. LEGO,
 Technic, Mindstorms and SPIKE are trademarks of the LEGO Group, which does
-not sponsor or endorse this. There is no head: the torso carries the camera mount
-instead, with presets for the AI-Thinker ESP32-CAM (the default), the
-Espressif ESP-EYE and the ESP32-S3-EYE. See [docs/camera.md](docs/camera.md).
+not sponsor or endorse this. The head is part of the torso: a Seeed Studio Round
+Display for XIAO, screen forward, with an AI-Thinker ESP32-CAM above it by
+default; the camera below, an ESP-EYE, the camera alone and a turning head
+are options. See [docs/camera.md](docs/camera.md).
 
 Six actuated joints: left and right hip roll, hip pitch, knee pitch. No yaw,
 no ankles.
@@ -43,7 +46,7 @@ no ankles.
 For comparison, Pollen Robotics' Microduck has five joints per leg (hip yaw,
 roll, pitch, knee, ankle) and four in the neck and head, weighs about 800 g
 and stands about 25 cm tall. This one has three per leg, weighs about 500 g
-by the model and stands 262 mm.
+by the model and stands 314 mm to the top of the camera mount.
 
 ## What the digital assembly test found
 
@@ -55,11 +58,15 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   cradles now hang 2.5 mm lower and the deck corner is cut away for the ear,
   which leaves 0.5 mm under the deck and 0.75 mm beside the assumed ear. The
   neck that the UNO Q ran into is gone with the head.
-- **Camera mount.** The ESP32-CAM stands between two posts with 0.5 mm each
-  side, 1.1 mm ahead of the UNO Q. The lens looks the way the toes point,
-  10 degrees below level, 226 mm above the floor at the stand pose. A cone
-  of 40 degrees half angle in front of it is clear at the neutral and stand
-  poses; a thigh swung more than 21 degrees forward comes into it.
+- **Face.** A round display stands in a ring at the deck front, screen
+  forward as the eyes, with the ESP32-CAM on a shelf above it between two
+  posts with 0.5 mm each side. Display, camera and print do not overlap. The
+  lens looks the way the toes point, 10 degrees below level, 277 mm above
+  the floor at the stand pose. A cone of 40 degrees half angle in front of
+  it is clear at the neutral and stand poses; a thigh swung more than 39
+  degrees forward comes into it. With the camera below the display instead
+  the lens is at 226 mm and the thigh enters at 21 degrees. The display's
+  size and mass are assumed, and its battery is strapped under the deck.
 - **Other controllers.** The deck has torso variants for a Raspberry Pi Zero
   2 W, a full-size Raspberry Pi and the LEGO 51515 hub. As blocks of their
   mass they clear the print and the camera, and the robot still balances at
@@ -83,28 +90,41 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   its plate; all tie slots are open; all six horn screw holes are on their
   shaft axes with a free path for a screwdriver. The board has 0.52 mm to
   each deck rail.
-- **Joint sweeps.** Hip pitch turns a full half turn each way without
-  contact. Hip roll is free from -55 to +180 degrees on the left (mirror on
-  the right): inward, the shins meet. The knee is free from -137 to +115
-  degrees. With 3 degrees of margin and the servos' 180 degrees of travel the
-  limits are hip roll -52 to +90, hip pitch and knee -90 to +90.
-- **Pin holes and studs.** 23 pin holes in pads of beam thickness and 40
+- **Joint sweeps.** The soles interleave, so one leg moved alone soon meets
+  the other sole: hip roll 3 degrees inward, hip pitch 9 to 11 degrees, knee
+  18 degrees. Whether the soles meet depends on both legs together, which a
+  limit per joint cannot say, so the limits come from the sweeps with the
+  two shin parts left out against each other: hip roll is then free from -39
+  degrees (a finger reaches the other thigh) and hip pitch to +66. With 3
+  degrees of margin and the servos' 180 degrees of travel the limits are
+  hip roll -35 to +90, hip pitch -90 to +62, knee -90 to +90.
+- **The two soles.** At the stand pose they are 9.8 mm apart at the nearest
+  point. One sole can lead the other by 26 mm on the floor each way before
+  they meet. Both hips rolled the same way, as in a weight shift, stay clear
+  for at least 50 degrees. The controller's limits do not stop one leg being
+  driven into the other sole; a gait has to respect it.
+- **Pin holes and studs.** 23 pin holes in pads of beam thickness and 32
   studs. Every hole is open for a 4.8 mm pin over 7.8 mm, at least 24 mm
   from a joint axis; none cost any joint range. At the stand pose, static
-  balance carries about 400 g of decoration on the rear of the deck before
-  the margin is gone; 100 g there leaves 23 mm of the 37 mm.
-- **Mass.** 502 g: servos 302 g (published), printed parts 136 g (PLA at 60
+  balance carries about 750 g of decoration on the rear of the deck before
+  the margin is gone; 100 g there leaves 34 mm of the 47 mm.
+- **Mass.** 564 g: servos 302 g (published), printed parts 174 g (PLA at 60
   percent of solid, assumed), board 30 g and shield 25 g (assumed), camera
-  10 g (published). 593 g if printed solid.
-- **Balance.** With the legs straight down the centre of mass is 6.6 mm
-  behind the heels: it falls backward. With the thighs swung 42 degrees back
-  and the knees turned to keep the soles level it is 37 mm inside the support
-  polygon. That is the stand pose. On one foot it is 62 mm outside, and still
-  38 mm outside with the stance hip rolled 30 degrees. It cannot stand on one
-  foot.
+  10 g (published), display with its XIAO 15 g and its battery 8.5 g (both
+  assumed). 680 g if printed solid. The comb shins should be printed solid,
+  which the 60 percent figure understates by a few grams.
+- **Balance.** With the legs straight down the centre of mass is 2.7 mm
+  behind the heels: it falls backward. With the thighs swung 52 degrees back
+  and the knees turned to keep the soles level it is 47 mm inside the support
+  polygon. That is the stand pose. On one foot alone, the other level with
+  it, the centre of mass is inside the sole: by 32 mm on the left foot and
+  21 mm on the right. With the flat soles it was 62 mm outside. This is
+  static and rigid; the design README has a hand calculation of how much the
+  sole and shin give (about 0.5 mm at the centre line in PLA).
 - **An open choice.** The design does not say which face of the thigh meets
   the hip horn. Both were checked. With the horn on the rail face the feet
-  are 172 mm apart; on the flat face, 320 mm. The description uses the rail
+  are 60 mm apart, sole centre to sole centre, and the shins 172 mm; on the
+  flat face the shins are 320 mm apart. The description uses the rail
   face.
 
 ## What the simulation did
@@ -112,15 +132,18 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
 Full results: [docs/simulation.md](docs/simulation.md). Numbers:
 [reports/sim.json](reports/sim.json).
 
-- **It stands.** Ten seconds at the stand pose, peak tilt 0.2 degrees. The
-  hip pitch servos need 0.09 N m of their 1.2 N m, the knees 0.02 of 0.30.
-- **Straight legs fall.** At the neutral pose it tips backward in 0.4 s, as
+- **It stands.** Ten seconds at the stand pose, peak tilt 0.3 degrees. The
+  hip pitch servos need 0.09 N m of their 1.2 N m, the knees 0.04 of 0.30.
+- **Straight legs fall.** At the neutral pose it tips backward in 0.5 s, as
   the assembly test predicted.
-- **The gait shuffles.** The open-loop weight shift and step keeps the robot
-  up for the whole run and moves it 45 mm in 11 s. Both feet stay on the
-  floor the whole time. The best of 54 parameter sets inside the speed limit
-  manages 110 mm in 11 s (10 mm/s). None fell. With no ankle and feet 172 mm
-  apart the weight never gets onto one foot, so there is no step.
+- **The old gait now steps.** The open-loop weight shift and step written
+  for the flat soles, parameters unchanged, keeps the robot up for the whole
+  run and moves it 236 mm in 11 s (21 mm/s). The feet leave the floor in
+  turn: a whole sole lifts up to 27 mm and both feet are loaded 21 percent
+  of the time. The left knee reaches 0.98 of its torque limit. The best of
+  54 parameter sets inside the speed limit manages 238 mm in 11 s; 13 of
+  the 54 fell. This gait was not tuned for the comb feet: the walking study
+  on its own branch is to be rerun on this geometry.
 - **Watchdog.** Commands cut in mid gait: the controller holds and the robot
   stays up. Relaxed instead, it falls in 0.3 s.
 

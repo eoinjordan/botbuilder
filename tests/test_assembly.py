@@ -26,20 +26,44 @@ def test_every_picture_exists(assembly_report):
 def test_joint_limits_are_inside_servo_travel_and_free_range(selected):
     for joint in JOINTS:
         limit = selected["joint_limits_deg"][joint]
-        free = selected["sweeps"][joint]["collision_free_deg"]
+        free = selected["sweeps"][joint]["collision_free_soles_left_out_deg"]
+        everything = selected["sweeps"][joint]["collision_free_deg"]
+        assert free[0] <= everything[0] and everything[1] <= free[1], "leaving the soles out cannot shorten a range"
         assert -90.0 <= limit["min_deg"] < 0.0 < limit["max_deg"] <= 90.0
         assert free[0] <= limit["min_deg"] and limit["max_deg"] <= free[1]
         assert limit["min_set_by"] in ("collision", "servo travel")
 
 
-def test_left_and_right_sweeps_mirror(selected):
-    for name in ("hip_roll", "hip_pitch", "knee"):
-        left = selected["sweeps"][f"left_{name}"]["collision_free_deg"]
-        right = selected["sweeps"][f"right_{name}"]["collision_free_deg"]
-        if name == "hip_roll":      # roll about +x mirrors with a sign change
-            assert left == pytest.approx([-right[1], -right[0]], abs=0.5)
-        else:
-            assert left == pytest.approx(right, abs=0.5)
+def test_left_and_right_limits_mirror(selected):
+    """The comb soles are not mirror images, so the free ranges differ a
+    little between the sides; the limits used may differ by a few degrees."""
+    limits = selected["joint_limits_deg"]
+    for name in ("hip_pitch", "knee"):
+        for end in ("min_deg", "max_deg"):
+            assert limits[f"left_{name}"][end] == pytest.approx(limits[f"right_{name}"][end], abs=4.0)
+    assert limits["left_hip_roll"]["min_deg"] == pytest.approx(-limits["right_hip_roll"]["max_deg"], abs=4.0)
+    assert limits["left_hip_roll"]["max_deg"] == pytest.approx(-limits["right_hip_roll"]["min_deg"], abs=4.0)
+
+
+def test_soles_interleave_without_touching(selected):
+    feet = selected["feet"]
+    assert feet["overlap_at_stand_mm3"] == 0 and feet["overlap_at_neutral_mm3"] == 0
+    assert feet["gap_at_stand_mm"] >= 8.0
+    slide = feet["right_sole_slid_in_the_floor_plane_until_contact_mm"]
+    assert slide["forward"] >= 24.0 and slide["backward"] >= 24.0, "one foot must be able to lead the other by the gait stride"
+    assert slide["towards_the_left_sole"] >= 8.0
+    both = feet["both_hips_rolled_the_same_way"]
+    assert both["positive"]["free_deg"] >= 20.0 and both["negative"]["free_deg"] >= 20.0, "a weight shift rolls both hips together"
+    assert feet["one_foot_lifted_soles_level"]["positive"]["free_deg"] >= 20.0
+
+
+def test_one_foot_alone_carries_the_centre_of_mass(selected):
+    balance = selected["balance"]
+    for side in ("left", "right"):
+        alone = balance[f"one_foot_{side}"]["at_stand_pose"]
+        assert alone["inside"] and alone["margin_mm"] > 15.0, side
+        assert alone["torque_ok"], side
+        assert balance[f"one_foot_{side}_support"]["inside"], side
 
 
 def test_mass_adds_up(selected):

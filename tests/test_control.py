@@ -79,7 +79,7 @@ def test_manifest_file_is_checked_and_bad_motions_are_disabled_with_a_reason(tmp
     }, {"allow_jump": True})
     stand = list(cal.stand_deg)
     gait.write_csv(root / "trajectories" / "sit.csv", [(0, stand), (20, [stand[0], stand[1] + 1.0] + stand[2:])])
-    gait.write_csv(root / "trajectories" / "jump.csv", [(0, stand), (20, [stand[0], stand[1] + 40.0] + stand[2:])])
+    gait.write_csv(root / "trajectories" / "jump.csv", [(0, stand), (20, [stand[0], stand[1] + 8.0] + stand[2:])])
     manifest = motions.load_manifest(root)
     assert manifest["source"] == "trajectories/manifest.json"
     assert list(manifest["motions"]) == ["sit"]

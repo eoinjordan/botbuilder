@@ -30,9 +30,11 @@ def test_site_build_writes_the_recipe_data_from_the_same_json(built):
     shipped = json.loads((built / "data" / "recipe.json").read_text(encoding="utf-8"))
     assert shipped == recipe.bundle(ROOT)
     compat = json.loads((ROOT / "config" / "compat.json").read_text(encoding="utf-8"))
-    preset = json.loads((ROOT / "config" / "assembly.json").read_text(encoding="utf-8"))["camera"]["preset"]
-    assert compat["defaults"]["camera"] == "" and shipped["compat"]["defaults"]["camera"] == preset
-    compat["defaults"]["camera"] = preset
+    design = json.loads((ROOT / "config" / "assembly.json").read_text(encoding="utf-8"))
+    chosen = {"camera": design["camera"]["preset"], "face": design["face"], "feet": design["feet"]}
+    for key, value in chosen.items():
+        assert compat["defaults"][key] == "" and shipped["compat"]["defaults"][key] == value, key
+    compat["defaults"].update(chosen)
     assert shipped["compat"] == compat
     assert shipped["bases"] == json.loads((ROOT / "config" / "bases.json").read_text(encoding="utf-8"))
 

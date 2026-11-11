@@ -10,11 +10,11 @@ namespace duck {
 // name, pin, zero_deg, direction, min_deg, max_deg
 static const Table TABLE = {
   {
-    {"left_hip_roll", 11, 90.0, 1, -52.0, 90.0},  // M1 SR431
-    {"left_hip_pitch", 10, 90.0, 1, -90.0, 90.0},  // M2 SR431
+    {"left_hip_roll", 11, 90.0, 1, -35.0, 90.0},  // M1 SR431
+    {"left_hip_pitch", 10, 90.0, 1, -90.0, 62.0},  // M2 SR431
     {"left_knee", 5, 90.0, -1, -90.0, 90.0},  // M5 SR311
-    {"right_hip_roll", 9, 90.0, 1, -90.0, 52.0},  // M3 SR431
-    {"right_hip_pitch", 6, 90.0, -1, -90.0, 90.0},  // M4 SR431
+    {"right_hip_roll", 9, 90.0, 1, -90.0, 32.0},  // M3 SR431
+    {"right_hip_pitch", 6, 90.0, -1, -90.0, 62.0},  // M4 SR431
     {"right_knee", 3, 90.0, 1, -90.0, 90.0},  // M6 SR311
   },
   500,  // min_us
@@ -25,7 +25,7 @@ static const Table TABLE = {
   500,  // watchdog_ms
   false,  // watchdog_relax
   2.0,  // step_max_deg
-  {0.0, 42.0, -42.0, 0.0, 42.0, -42.0},  // stand_deg
+  {0.0, 52.0, -52.0, 0.0, 52.0, -52.0},  // stand_deg
 };
 
 }  // namespace duck

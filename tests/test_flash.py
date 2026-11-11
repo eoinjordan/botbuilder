@@ -118,7 +118,8 @@ def test_commands_match_the_manual_steps_in_the_document(tmp_path):
 
 def test_post_flash_reply_is_what_the_protocol_answers():
     reply = protocol.Controller(protocol.load_calibration()).handle("S", 1234)
-    assert reply == "STAT mode=RELAX age_ms=1234 wd=500 q=0.0,42.0,-42.0,0.0,42.0,-42.0"
+    stand = ",".join(f"{value:.1f}" for value in protocol.load_calibration().stand_deg)
+    assert reply == f"STAT mode=RELAX age_ms=1234 wd=500 q={stand}"
     assert reply in (ROOT / "docs" / "flash.md").read_text(encoding="utf-8")
     assert reply in (ROOT / "site" / "flash.html").read_text(encoding="utf-8")
 

@@ -23,7 +23,7 @@ def test_every_camera_preset_has_a_source_and_marks_its_assumptions():
         assert 15 < shape["width"] < shape["length"] < 70
         assert 0 < shape["lens_v"] < shape["length"]
     assert model.CAMERA in model.CAMERAS
-    assert model.PART_FILES["torso"] == f"01_torso_unoq_cam_{model.CAMERA}.stl"
+    assert model.PART_FILES["torso"] == f"01_torso_unoq_{model.FACE}_{model.CAMERA}.stl"
 
 
 def test_published_camera_figures_are_used_as_published():
@@ -84,9 +84,14 @@ def test_camera_mass_is_in_the_total(selected):
 def test_model_and_generator_agree_on_where_the_camera_is(robot_with_meshes):
     with open(model.stl_dir() / "parameters.json", encoding="utf-8") as handle:
         generated = json.load(handle)
-    assert generated["camera_default"] == model.CAMERA
-    made = generated["cameras"][model.CAMERA]
+    assert generated["camera_default"] == model.CAMERA and generated["face_default"] == model.FACE
+    made = dict(generated["cameras"][model.CAMERA], **generated["faces"][f"{model.FACE}_{model.CAMERA}"]["camera"])
+    made["forward"] = generated["faces"][f"{model.FACE}_{model.CAMERA}"]["forward"]
     pose, spec = robot_with_meshes.camera["pose"], robot_with_meshes.camera["spec"]
+    # Without the display the camera stands where the mount numbers put it.
+    config = model.load_json("assembly.json")
+    alone = model.build_robot(assembly=dict(config, face=None), load_meshes=False)
+    assert np.allclose(alone.camera["pose"]["lens"], generated["cameras"][model.CAMERA]["lens"], atol=1e-3)
     assert np.allclose(pose["origin"], made["board_origin"], atol=1e-3)
     assert np.allclose(pose["lens"], made["lens"], atol=1e-3)
     assert np.allclose(pose["forward"], made["forward"], atol=1e-5)

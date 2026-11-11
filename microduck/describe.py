@@ -26,7 +26,7 @@ JOINT_FRICTIONLOSS = 0.02       # assumed dry friction of the gear train, N m
 KP_SATURATION_DEG = 4.0         # assumed: the servo reaches full torque at this error
 RGBA = {"print": "0.93 0.80 0.47 1", "servo": "0.24 0.26 0.29 1", "horn": "0.88 0.89 0.90 1",
         "board": "0.08 0.47 0.43 1", "shield": "0.16 0.35 0.63 1",
-        "camera": "0.59 0.16 0.24 1"}
+        "camera": "0.59 0.16 0.24 1", "display": "0.12 0.12 0.14 1", "battery": "0.35 0.43 0.78 1"}
 
 
 def _f(values, digits=6) -> str:
@@ -52,6 +52,26 @@ def flat_levels(mesh_vertices, mesh_faces, axis=2, min_area=20.0, merge=2.5) -> 
     return out
 
 
+def _refine(piece, depth: int) -> list:
+    """A slab piece that fills well under its bounding box (a sole with
+    fingers, an L or a U) is cut again at its flat faces across x, then
+    across y, so that gaps between fingers stay gaps in the collision shape."""
+    bb = np.asarray(piece.bounding_box()).reshape(2, 3)
+    size = bb[1] - bb[0]
+    if depth >= 2 or piece.volume() >= 0.6 * float(np.prod(size)):
+        return [piece]
+    mesh = piece.to_mesh()
+    v, f = np.asarray(mesh.vert_properties)[:, :3], np.asarray(mesh.tri_verts)
+    levels = flat_levels(v, f, axis=depth, min_area=8.0, merge=1.0)
+    out = []
+    for a, b in zip(levels[:-1], levels[1:]):
+        lo, hi = bb[0] - 1.0, bb[1] + 1.0
+        lo[depth], hi[depth] = a, b
+        for part in (piece ^ model.box(lo, hi)).decompose():
+            out += _refine(part, depth + 1)
+    return out
+
+
 def box_decomposition(solid, to_link: np.ndarray, min_volume=120.0) -> list:
     """Approximate a printed part by axis-aligned boxes: slabs between its
     flat levels along the part's own z, one box per connected piece of each
@@ -64,7 +84,10 @@ def box_decomposition(solid, to_link: np.ndarray, min_volume=120.0) -> list:
     boxes = []
     for z0, z1 in zip(levels[:-1], levels[1:]):
         slab = part ^ model.box([bb[0][0] - 1, bb[0][1] - 1, z0], [bb[1][0] + 1, bb[1][1] + 1, z1])
+        pieces = []
         for piece in slab.decompose():
+            pieces += _refine(piece, 0)
+        for piece in pieces:
             if piece.volume() < min_volume:
                 continue
             pb = assembly._tight_bbox(piece)

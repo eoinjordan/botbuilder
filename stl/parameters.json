@@ -189,6 +189,406 @@
    ]
   }
  },
+ "face_default": "eyes_above",
+ "round_display": {
+  "d": 40.0,
+  "rim": 5.0,
+  "depth": 16.0,
+  "bezel": 1.5,
+  "mass": 15.0
+ },
+ "battery": {
+  "l": 36.0,
+  "w": 20.0,
+  "t": 5.5,
+  "mass": 8.5,
+  "x": [
+   6.0,
+   42.0
+  ],
+  "x_pan": [
+   -32.0,
+   4.0
+  ],
+  "box": [
+   [
+    6.0,
+    -10.0,
+    -5.5
+   ],
+   [
+    42.0,
+    10.0,
+    0.0
+   ]
+  ],
+  "box_pan": [
+   [
+    -32.0,
+    -10.0,
+    -5.5
+   ],
+   [
+    4.0,
+    10.0,
+    0.0
+   ]
+  ]
+ },
+ "faces": {
+  "eyes_above_esp32cam": {
+   "face": "eyes_above",
+   "camera_preset": "esp32cam",
+   "torso": "01_torso_unoq_eyes_above_esp32cam.stl",
+   "cradle": "head_tilt_cradle_eyes_above_esp32cam.stl",
+   "on_platform": {
+    "display": {
+     "centre": [
+      5.0,
+      0.0,
+      61.0
+     ],
+     "glass_faces": [
+      1.0,
+      0,
+      -0.0
+     ],
+     "diameter": 40.0,
+     "depth": 16.0,
+     "mass_g": 15.0
+    },
+    "forward": [
+     1.0,
+     0,
+     -0.0
+    ],
+    "up": [
+     0.0,
+     0,
+     1.0
+    ],
+    "tilt_deg": 0.0,
+    "camera": {
+     "board_origin": [
+      -1.0,
+      0.0,
+      90.5
+     ],
+     "lens": [
+      7.1,
+      0.0,
+      122.0
+     ],
+     "width": 27.0,
+     "length": 40.5,
+     "thickness": 1.6,
+     "mass_g": 10.0
+    }
+   },
+   "display": {
+    "centre": [
+     55.75,
+     0.0,
+     53.01
+    ],
+    "glass_faces": [
+     0.984808,
+     0,
+     -0.173648
+    ],
+    "diameter": 40.0,
+    "depth": 16.0,
+    "mass_g": 15.0
+   },
+   "forward": [
+    0.984808,
+    0,
+    -0.173648
+   ],
+   "up": [
+    0.173648,
+    0,
+    0.984808
+   ],
+   "tilt_deg": 10.0,
+   "camera": {
+    "board_origin": [
+     54.9635,
+     0.0,
+     83.1034
+    ],
+    "lens": [
+     68.4103,
+     0.0,
+     112.7183
+    ],
+    "width": 27.0,
+    "length": 40.5,
+    "thickness": 1.6,
+    "mass_g": 10.0
+   }
+  },
+  "eyes_above_esp_eye": {
+   "face": "eyes_above",
+   "camera_preset": "esp_eye",
+   "torso": "01_torso_unoq_eyes_above_esp_eye.stl",
+   "cradle": "head_tilt_cradle_eyes_above_esp_eye.stl",
+   "on_platform": {
+    "display": {
+     "centre": [
+      5.0,
+      0.0,
+      61.0
+     ],
+     "glass_faces": [
+      1.0,
+      0,
+      -0.0
+     ],
+     "diameter": 40.0,
+     "depth": 16.0,
+     "mass_g": 15.0
+    },
+    "forward": [
+     1.0,
+     0,
+     -0.0
+    ],
+    "up": [
+     0.0,
+     0,
+     1.0
+    ],
+    "tilt_deg": 0.0,
+    "camera": {
+     "board_origin": [
+      -1.0,
+      0.0,
+      115.5
+     ],
+     "lens": [
+      7.1,
+      0.0,
+      147.5
+     ],
+     "width": 21.0,
+     "length": 41.0,
+     "thickness": 1.6,
+     "mass_g": 8.0
+    }
+   },
+   "display": {
+    "centre": [
+     55.75,
+     0.0,
+     53.01
+    ],
+    "glass_faces": [
+     0.984808,
+     0,
+     -0.173648
+    ],
+    "diameter": 40.0,
+    "depth": 16.0,
+    "mass_g": 15.0
+   },
+   "forward": [
+    0.984808,
+    0,
+    -0.173648
+   ],
+   "up": [
+    0.173648,
+    0,
+    0.984808
+   ],
+   "tilt_deg": 10.0,
+   "camera": {
+    "board_origin": [
+     59.3047,
+     0.0,
+     107.7236
+    ],
+    "lens": [
+     72.8384,
+     0.0,
+     137.8309
+    ],
+    "width": 21.0,
+    "length": 41.0,
+    "thickness": 1.6,
+    "mass_g": 8.0
+   }
+  },
+  "eyes_below_esp32cam": {
+   "face": "eyes_below",
+   "camera_preset": "esp32cam",
+   "torso": "01_torso_unoq_eyes_below_esp32cam.stl",
+   "cradle": "head_tilt_cradle_eyes_below_esp32cam.stl",
+   "on_platform": {
+    "display": {
+     "centre": [
+      5.0,
+      0.0,
+      108.0
+     ],
+     "glass_faces": [
+      1.0,
+      0,
+      -0.0
+     ],
+     "diameter": 40.0,
+     "depth": 16.0,
+     "mass_g": 15.0
+    },
+    "forward": [
+     1.0,
+     0,
+     -0.0
+    ],
+    "up": [
+     0.0,
+     0,
+     1.0
+    ],
+    "tilt_deg": 0.0,
+    "camera": {
+     "board_origin": [
+      -2.0,
+      0.0,
+      38.0
+     ],
+     "lens": [
+      6.1,
+      0.0,
+      69.5
+     ],
+     "width": 27.0,
+     "length": 40.5,
+     "thickness": 1.6,
+     "mass_g": 10.0
+    }
+   },
+   "display": {
+    "centre": [
+     63.911,
+     0.0,
+     99.296
+    ],
+    "glass_faces": [
+     0.984808,
+     0,
+     -0.173648
+    ],
+    "diameter": 40.0,
+    "depth": 16.0,
+    "mass_g": 15.0
+   },
+   "forward": [
+    0.984808,
+    0,
+    -0.173648
+   ],
+   "up": [
+    0.173648,
+    0,
+    0.984808
+   ],
+   "tilt_deg": 10.0,
+   "camera": {
+    "board_origin": [
+     44.8621,
+     0.0,
+     31.5746
+    ],
+    "lens": [
+     58.309,
+     0.0,
+     61.1895
+    ],
+    "width": 27.0,
+    "length": 40.5,
+    "thickness": 1.6,
+    "mass_g": 10.0
+   }
+  },
+  "stack_camera_forward": {
+   "face": "stack_camera_forward",
+   "camera_preset": null,
+   "torso": "01_torso_unoq_stack_camera_forward.stl",
+   "cradle": "head_tilt_cradle_stack_camera_forward.stl",
+   "on_platform": {
+    "display": {
+     "centre": [
+      5.0,
+      0.0,
+      61.0
+     ],
+     "glass_faces": [
+      -1.0,
+      0,
+      0.0
+     ],
+     "diameter": 40.0,
+     "depth": 16.0,
+     "mass_g": 15.0
+    },
+    "forward": [
+     1.0,
+     0,
+     -0.0
+    ],
+    "up": [
+     0.0,
+     0,
+     1.0
+    ],
+    "tilt_deg": 0.0,
+    "camera": {
+     "lens": [
+      21.0,
+      0.0,
+      61.0
+     ],
+     "mass_g": 3.0
+    }
+   },
+   "display": {
+    "centre": [
+     55.75,
+     0.0,
+     53.01
+    ],
+    "glass_faces": [
+     -0.984808,
+     0,
+     0.173648
+    ],
+    "diameter": 40.0,
+    "depth": 16.0,
+    "mass_g": 15.0
+   },
+   "forward": [
+    0.984808,
+    0,
+    -0.173648
+   ],
+   "up": [
+    0.173648,
+    0,
+    0.984808
+   ],
+   "tilt_deg": 10.0,
+   "camera": {
+    "lens": [
+     71.5066,
+     0.0,
+     50.2313
+    ],
+    "mass_g": 3.0
+   }
+  }
+ },
  "head": {
   "torso": "01_torso_unoq_pan_head.stl",
   "platform": "head_pan_platform.stl",
@@ -304,6 +704,63 @@
    "holes": [],
    "slot_spacing": 25.0,
    "slot_length": 20.0
+  }
+ },
+ "feet": {
+  "default": "comb",
+  "presets": [
+   "comb",
+   "flat"
+  ],
+  "comb": {
+   "t": 5.0,
+   "bridge_x": [
+    -17.0,
+    17.0
+   ],
+   "bridge_u": [
+    -6.0,
+    30.0
+   ],
+   "rail_x": [
+    -30.0,
+    64.0
+   ],
+   "rail_u": [
+    30.0,
+    44.0
+   ],
+   "rail_h": 11.0,
+   "tip_u": 118.0,
+   "fingers": {
+    "left": [
+     [
+      -30.0,
+      -16.0
+     ],
+     [
+      50.0,
+      64.0
+     ]
+    ],
+    "right": [
+     [
+      10.0,
+      24.0
+     ]
+    ]
+   },
+   "rib_w": 4.0,
+   "bridge_ribs_x": [
+    -12.0,
+    12.0
+   ],
+   "fillet": 6.0,
+   "shin_rib": 10.0,
+   "studs": [
+    24.0,
+    4
+   ]
   }
  },
  "lego_compatible": {
@@ -943,9 +1400,9 @@
    {
     "part": "left_shin",
     "base": [
-     22.0,
-     -12.0,
-     5.0
+     24.0,
+     -37.0,
+     11.0
     ],
     "axis": [
      0,
@@ -956,9 +1413,9 @@
    {
     "part": "left_shin",
     "base": [
-     22.0,
-     -4.0,
-     5.0
+     32.0,
+     -37.0,
+     11.0
     ],
     "axis": [
      0,
@@ -969,9 +1426,9 @@
    {
     "part": "left_shin",
     "base": [
-     22.0,
-     4.0,
-     5.0
+     40.0,
+     -37.0,
+     11.0
     ],
     "axis": [
      0,
@@ -982,61 +1439,9 @@
    {
     "part": "left_shin",
     "base": [
-     22.0,
-     12.0,
-     5.0
-    ],
-    "axis": [
-     0,
-     0,
-     1
-    ]
-   },
-   {
-    "part": "left_shin",
-    "base": [
-     30.0,
-     -12.0,
-     5.0
-    ],
-    "axis": [
-     0,
-     0,
-     1
-    ]
-   },
-   {
-    "part": "left_shin",
-    "base": [
-     30.0,
-     -4.0,
-     5.0
-    ],
-    "axis": [
-     0,
-     0,
-     1
-    ]
-   },
-   {
-    "part": "left_shin",
-    "base": [
-     30.0,
-     4.0,
-     5.0
-    ],
-    "axis": [
-     0,
-     0,
-     1
-    ]
-   },
-   {
-    "part": "left_shin",
-    "base": [
-     30.0,
-     12.0,
-     5.0
+     48.0,
+     -37.0,
+     11.0
     ],
     "axis": [
      0,
@@ -1047,9 +1452,9 @@
    {
     "part": "right_shin",
     "base": [
-     22.0,
-     -12.0,
-     5.0
+     24.0,
+     37.0,
+     11.0
     ],
     "axis": [
      0,
@@ -1060,9 +1465,9 @@
    {
     "part": "right_shin",
     "base": [
-     22.0,
-     -4.0,
-     5.0
+     32.0,
+     37.0,
+     11.0
     ],
     "axis": [
      0,
@@ -1073,9 +1478,9 @@
    {
     "part": "right_shin",
     "base": [
-     22.0,
-     4.0,
-     5.0
+     40.0,
+     37.0,
+     11.0
     ],
     "axis": [
      0,
@@ -1086,61 +1491,9 @@
    {
     "part": "right_shin",
     "base": [
-     22.0,
-     12.0,
-     5.0
-    ],
-    "axis": [
-     0,
-     0,
-     1
-    ]
-   },
-   {
-    "part": "right_shin",
-    "base": [
-     30.0,
-     -12.0,
-     5.0
-    ],
-    "axis": [
-     0,
-     0,
-     1
-    ]
-   },
-   {
-    "part": "right_shin",
-    "base": [
-     30.0,
-     -4.0,
-     5.0
-    ],
-    "axis": [
-     0,
-     0,
-     1
-    ]
-   },
-   {
-    "part": "right_shin",
-    "base": [
-     30.0,
-     4.0,
-     5.0
-    ],
-    "axis": [
-     0,
-     0,
-     1
-    ]
-   },
-   {
-    "part": "right_shin",
-    "base": [
-     30.0,
-     12.0,
-     5.0
+     48.0,
+     37.0,
+     11.0
     ],
     "axis": [
      0,

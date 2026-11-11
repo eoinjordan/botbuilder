@@ -37,29 +37,45 @@ TARGET = ROOT / "stl"
 
 
 def describe(name: str) -> tuple:
-    """What a file is and which choice it belongs to."""
+    """What a file is and which choices it belongs to. Every torso carries
+    controller, head (fixed or pan), face (none or the face name) and camera;
+    the recipe code selects files by these fields."""
     stem = name[:-4]
+    faces = {"eyes_above": "round display as the eyes with the camera above", "eyes_below": "round display as the eyes with the camera below",
+             "stack_camera_forward": "round display stack with the XIAO Sense camera forward and the screen to the rear"}
+    for face, text in faces.items():
+        for camera in CAMERAS + ("",):
+            tail = f"{face}_{camera}" if camera else face
+            cam = camera or "xiao_sense"
+            if stem == f"01_torso_unoq_{tail}":
+                return f"torso with the UNO Q deck and the head: {text} ({cam})", {
+                    "part": "torso", "controller": "unoq", "head": "fixed", "face": face, "display": "round_display", "camera": cam}
+            if stem == f"head_tilt_cradle_{tail}":
+                return f"turning head: tilt cradle with the {text} ({cam})", {
+                    "part": "head_cradle", "head": "pan", "face": face, "display": "round_display", "camera": cam}
     for camera in CAMERAS:
         if stem == f"01_torso_unoq_cam_{camera}":
-            return f"torso with the UNO Q deck and the camera mount for the {camera} preset", {"part": "torso", "controller": "unoq", "camera": camera}
+            return f"torso with the UNO Q deck and the fixed camera mount for the {camera} preset", {
+                "part": "torso", "controller": "unoq", "head": "fixed", "face": "none", "camera": camera}
         if stem == f"fit_cam_{camera}":
             return f"fit piece for the {camera} camera mount", {"fit_piece": True, "camera": camera}
-    for camera in CAMERAS:
         if stem == f"head_tilt_cradle_{camera}":
-            return f"turning head: tilt cradle for the {camera} preset", {"head": "pan", "camera": camera}
+            return f"turning head: tilt cradle for the {camera} preset", {"part": "head_cradle", "head": "pan", "face": "none", "camera": camera}
     names = {"pi_zero_2w": "a Raspberry Pi Zero 2 W on bosses", "pi": "a full-size Raspberry Pi on bosses",
              "hub51515": "a LEGO 51515 hub on two rows of pin holes"}
     for controller, text in names.items():
         for camera in CAMERAS:
             if stem == f"01_torso_{controller}_cam_{camera}":
-                return f"torso with the deck for {text} and the camera mount for the {camera} preset", {
-                    "part": "torso", "controller": controller, "camera": camera}
+                return f"torso with the deck for {text} and the fixed camera mount for the {camera} preset", {
+                    "part": "torso", "controller": controller, "head": "fixed", "face": "none", "camera": camera}
     table = {
-        "01_torso_unoq_pan_head": ("torso with the UNO Q deck and the pan servo tab of the turning head", {"part": "torso", "head": "pan"}),
-        "head_pan_platform": ("turning head: platform on the pan servo horn", {"head": "pan"}),
+        "01_torso_unoq_pan_head": ("torso with the UNO Q deck and the pan servo tab of the turning head",
+                                   {"part": "torso", "controller": "unoq", "head": "pan", "face": "any", "camera": "any"}),
+        "head_pan_platform": ("turning head: platform on the pan servo horn", {"part": "head_platform", "head": "pan"}),
         "fit_sg90_cradle": ("fit piece for the pan servo pocket, stops and switch seat", {"fit_piece": True, "head": "pan"}),
-        "head_pixy_plate_pixy2": ("plate for a Pixy2 and its pan-tilt base on the 8 mm grid", {"camera": "pixy2"}),
-        "head_pixy_plate_pixy1": ("plate for a first-generation Pixy and its pan-tilt base on the 8 mm grid", {"camera": "pixy1"}),
+        "fit_round_display": ("fit piece for the round display ring", {"fit_piece": True, "display": "round_display"}),
+        "head_pixy_plate_pixy2": ("plate for a Pixy2 and its pan-tilt base on the 8 mm grid", {"part": "camera_plate", "camera": "pixy2"}),
+        "head_pixy_plate_pixy1": ("plate for a first-generation Pixy and its pan-tilt base on the 8 mm grid", {"part": "camera_plate", "camera": "pixy1"}),
         "fit_SR431": ("fit piece for an SR431 servo cradle", {"fit_piece": True}),
         "fit_SR311": ("fit piece for an SR311 servo cradle", {"fit_piece": True}),
         "fit_horn_drill_blank": ("horn drilling blank", {"fit_piece": True}),
@@ -68,10 +84,12 @@ def describe(name: str) -> tuple:
     if stem in table:
         return table[stem]
     for side in ("left", "right"):
-        for key, text in (("hip_roll_pitch_yoke", "hip yoke"), ("thigh_knee_cradle", "thigh with the knee servo cradle"),
-                          ("shin_fixed_foot", "shin with fixed foot")):
+        for key, text in (("hip_roll_pitch_yoke", "hip yoke"), ("thigh_knee_cradle", "thigh with the knee servo cradle")):
             if stem == f"{side}_{key}":
                 return f"{side} {text}", {"part": f"{side}_{key.split('_')[0]}"}
+        for feet, text in (("comb", "comb sole whose fingers cross the centre line"), ("flat", "flat sole plate as first drawn")):
+            if stem == f"{side}_shin_{feet}_foot":
+                return f"{side} shin with fixed foot: {text}", {"part": f"{side}_shin", "feet": feet}
     return "printable part", {}
 
 
@@ -100,7 +118,8 @@ def manifest(folder: Path, design: dict) -> dict:
     return {"generated_by": "scripts/fetch_stls.py", "status": "generated geometry; never printed",
             "design": design, "generator_parameters_file": "parameters.json",
             "generator_parameters_sha256": hashlib.sha256((folder / "parameters.json").read_bytes()).hexdigest(),
-            "camera_default": parameters["camera_default"],
+            "camera_default": parameters["camera_default"], "face_default": parameters.get("face_default"),
+            "controller_default": parameters.get("controller_default"), "feet_default": parameters.get("feet", {}).get("default"),
             "total_bytes": sum(f["bytes"] for f in files), "files": files}
 
 

@@ -232,37 +232,40 @@ function pass(data, sel) {
       wanted.push(item);
       continue;
     }
-    // The committed biped parts, chosen by the option fields the manifest gives each file.
+    // The committed biped parts, chosen by the option fields the manifest gives each file:
+    // controller, head, face, camera and feet. Its own files have no locomotion option.
     const maps = compat.manifest_map;
     const controller = sel.controller in maps.controller ? maps.controller[sel.controller] : null;
-    const head = sel.head in maps.head ? maps.head[sel.head] : null;
-    // The biped's files are those with no locomotion option; the walkers' and wheeled parts have one.
+    const head = sel.head in maps.head ? maps.head[sel.head] : compat.defaults.head;
     const ownFiles = listing.files.filter((entry) => entry.locomotion === null);
-    const torsos = ownFiles.filter(
-      (entry) => entry.part === "torso" && entry.controller === controller && entry.head === head);
-    const known = ownFiles.filter((entry) => entry.part === "torso" && entry.camera !== null).map((entry) => entry.camera);
-    let own = false;
-    let torso = null;
-    if (head === null) {
-      // A fixed mount: the torso of the selected camera, or of the default camera when the
-      // selection is not a camera a torso is made for (the mount is then left empty).
-      own = torsos.some((entry) => entry.camera === sel.camera);
-      const camera = known.includes(sel.camera) ? sel.camera : listing.camera_default;
-      const found = torsos.find((entry) => entry.camera === camera);
-      if (found) torso = found.file;
-    } else if (torsos.length) {
-      torso = torsos[0].file;
-    }
+    const known = ownFiles
+      .filter((entry) => entry.part === "torso" && entry.camera !== null && entry.camera !== "any")
+      .map((entry) => entry.camera);
+    // A selection that is not a camera a torso is made for leaves the mount empty: the default camera's torso.
+    const camera = known.includes(sel.camera) ? sel.camera : listing.camera_default;
+    const found = ownFiles.find((entry) => entry.part === "torso" && entry.controller === controller && entry.head === head &&
+      (entry.face === sel.face || entry.face === "any") && (entry.camera === camera || entry.camera === "any"));
+    const torso = found === undefined ? null : found;
     if (torso === null) noTorso = true;
+    // The display a fit piece is for: the one in the torso, or in the cradle of a turning head.
+    const cradle = ownFiles.find((entry) => entry.part === "head_cradle" && entry.head === head && entry.controller === null &&
+      entry.face === sel.face && entry.camera === sel.camera);
+    let display = null;
+    if (cradle !== undefined) display = cradle.display;
+    else if (torso !== null) display = torso.display;
     for (const entry of ownFiles) {
-      const general = entry.controller === null && entry.head === null;
       let take;
-      if (entry.part === "torso") take = entry.file === torso;
-      else if (general && entry.camera === null) take = true; // legs and the fit pieces every build needs
-      else if (general && entry.fit) take = head === null && own && entry.camera === sel.camera;
-      else if (entry.head !== null && entry.controller === null) {
-        take = entry.head === head && (entry.camera === null || entry.camera === sel.camera);
-      } else take = false;
+      if (entry.part === "torso") take = torso !== null && entry.file === torso.file;
+      else if (entry.part === "camera_plate") take = false; // named by the camera's own rule
+      else if (entry.feet !== null) take = entry.feet === sel.feet;
+      else if (entry.controller !== null) take = false; // another body's part (a walker's head or chassis)
+      else if (entry.head !== null) {
+        // Parts of the turning head: the platform, its fit piece, and the cradle of this face and camera.
+        take = entry.head === head && (entry.part !== "head_cradle" || (entry.face === sel.face && entry.camera === sel.camera));
+      } else if (entry.display !== null) take = display === entry.display;
+      else if (entry.camera !== null) {
+        take = entry.fit && head === compat.defaults.head && torso !== null && entry.camera === sel.camera && sel.camera === torso.camera;
+      } else take = true; // the legs and the fit pieces every build needs
       if (take) wanted.push({ file: entry.file, qty: 1, role: entry.what, fit: entry.fit });
     }
   }

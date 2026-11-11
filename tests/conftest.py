@@ -41,3 +41,23 @@ def joints():
 @pytest.fixture(scope="session")
 def robot_with_meshes():
     return model.build_robot()
+
+
+@pytest.fixture(scope="session")
+def recipe_data():
+    """Everything the configurator evaluates, as the site build bundles it."""
+    from microduck import recipe
+    return recipe.bundle(ROOT)
+
+
+@pytest.fixture(scope="session")
+def all_selections(recipe_data):
+    from microduck import recipe
+    return list(recipe.combinations(recipe_data["compat"]))
+
+
+@pytest.fixture(scope="session")
+def all_recipes(recipe_data, all_selections):
+    """The recipe of every distinct selection, evaluated once for the whole run."""
+    from microduck import recipe
+    return [recipe.evaluate(recipe_data, sel) for sel in all_selections]

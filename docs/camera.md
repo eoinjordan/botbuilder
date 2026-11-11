@@ -1,13 +1,75 @@
-# Camera
+# Camera and eyes (biped)
 
-The torso carries a camera board in a mount at the front edge of the deck,
-lens forward and 10 degrees below level. Three boards have a preset in the
-design's generator and in `config/hardware.json`: the AI-Thinker ESP32-CAM
-(the default), the Espressif ESP-EYE and the Espressif ESP32-S3-EYE. The
-preset the assembly test uses is `camera.preset` in `config/assembly.json`.
+The default head is a Seeed Studio Round Display for XIAO with a XIAO ESP32S3
+in its socket, screen forward as the robot's eyes, and a camera board on the
+same head above it, lens forward and 10 degrees below level. `face` and
+`camera.preset` in `config/assembly.json` say which head the assembly test
+uses (`eyes_above`, `esp32cam`). The camera below the display, an ESP-EYE,
+the camera alone in a fixed mount and the display stack turned round are
+options with their own torso files; `stl/manifest.json` tags each.
 
 Nothing here has been flashed, powered or fitted. No firmware is part of this
-repository.
+repository: no streaming firmware and no eyes.
+
+## The display and what faces where
+
+On the Round Display the XIAO plugs into the back and the screen is the
+front. A XIAO ESP32S3 Sense has its camera on top of the XIAO, so in the
+display's socket the camera looks out of the back, away from the screen.
+Seeed's wiki says the pins are on the back and its camera project shows the
+screen previewing what is behind it; it does not say it in a sentence.
+
+So there are two ways to build the head, and the owner chose the first:
+
+- **Screen forward as the eyes, a separate camera board looking forward**
+  (`eyes_above`, `eyes_below`). This needs two microcontrollers: the XIAO for
+  the display and the camera board's own ESP32 for the camera. The XIAO in
+  the socket can be a plain XIAO ESP32S3; a Sense's camera would look
+  backward there.
+- **The stack turned round** (`stack_camera_forward`): the Sense camera
+  looks forward and the screen faces a person behind the robot. One
+  microcontroller, and it is the stack the owner already runs.
+
+The Sense camera cannot be brought round to the front with the screen also
+forward: its module is on a flex about 21 mm long overall, and the display is
+about 40 mm across.
+
+## What runs on the display today
+
+The owner's repository executorch-zephyr-xiao-esp32s3 has Zephyr firmware for
+exactly this stack (board `xiao_esp32s3/esp32s3/procpu/sense`, shield
+`seeed_xiao_round_display`): it classifies camera frames with ExecuTorch and
+draws the camera crop, the result and the timings on the screen. Its README
+describes the panel as a GC9A01, 240 x 240, drawn in bands of 40 rows to save
+RAM. Seeed's wiki gives 1.28 inch, 240 x 240 with capacitive touch.
+
+## What eyes need from firmware
+
+Not written. For the next step:
+
+- A renderer for the round 240 x 240 panel: one large eye or two side by
+  side, with a few states (open, blink, look left and right, sleepy). The
+  band drawing in the existing firmware is the place to add it.
+- An input that changes the state. With the camera on a second board that is
+  a link between the two: a UART or I2C pair between the camera board and
+  the XIAO, or Wi-Fi or BLE between them. The head has a wire path from the
+  camera seat to the display for the first; nothing is wired.
+- With `stack_camera_forward` the existing firmware already has the camera
+  and the screen on one chip, but the screen then faces backward.
+
+## Power for the display
+
+The display runs and charges from its own 3.7 V lithium cell (JST 1.25
+connector on the display, charged through the XIAO's USB-C port). The cell
+is strapped under the deck front. The eyes therefore do not load the 5 V
+supplies at all; see [power.md](power.md). The cell's size is not known:
+the bay is drawn for 36 x 20 x 5.5 mm and 8.5 g.
+
+## The camera boards
+
+Three boards have a seat: the AI-Thinker ESP32-CAM (the default), the
+Espressif ESP-EYE and, on the camera-only torsos, the Espressif
+ESP32-S3-EYE.
 
 ## The arrangement this reuses
 

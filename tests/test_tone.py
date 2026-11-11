@@ -26,13 +26,13 @@ CLAIMS = re.compile(r"printed and checked|tested on hardware|runs on hardware|ha
 
 
 @pytest.fixture(scope="module")
-def data():
-    return recipe.bundle(ROOT)
+def data(recipe_data):
+    return recipe_data
 
 
 @pytest.fixture(scope="module")
-def recipes(data):
-    return [recipe.evaluate(data, sel) for sel in recipe.combinations(data["compat"])]
+def recipes(all_recipes):
+    return all_recipes
 
 
 def words(rec) -> str:
@@ -82,7 +82,7 @@ def test_no_mark_without_a_record_and_a_mark_with_one(data, recipes):
 
 def test_safety_instructions_and_working_instructions_stay(recipes):
     by_query = {rec["query"]: rec for rec in recipes}
-    biped = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=esp32cam&head=fixed&lego=on"]
+    biped = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=esp32cam&face=eyes_above&feet=comb&head=fixed&lego=on"]
     power = " ".join(biped["power"])
     assert "Disconnect servo power before the first flash" in power
     assert "size the supply and wiring for the stall figure, or fuse it" in power
@@ -94,14 +94,14 @@ def test_safety_instructions_and_working_instructions_stay(recipes):
     assert biped["print"]["files"][0]["fit"]
     # "measure" where a part will not fit otherwise, and "Not written" for software that does not exist.
     assert any("measure" in part["note"].lower() for part in biped["parts"])
-    pan = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=esp32cam&head=m5_360&lego=on"]
+    pan = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=esp32cam&face=none&feet=comb&head=m5_360&lego=on"]
     assert any("Measure the bracket's hole pattern" in part["note"] for part in pan["parts"])
     assert any("Measure the adapter's hole pattern" in text for text in pan["wiring"])
     assert any(text.startswith("Head: not written") for text in pan["firmware"])
-    pixy = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=pixy2&head=pixy_pantilt&lego=on"]
+    pixy = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=pixy2&face=none&feet=comb&head=pixy_pantilt&lego=on"]
     assert any("measure your base" in text for text in pixy["wiring"])
-    xiao = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=xiao_eyes&head=fixed&lego=on"]
-    assert any("measure the space behind the display" in part["note"] for part in xiao["parts"])
+    xiao = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=xiao_sense&face=stack_camera_forward&feet=comb&head=fixed&lego=on"]
+    assert any("measure your cell" in part["note"] for part in xiao["parts"])
     pi = by_query["controller=pi_full&locomotion=wheeled&drive=tt_hbridge&camera=none&head=fixed&lego=on&wheels=back&support=roller&wheel=printed_ring"]
     assert pi["firmware"] == ["Not written."]
 

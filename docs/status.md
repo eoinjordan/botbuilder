@@ -34,6 +34,11 @@ been built.
 
 ## Unverified
 
+- The comb feet: a proposal from simulation. Never printed or loaded; their
+  stiffness is a hand calculation and is not in the simulation.
+- The round display: its glass diameter, rim thickness, depth and mass, and
+  the size of its battery, are assumed. The faces were not analysed on the
+  turning head.
 - Physical fit of anything: no part has been printed against a servo or a
   camera board.
 - The pin holes and studs: no printed one has been tried with a real pin,

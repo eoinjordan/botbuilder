@@ -72,7 +72,9 @@ def test_repository_stays_small():
     for path in rest:
         assert path.stat().st_size < 1_000_000, path.name
     meshes = [path for path in tracked() if under_stl(path)]
-    assert sum(path.stat().st_size for path in meshes) < 20_000_000
+    # About 20 MB of printable files and their pictures; the whole checkout stays under 30 MB.
+    assert sum(path.stat().st_size for path in meshes) < 24_000_000
+    assert sum(path.stat().st_size for path in tracked()) < 30_000_000
     for path in meshes:
         assert path.stat().st_size < 3_000_000, path.name
 

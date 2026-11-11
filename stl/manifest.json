@@ -5,20 +5,25 @@
   "repository": "eoinjordan/3d-print-designs",
   "directory": "microduck-braccio-unoq",
   "generator": "build.py",
-  "commit": "e2a6752750c77f03eec7872304aa181f4e830a5c",
+  "commit": "ff8dbb80f1b43e8451adf36163285fc674cc0700",
   "uncommitted_changes": false
  },
  "generator_parameters_file": "parameters.json",
- "generator_parameters_sha256": "55f15ceec86147cba11be474a52f4eb056600c7aa8cfc927ad354adaf5d7d3a5",
+ "generator_parameters_sha256": "149f12714400ee5db12a11b4555951a5d703ed78810fb1dc5272b55499ce64e7",
  "camera_default": "esp32cam",
- "total_bytes": 16004104,
+ "face_default": "eyes_above",
+ "controller_default": "unoq",
+ "feet_default": "comb",
+ "total_bytes": 19258528,
  "files": [
   {
    "file": "01_torso_hub51515_cam_esp32cam.stl",
-   "what": "torso with the deck for a LEGO 51515 hub on two rows of pin holes and the camera mount for the esp32cam preset",
+   "what": "torso with the deck for a LEGO 51515 hub on two rows of pin holes and the fixed camera mount for the esp32cam preset",
    "options": {
     "part": "torso",
     "controller": "hub51515",
+    "head": "fixed",
+    "face": "none",
     "camera": "esp32cam"
    },
    "triangles": 17282,
@@ -45,10 +50,12 @@
   },
   {
    "file": "01_torso_pi_cam_esp32cam.stl",
-   "what": "torso with the deck for a full-size Raspberry Pi on bosses and the camera mount for the esp32cam preset",
+   "what": "torso with the deck for a full-size Raspberry Pi on bosses and the fixed camera mount for the esp32cam preset",
    "options": {
     "part": "torso",
     "controller": "pi",
+    "head": "fixed",
+    "face": "none",
     "camera": "esp32cam"
    },
    "triangles": 5974,
@@ -75,10 +82,12 @@
   },
   {
    "file": "01_torso_pi_zero_2w_cam_esp32cam.stl",
-   "what": "torso with the deck for a Raspberry Pi Zero 2 W on bosses and the camera mount for the esp32cam preset",
+   "what": "torso with the deck for a Raspberry Pi Zero 2 W on bosses and the fixed camera mount for the esp32cam preset",
    "options": {
     "part": "torso",
     "controller": "pi_zero_2w",
+    "head": "fixed",
+    "face": "none",
     "camera": "esp32cam"
    },
    "triangles": 10582,
@@ -105,10 +114,12 @@
   },
   {
    "file": "01_torso_unoq_cam_esp32_s3_eye.stl",
-   "what": "torso with the UNO Q deck and the camera mount for the esp32_s3_eye preset",
+   "what": "torso with the UNO Q deck and the fixed camera mount for the esp32_s3_eye preset",
    "options": {
     "part": "torso",
     "controller": "unoq",
+    "head": "fixed",
+    "face": "none",
     "camera": "esp32_s3_eye"
    },
    "triangles": 9092,
@@ -135,10 +146,12 @@
   },
   {
    "file": "01_torso_unoq_cam_esp32cam.stl",
-   "what": "torso with the UNO Q deck and the camera mount for the esp32cam preset",
+   "what": "torso with the UNO Q deck and the fixed camera mount for the esp32cam preset",
    "options": {
     "part": "torso",
     "controller": "unoq",
+    "head": "fixed",
+    "face": "none",
     "camera": "esp32cam"
    },
    "triangles": 9104,
@@ -165,10 +178,12 @@
   },
   {
    "file": "01_torso_unoq_cam_esp_eye.stl",
-   "what": "torso with the UNO Q deck and the camera mount for the esp_eye preset",
+   "what": "torso with the UNO Q deck and the fixed camera mount for the esp_eye preset",
    "options": {
     "part": "torso",
     "controller": "unoq",
+    "head": "fixed",
+    "face": "none",
     "camera": "esp_eye"
    },
    "triangles": 9120,
@@ -194,14 +209,116 @@
    }
   },
   {
+   "file": "01_torso_unoq_eyes_above_esp32cam.stl",
+   "what": "torso with the UNO Q deck and the head: round display as the eyes with the camera above (esp32cam)",
+   "options": {
+    "part": "torso",
+    "controller": "unoq",
+    "head": "fixed",
+    "face": "eyes_above",
+    "display": "round_display",
+    "camera": "esp32cam"
+   },
+   "triangles": 11278,
+   "volume_mm3": 75334.2,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     65.83,
+     75.25,
+     127.85
+    ]
+   ],
+   "bytes": 563984,
+   "sha256": "2f5c31d0da4921f4e60cd2458848876f94541d03fb815938c38cd82fc19b7dda",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_eyes_above_esp32cam.png",
+    "stl_sha256": "2f5c31d0da4921f4e60cd2458848876f94541d03fb815938c38cd82fc19b7dda",
+    "bytes": 3640
+   }
+  },
+  {
+   "file": "01_torso_unoq_eyes_above_esp_eye.stl",
+   "what": "torso with the UNO Q deck and the head: round display as the eyes with the camera above (esp_eye)",
+   "options": {
+    "part": "torso",
+    "controller": "unoq",
+    "head": "fixed",
+    "face": "eyes_above",
+    "display": "round_display",
+    "camera": "esp_eye"
+   },
+   "triangles": 11294,
+   "volume_mm3": 76764.1,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     70.26,
+     75.25,
+     152.97
+    ]
+   ],
+   "bytes": 564784,
+   "sha256": "29ec7c15aaf279c4f1830e78564a80bf800fd903893e618cd4e1c6bd40a065b3",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_eyes_above_esp_eye.png",
+    "stl_sha256": "29ec7c15aaf279c4f1830e78564a80bf800fd903893e618cd4e1c6bd40a065b3",
+    "bytes": 3512
+   }
+  },
+  {
+   "file": "01_torso_unoq_eyes_below_esp32cam.stl",
+   "what": "torso with the UNO Q deck and the head: round display as the eyes with the camera below (esp32cam)",
+   "options": {
+    "part": "torso",
+    "controller": "unoq",
+    "head": "fixed",
+    "face": "eyes_below",
+    "display": "round_display",
+    "camera": "esp32cam"
+   },
+   "triangles": 11128,
+   "volume_mm3": 69978.7,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     69.09,
+     75.25,
+     123.07
+    ]
+   ],
+   "bytes": 556484,
+   "sha256": "be7f406031302cdc76b664cda29aa299fa490aa59410a7aad35013f10fb789da",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_eyes_below_esp32cam.png",
+    "stl_sha256": "be7f406031302cdc76b664cda29aa299fa490aa59410a7aad35013f10fb789da",
+    "bytes": 3561
+   }
+  },
+  {
    "file": "01_torso_unoq_pan_head.stl",
    "what": "torso with the UNO Q deck and the pan servo tab of the turning head",
    "options": {
     "part": "torso",
-    "head": "pan"
+    "controller": "unoq",
+    "head": "pan",
+    "face": "any",
+    "camera": "any"
    },
-   "triangles": 9794,
-   "volume_mm3": 62178.2,
+   "triangles": 9874,
+   "volume_mm3": 62018.2,
    "bounding_box_mm": [
     [
      -45.0,
@@ -214,12 +331,45 @@
      17.5
     ]
    ],
-   "bytes": 489784,
-   "sha256": "731a6564514a98f2869f32c0bff7a25b3c378ebb2a9b4c459c7befa957307310",
+   "bytes": 493784,
+   "sha256": "261bcff0230f538a9f9caf57d430ce389512d2bb89ad10a76f37658cd4a619b4",
    "thumbnail": {
     "file": "thumbs/01_torso_unoq_pan_head.png",
-    "stl_sha256": "731a6564514a98f2869f32c0bff7a25b3c378ebb2a9b4c459c7befa957307310",
-    "bytes": 4529
+    "stl_sha256": "261bcff0230f538a9f9caf57d430ce389512d2bb89ad10a76f37658cd4a619b4",
+    "bytes": 4644
+   }
+  },
+  {
+   "file": "01_torso_unoq_stack_camera_forward.stl",
+   "what": "torso with the UNO Q deck and the head: round display stack with the XIAO Sense camera forward and the screen to the rear (xiao_sense)",
+   "options": {
+    "part": "torso",
+    "controller": "unoq",
+    "head": "fixed",
+    "face": "stack_camera_forward",
+    "display": "round_display",
+    "camera": "xiao_sense"
+   },
+   "triangles": 10916,
+   "volume_mm3": 64983.4,
+   "bounding_box_mm": [
+    [
+     -45.0,
+     -75.25,
+     -45.5
+    ],
+    [
+     59.74,
+     75.25,
+     77.0
+    ]
+   ],
+   "bytes": 545884,
+   "sha256": "e860e0bfb9fe86cd8789049742e7553d9077ba29377f16a7b336ac0aa22942eb",
+   "thumbnail": {
+    "file": "thumbs/01_torso_unoq_stack_camera_forward.png",
+    "stl_sha256": "e860e0bfb9fe86cd8789049742e7553d9077ba29377f16a7b336ac0aa22942eb",
+    "bytes": 3821
    }
   },
   {
@@ -366,6 +516,35 @@
    }
   },
   {
+   "file": "fit_round_display.stl",
+   "what": "fit piece for the round display ring",
+   "options": {
+    "fit_piece": true,
+    "display": "round_display"
+   },
+   "triangles": 1922,
+   "volume_mm3": 8561.5,
+   "bounding_box_mm": [
+    [
+     -23.0,
+     -28.0,
+     0.0
+    ],
+    [
+     23.0,
+     28.0,
+     11.7
+    ]
+   ],
+   "bytes": 96184,
+   "sha256": "85bae1acfbe541a4c98ac0056a49d7a0efad34b47a4778d2bde3f1c6551ca735",
+   "thumbnail": {
+    "file": "thumbs/fit_round_display.png",
+    "stl_sha256": "85bae1acfbe541a4c98ac0056a49d7a0efad34b47a4778d2bde3f1c6551ca735",
+    "bytes": 3718
+   }
+  },
+  {
    "file": "fit_sg90_cradle.stl",
    "what": "fit piece for the pan servo pocket, stops and switch seat",
    "options": {
@@ -454,6 +633,7 @@
    "file": "head_pan_platform.stl",
    "what": "turning head: platform on the pan servo horn",
    "options": {
+    "part": "head_platform",
     "head": "pan"
    },
    "triangles": 3360,
@@ -482,6 +662,7 @@
    "file": "head_pixy_plate_pixy1.stl",
    "what": "plate for a first-generation Pixy and its pan-tilt base on the 8 mm grid",
    "options": {
+    "part": "camera_plate",
     "camera": "pixy1"
    },
    "triangles": 2444,
@@ -510,6 +691,7 @@
    "file": "head_pixy_plate_pixy2.stl",
    "what": "plate for a Pixy2 and its pan-tilt base on the 8 mm grid",
    "options": {
+    "part": "camera_plate",
     "camera": "pixy2"
    },
    "triangles": 3036,
@@ -538,7 +720,9 @@
    "file": "head_tilt_cradle_esp32_s3_eye.stl",
    "what": "turning head: tilt cradle for the esp32_s3_eye preset",
    "options": {
+    "part": "head_cradle",
     "head": "pan",
+    "face": "none",
     "camera": "esp32_s3_eye"
    },
    "triangles": 440,
@@ -567,7 +751,9 @@
    "file": "head_tilt_cradle_esp32cam.stl",
    "what": "turning head: tilt cradle for the esp32cam preset",
    "options": {
+    "part": "head_cradle",
     "head": "pan",
+    "face": "none",
     "camera": "esp32cam"
    },
    "triangles": 468,
@@ -596,7 +782,9 @@
    "file": "head_tilt_cradle_esp_eye.stl",
    "what": "turning head: tilt cradle for the esp_eye preset",
    "options": {
+    "part": "head_cradle",
     "head": "pan",
+    "face": "none",
     "camera": "esp_eye"
    },
    "triangles": 468,
@@ -619,6 +807,134 @@
     "file": "thumbs/head_tilt_cradle_esp_eye.png",
     "stl_sha256": "6b58adb91716f2d62fa4feda631dfef8a1da8cfa732625a030529f8156eeac13",
     "bytes": 2610
+   }
+  },
+  {
+   "file": "head_tilt_cradle_eyes_above_esp32cam.stl",
+   "what": "turning head: tilt cradle with the round display as the eyes with the camera above (esp32cam)",
+   "options": {
+    "part": "head_cradle",
+    "head": "pan",
+    "face": "eyes_above",
+    "display": "round_display",
+    "camera": "esp32cam"
+   },
+   "triangles": 2536,
+   "volume_mm3": 24075.8,
+   "bounding_box_mm": [
+    [
+     -11.0,
+     -31.0,
+     -6.0
+    ],
+    [
+     11.0,
+     31.0,
+     135.5
+    ]
+   ],
+   "bytes": 126884,
+   "sha256": "f4af8d114b08e1b7762ff5e81b58773eb0c7348d0d0d9b09a82259085283fd05",
+   "thumbnail": {
+    "file": "thumbs/head_tilt_cradle_eyes_above_esp32cam.png",
+    "stl_sha256": "f4af8d114b08e1b7762ff5e81b58773eb0c7348d0d0d9b09a82259085283fd05",
+    "bytes": 3312
+   }
+  },
+  {
+   "file": "head_tilt_cradle_eyes_above_esp_eye.stl",
+   "what": "turning head: tilt cradle with the round display as the eyes with the camera above (esp_eye)",
+   "options": {
+    "part": "head_cradle",
+    "head": "pan",
+    "face": "eyes_above",
+    "display": "round_display",
+    "camera": "esp_eye"
+   },
+   "triangles": 2548,
+   "volume_mm3": 25505.7,
+   "bounding_box_mm": [
+    [
+     -11.0,
+     -31.0,
+     -6.0
+    ],
+    [
+     11.0,
+     31.0,
+     161.0
+    ]
+   ],
+   "bytes": 127484,
+   "sha256": "1a505f29833dcab83f361473ae0ee95cc11faaf6e499aa0074e27cfdbee24970",
+   "thumbnail": {
+    "file": "thumbs/head_tilt_cradle_eyes_above_esp_eye.png",
+    "stl_sha256": "1a505f29833dcab83f361473ae0ee95cc11faaf6e499aa0074e27cfdbee24970",
+    "bytes": 3130
+   }
+  },
+  {
+   "file": "head_tilt_cradle_eyes_below_esp32cam.stl",
+   "what": "turning head: tilt cradle with the round display as the eyes with the camera below (esp32cam)",
+   "options": {
+    "part": "head_cradle",
+    "head": "pan",
+    "face": "eyes_below",
+    "display": "round_display",
+    "camera": "esp32cam"
+   },
+   "triangles": 2402,
+   "volume_mm3": 18569.7,
+   "bounding_box_mm": [
+    [
+     -11.0,
+     -31.0,
+     -6.0
+    ],
+    [
+     11.0,
+     31.0,
+     131.0
+    ]
+   ],
+   "bytes": 120184,
+   "sha256": "85fd1948fc79d0c1f442bb444d6f179061c786dfe4a5d4607898e612af70b44c",
+   "thumbnail": {
+    "file": "thumbs/head_tilt_cradle_eyes_below_esp32cam.png",
+    "stl_sha256": "85fd1948fc79d0c1f442bb444d6f179061c786dfe4a5d4607898e612af70b44c",
+    "bytes": 2970
+   }
+  },
+  {
+   "file": "head_tilt_cradle_stack_camera_forward.stl",
+   "what": "turning head: tilt cradle with the round display stack with the XIAO Sense camera forward and the screen to the rear (xiao_sense)",
+   "options": {
+    "part": "head_cradle",
+    "head": "pan",
+    "face": "stack_camera_forward",
+    "display": "round_display",
+    "camera": "xiao_sense"
+   },
+   "triangles": 2178,
+   "volume_mm3": 13708.9,
+   "bounding_box_mm": [
+    [
+     -11.0,
+     -31.0,
+     -6.0
+    ],
+    [
+     11.0,
+     31.0,
+     84.0
+    ]
+   ],
+   "bytes": 108984,
+   "sha256": "8c894124b368b67629f1d53ebfe9839a67aa56bcc7713124a20c9a4d19c96119",
+   "thumbnail": {
+    "file": "thumbs/head_tilt_cradle_stack_camera_forward.png",
+    "stl_sha256": "8c894124b368b67629f1d53ebfe9839a67aa56bcc7713124a20c9a4d19c96119",
+    "bytes": 3273
    }
   },
   {
@@ -650,10 +966,40 @@
    }
   },
   {
-   "file": "left_shin_fixed_foot.stl",
-   "what": "left shin with fixed foot",
+   "file": "left_shin_comb_foot.stl",
+   "what": "left shin with fixed foot: comb sole whose fingers cross the centre line",
    "options": {
-    "part": "left_shin"
+    "part": "left_shin",
+    "feet": "comb"
+   },
+   "triangles": 4410,
+   "volume_mm3": 53799.9,
+   "bounding_box_mm": [
+    [
+     -30.0,
+     -118.0,
+     0.0
+    ],
+    [
+     64.0,
+     6.0,
+     99.0
+    ]
+   ],
+   "bytes": 220584,
+   "sha256": "020f05af60a97c2f15f36c2609ed94c9a443e5eb7ed990d82d294179fbf8890b",
+   "thumbnail": {
+    "file": "thumbs/left_shin_comb_foot.png",
+    "stl_sha256": "020f05af60a97c2f15f36c2609ed94c9a443e5eb7ed990d82d294179fbf8890b",
+    "bytes": 3090
+   }
+  },
+  {
+   "file": "left_shin_flat_foot.stl",
+   "what": "left shin with fixed foot: flat sole plate as first drawn",
+   "options": {
+    "part": "left_shin",
+    "feet": "flat"
    },
    "triangles": 5740,
    "volume_mm3": 29089.2,
@@ -672,7 +1018,7 @@
    "bytes": 287084,
    "sha256": "dbab835a1440485f367ee976652806cf00cf3bfc5a6c69e1b4e368fab77b8cb9",
    "thumbnail": {
-    "file": "thumbs/left_shin_fixed_foot.png",
+    "file": "thumbs/left_shin_flat_foot.png",
     "stl_sha256": "dbab835a1440485f367ee976652806cf00cf3bfc5a6c69e1b4e368fab77b8cb9",
     "bytes": 2790
    }
@@ -734,10 +1080,40 @@
    }
   },
   {
-   "file": "right_shin_fixed_foot.stl",
-   "what": "right shin with fixed foot",
+   "file": "right_shin_comb_foot.stl",
+   "what": "right shin with fixed foot: comb sole whose fingers cross the centre line",
    "options": {
-    "part": "right_shin"
+    "part": "right_shin",
+    "feet": "comb"
+   },
+   "triangles": 4378,
+   "volume_mm3": 46939.9,
+   "bounding_box_mm": [
+    [
+     -30.0,
+     -6.0,
+     0.0
+    ],
+    [
+     64.0,
+     118.0,
+     99.0
+    ]
+   ],
+   "bytes": 218984,
+   "sha256": "feb95e1f7c9f5172db3910d596caffba7e68c0b84a5738c041efeaa95f392dd4",
+   "thumbnail": {
+    "file": "thumbs/right_shin_comb_foot.png",
+    "stl_sha256": "feb95e1f7c9f5172db3910d596caffba7e68c0b84a5738c041efeaa95f392dd4",
+    "bytes": 2872
+   }
+  },
+  {
+   "file": "right_shin_flat_foot.stl",
+   "what": "right shin with fixed foot: flat sole plate as first drawn",
+   "options": {
+    "part": "right_shin",
+    "feet": "flat"
    },
    "triangles": 5896,
    "volume_mm3": 29089.5,
@@ -756,7 +1132,7 @@
    "bytes": 294884,
    "sha256": "1dd97910be3c125978fccfaf365c8cdae86c0cd36f615919f7c05df14f886691",
    "thumbnail": {
-    "file": "thumbs/right_shin_fixed_foot.png",
+    "file": "thumbs/right_shin_flat_foot.png",
     "stl_sha256": "1dd97910be3c125978fccfaf365c8cdae86c0cd36f615919f7c05df14f886691",
     "bytes": 2838
    }
