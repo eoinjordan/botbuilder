@@ -180,14 +180,14 @@
  },
  "stand_pose_deg": {
   "left_hip_roll": 0.0,
-  "left_hip_pitch": 45.0,
-  "left_knee": -45.0,
+  "left_hip_pitch": 42.0,
+  "left_knee": -42.0,
   "right_hip_roll": 0.0,
-  "right_hip_pitch": 45.0,
-  "right_knee": -45.0
+  "right_hip_pitch": 42.0,
+  "right_knee": -42.0
  },
- "stand_torso_height_m": 0.15927,
+ "stand_torso_height_m": 0.16224,
  "neutral_torso_height_m": 0.1834,
- "mass_kg": 0.501,
+ "mass_kg": 0.5019,
  "thigh_face": "rail"
 }

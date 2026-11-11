@@ -17,7 +17,7 @@ manifold3d, mujoco, pillow and pytest.
 
 | Input | What it holds |
 |---|---|
-| the design directory's `stl/` | the seven printable STLs and three fit pieces (not in this repository) |
+| the design directory's `stl/` | the printable STLs, the fit pieces and `parameters.json` (not in this repository) |
 | `config/hardware.json` | servo, board and print data: published values with their source, assumed values with the reason |
 | `config/assembly.json` | placement choices the design does not state; sweep step, limit margin |
 | `config/calibration.json` | shield channel, pin, zero and direction per servo; speed limit; watchdog |

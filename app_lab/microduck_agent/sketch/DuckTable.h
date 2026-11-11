@@ -25,7 +25,7 @@ static const Table TABLE = {
   500,  // watchdog_ms
   false,  // watchdog_relax
   2.0,  // step_max_deg
-  {0.0, 45.0, -45.0, 0.0, 45.0, -45.0},  // stand_deg
+  {0.0, 42.0, -42.0, 0.0, 42.0, -42.0},  // stand_deg
 };
 
 }  // namespace duck

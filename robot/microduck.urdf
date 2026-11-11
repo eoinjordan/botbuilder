@@ -6,8 +6,9 @@
   <material name="horn"><color rgba="0.88 0.89 0.90 1"/></material>
   <material name="board"><color rgba="0.08 0.47 0.43 1"/></material>
   <material name="shield"><color rgba="0.16 0.35 0.63 1"/></material>
+  <material name="camera"><color rgba="0.59 0.16 0.24 1"/></material>
   <link name="torso">
-    <inertial><origin xyz="0.0108339 -5.27361e-08 -0.00347323" rpy="0 0 0"/><mass value="0.237295"/><inertia ixx="0.000648889" ixy="-7.65236e-10" ixz="7.14433e-05" iyy="0.000270997" iyz="6.84921e-11" izz="0.000617123"/></inertial>
+    <inertial><origin xyz="0.0156183 -8.94425e-06 -0.00461273" rpy="0 0 0"/><mass value="0.23819"/><inertia ixx="0.000611741" ixy="7.65216e-08" ixz="5.7604e-06" iyy="0.000219735" iyz="1.60465e-07" izz="0.000606508"/></inertial>
     <visual><origin xyz="0.002 -0.057 -0.0415" rpy="0 0 0"/><geometry><box size="0.0039992 0.0364927 0.0029994"/></geometry><material name="print"/></visual>
     <collision><origin xyz="0.002 -0.057 -0.0415" rpy="0 0 0"/><geometry><box size="0.0039992 0.0364927 0.0029994"/></geometry></collision>
     <visual><origin xyz="0.002 0.057 -0.0415" rpy="0 0 0"/><geometry><box size="0.0039992 0.0364927 0.0029994"/></geometry><material name="print"/></visual>
@@ -32,16 +33,18 @@
     <collision><origin xyz="0.00439859 -0.057 -0.00294" rpy="0 0 0"/><geometry><box size="0.00879625 0.0364915 0.00587882"/></geometry></collision>
     <visual><origin xyz="0.00439859 0.057 -0.00294" rpy="0 0 0"/><geometry><box size="0.00879625 0.0364915 0.00587882"/></geometry><material name="print"/></visual>
     <collision><origin xyz="0.00439859 0.057 -0.00294" rpy="0 0 0"/><geometry><box size="0.00879625 0.0364915 0.00587882"/></geometry></collision>
-    <visual><origin xyz="-0.000900424 -2.98369e-09 0.002" rpy="0 0 0"/><geometry><box size="0.0917662 0.149959 0.0039992"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="-0.000900424 -2.98369e-09 0.002" rpy="0 0 0"/><geometry><box size="0.0917662 0.149959 0.0039992"/></geometry></collision>
-    <visual><origin xyz="-0.00750368 -2.40142e-09 0.0058999" rpy="0 0 0"/><geometry><box size="0.0789739 0.150411 0.00379929"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="-0.00750368 -2.40142e-09 0.0058999" rpy="0 0 0"/><geometry><box size="0.0789739 0.150411 0.00379929"/></geometry></collision>
-    <visual><origin xyz="-0.0250268 1.53479e-10 0.053807" rpy="0 0 0"/><geometry><box size="0.0846445 0.0158552 0.0919959"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="-0.0250268 1.53479e-10 0.053807" rpy="0 0 0"/><geometry><box size="0.0846445 0.0158552 0.0919959"/></geometry></collision>
+    <visual><origin xyz="3.38726e-06 -3.43549e-09 0.002" rpy="0 0 0"/><geometry><box size="0.0899586 0.149959 0.0039992"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="3.38726e-06 -3.43549e-09 0.002" rpy="0 0 0"/><geometry><box size="0.0899586 0.149959 0.0039992"/></geometry></collision>
+    <visual><origin xyz="0.00587274 -2.12829e-09 0.0058999" rpy="0 0 0"/><geometry><box size="0.0757114 0.150409 0.00379928"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.00587274 -2.12829e-09 0.0058999" rpy="0 0 0"/><geometry><box size="0.0757114 0.150409 0.00379928"/></geometry></collision>
+    <visual><origin xyz="0.0455867 -3.44082e-10 0.0419556" rpy="0 0 0"/><geometry><box size="0.0198511 0.0513205 0.0683049"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0455867 -3.44082e-10 0.0419556" rpy="0 0 0"/><geometry><box size="0.0198511 0.0513205 0.0683049"/></geometry></collision>
     <visual><origin xyz="0 0 0.0073" rpy="0 0 0"/><geometry><box size="0.06858 0.05334 0.0016"/></geometry><material name="board"/></visual>
     <collision><origin xyz="0 0 0.0073" rpy="0 0 0"/><geometry><box size="0.06858 0.05334 0.0016"/></geometry></collision>
     <visual><origin xyz="0 0 0.0199" rpy="0 0 0"/><geometry><box size="0.06858 0.05334 0.0016"/></geometry><material name="shield"/></visual>
     <collision><origin xyz="0 0 0.0199" rpy="0 0 0"/><geometry><box size="0.06858 0.05334 0.0016"/></geometry></collision>
+    <visual><origin xyz="0.0519329 0 0.0513781" rpy="0 0 0"/><geometry><box size="0.0141415 0.027 0.0401626"/></geometry><material name="camera"/></visual>
+    <collision><origin xyz="0.0519329 0 0.0513781" rpy="0 0 0"/><geometry><box size="0.0141415 0.027 0.0401626"/></geometry></collision>
     <visual><origin xyz="0.02375 0.057 -0.019" rpy="0 0 0"/><geometry><box size="0.0395 0.0205 0.042"/></geometry><material name="servo"/></visual>
     <collision><origin xyz="0.02375 0.057 -0.019" rpy="0 0 0"/><geometry><box size="0.0395 0.0205 0.042"/></geometry></collision>
     <visual><origin xyz="0.03225 0.057 -0.019" rpy="0 0 0"/><geometry><box size="0.0025 0.0205 0.055"/></geometry><material name="servo"/></visual>

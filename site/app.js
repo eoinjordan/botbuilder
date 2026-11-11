@@ -6,7 +6,7 @@ const JOINT_LABELS = {
   left_hip_roll: "Left hip roll", left_hip_pitch: "Left hip pitch", left_knee: "Left knee",
   right_hip_roll: "Right hip roll", right_hip_pitch: "Right hip pitch", right_knee: "Right knee",
 };
-const COLORS = { print: 0xecc878, servo: 0x3c424a, horn: 0xe1e4e6, board: 0x14786e, shield: 0x285aa0 };
+const COLORS = { print: 0xecc878, servo: 0x3c424a, horn: 0xe1e4e6, board: 0x14786e, shield: 0x285aa0, camera: 0x96283c };
 
 async function getJson(name) {
   const response = await fetch(`./data/${name}`);

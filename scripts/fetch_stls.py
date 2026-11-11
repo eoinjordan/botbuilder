@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from microduck.model import FIT_FILES, PART_FILES  # noqa: E402
+from microduck.model import FIT_FILES, OTHER_FILES, PART_FILES  # noqa: E402
 
 
 def main() -> int:
@@ -38,14 +38,14 @@ def main() -> int:
     target = ROOT / "build" / "stl"
     target.mkdir(parents=True, exist_ok=True)
     sums = {}
-    for name in list(PART_FILES.values()) + list(FIT_FILES.values()):
+    for name in sorted(set(list(PART_FILES.values()) + list(FIT_FILES.values()) + OTHER_FILES)):
         if not (source / name).is_file():
             print(f"missing {name}", file=sys.stderr)
             return 1
         shutil.copyfile(source / name, target / name)
         sums[name] = hashlib.sha256((target / name).read_bytes()).hexdigest()
     (target / "SHA256SUMS.json").write_text(json.dumps(sums, indent=2) + "\n", encoding="utf-8", newline="\n")
-    print(f"copied {len(sums)} STLs to {target}")
+    print(f"copied {len(sums)} files to {target}")
     return 0
 
 

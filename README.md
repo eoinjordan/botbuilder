@@ -17,9 +17,12 @@ firmware and tools to play the same joint commands on the real robot.
 A Microduck-style biped rebuilt around the six servos of a stock TinkerKit
 Braccio kit. Four SR431 servos at the hips (two on the torso for hip roll,
 one on each yoke for hip pitch), two SR311 servos at the far end of the
-thighs for knee pitch, shins with fixed feet, a fixed head, an Arduino UNO Q
-and the Braccio shield strapped to a deck, servos held by cable ties. Seven
-printed parts and three fit-test pieces.
+thighs for knee pitch, shins with fixed feet, an Arduino UNO Q and the
+Braccio shield strapped to a deck, a camera board in a mount at the front
+edge of the deck, servos held by cable ties. Seven printed parts and six
+fit-test pieces. There is no head: the torso carries the camera mount
+instead, with presets for the AI-Thinker ESP32-CAM (the default), the
+Espressif ESP-EYE and the ESP32-S3-EYE. See [docs/camera.md](docs/camera.md).
 
 Six actuated joints: left and right hip roll, hip pitch, knee pitch. No yaw,
 no ankles.
@@ -27,7 +30,7 @@ no ankles.
 For comparison, Pollen Robotics' Microduck has five joints per leg (hip yaw,
 roll, pitch, knee, ankle) and four in the neck and head, weighs about 800 g
 and stands about 25 cm tall. This one has three per leg, weighs about 500 g
-by the model and stands 283 mm.
+by the model and stands 260 mm.
 
 ## What the digital assembly test found
 
@@ -36,8 +39,13 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
 
 - **Interference.** Each hip roll servo, centred in its torso cradle, runs
   into the deck: 1055 mm3 of overlap. The case end reaches 2 mm into the 4 mm
-  plate and the mounting ear goes through the rest. The UNO Q centred between the deck rails
-  overlaps the neck root by 3.3 mm; moving it 3.25 mm forward clears it.
+  plate and the mounting ear goes through the rest. Nothing else overlaps:
+  the neck that the UNO Q ran into is gone with the head.
+- **Camera mount.** The ESP32-CAM stands between two posts with 0.5 mm each
+  side, 1.1 mm ahead of the UNO Q. The lens looks the way the toes point,
+  10 degrees below level, 223 mm above the floor at the stand pose. A cone
+  of 40 degrees half angle in front of it is clear at the neutral and stand
+  poses; a thigh swung more than 21 degrees forward comes into it.
 - **Cable ties.** On every cradle one of the two ties is in line with the
   output shaft (slot pair 10.9 mm from the cradle centre, shaft 10.75 mm on
   the assumed SR431). Only the tie at the far end can pass over the case.
@@ -50,11 +58,11 @@ Full report with pictures: [docs/assembly.md](docs/assembly.md). Numbers:
   the right): inward, the shins meet. The knee is free from -137 to +115
   degrees. With 3 degrees of margin and the servos' 180 degrees of travel the
   limits are hip roll -52 to +90, hip pitch and knee -90 to +90.
-- **Mass.** 501 g: servos 302 g (published), printed parts 144 g (PLA at 60
-  percent of solid, assumed), board 30 g and shield 25 g (assumed). 597 g if
-  printed solid.
-- **Balance.** With the legs straight down the centre of mass is 8.8 mm
-  behind the heels: it falls backward. With the thighs swung 45 degrees back
+- **Mass.** 502 g: servos 302 g (published), printed parts 135 g (PLA at 60
+  percent of solid, assumed), board 30 g and shield 25 g (assumed), camera
+  10 g (published). 592 g if printed solid.
+- **Balance.** With the legs straight down the centre of mass is 6.6 mm
+  behind the heels: it falls backward. With the thighs swung 42 degrees back
   and the knees turned to keep the soles level it is 37 mm inside the support
   polygon. That is the stand pose. On one foot it is 62 mm outside, and still
   38 mm outside with the stance hip rolled 30 degrees. It cannot stand on one
@@ -74,9 +82,9 @@ Full results: [docs/simulation.md](docs/simulation.md). Numbers:
 - **Straight legs fall.** At the neutral pose it tips backward in 0.4 s, as
   the assembly test predicted.
 - **The gait shuffles.** The open-loop weight shift and step keeps the robot
-  up for the whole run and moves it 41 mm in 11 s. Both feet stay on the
+  up for the whole run and moves it 46 mm in 11 s. Both feet stay on the
   floor the whole time. The best of 54 parameter sets inside the speed limit
-  manages 101 mm in 11 s (9 mm/s). None fell. With no ankle and feet 172 mm
+  manages 109 mm in 11 s (10 mm/s). None fell. With no ankle and feet 172 mm
   apart the weight never gets onto one foot, so there is no step.
 - **Watchdog.** Commands cut in mid gait: the controller holds and the robot
   stays up. Relaxed instead, it falls in 0.3 s.
@@ -152,7 +160,12 @@ design directory.
 
 ## Unverified
 
-- Physical fit of anything: no part has been printed against a servo.
+- Physical fit of anything: no part has been printed against a servo or a
+  camera board.
+- The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
+  outline are the makers' figures. Lens, button, connector and pin positions,
+  board thickness and the other masses are assumed or scaled from pictures.
+- The camera firmware on an ESP32-CAM: see [docs/camera.md](docs/camera.md).
 - Every assumed dimension: servo ears, shaft position, horn size, board and
   shield mass, print density and infill.
 - Holding torque, backlash, tie slip, flex of the 4 mm plates.

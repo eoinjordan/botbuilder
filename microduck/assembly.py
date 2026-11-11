@@ -287,12 +287,6 @@ def board_checks(robot: Robot) -> dict:
     env_common = envelope ^ torso
     deck_front = 39.0   # build.py: the rectangular deck plate ends at x = +39
     rail_top = 7.8      # build.py: rails from z 3.8 to 7.8
-    # Head clearance over the stack, with the board moved clear of the neck.
-    head_gap = None
-    dx = shift or 0.0
-    above = torso ^ box([bb[0][0] + dx + 2.0, bb[0][1], bb[1][2]], [bb[1][0] + dx, bb[1][1], 200.0])
-    if above.volume() > 0.5:
-        head_gap = float(_tight_bbox(above)[0][2] - _bbox(envelope)[1][2])
     return {
         "board_outline_mm": [b["length_mm"], b["width_mm"]],
         "board_box_min_mm": _r(bb[0]), "board_box_max_mm": _r(bb[1]),
@@ -304,8 +298,102 @@ def board_checks(robot: Robot) -> dict:
         "stack_envelope_interference_mm3": _r(env_common.volume(), 1),
         "forward_shift_to_clear_mm": shift,
         "front_overhang_after_shift_mm": None if shift is None else _r(max(0.0, bb[1][0] + shift - deck_front)),
-        "head_above_stack_top_after_shift_mm": None if head_gap is None else _r(head_gap),
     }
+
+
+# --- camera mount -----------------------------------------------------------
+
+def _cone_hits(robot: Robot, cone: Manifold, q=None, links=None) -> list:
+    out = []
+    for link, solid, m in robot.placed(q):
+        if solid.name == "camera_board" or m.is_empty() or (links and link not in links):
+            continue
+        volume = (cone ^ m).volume()
+        if volume > 0.5:
+            out.append({"solid": solid.name, "volume_mm3": _r(volume, 1)})
+    return out
+
+
+def camera_checks(robot: Robot, limits: dict, stand_q: dict) -> dict:
+    """The camera board in its mount: fit, clearance to the controller stack,
+    and the cone kept clear in front of the lens."""
+    cam, spec, pose = robot.camera, robot.camera["spec"], robot.camera["pose"]
+    torso = _solid(robot, "torso_print")[1].manifold
+    board = _solid(robot, "camera_board")[1].manifold
+    to_torso = pose["to_torso"]
+    w, l, t = spec["width"], spec["length"], spec["thickness"]
+
+    def pcb(grow_y=0.0, shift_x=0.0, shift_z=0.0):
+        # The volume the board sweeps when moved by the shifts.
+        return apply(box([min(shift_x, 0.0), -w / 2 - grow_y, min(shift_z, 0.0)],
+                         [t + max(shift_x, 0.0), w / 2 + grow_y, l + max(shift_z, 0.0)]), to_torso)
+
+    side = _largest_clear(lambda g: (pcb(grow_y=g) ^ torso).volume() < 1e-3)
+    forward = _largest_clear(lambda g: (pcb(shift_x=g) ^ torso).volume() < 1e-3)
+    back = _largest_clear(lambda g: (pcb(shift_x=-g) ^ torso).volume() < 1e-3)
+    seated = (pcb(shift_z=-0.2) ^ torso).volume() > 1e-3
+    lift = _largest_clear(lambda g: (pcb(shift_z=g) ^ torso).volume() < 1e-3, hi=10.0)
+    # The printed mount alone: the torso above the deck, ahead of the board bay.
+    mount = torso ^ box([34.4, -80, PLATE + 0.05], [200, 80, 300])
+    gaps = {}
+    for name in ("unoq", "braccio_shield"):
+        other = _solid(robot, name)[1].manifold
+        gaps[name] = {"to_mount_mm": _r(other.min_gap(mount, 60.0)), "to_camera_board_mm": _r(other.min_gap(board, 60.0))}
+    gaps["stack_envelope"] = {"to_mount_mm": _r(robot.envelope.min_gap(mount, 60.0)),
+                              "to_camera_board_mm": _r(robot.envelope.min_gap(board, 60.0))}
+    cone = model.view_cone(pose, cam["cone_half_angle_deg"])
+    # Each joint over its limits, others at the stand pose and at neutral:
+    # where does a leg come into the cone?
+    sweeps = {}
+    for joint in JOINTS:
+        links = set(robot.subtree(robot.link_of_joint(joint)))
+        lo, hi = limits[joint]["min_deg"], limits[joint]["max_deg"]
+        row = {}
+        for label, base in (("from_neutral", {}), ("from_stand", stand_q)):
+            inside = [float(a) for a in np.arange(lo, hi + 0.5, 3.0)
+                      if _cone_hits(robot, cone, {**base, joint: float(a)}, links)]
+            row[label] = {"angles_in_cone_deg": [min(inside), max(inside)] if inside else None}
+        sweeps[joint] = row
+    frames = robot.fk(stand_q)
+    sole = model.point(frames["left_shin"], [0, 0, sole_points(robot, "left")[:, 2].min()])[2]
+    feet = sole_points(robot, "left")
+    return {
+        "preset": cam["preset"], "name": spec["name"],
+        "board_mm": [w, l, t], "mass_g": spec["mass_g"],
+        "tilt_below_level_deg": robot.assumptions["camera"]["tilt_deg"],
+        "lens_mm": _r(pose["lens"]), "looks_along": _r(pose["forward"], 3),
+        "toes_ahead_of_shin_mm": _r(feet[:, 0].max()), "heel_behind_shin_mm": _r(-feet[:, 0].min()),
+        "looks_the_way_the_toes_point": bool(pose["forward"][0] > 0 and feet[:, 0].max() > -feet[:, 0].min()),
+        "lens_height_above_floor_at_stand_mm": _r(pose["lens"][2] - sole),
+        "clearance_each_side_mm": _r(side), "play_towards_the_lips_mm": _r(forward), "play_towards_the_ledges_mm": _r(back),
+        "seated_on_the_corner_seats": bool(seated), "play_upwards_to_the_catch_mm": _r(lift),
+        "board_overlap_with_mount_mm3": _r((board ^ torso).volume(), 2),
+        "gaps": gaps,
+        "cone_half_angle_deg": cam["cone_half_angle_deg"],
+        "cone_blocked_at_neutral": _cone_hits(robot, cone),
+        "cone_blocked_at_stand": _cone_hits(robot, cone, stand_q),
+        "cone_sweeps": sweeps,
+    }
+
+
+def camera_preset_summary(robot: Robot) -> dict:
+    """The short form of the checks, for a camera preset the full report does
+    not use: fit, clearances, the cone at two poses, mass and balance."""
+    threshold = robot.assumptions["interference_threshold_mm3"]
+    stand = support(robot, {}, ("left", "right"))
+    limits = {j: {"min_deg": -90.0, "max_deg": 90.0} for j in JOINTS}
+    bal = balance(robot, limits)
+    full = camera_checks(robot, {j: {"min_deg": 0.0, "max_deg": 0.0} for j in JOINTS}, bal["stand_pose"]["q_deg"])
+    total, com = centre_of_mass(robot)
+    keep = ("preset", "name", "board_mm", "mass_g", "lens_mm", "lens_height_above_floor_at_stand_mm", "clearance_each_side_mm",
+            "play_towards_the_lips_mm", "play_towards_the_ledges_mm", "play_upwards_to_the_catch_mm",
+            "seated_on_the_corner_seats", "board_overlap_with_mount_mm3", "gaps", "cone_blocked_at_neutral", "cone_blocked_at_stand")
+    out = {k: full[k] for k in keep}
+    out.update({"neutral_interferences": [(f["a"], f["b"], f["volume_mm3"]) for f in interferences(robot.placed(), threshold)],
+                "total_g": _r(total, 1), "com_neutral_mm": _r(com),
+                "neutral_margin_mm": stand["margin_mm"], "stand_thigh_swing_deg": bal["stand_pose"]["thigh_swing_deg"],
+                "stand_margin_mm": bal["stand_pose"]["margin_mm"]})
+    return out
 
 
 # --- mass and balance -------------------------------------------------------
@@ -530,4 +618,6 @@ def analyse(robot: Robot, progress=lambda text: None) -> dict:
     }
     progress("balance")
     report["balance"] = balance(robot, limits)
+    progress("camera mount")
+    report["camera"] = camera_checks(robot, limits, report["balance"]["stand_pose"]["q_deg"])
     return report
