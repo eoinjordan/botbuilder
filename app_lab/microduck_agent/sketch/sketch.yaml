@@ -7,6 +7,9 @@ profiles:
     # the UNO Q, the classic Servo and Braccio libraries have no arduino:zephyr
     # build, and App Lab needs the version pinned. Arduino_RouterBridge is
     # bundled in the platform and must not be listed.
+    # The leg clearance rule in DuckControl.hpp must round as the Python
+    # reference does: build without fused multiply-add contraction
+    # (-ffp-contract=off). Check the flags of the first build.
     libraries:
       - RoboServo (1.2.0)
 default_profile: default

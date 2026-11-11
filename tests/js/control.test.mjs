@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 import test from "node:test";
 import assert from "node:assert/strict";
-import { loadSite } from "./load.mjs";
+import { readFileSync } from "node:fs";
+import { loadSite, ROOT as REPO } from "./load.mjs";
 
 const c = await loadSite("control.js");
 
@@ -232,7 +233,7 @@ test("playback: relaxed until E, clamps, limits speed, watchdog holds", () => {
   assert.equal(p.handle("Q", 0), "ERR UNKNOWN");
 });
 
-test("stop sequence: status, then the reported angles as the target", () => {
+test("stop: status, then the one-line hold; nothing moves afterwards", () => {
   const p = new c.PlaybackController(ROBOT);
   const sent = [];
   const send = (line) => { sent.push(line); return p.handle(line, 100); };
@@ -240,10 +241,81 @@ test("stop sequence: status, then the reported angles as the target", () => {
   assert.deepEqual(sent, ["S"]);
   p.handle("E", 0); p.handle("J 30 45 -45 0 45 -45", 0); p.tick(20); p.tick(40);
   sent.length = 0;
-  assert.equal(c.stopOn(send).held, true);
-  assert.deepEqual(sent, ["S", "J 4.8 45.0 -45.0 0.0 45.0 -45.0"]);
-  p.tick(120);
-  assert.ok(Math.abs(p.current[0] - 4.8) < 1e-9, "it stays where it was");
+  const stopped = c.stopOn(send);
+  assert.equal(stopped.held, true);
+  assert.deepEqual(sent, ["S", "H", "S"]);
+  assert.equal(p.mode, "HOLD");
+  assert.deepEqual(stopped.status.q, [4.8, 45, -45, 0, 45, -45]);
+  p.tick(120); p.tick(140);
+  assert.ok(Math.abs(p.current[0] - 4.8) < 1e-9, "it stays exactly where it was: no tick can fall inside the stop");
+});
+
+test("stop on a board without the hold command falls back to the reported angles", () => {
+  const p = new c.PlaybackController(ROBOT);
+  const sent = [];
+  const old = (line) => { sent.push(line); return line === "H" ? "ERR UNKNOWN" : p.handle(line, 100); };
+  p.handle("E", 0); p.handle("J 30 45 -45 0 45 -45", 0); p.tick(20); p.tick(40);
+  assert.equal(c.stopOn(old).held, true);
+  assert.deepEqual(sent, ["S", "H", "J 4.8 45.0 -45.0 0.0 45.0 -45.0", "S"]);
+});
+
+test("hold command: OK in every mode, holds only a running board, and J moves it again", () => {
+  const p = new c.PlaybackController(ROBOT);
+  assert.equal(p.handle("H", 0), "OK");
+  assert.equal(p.mode, "RELAX");
+  assert.equal(p.handle("H 1", 0), "ERR ARGS");
+  p.handle("E", 0); p.handle("J 30 45 -45 0 45 -45", 0); p.tick(20);
+  assert.equal(p.handle("H", 30), "OK");
+  assert.equal(p.mode, "HOLD");
+  assert.deepEqual(p.target, p.current);
+  assert.equal(p.handle("J 0 45 -45 0 45 -45", 40), "OK");
+  assert.equal(p.mode, "RUN");
+});
+
+const TABLE = JSON.parse(readFileSync(`${REPO}robot/clearance.json`, "utf-8"));
+const JOINT_TABLE = JSON.parse(readFileSync(`${REPO}robot/joints.json`, "utf-8"));
+const REAL = { ...ROBOT, clearance: TABLE, stand_deg: c.JOINTS.map((name) => JOINT_TABLE.stand_pose_deg[name]),
+  limits_deg: c.JOINTS.map((name) => [JOINT_TABLE.joints[name].min_deg, JOINT_TABLE.joints[name].max_deg]) };
+
+test("leg clearance: the page's own sine, and the rule on the stand pose and on one hip rolled inward", () => {
+  for (const deg of [-360, -180, -90, -33.3, 0, 12.5, 45, 90, 135, 179.9, 270, 360]) {
+    assert.ok(Math.abs(c.sine(deg) - Math.sin(deg * Math.PI / 180)) < 2e-9);
+    assert.ok(Math.abs(c.cosine(deg) - Math.cos(deg * Math.PI / 180)) < 2e-9);
+  }
+  const stand = REAL.stand_deg;
+  assert.equal(c.legsClear(TABLE, stand), true);
+  const inward = stand.slice(); inward[0] -= 12;
+  assert.equal(c.legsClear(TABLE, inward), false, "inside the limits of that joint, into the other sole");
+  assert.equal(c.legsClear(null, inward), true, "no table, no rule");
+});
+
+test("leg clearance in the playback: ERR CLEAR for the target, and a step into the other leg is not taken", () => {
+  const p = new c.PlaybackController(REAL);
+  const stand = REAL.stand_deg;
+  const inward = stand.slice(); inward[0] -= 12;
+  p.handle("E", 0);
+  assert.equal(p.handle(c.formatJoints(inward), 0), "ERR CLEAR");
+  assert.deepEqual(p.target, stand, "nothing changed");
+  p.mode = "RUN"; p.target = inward;              // as if the target had been accepted
+  for (let t = 20; t < 2000; t += 20) p.tick(t);
+  assert.equal(c.legsClear(TABLE, p.current), true);
+  assert.ok(p.current[0] > inward[0] + 3 && p.current[0] <= stand[0]);
+});
+
+test("the engine stops a jog that would bring the feet together and says so", () => {
+  const engine = new c.MotionEngine(REAL, GAIT, {});
+  let blocked = 0;
+  let last = null;
+  for (let i = 0; i < 80; i++) {
+    const result = engine.step({ type: "jog", joint: 0, dir: -1 }, 50);
+    if (result.blocked) { blocked += 1; assert.equal(result.q, null); assert.equal(result.phase, "blocked"); } else last = result.q;
+  }
+  assert.ok(blocked > 20, "it stays blocked while the jog is held");
+  assert.equal(c.legsClear(TABLE, engine.q), true);
+  assert.deepEqual(engine.q, last, "the pose is the last one that was clear");
+  assert.ok(engine.q[0] < 0 && engine.q[0] > REAL.limits_deg[0][0], "short of the joint limit");
+  assert.match(c.FEET_TOGETHER, /feet together/);
+  assert.ok(engine.step({ type: "jog", joint: 0, dir: 1 }, 50).q, "and it can be jogged back out");
 });
 
 test("fmt1 matches the firmware's rounding", () => {

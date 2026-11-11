@@ -134,7 +134,8 @@ def load_manifest(root: Path = ROOT, cal: protocol.Calibration | None = None) ->
         "robot": {"max_speed_deg_s": cal.max_speed_deg_s, "watchdog_ms": cal.watchdog_ms,
                   "watchdog_action": cal.watchdog_action, "allow_jump": allow_jump,
                   "stand_deg": list(cal.stand_deg),
-                  "limits_deg": [[j.min_deg, j.max_deg] for j in cal.joints]},
+                  "limits_deg": [[j.min_deg, j.max_deg] for j in cal.joints],
+                  "clearance": cal.clearance},
     }
 
 

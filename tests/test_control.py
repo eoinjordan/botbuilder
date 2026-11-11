@@ -134,10 +134,11 @@ def test_page_gait_is_the_python_gait(tmp_path, cal):
 @needs_node
 def test_page_playback_controller_is_the_python_controller(tmp_path, cal):
     manifest = motions.load_manifest()
-    script = [[0, "S"], [0, "J 0 45 -45 0 45 -45"], [10, "E"], [20, "J 30 45.5 -45 0 45 -45"], [45, "S"], [100, "J -80 0 0 80 0 0"],
+    script = [[0, "S"], [0, "J 0 52 -52 0 52 -52"], [10, "E"], [20, "J 30 50.5 -52 30 52 -52"], [45, "S"], [100, "J 0 80 -52 0 80 -52"],
               [130, "J 1 2 3"], [140, "J 1e2 0 0 0 0 0"], [150, "Q"], [160, ""], [170, "W 50 hold"], [180, "W 300 hold"],
-              [200, "J 0.05 -0.05 10 0 0 0"], [620, "S"], [640, "J 0 45 -45 0 45 -45"], [700, "S"], [720, "W 400 relax"],
-              [1300, "S"], [1310, "J 0 0 0 0 0 0"], [1320, "E"], [1330, "R"], [1340, "S"], [1350, "J +5 .5 0 0 0 0"]]
+              [200, "J -12 52 -52 0 52 -52"], [210, "J 0.05 51.95 -52 0 52 -52"], [300, "H"], [310, "S"], [330, "H 1"],
+              [340, "J 5 52 -52 5 52 -52"], [620, "S"], [640, "J 0 52 -52 0 52 -52"], [700, "S"], [720, "W 400 relax"],
+              [1300, "S"], [1310, "J 0 52 -52 0 52 -52"], [1320, "E"], [1330, "R"], [1340, "H"], [1345, "S"], [1350, "J +5 52. -52 0 52 -52"]]
     out = dump(tmp_path, {"robot": manifest["robot"], "script": script})["script"]
     controller = protocol.Controller(cal)
     now, replies = 0, []
@@ -150,6 +151,7 @@ def test_page_playback_controller_is_the_python_controller(tmp_path, cal):
     assert out["mode"] == controller.mode
     assert out["current"] == pytest.approx(controller.current, abs=1e-9)
     assert any(r.startswith("OK CLAMP") for r in replies) and "ERR DISABLED" in replies and any("mode=HOLD" in r for r in replies)
+    assert "ERR CLEAR" in replies, "a target that would bring the legs together is refused by both"
 
 
 @needs_node
@@ -308,19 +310,49 @@ def test_jump_and_missing_motions_are_refused_by_the_server(cal):
 def test_stop_holds_in_place_and_disarms(cal):
     app, link, clock = make_app(cal)
     token = app.arm(True, ALL)["token"]
-    app.joints({"token": token, "held": True, "q": [30.0, 45.0, -45.0, 0.0, 45.0, -45.0]})
+    app.joints({"token": token, "held": True, "q": [30.0, 52.0, -52.0, 30.0, 52.0, -52.0]})
     for _ in range(5):
         clock.t += 0.02
         link.controller.tick(int(clock.t * 1000))
     link.lines.clear()
     assert app.stop() == {"ok": True, "armed": False, "held": True}
-    assert link.lines == ["S", "J 12.0 45.0 -45.0 0.0 45.0 -45.0"], "status, then the reported angles"
-    clock.t += 0.02
-    link.controller.tick(int(clock.t * 1000))
-    assert link.controller.current[0] == pytest.approx(12.0)
+    assert link.lines == ["S", "H"], "status, then the one-line hold"
+    assert link.controller.mode == protocol.HOLD
+    for _ in range(3):
+        clock.t += 0.02
+        link.controller.tick(int(clock.t * 1000))
+    assert link.controller.current[0] == pytest.approx(12.0), "not one tick of travel after the stop"
     with pytest.raises(ValueError, match="held enable"):
         app.joints({"token": token, "held": True, "q": cal.stand_deg})
     assert app.state()["armed"] is False
+
+
+def test_stop_on_firmware_without_the_hold_command_still_holds(cal):
+    app, link, clock = make_app(cal)
+    token = app.arm(True, ALL)["token"]
+    app.joints({"token": token, "held": True, "q": [30.0, 52.0, -52.0, 30.0, 52.0, -52.0]})
+    for _ in range(5):
+        clock.t += 0.02
+        link.controller.tick(int(clock.t * 1000))
+    new_send = link.send
+    link.send = lambda line: "ERR UNKNOWN" if line.strip() == "H" else new_send(line)
+    assert app.stop()["held"] is True
+    assert link.lines[-1].startswith("J 12.0 52.0"), "the older pair: the reported angles as the target"
+
+
+def test_a_move_into_the_other_leg_is_refused_and_the_page_is_told(cal):
+    """ERR CLEAR from the controller goes back to the page as a refusal, not
+    as a link error: the session stays armed and the robot stays where it was."""
+    app, link, clock = make_app(cal)
+    token = app.arm(True, ALL)["token"]
+    inward = list(cal.stand_deg)
+    inward[0] -= 12.0
+    result = app.joints({"token": token, "held": True, "q": inward})
+    assert result["ok"] is False and result["reply"] == "ERR CLEAR" and "feet together" in result["refused"]
+    assert link.controller.target == cal.stand_deg
+    assert app.state()["armed"] is True
+    clock.t += 0.05
+    assert app.joints({"token": token, "held": True, "q": cal.stand_deg})["ok"] is True
 
 
 def test_lease_expires_and_a_link_error_disarms(cal):
@@ -453,11 +485,9 @@ def test_bridge_drives_the_virtual_robot_and_stops(bridge, cal):
     time.sleep(0.8)
     state = json.loads(request(base, "/api/state")[1])
     assert state["robot"]["status"]["mode"] == "HOLD", "no more lines: the watchdog holds"
-    # The stop reads the commanded position and then sends it back as the hold target, two lines
-    # on the socket. If a 20 ms controller tick falls between them, the position read straight
-    # after the stop is one tick of travel past the target and settles back onto it.
-    one_tick = cal.max_speed_deg_s * protocol.TICK_MS / 1000.0
-    assert state["robot"]["status"]["q"] == pytest.approx(held, abs=one_tick + 0.3)
+    # The stop is the hold command, one line: the board holds the commanded angles of that
+    # instant, so the position read straight after the stop is the one it keeps.
+    assert state["robot"]["status"]["q"] == held
     time.sleep(0.2)
     assert json.loads(request(base, "/api/state")[1])["robot"]["status"]["q"] == state["robot"]["status"]["q"], "and stays there"
 

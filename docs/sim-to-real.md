@@ -14,6 +14,7 @@ one reply per line. Angles are joint angles in degrees.
 | `E` | enable: soft start, then pulses one joint at a time | `OK` |
 | `R` | relax: stop all pulses | `OK` |
 | `S` | status | `STAT mode=RUN age_ms=40 wd=500 q=0.0,45.0,...` |
+| `H` | hold: the commanded angles of this instant become the target and the board goes to HOLD | `OK` |
 | `W ms hold` or `W ms relax` | watchdog time (100 to 10000 ms) and action | `OK` |
 | `C index` | calibrate joint 0 to 5; only that joint moves | `OK` |
 | `N delta` | nudge it by delta servo degrees, at most 2 | `CAL index servo=.. pulse=..` |
@@ -132,7 +133,37 @@ Python reference line for line. The glue in `sketch.ino` and
 8. Stand: `play.py trajectories/stand.csv --real`, one hand on the robot and
    one on the switch. The simulation says it stands with a 37 mm margin and
    under 8 percent of the hip torque limit.
-9. Gait last: `play.py trajectories/gait.csv --real`. The simulation says it
-   shuffles a few millimetres a second and cannot lift a foot.
+9. Gait last: `play.py trajectories/gait.csv --real`, robot held at first.
+   The simulation says it steps at about 40 mm/s and that its heading drifts
+   (docs/motion.md).
 
 A software stop does not cut servo power. Keep the switch.
+
+## Stop, hold and power off
+
+- `H` is the stop: one line, after which no tick moves a joint. The watchdog
+  does the same if `J` lines stop arriving for 500 ms. Its default action
+  stays hold.
+- `R`, or the supply switched off, stops the pulses. In the simulation the
+  relaxed robot sinks until hip pitch and knee reach the ends of the servo
+  travel (90 and -90 degrees) and stays on its soles, from the stand pose or
+  the squat. That depends on the real servos having their stops there and on
+  the stops taking the weight, which has not been checked; lower the robot to
+  the squat under power and support it before switching off.
+- On `E` the controller drives the servos to the last commanded pose from
+  wherever the legs have sunk to. Support the robot when enabling.
+
+## Leg clearance and the build flags
+
+The comb soles interleave, so one joint inside its own limits can swing a
+sole into the other. The controller refuses a `J` target or a calibration
+nudge that would bring the legs together (`ERR CLEAR`) and does not take a
+tick's step that would. The boxes it tests are in `robot/clearance.json` and
+in `DuckTable.h`.
+
+The reference, the firmware core and the control page must give the same
+answer for every pose, so the rule uses its own sine and plain double
+arithmetic. Build the sketch without fused multiply-add contraction
+(`-ffp-contract=off`): with it a compiler may merge a multiply and an add
+and round differently from the reference. The host test builds with that
+flag; the sketch profile notes it.

@@ -27,6 +27,12 @@ if (request.script) {
   out.script = { replies, mode: controller.mode, current: controller.current };
 }
 
+if (request.clear) {
+  // poses through the leg clearance rule, for the parity test
+  out.clear = request.clear.poses.map((q) => c.legsClear(request.clear.table, q));
+  out.sine = request.clear.angles.map((deg) => c.sine(deg));
+}
+
 if (request.drive) {
   const manifest = request.drive.manifest;
   const engine = new c.MotionEngine(manifest.robot, manifest.gait.params, {});

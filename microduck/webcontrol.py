@@ -9,9 +9,15 @@ operator confirmation, every move must carry the session token and a held
 enable control, moves are rate limited and nothing is queued, and any link
 error disarms.
 
-Nothing is added to the command set. A stop is the status line followed by a
-J line that repeats the board's present commanded angles, after which no
-more lines are sent and the firmware watchdog holds.
+A stop is the status line and then, if the board is running, the hold
+command H: one line that makes the commanded angles of that instant the
+target, so no controller tick can fall inside the stop. A board whose
+firmware answers ERR UNKNOWN to H gets the older J line with the reported
+angles instead.
+
+A move the controller refuses because it would bring one leg into the other
+(ERR CLEAR) is not an error of the link: the reply goes back to the page,
+which says so, and the session stays armed.
 
 The soft limits, the speed limit and the watchdog stay in the firmware (or
 in the simulator's copy of it). Targets are also clamped here so a reply can
@@ -169,6 +175,12 @@ class ControlApp:
             clamped = sum(1 for a, b in zip(q, target) if a != b)
             self._authorize(body.get("token"), body.get("held"))
             reply = self._send(protocol.format_joints(target))
+            if reply == "ERR CLEAR":
+                self.last_move = self.clock()
+                with self.auth_lock:
+                    if self.token:
+                        self.armed_until = self.clock() + LEASE_S
+                return {"ok": False, "refused": "that would bring the feet together", "reply": reply, "clamped": clamped, "q": target}
             if not reply.startswith("OK"):
                 raise RuntimeError(f"Robot rejected the move: {reply}")
             self.last_move = self.clock()
@@ -193,7 +205,9 @@ class ControlApp:
                 with self.link_lock:
                     status = parse_status(self._send("S"))
                     if status["mode"] == protocol.RUN:
-                        held = self._send(protocol.format_joints(status["q"])).startswith("OK")
+                        held = self._send("H") == "OK"
+                        if not held:       # firmware without the hold command
+                            held = self._send(protocol.format_joints(status["q"])).startswith("OK")
             except (OSError, RuntimeError, ValueError, KeyError):
                 pass
         return {"ok": True, "armed": False, "held": held}

@@ -53,20 +53,27 @@ command format and the ranges of the parametric gait.
 - A trajectory that is missing, malformed, outside the joint limits or over
   the speed limit is disabled, with that as the reason.
 
-Without the file the manifest is built from what the repository has. On this
-commit that is:
+`trajectories/manifest.json` is written by `scripts/run_motion.py` from the
+motion study (docs/motion.md): the ranges are the tested envelope, and each
+disabled action carries its reason. The file also has a `study` key with the
+checks of every trajectory; the loader ignores it. Without the file the
+manifest is built from what the repository has. On this commit the file
+gives:
 
 | Action | State |
 |---|---|
-| Walk forward | available: the default gait of `microduck/gait.py` |
+| Walk forward | available: the gait of `microduck/gait.py` with the parameters of `config/gait.json` |
 | Stand | available: `trajectories/stand.csv` |
-| Walk back | disabled: only the forward gait has been simulated |
-| Turn | disabled: the default gait has no turn parameter and the robot has no hip yaw |
-| Sit, jump | disabled: no trajectory yet |
+| Sit | available: `trajectories/sit.csv` |
+| Walk back | disabled: it did not stay inside the tested envelope |
+| Turn | disabled: the step difference does not steer reliably in simulation, and there is no hip yaw |
+| Jump | disabled: locked; it can strip gears or break parts |
 | Head pan and tilt | disabled: no head joints; the robot has six leg joints and a fixed camera mount |
 | Stop | always |
 
-Expert mode jogs one joint at 15 deg/s inside its soft limits.
+Expert mode jogs one joint at 15 deg/s inside its soft limits. A jog that
+would bring one leg into the other stops where the legs are still apart and
+the page says "Stopped: that would bring the feet together".
 
 The step from input to command (`nextCommand` in `site/control.js`) knows
 nothing about legs: walking is a forward value and a turn value. A target
@@ -76,7 +83,8 @@ speeds. That is not written.
 ## The simulator target
 
 The page keeps a copy of the firmware's rules for the lines it sends (soft
-limits, 120 deg/s speed limit, 500 ms watchdog; `PlaybackController`) and
+limits, the leg clearance rule, 120 deg/s speed limit, 500 ms watchdog, the
+hold command; `PlaybackController` and `legsClear`) and
 moves the joints of the 3D view with it. This is playback of the commands,
 not physics: there is no gravity or contact, the lowest point is placed on
 the floor, and nothing falls. `tests/test_control.py` checks the copy against
@@ -150,6 +158,9 @@ In the server (`microduck/webcontrol.py`):
 - Every move needs the session token and `held: true`.
 - A move sooner than 30 ms after the last is refused, not queued.
 - Targets must be six finite numbers; they are clamped to the soft limits.
+- A target the controller refuses with `ERR CLEAR` (it would bring one leg
+  into the other) is passed back to the page as a refusal, which the page
+  shows; the session stays armed and the robot stays where it was.
 - A motion named `jump`, or any named motion that is not in the manifest, is
   refused. The server relays joint targets and cannot tell what a stream of
   them amounts to, so this check rests on the name the page sends; the
@@ -157,19 +168,22 @@ In the server (`microduck/webcontrol.py`):
 - Requests from another origin are refused.
 - Any link error ends the session.
 
-In the firmware, unchanged: soft limits, the 120 deg/s speed limit and the
-500 ms watchdog apply to every `J` line whatever sent it.
+In the firmware: soft limits, the leg clearance rule, the 120 deg/s speed
+limit and the 500 ms watchdog apply to every `J` line whatever sent it.
 
 ## The stop sequence, and the protocol
 
-Nothing was added to the command set. A stop is:
+A stop is:
 
-    S                          read the present commanded angles
-    J <those six angles>       make them the target, so motion ends here
+    S                          is the board running?
+    H                          hold: the commanded angles of this instant become the target
 
-and then silence. With no more `J` lines the watchdog puts the board in HOLD
-after 500 ms. Stop does not relax the servos, because a relaxed robot falls,
-and it does not cut servo power: keep the switch.
+and then silence. `H` is one line, so no controller tick can fall inside the
+stop; the earlier pair, `S` then `J` with the reported angles, let a joint
+travel one more tick (2.4 degrees) before settling back. `S` and `J` work as
+before, and a board that answers `ERR UNKNOWN` to `H` gets that pair. Stop
+does not relax the servos, because a relaxed robot drops, and it does not
+cut servo power: keep the switch.
 
 ## Tests
 

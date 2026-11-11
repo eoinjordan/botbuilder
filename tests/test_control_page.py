@@ -166,10 +166,12 @@ def test_control_page_in_simulator_target_with_a_synthetic_gamepad(browser, site
 
     # what is missing is disabled and says why
     actions = browser.js("document.getElementById('actions').textContent")
-    for reason in ("Sit: no sit trajectory", "Jump (hold): no jump trajectory", "Head pan and tilt: ", "Turn: "):
+    for reason in ("Jump (hold): locked", "Head pan and tilt: ", "Turn: the step difference does not steer", "Walk back: "):
         assert reason in actions, reason
-    assert browser.js("document.querySelector('[data-hold=sit]').disabled && document.querySelector('[data-hold=jump]').disabled")
-    assert browser.js("document.querySelector('[data-hold=sit]').title").startswith("no sit trajectory")
+    assert "availableSit" in actions and "availableWalk forward" in actions
+    assert browser.js("!document.querySelector('[data-hold=sit]').disabled && document.querySelector('[data-hold=jump]').disabled")
+    assert browser.js("document.querySelector('[data-hold=jump]').title").startswith("locked")
+    assert "strip gears" in browser.js("document.querySelector('[data-hold=jump]').title")
     assert browser.js("!document.querySelector('[data-hold=forward]').disabled && !document.querySelector('[data-hold=stand]').disabled")
 
     # stick forward without the shoulder button: nothing
@@ -250,6 +252,19 @@ def test_control_page_in_simulator_target_with_a_synthetic_gamepad(browser, site
     assert 0 < jogged["q"][0] < 20, "15 deg/s, slowly"
     browser.js("document.querySelector('[data-hold=\"jog-plus\"]').dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true })); true")
     browser.wait("window.microduckControl.snapshot().stops === 7")
+
+    # jog the same hip inward: it stops short of the other sole and says why
+    time.sleep(0.3)
+    browser.js("const m = document.querySelector('[data-hold=\"jog-minus\"]'); m.focus();"
+               "m.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); true")
+    browser.wait("window.microduckControl.snapshot().refusals > 5", 8)
+    blocked = browser.snapshot()
+    assert browser.js("document.getElementById('message').textContent") == "Stopped: that would bring the feet together."
+    assert -35 < blocked["q"][0] < 0.5, "short of the joint limit, where the legs are still apart"
+    time.sleep(0.3)
+    assert browser.snapshot()["q"] == blocked["q"], "and it stays there while the button is held"
+    browser.js("document.querySelector('[data-hold=\"jog-minus\"]').dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true })); true")
+    browser.wait("window.microduckControl.snapshot().stops === 8")
     assert browser.errors == []
 
 

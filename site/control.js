@@ -242,6 +242,7 @@ export class MotionEngine {
     this.stand = robot.stand_deg.slice();
     this.limits = robot.limits_deg;
     this.maxSpeed = robot.max_speed_deg_s;
+    this.clearance = robot.clearance || null;
     this.gait = gait;
     this.trajectories = trajectories;
     this.settings = settings;
@@ -259,7 +260,19 @@ export class MotionEngine {
     return farthest(this.q, clampJoints(goal, this.limits)) < 0.05;
   }
 
+  // A step that would bring one leg into the other is not taken: the pose
+  // stays where it was and the result says blocked, so the page can say why.
   step(command, dtMs) {
+    const before = this.q.slice();
+    const result = this._step(command, dtMs);
+    if (result.q && !legsClear(this.clearance, result.q)) {
+      this.q = before;
+      return { q: null, done: false, phase: "blocked", blocked: true };
+    }
+    return result;
+  }
+
+  _step(command, dtMs) {
     if (command.type !== "walk") this.gaitT = null;
     if (command.type !== "motion") this.motion = null;
     const full = this.maxSpeed * dtMs / 1000;
@@ -297,12 +310,118 @@ export class MotionEngine {
   }
 }
 
+// ---------------------------------------------------------------- leg clearance
+
+// The leg clearance rule of microduck/protocol.py and DuckControl.hpp: boxes
+// around each thigh and each shin with its sole (robot/clearance.json, in
+// data/motions.json as robot.clearance), placed from the six joint angles
+// and tested against the other leg. Kept operation for operation the same as
+// the Python reference, with its own sine, so all three copies give the same
+// answer for every pose.
+const C_PI = 3.141592653589793;
+const C_S3 = -0.16666666666666666, C_S5 = 0.008333333333333333, C_S7 = -0.0001984126984126984;
+const C_S9 = 2.7557319223985893e-06, C_S11 = -2.505210838544172e-08, C_S13 = 1.6059043836821613e-10;
+
+export function sine(deg) {
+  let x = deg * (C_PI / 180.0);
+  while (x > C_PI) x -= 2.0 * C_PI;
+  while (x < -C_PI) x += 2.0 * C_PI;
+  if (x > 0.5 * C_PI) x = C_PI - x;
+  if (x < -0.5 * C_PI) x = -C_PI - x;
+  const x2 = x * x;
+  return x * (1.0 + x2 * (C_S3 + x2 * (C_S5 + x2 * (C_S7 + x2 * (C_S9 + x2 * (C_S11 + x2 * C_S13))))));
+}
+
+export function cosine(deg) { return sine(deg + 90.0); }
+
+// Rotation about x by roll, then about y by pitch; rows of the matrix.
+function frame(roll, pitch) {
+  const sr = sine(roll), cr = cosine(roll), sp = sine(pitch), cp = cosine(pitch);
+  return [[cp, 0.0, sp], [sr * sp, cr, -sr * cp], [-cr * sp, sr, cr * cp]];
+}
+
+function apply(m, v) {
+  return [m[0][0] * v[0] + m[0][1] * v[1] + m[0][2] * v[2],
+    m[1][0] * v[0] + m[1][1] * v[1] + m[1][2] * v[2],
+    m[2][0] * v[0] + m[2][1] * v[1] + m[2][2] * v[2]];
+}
+
+// Frames of the thigh and the shin in the torso frame, mm.
+function leg(shape, roll, pitch, knee) {
+  const o = shape.origins_mm;
+  const thigh = frame(roll, pitch);
+  const shin = frame(roll, pitch + knee);
+  const lifted = apply(frame(roll, 0.0), o[1]);
+  const pThigh = [o[0][0] + lifted[0], o[0][1] + lifted[1], o[0][2] + lifted[2]];
+  const lowered = apply(thigh, o[2]);
+  const pShin = [pThigh[0] + lowered[0], pThigh[1] + lowered[1], pThigh[2] + lowered[2]];
+  return [thigh, pThigh, shin, pShin];
+}
+
+// True when two boxes do not touch. Separating axis test.
+function apart(ra, pa, a, rb, pb, b) {
+  const ca = apply(ra, a);
+  const cb = apply(rb, b);
+  const d = [pb[0] + cb[0] - pa[0] - ca[0], pb[1] + cb[1] - pa[1] - ca[1], pb[2] + cb[2] - pa[2] - ca[2]];
+  const reach = a[6] + b[6];
+  if (d[0] * d[0] + d[1] * d[1] + d[2] * d[2] > reach * reach) return true;
+  const r = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]];
+  const f = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]];
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      r[i][j] = ra[0][i] * rb[0][j] + ra[1][i] * rb[1][j] + ra[2][i] * rb[2][j];
+      f[i][j] = (r[i][j] >= 0.0 ? r[i][j] : -r[i][j]) + 1e-9;
+    }
+  }
+  const t = [ra[0][0] * d[0] + ra[1][0] * d[1] + ra[2][0] * d[2],
+    ra[0][1] * d[0] + ra[1][1] * d[1] + ra[2][1] * d[2],
+    ra[0][2] * d[0] + ra[1][2] * d[1] + ra[2][2] * d[2]];
+  for (let i = 0; i < 3; i++) {
+    const s = t[i] >= 0.0 ? t[i] : -t[i];
+    if (s > a[3 + i] + b[3] * f[i][0] + b[4] * f[i][1] + b[5] * f[i][2]) return true;
+  }
+  for (let j = 0; j < 3; j++) {
+    let s = t[0] * r[0][j] + t[1] * r[1][j] + t[2] * r[2][j];
+    if (s < 0.0) s = -s;
+    if (s > a[3] * f[0][j] + a[4] * f[1][j] + a[5] * f[2][j] + b[3 + j]) return true;
+  }
+  for (let i = 0; i < 3; i++) {
+    const i1 = (i + 1) % 3, i2 = (i + 2) % 3;
+    for (let j = 0; j < 3; j++) {
+      const j1 = (j + 1) % 3, j2 = (j + 2) % 3;
+      let s = t[i2] * r[i1][j] - t[i1] * r[i2][j];
+      if (s < 0.0) s = -s;
+      if (s > a[3 + i1] * f[i2][j] + a[3 + i2] * f[i1][j] + b[3 + j1] * f[i][j2] + b[3 + j2] * f[i][j1]) return true;
+    }
+  }
+  return false;
+}
+
+// True when no box of one leg touches a box of the other at joint angles q
+// (degrees). Without a table every pose is clear.
+export function legsClear(clearance, q) {
+  if (!clearance) return true;
+  const left = clearance.legs.left, right = clearance.legs.right;
+  const [lt, lpt, ls, lps] = leg(left, q[0], q[1], q[2]);
+  const [rt, rpt, rs, rps] = leg(right, q[3], q[4], q[5]);
+  for (const a of left.shin) {
+    for (const b of right.shin) if (!apart(ls, lps, a, rs, rps, b)) return false;
+    for (const b of right.thigh) if (!apart(ls, lps, a, rt, rpt, b)) return false;
+  }
+  for (const a of left.thigh) {
+    for (const b of right.shin) if (!apart(lt, lpt, a, rs, rps, b)) return false;
+  }
+  return true;
+}
+
+export const FEET_TOGETHER = "that would bring the feet together";
+
 // ---------------------------------------------------------------- playback
 
 const NUMBER = /^[-+]?[0-9]{1,6}(\.[0-9]{0,6})?$/;
 
 // The rules of microduck/protocol.py Controller for the lines this page
-// sends (J, E, R, S, W): soft limits, speed limit, watchdog. It moves the
+// sends (J, E, R, S, H, W): soft limits, leg clearance, speed limit, watchdog. It moves the
 // joints of the 3D view. It is playback of the commands, not physics: there
 // is no gravity, no contact and no falling here.
 export class PlaybackController {
@@ -311,6 +430,7 @@ export class PlaybackController {
     this.maxSpeed = robot.max_speed_deg_s;
     this.watchdogMs = robot.watchdog_ms;
     this.watchdogRelax = robot.watchdog_action === "relax";
+    this.clearance = robot.clearance || null;
     this.mode = "RELAX";
     this.current = robot.stand_deg.slice();
     this.target = robot.stand_deg.slice();
@@ -325,14 +445,16 @@ export class PlaybackController {
       this.armed = false;
     }
     if (this.mode !== "RUN") return;
-    this.current = limitStep(this.current, this.target, this.maxSpeed * TICK_MS / 1000);
+    const next = limitStep(this.current, this.target, this.maxSpeed * TICK_MS / 1000);
+    // a step that would bring the legs together is not taken
+    if (legsClear(this.clearance, next)) this.current = next;
   }
 
   handle(line, nowMs) {
     const parts = line.trim().split(/\s+/).filter(Boolean);
     if (!parts.length) return "ERR EMPTY";
     const [cmd, ...args] = parts;
-    const arity = { J: 6, E: 0, R: 0, S: 0, W: 2, C: 1, N: 1, Z: 0, X: 0 };
+    const arity = { J: 6, E: 0, R: 0, S: 0, H: 0, W: 2, C: 1, N: 1, Z: 0, X: 0 };
     if (!(cmd in arity)) return "ERR UNKNOWN";
     if (args.length !== arity[cmd]) return "ERR ARGS";
     if (cmd === "J") {
@@ -342,6 +464,7 @@ export class PlaybackController {
       if (this.mode === "RELAX") return "ERR DISABLED";
       const clamped = clampJoints(values, this.limits);
       const count = values.filter((v, i) => v !== clamped[i]).length;
+      if (!legsClear(this.clearance, clamped)) return "ERR CLEAR";
       this.target = clamped;
       this.mode = "RUN"; this.armed = true; this.lastCmdMs = nowMs;
       return count ? `OK CLAMP ${count}` : "OK";
@@ -351,6 +474,10 @@ export class PlaybackController {
       return "OK";
     }
     if (cmd === "R") { this.mode = "RELAX"; this.armed = false; return "OK"; }
+    if (cmd === "H") {
+      if (this.mode === "RUN") { this.target = this.current.slice(); this.mode = "HOLD"; this.armed = false; }
+      return "OK";
+    }
     if (cmd === "S") {
       return `STAT mode=${this.mode} age_ms=${nowMs - this.lastCmdMs} wd=${this.watchdogMs} q=${this.current.map(fmt1).join(",")}`;
     }
@@ -373,12 +500,16 @@ export function parseStatus(reply) {
   return { mode: match[1], age_ms: Number(match[2]), wd: Number(match[3]), q };
 }
 
-// The stop sequence, the same one the robot's server sends: ask for the
-// status and, if the board is running, command the angles it reports.
+// The stop, the same one the robot's server sends: the hold command, one
+// line, so no controller tick can fall inside it. A board whose firmware has
+// no H answers ERR UNKNOWN and gets the older pair instead: the status, then
+// a J line with the angles it reports. The status afterwards is where it holds.
 export function stopOn(send) {
-  const status = parseStatus(send("S"));
-  if (status.mode !== "RUN") return { held: false, status };
-  return { held: send(formatJoints(status.q)).startsWith("OK"), status };
+  const before = parseStatus(send("S"));
+  if (before.mode !== "RUN") return { held: false, status: before };
+  let held = send("H") === "OK";
+  if (!held) held = send(formatJoints(before.q)).startsWith("OK");
+  return { held, status: held ? parseStatus(send("S")) : before };
 }
 
 // ---------------------------------------------------------------- page
@@ -518,7 +649,7 @@ async function start() {
   } catch (error) { board = null; }
 
   const page = { target: "sim", state: initialState(), command: { type: "idle" }, token: null, busy: false, sent: 0,
-    lastLine: "", lastReply: "", stops: 0, stopReason: "", checked: false, shown: robot.stand_deg.slice(), log: [] };
+    lastLine: "", lastReply: "", stops: 0, stopReason: "", refusals: 0, checked: false, shown: robot.stand_deg.slice(), log: [] };
   const viewer = await makeViewer(byId("view"), model);
   if (!viewer) say("view-note", "The 3D view needs three.js from the CDN and WebGL, which are not available here. The joint table shows the same pose.");
 
@@ -619,7 +750,9 @@ async function start() {
     const line = formatJoints(q);
     if (page.target === "sim") {
       if (playback.mode === "RELAX") simSend("E");
-      if (simSend(line).startsWith("OK")) page.sent += 1;
+      const reply = simSend(line);
+      if (reply.startsWith("OK")) page.sent += 1;
+      else if (reply === "ERR CLEAR") refused();
       return;
     }
     if (!page.token || page.busy) return;
@@ -627,11 +760,20 @@ async function start() {
     const motion = command.type === "motion" ? command.name : command.type;
     post("./api/joints", { token: page.token, held: true, q, motion }).then(({ status, payload }) => {
       page.busy = false;
+      if (status === 200 && payload.refused) { log(line, payload.reply); refused(); return; }
       if (status === 200) { page.sent += 1; log(line, payload.reply); show(payload.q); return; }
       if (status === 409) return;            // rate limited or busy: nothing was queued
       log(line, `refused: ${payload.error || status}`);
       stopNow(payload.error || "the robot's server refused the move");
     }).catch(() => { page.busy = false; stopNow("connection to the robot's server lost"); });
+  }
+
+  // The controller, or the engine before it, refused a move that would put
+  // one leg into the other. The pose stays where it was; say so.
+  function refused() {
+    page.refusals += 1;
+    engine.reset(page.target === "sim" ? playback.current : page.shown);
+    say("message", `Stopped: ${FEET_TOGETHER}.`);
   }
 
   // Stop is always available: it ends the motion here, tells the target to
@@ -715,7 +857,7 @@ async function start() {
     renderReal(); renderAvailability();
   });
   byId("relax").addEventListener("click", async () => {
-    if (!window.confirm("Relax stops all servo pulses. A standing robot falls. Is the robot supported?")) return;
+    if (!window.confirm("Relax stops all servo pulses. A standing robot drops and can fall. Is the robot supported?")) return;
     page.token = null;
     try {
       const { payload } = await post("./api/relax", { confirmed: true });
@@ -833,6 +975,7 @@ async function start() {
         page.state = step.state;
         page.command = step.command;
         const result = engine.step(step.command, dt);
+        if (result.blocked) refused();
         if (result.q) sendTarget(result.q, step.command);
         if (result.done) page.state = { ...page.state, motion: null };
         if (expert && Number(byId("jog-joint").value) !== page.state.joint) byId("jog-joint").value = String(page.state.joint);
@@ -856,7 +999,7 @@ async function start() {
 
   window.microduckControl = {
     snapshot: () => ({ target: page.target, board: Boolean(board), live: page.state.live, command: page.command, sent: page.sent,
-      stops: page.stops, stopReason: page.stopReason, lastLine: page.lastLine, lastReply: page.lastReply, armed: Boolean(page.token),
+      stops: page.stops, stopReason: page.stopReason, refusals: page.refusals, lastLine: page.lastLine, lastReply: page.lastReply, armed: Boolean(page.token),
       mode: playback.mode, q: playback.current.slice(), shown: page.shown.slice(), viewer: Boolean(viewer), availability: avail(),
       realDisabled: byId("target-real").disabled }),
     stop: stopNow,

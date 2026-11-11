@@ -10,6 +10,7 @@ degrees in the robot's convention (see docs/sim-to-real.md), in this order:
     E                   enable (soft start)    -> OK
     R                   relax (no pulses)      -> OK
     S                   status                 -> STAT mode=.. age_ms=.. q=..
+    H                   hold where it is now   -> OK
     W <ms> <hold|relax> watchdog               -> OK
     C <index>           calibrate one joint    -> OK
     N <delta>           nudge it, servo deg    -> CAL <index> servo=.. pulse=..
@@ -335,7 +336,7 @@ class Controller:
         if not parts:
             return "ERR EMPTY"
         cmd, args = parts[0], parts[1:]
-        arity = {"J": 6, "E": 0, "R": 0, "S": 0, "W": 2, "C": 1, "N": 1, "Z": 0, "X": 0}
+        arity = {"J": 6, "E": 0, "R": 0, "S": 0, "H": 0, "W": 2, "C": 1, "N": 1, "Z": 0, "X": 0}
         if cmd not in arity:
             return "ERR UNKNOWN"
         if len(args) != arity[cmd]:
@@ -369,6 +370,14 @@ class Controller:
 
     def _cmd_R(self, args, now_ms):
         self.mode, self.armed, self.cal_index = RELAX, False, -1
+        return "OK"
+
+    def _cmd_H(self, args, now_ms):
+        # One line that stops the motion: the target becomes the commanded
+        # angles of this instant, so no tick can move a joint afterwards.
+        if self.mode == RUN:
+            self.target = list(self.current)
+            self.mode, self.armed = HOLD, False
         return "OK"
 
     def _cmd_S(self, args, now_ms):

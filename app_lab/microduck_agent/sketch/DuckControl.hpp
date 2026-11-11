@@ -10,6 +10,7 @@
 // Speed limit: the commanded angle moves at most max_speed_deg_s.
 // Watchdog: in RUN, if no J line arrives for watchdog_ms the controller
 // holds the current command (or relaxes, if set to).
+// Hold: H makes the commanded angles of this instant the target, in one line.
 // Calibration: C/N/Z/X move one joint by steps of at most step_max_deg.
 // Leg clearance: per-joint limits cannot keep one leg out of the other, so
 // the table carries boxes around each thigh and each shin with its sole. A J
@@ -259,7 +260,7 @@ class Controller {
       case 'J': arity = 6; break;
       case 'W': arity = 2; break;
       case 'C': case 'N': arity = 1; break;
-      case 'E': case 'R': case 'S': case 'Z': case 'X': arity = 0; break;
+      case 'E': case 'R': case 'S': case 'H': case 'Z': case 'X': arity = 0; break;
       default: w.text("ERR UNKNOWN"); return;
     }
     if (n - 1 != arity) { w.text("ERR ARGS"); return; }
@@ -299,6 +300,16 @@ class Controller {
         mode_ = RELAX;
         armed_ = false;
         cal_index_ = -1;
+        w.text("OK");
+        return;
+      case 'H':
+        // One line that stops the motion: the target becomes the commanded
+        // angles of this instant, so no tick can move a joint afterwards.
+        if (mode_ == RUN) {
+          for (int i = 0; i < JOINTS; i++) target_[i] = current_[i];
+          mode_ = HOLD;
+          armed_ = false;
+        }
         w.text("OK");
         return;
       case 'S':
