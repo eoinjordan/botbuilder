@@ -23,7 +23,7 @@ TEXT_SECTIONS = ("wiring", "power", "firmware", "analysis", "assembly")
 REFUSAL_CODES = {
     "no-servo-outputs", "biped-on-lego-motors", "continuous-drive-not-a-joint", "servo-cannot-spin", "buildhat-needs-pi",
     "connector", "crank-needs-lego-motors", "picam-needs-pi", "pixy-on-hub", "pantilt-needs-pixy", "lego-motor-needs-port",
-    "face-needs-its-camera",
+    "face-needs-its-camera", "look-needs-two-shields", "look-head-has-its-own-servos",
     "crank-needs-coupling", "biped-needs-deck"}
 NEEDS_PART = {"crank-needs-coupling", "biped-needs-deck"}
 
@@ -254,6 +254,8 @@ def test_no_recipe_contradicts_itself(compat, recipes):
         servos = sum(part["qty"] for part in rec["parts"] if part["name"].startswith(("SR431", "SR311")))
         if sel["locomotion"] == "biped":
             assert sel["drive"] in servo_drives and servos == 6, where
+        elif sel["locomotion"] == "biped_look":
+            assert sel["drive"] == "braccio_two_shields" and servos == 12, where
         else:
             assert sel["drive"] not in servo_drives and servos == 0, where
         if sel["drive"] == "tt_hbridge":
@@ -298,7 +300,8 @@ def test_only_physical_impossibilities_are_refused(data, compat, recipes):
         sel = rec["selection"]
         if rec["status"] in REFUSED and recipe._find_row(compat, sel) is not None:
             assert set(rec["refusal"]) <= {"pixy-on-hub", "picam-needs-pi", "pantilt-needs-pixy", "no-servo-outputs",
-                                           "lego-motor-needs-port", "face-needs-its-camera"}, rec["query"]
+                                           "lego-motor-needs-port", "face-needs-its-camera",
+                                           "look-head-has-its-own-servos"}, rec["query"]
             assert (sel["camera"] in ("pixy2", "picam2") or sel["head"] != "fixed"
                     or "face-needs-its-camera" in rec["refusal"]), rec["query"]
     for rec in recipes[::97]:
@@ -702,7 +705,7 @@ def test_every_program_is_served_at_a_plain_address_robot_creator_accepts(data):
 
 def test_summary_program_and_validation_files_are_read_when_present(tmp_path, compat):
     shutil.copytree(ROOT / "config", tmp_path / "config")
-    shutil.copytree(ROOT / "reports", tmp_path / "reports", ignore=shutil.ignore_patterns("variants", "lego", "wheeled"))
+    shutil.copytree(ROOT / "reports", tmp_path / "reports", ignore=shutil.ignore_patterns("variants", "lego", "wheeled", "microduck-look"))
     (tmp_path / "config" / "validated.json").write_text('{"records": []}', encoding="utf-8")
     empty = recipe.bundle(tmp_path)
     assert empty["variants"] == [] and empty["programs"] == [] and empty["validated"] == []

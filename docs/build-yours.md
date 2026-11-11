@@ -29,7 +29,9 @@ mark from `config/validated.json`; see [admin.md](admin.md).
 
 - Controller: Arduino UNO Q, Raspberry Pi Zero 2 W, full-size Raspberry Pi,
   LEGO Robot Inventor 51515 hub, LEGO EV3 brick, M5Stack Core.
-- Locomotion: six-servo biped, two-motor crank walker, two driven wheels.
+- Locomotion: six-servo biped, two-motor crank walker, two driven wheels, and
+  the Microduck-look biped with fifteen servos (see
+  [microduck-look.md](microduck-look.md)).
 - Actuators and driver: Braccio servos on the Braccio shield or on an I2C
   servo driver; 51515 motors on the Build HAT or on the hub; EV3 motors on
   the brick or on the M5Stack BaseX; M5Stack 360 degree servos or yellow TT
@@ -71,7 +73,10 @@ Only physical or electrical impossibilities are refused:
 - the Pixy pan-tilt head without the Pixy, a hobby-servo head on a LEGO
   controller, a LEGO-motor head without a LEGO motor port;
 - on the biped, the display stack without its XIAO Sense camera, and that
-  camera without the stack.
+  camera without the stack;
+- the Microduck-look biped on anything but an UNO Q with two Braccio shields
+  (its back plate and its fifteen joints are drawn for that), with a head
+  mount other than its own, or with a camera its eye has no seat for.
 
 Two more are "needs a part": the crank walker on TT motors or 360 degree
 servos (a coupling to the gear axle), and the biped on an M5Stack Core (a
@@ -96,6 +101,7 @@ a link that names only some (`?locomotion=wheeled`) is completed.
 | `stl/manifest.json` | Every printable file with its options and its picture. The biped's print list is chosen by those options: controller, head, face, camera, feet. |
 | `reports/assembly.json`, `reports/sim.json` | What was run for the biped. |
 | `reports/variants/summary.json` | One entry per walker and two-wheeled build: tag, numbers, files and parts. |
+| `reports/microduck-look/summary.json` | The Microduck-look biped as one entry in the same shape, with its licence line. Its files carry `style: microduck` and `locomotion: biped_look` in the manifest, so the six-servo biped's print list does not pick them up. |
 | `programs/index.json` | The program files with their ports and how each is loaded. |
 | `microduck/recipe.py` | `evaluate(bundle, selection)`: a pure function that walks that data. Standard library only. |
 | `site/build.js` | The same walk in JavaScript, and the page. It holds no combination of its own. |

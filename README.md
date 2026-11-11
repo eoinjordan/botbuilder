@@ -249,6 +249,19 @@ printed wheels with an O-ring groove or a TPU tyre. Report:
 [docs/wheeled-variants.md](docs/wheeled-variants.md). The LEGO programs load
 through [Mindstorms Robot Creator](https://github.com/eoinjordan/mindstorms-robot-creator).
 
+## Biped, Microduck look
+
+A second biped that keeps the original's shells: the Microduck's body, head,
+thigh covers and feet at 1.25 times the size, on the twelve servos of two
+Braccio kits and three small position servos, with the original's fifteen
+servo positions. Parts in `stl/microduck-look/`, assembly test, model and
+simulation under `microduck/look/`, offered in the configurator as "Biped,
+Microduck look". Report: [docs/microduck-look.md](docs/microduck-look.md).
+
+Microduck-look parts: CC BY-NC-SA 4.0, adapted from Pollen Robotics'
+Microduck; not for commercial use (`stl/microduck-look/LICENSE`). The rest of
+the repository is MIT.
+
 ## Layout
 
 | Path | What |

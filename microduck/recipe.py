@@ -24,6 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY_PATHS = ("reports/variants/summary.json", "reports/lego/summary.json")
+EXTRA_SUMMARIES = ("reports/microduck-look/summary.json",)
 MANIFEST_PATHS = ("stl/manifest.json", "stl/MANIFEST.json")
 PROGRAM_PATHS = ("programs/index.json",)
 VALIDATED_PATH = "config/validated.json"
@@ -263,13 +264,17 @@ def variants(compat: dict, root: Path = ROOT) -> list[dict]:
     """Entries of the variants summary written by the walker and wheeled
     analysis, reduced to what the recipe shows. Empty until that file exists.
     """
+    more: list[dict] = []
+    for name in EXTRA_SUMMARIES:                       # builds with a summary of their own, in the same shape
+        if (root / name).is_file():
+            _walk_summary(_load(root / name), [], compat, more)
     for name in SUMMARY_PATHS:
         path = root / name
         if path.is_file():
             entries: list[dict] = []
             _walk_summary(_load(path), [], compat, entries)
-            return entries + _idler_entries(compat, entries)
-    return []
+            return entries + _idler_entries(compat, entries) + more
+    return more
 
 
 def _idler_entries(compat: dict, entries: list[dict]) -> list[dict]:
