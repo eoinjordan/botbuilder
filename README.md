@@ -107,6 +107,14 @@ Power: [docs/power.md](docs/power.md). Six stalled servos can ask for about
 10 A (assumed stall currents; the maker publishes none) against the kit's
 5 V 4 A supply, and the UNO Q needs its own 5 V 3 A.
 
+## LEGO-motor crank walkers
+
+Two walkers of the owner's design on LEGO motors, one for the EV3 brick and
+one for a Raspberry Pi Zero 2 W with the Build HAT: printable parts in
+`stl/lego/`, a digital assembly and balance test, a MuJoCo simulation of the
+crank gait and controller sketches, all under `walkers/`. Analysed and
+simulated only; never assembled. Report: [docs/lego-walkers.md](docs/lego-walkers.md).
+
 ## Layout
 
 | Path | What |

@@ -1,0 +1,74 @@
+{
+ "_comment": "One entry per controller base and locomotion type, for the configurator. Generated; do not edit.",
+ "status": "Analysed and simulated only. Nothing has been assembled.",
+ "entries": [
+  {
+   "id": "ev3-pixy2-walker",
+   "base": "LEGO EV3 brick",
+   "locomotion": "crank walker",
+   "build": "ev3-pixy2",
+   "title": "EV3 brick, two large motors, Pixy2",
+   "drive": "two EV3 large motors (ports B and C), one per side, 1:1 to the rear crank axle",
+   "mass_g": 811.5,
+   "size_mm": [
+    240.0,
+    175.0,
+    293.8
+   ],
+   "balance": {
+    "verdict": "statically stable at every crank phase",
+    "min_margin_mm": 10.2,
+    "tilt_to_tip_deg": 4.2
+   },
+   "walk": {
+    "speed_mm_s_at_60_rpm": 46.7,
+    "fastest_steady_mm_s": 70.4,
+    "turns": false,
+    "max_step_mm": 0,
+    "max_slope_up_deg": 6
+   },
+   "printed_parts": "stl/lego/ev3-pixy2/",
+   "controller_sketch": "walkers/controllers/ev3_walker.py",
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/lego-walkers.md",
+   "reports": [
+    "reports/lego/assembly.json",
+    "reports/lego/sim.json"
+   ]
+  },
+  {
+   "id": "pi-zero-2w-51515-walker",
+   "base": "Raspberry Pi Zero 2 W with Build HAT",
+   "locomotion": "crank walker",
+   "build": "pi-zero-2w-51515",
+   "title": "Raspberry Pi Zero 2 W, Build HAT, two 51515 motors",
+   "drive": "two 51515 medium angular motors (Build HAT ports A and B), one per side, 1:1 to the rear crank axle",
+   "mass_g": 377.9,
+   "size_mm": [
+    195.0,
+    175.0,
+    211.8
+   ],
+   "balance": {
+    "verdict": "statically stable at every crank phase",
+    "min_margin_mm": 10.2,
+    "tilt_to_tip_deg": 5.8
+   },
+   "walk": {
+    "speed_mm_s_at_60_rpm": 46.7,
+    "fastest_steady_mm_s": 70.3,
+    "turns": false,
+    "max_step_mm": 2,
+    "max_slope_up_deg": 6
+   },
+   "printed_parts": "stl/lego/pi-zero-2w-51515/",
+   "controller_sketch": "walkers/controllers/buildhat_walker.py",
+   "status": "analysed and simulated only; never printed, assembled or powered",
+   "docs": "docs/lego-walkers.md",
+   "reports": [
+    "reports/lego/assembly.json",
+    "reports/lego/sim.json"
+   ]
+  }
+ ]
+}
