@@ -39,7 +39,7 @@
       <span class="release-tag">Bench prototype</span>
     </div>
     <p class="lead"><a href="./?locomotion=biped">Build this biped from the parts you have</a>: the configurator lists the files, parts and wiring for your controller.</p>
-    <p class="subnav">On this page: <a href="#assembly">Assembly</a><a href="#viewer">3D view</a><a href="#simulation">Simulation</a><a href="#motion">Walk and sit</a><a href="#real">Sim to real</a></p>
+    <p class="subnav">On this page: <a href="#assembly">Assembly</a><a href="#viewer">3D view</a><a href="#simulation">Simulation</a><a href="#motion">Walk and sit</a><a href="#real">Sim to real</a><a href="#look">Microduck look</a></p>
 
     <section id="what" class="two-col">
       <div>
@@ -143,6 +143,28 @@
         <p id="power"></p>
       </div>
     </section>
+
+    <section id="look">
+      <div class="section-heading"><span class="step">06</span><h2>The Microduck-look biped</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/microduck-look.md" rel="noopener noreferrer">Full report</a></div>
+      <div class="two-col">
+        <div>
+          <p>A second biped that keeps the Microduck's own shape: its body, head, thigh covers and feet at 1.25 times the
+            size, on the servos of two TinkerKit Braccio kits. Fifteen joints: hip yaw, hip roll, hip pitch, knee and ankle
+            on each leg, a pitching neck, and a head that pitches, turns, rolls and opens its beak. Two Arduino UNO Q
+            boards with their shields ride on its back; a camera board sits behind the eye.</p>
+          <p>It comes with two sets of feet: the Microduck's soles widened towards the centre line, or comb feet whose
+            fingers cross the centre line between the other foot's, so either foot alone is under the body.
+            <a href="./?locomotion=biped_look">Build this one</a>: the configurator lists its files, parts and wiring.</p>
+          <dl class="facts" id="look-facts"></dl>
+          <p class="small-note" style="margin-left:0">Source model: Microduck by Pollen Robotics,
+            <a href="https://github.com/pollen-robotics/microduck_rl" rel="noopener noreferrer">github.com/pollen-robotics/microduck_rl</a>.
+            The parts of this build and the pictures of them are adapted from it and carry
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>
+            (<a href="./stl/microduck-look/LICENSE">credit and changes</a>); not for commercial use. Print the fit pieces first.</p>
+        </div>
+        <figure><img loading="lazy" src="./stl/microduck-look/images/look-comb-feet.png" width="700" height="760" alt="Rendered view of the Microduck-look biped standing on its comb feet"><figcaption>Stand pose, on the comb feet</figcaption></figure>
+      </div>
+    </section>
   </main>
   <footer>
     <p class="foot-note">The printable parts are flat plates whose outlines started from Microduck meshes; those meshes are not in the repository; see NOTICE. No analytics, no cookies; the checklist ticks stay in this browser.</p>
@@ -156,7 +178,8 @@
       <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
       <a href="https://github.com/eoinjordan/botbuilder/issues" rel="noopener noreferrer">Report a problem</a>
     </nav>
-    <p class="foot-legal">Code and printable parts under the MIT licence; pictures as on the credits page. Fonts: Space Grotesk, SIL Open Font
+    <p class="foot-legal">Code and printable parts under the MIT licence, except the Microduck-look parts: CC BY-NC-SA 4.0, adapted from the
+      Microduck by Pollen Robotics (<a href="./stl/microduck-look/LICENSE">text</a>). Pictures as on the credits page. Fonts: Space Grotesk, SIL Open Font
       License (<a href="./assets/licenses/space-grotesk.txt">text</a>). <span id="trademarks">LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. No affiliation with any of them.</span></p>
     <!-- /shared:footer -->
   </footer>

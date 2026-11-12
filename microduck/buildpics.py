@@ -7,6 +7,8 @@ rasteriser in microduck/render.py from data that already exists:
 
 - the biped from the assembly model (microduck/model.py) at the stand pose,
   with the face, camera and feet of the build's selection;
+- the Microduck-look biped from its own model (microduck/look/model.py) at
+  its stand pose, on the feet of the build's selection;
 - a crank walker from the walkers package's model of that build;
 - a two-wheeled build from its entry in robot/lego/wheeled/viewer.json:
   the printed files where they are placed, the bought parts as boxes.
@@ -70,6 +72,14 @@ def plan(data: dict, entry: dict, root: Path = ROOT) -> dict:
         report = json.loads((root / "reports" / "assembly.json").read_text(encoding="utf-8"))
         out["stand"] = report["variants"][report["selected"]]["balance"]["stand_pose"]["q_deg"]
         inputs.append(_json_bytes(out["stand"]))
+    elif sel["locomotion"] == "biped_look":
+        out.update(kind="look", feet="comb" if sel["feet"] == "comb" else "web",
+                   source="the Microduck-look model at the stand pose (microduck/look/model.py)")
+        folder = root / "stl" / "microduck-look"
+        inputs += [(folder / name).read_bytes() for name in ("parameters.json", "comb_feet.json") if (folder / name).is_file()]
+        report = json.loads((root / "reports" / "microduck-look" / "assembly.json").read_text(encoding="utf-8"))
+        out["stand"] = report["stand_pose"]["q_deg"]
+        inputs.append(_json_bytes(out["stand"]))
     else:
         summary = recipe.summary_entry(sel, root) or {}
         if sel["locomotion"] == "crank" and summary.get("build"):
@@ -103,6 +113,11 @@ def _biped_items(job: dict) -> list:
         config["feet"] = sel["feet"]
     robot = model.build_robot(None, None, config)
     return report._items(robot.placed(job["stand"]))
+
+
+def _look_items(job: dict) -> list:
+    from .look import model, report
+    return report._items(model.Robot(feet=job["feet"]).placed(job["stand"]))
 
 
 def _walker_items(job: dict) -> list:
@@ -173,7 +188,7 @@ def draw(job: dict, root: Path = ROOT) -> Image.Image:
     if job["kind"] == "parts":
         image = _parts_sheet(job, root)
     else:
-        items = {"biped": _biped_items, "walker": _walker_items}.get(job["kind"])
+        items = {"biped": _biped_items, "look": _look_items, "walker": _walker_items}.get(job["kind"])
         items = items(job) if items else _wheeled_items(job, root)
         image = _frame(render.render(items, view=VIEW, size=(SIZE[0] * 2, SIZE[1] * 2), supersample=2, margin=0.02))
     return image.quantize(colors=COLOURS, dither=0)

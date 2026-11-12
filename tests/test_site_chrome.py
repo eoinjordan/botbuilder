@@ -118,7 +118,7 @@ def test_the_fields_have_plain_hints_and_the_readme_shows_the_site(recipe_data):
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     opening = readme.split("\n## ")[0]
     assert "![Botbuilder](site/assets/logo.svg)" in opening and "https://eoinjordan.github.io/botbuilder/" in opening
-    assert "![The landing page: five finished builds as cards](docs/images/site-landing.png)" in opening
+    assert "![The landing page: six finished builds as cards](docs/images/site-landing.png)" in opening
     shot = ROOT / "docs" / "images" / "site-landing.png"
     assert shot.stat().st_size < 90_000
     with Image.open(shot) as image:

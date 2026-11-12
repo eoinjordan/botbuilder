@@ -25,6 +25,13 @@ export const BASES = {
   esp32cam: { label: "AI Thinker ESP32-CAM", written: false,
     note: "No firmware for an ESP32-CAM exists. The sketchbot flashes its camera board, an ESP-EYE, by hand from the " +
       "Arduino IDE; that sketch does not run on an ESP32-CAM as it is. There is no command to give here." },
+  look: { label: "Microduck-look biped on two Arduino UNO Q boards", written: false,
+    note: "This build has fifteen joints on two Arduino UNO Q boards and an I2C servo driver. The agent this page " +
+      "flashes drives six joints on one board, so no command is shown here rather than a made-up one. What you can " +
+      "do: rehearse the build in simulation with python scripts/run_look.py --sim; write your own sketch from the " +
+      "joint table in robot/microduck-look/joints.json, which names each joint's range, servo, board and output; or " +
+      "go back to Build yours and pick the six-servo biped, which has flash steps. Keep both servo supplies " +
+      "disconnected whenever you flash a board." },
   raspberrypi: { label: "Raspberry Pi", written: false },
   lego: { label: "LEGO hub", written: false },
   m5stack: { label: "M5Stack", written: false },
@@ -40,7 +47,8 @@ export function resolveBase(value) {
   const given = raw.slice(0, 40);
   const id = raw.toLowerCase().replace(/[^a-z0-9]/g, "");
   let key = "other";
-  if (/^(arduino)?unoq/.test(id)) key = "unoq";
+  if (/^(microduck)?look/.test(id)) key = "look";
+  else if (/^(arduino)?unoq/.test(id)) key = "unoq";
   else if (id.includes("espeye")) key = "espeye";
   else if (id.includes("esp32cam")) key = "esp32cam";
   else if (id.includes("raspberry") || /^r?pi/.test(id)) key = "raspberrypi";

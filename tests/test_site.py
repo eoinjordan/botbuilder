@@ -55,7 +55,8 @@ def test_three_is_pinned_and_is_the_only_external_script():
     scripts = re.findall(r"<script[^>]*src=\"([^\"]+)\"", html)
     assert scripts == ["./nav.js", "./app.js", "./tour.js"]
     external = set(re.findall(r'https://[a-z0-9.-]+', html + (SITE / "app.js").read_text(encoding="utf-8")))
-    assert external <= {"https://cdn.jsdelivr.net", "https://github.com", "https://eoinjordan.github.io"}
+    assert external <= {"https://cdn.jsdelivr.net", "https://github.com", "https://eoinjordan.github.io",
+                        "https://creativecommons.org"}, "the last for the terms of the Microduck-look parts"
 
 
 def test_no_trackers():

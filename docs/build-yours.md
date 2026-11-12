@@ -25,6 +25,7 @@ that no longer does, instead of the card showing a lesser tag.
 | 51515 hub crank walker | 51515 hub, its own motors, no camera | the walkers model `hub-51515` |
 | Pi Build HAT crank walker | Pi Zero 2 W, Build HAT, 51515 motors, Pi camera | the walkers model `pi-zero-2w-51515` |
 | Pi two-wheeled rover | Pi Zero 2 W, TT motors on an H-bridge, printed wheels with O-rings at the back, drag skid | `robot/lego/wheeled/viewer.json` |
+| Microduck-look biped | UNO Q, twelve Braccio servos on two shields and three small servos on an I2C driver, comb feet | the Microduck-look model at the stand pose (`microduck/look/model.py`) |
 
 The two-wheeled build is the Pi with TT motors because, of the UNO Q and Pi
 builds in the variants summary with the wheels at the back, the TT drives
@@ -32,6 +33,13 @@ are the fastest (0.59 m/s against 0.44 with the Build HAT motors and 0.23
 with the 360 degree servos), all climb 28 degrees, the skid takes an 8 mm
 step where the ball takes 4 mm, and the Pi has a program written
 (`programs/pi/wheeled/drive_tt.py`) where the UNO Q has none.
+
+The Microduck-look biped is on its comb feet because, of its two sets of
+feet, those walk faster in the simulation (`walking_speed_by_feet` in
+`reports/microduck-look/summary.json`); the other set is one change away
+under Feet in the sidebar. Its parts and its card picture are adapted from
+the Microduck by Pollen Robotics and carry CC BY-NC-SA 4.0, not MIT
+(`stl/microduck-look/LICENSE`); the recipe says so in its first lines.
 
 A card shows the picture, the name, the tag, the description, the
 controller, how it moves, speed and mass from the reports, and the number of
@@ -57,7 +65,7 @@ view, and records in `reports/builds.json` the checksum of the picture and
 of everything it was drawn from. A test compares both, so a changed part or
 model cannot keep an old picture: run the command again after changing the
 geometry. A build with no model of the whole robot gets its part pictures
-side by side instead; none of the five needs that.
+side by side instead; none of the six needs that.
 
 What has been simulated, checked or assumed is in [status.md](status.md), not
 in the recipes.
@@ -95,7 +103,8 @@ mark from `config/validated.json`; see [admin.md](admin.md).
 - For the biped, the face: the round display as the eyes with the camera
   above (the default) or below it, the display stack with the XIAO Sense
   camera looking forward, or the camera mount alone. And the feet: comb or
-  flat.
+  flat. The Microduck-look biped has the same choice of feet: comb, or its
+  own soles with a web.
 - Head: the mount with nothing moving; the biped's turning head with an
   SG90-class servo or an M5Stack 360 degree servo (pan by servo, tilt set by
   hand); the Pixy pan-tilt servos; a LEGO motor.
@@ -189,7 +198,7 @@ switches it off; the page tests run that way.
 | `stl/manifest.json` | Every printable file with its options and its picture. The biped's print list is chosen by those options: controller, head, face, camera, feet. |
 | `reports/assembly.json`, `reports/sim.json` | What was run for the biped. |
 | `reports/variants/summary.json` | One entry per walker and two-wheeled build: tag, numbers, files and parts. |
-| `reports/microduck-look/summary.json` | The Microduck-look biped as one entry in the same shape, with its licence line. Its files carry `style: microduck` and `locomotion: biped_look` in the manifest, so the six-servo biped's print list does not pick them up. |
+| `reports/microduck-look/summary.json` | The Microduck-look biped as entries in the same shape, one for each choice of feet, with its source model, its licence line and the simulated walking speed on each set of feet. Its files carry `style: microduck` and `locomotion: biped_look` in the manifest, so the six-servo biped's print list does not pick them up. |
 | `programs/index.json` | The program files with their ports and how each is loaded. |
 | `microduck/recipe.py` | `evaluate(bundle, selection)`: a pure function that walks that data. Standard library only. |
 | `site/build.js` | The same walk in JavaScript, and the page. It holds no combination of its own. |

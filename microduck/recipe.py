@@ -340,7 +340,7 @@ def _summary_entry(node: dict, hints: list[str], compat: dict) -> dict | None:
             return None
         match["drive"] = rows[0]["drive"]
     options = {dim["id"]: [o["id"] for o in dim["options"]] for dim in compat["dimensions"]}
-    for dim in ("wheels", "support", "wheel"):
+    for dim in ("wheels", "support", "wheel", "feet"):
         if node.get(dim) in options[dim]:
             match[dim] = node[dim]
     text = str(node.get("status", "")).strip()
@@ -450,14 +450,15 @@ def validated(root: Path = ROOT) -> list[dict]:
 
 def summary_entry(sel: dict, root: Path = ROOT):
     """The entry of the variants summary for a selection, as written there,
-    or None. Wheeled entries are also matched on the wheel choices."""
-    for name in SUMMARY_PATHS:
+    or None. Wheeled entries are also matched on the wheel choices, and an
+    entry that names its feet on the feet."""
+    for name in SUMMARY_PATHS + EXTRA_SUMMARIES:
         path = root / name
         if not path.is_file():
             continue
         content = _load(path)
         for entry in content.get("entries", []) if isinstance(content, dict) else []:
-            keys = ["controller", "locomotion", "drive"] + [key for key in ("wheels", "support", "wheel") if key in entry]
+            keys = ["controller", "locomotion", "drive"] + [key for key in ("wheels", "support", "wheel", "feet") if key in entry]
             if all(entry.get(key) == sel[key] for key in keys):
                 return entry
     return None
@@ -902,6 +903,7 @@ def _pass(data: dict, sel: dict) -> dict:
         "status": status,
         "reasons": [_fill(text, values) for text in reasons],
         "base": row["base"],
+        "flash": row.get("flash", row["base"]),
         "build": build_id(sel),
         "validated": mark,
         "sources": base["sources"],
@@ -1007,7 +1009,7 @@ def evaluate(data: dict, selection: dict) -> dict:
         "headline": compat["statuses"][status]["headline"],
         "reasons": first["reasons"],
         "refusal": first["codes"],
-        "base": None, "build": build_id(sel), "validated": None, "sources": [], "mechanism": "", "preset": "",
+        "base": None, "flash": None, "build": build_id(sel), "validated": None, "sources": [], "mechanism": "", "preset": "",
         "print": {"note": "", "files": []},
         "parts": [],
         "nearest": {

@@ -62,9 +62,9 @@ def problems(data: dict, entry: dict, root=ROOT) -> list:
     return out
 
 
-def test_the_file_names_four_or_five_builds_in_order(data, written):
+def test_the_file_names_four_to_six_builds_in_order(data, written):
     listed = data["builds"]["list"]
-    assert 4 <= len(listed) <= 5
+    assert 4 <= len(listed) <= 6
     assert [item["id"] for item in listed] == [item["id"] for item in sorted(written["builds"], key=lambda item: item["order"])]
     assert len({item["id"] for item in listed}) == len(listed) and data["builds"]["default"] == listed[0]["id"]
     known = {dim["id"]: [option["id"] for option in dim["options"]] for dim in data["compat"]["dimensions"]}
@@ -75,8 +75,8 @@ def test_the_file_names_four_or_five_builds_in_order(data, written):
         for key, value in item["selection"].items():
             assert value in known[key], f"{item['id']}: {key}={value}"
         assert {"controller", "locomotion", "drive"} <= set(item["selection"])
-    # The range: the biped, the crank walkers and a two-wheeled build, on more than one controller.
-    assert {item["selection"]["locomotion"] for item in listed} == {"biped", "crank", "wheeled"}
+    # The range: the two bipeds, the crank walkers and a two-wheeled build, on more than one controller.
+    assert {item["selection"]["locomotion"] for item in listed} == {"biped", "biped_look", "crank", "wheeled"}
     assert len({item["selection"]["controller"] for item in listed}) >= 4
     wheeled = [item for item in listed if item["selection"]["locomotion"] == "wheeled"]
     assert all(item["selection"]["wheels"] == "back" for item in wheeled)
@@ -123,6 +123,13 @@ def test_every_build_has_figures_from_the_reports(data, sim_report, selected):
         assert set(figures) == {"mass_g", "speed_mm_s"}, entry["id"]
         assert 100 < figures["mass_g"] < 2000 and 5 < figures["speed_mm_s"] < 2000
         sel = recipe.build_selection(data, entry)
+        if sel["locomotion"] == "biped_look":
+            look = json.loads((ROOT / "reports" / "microduck-look" / "summary.json").read_text(encoding="utf-8"))
+            mine = recipe.summary_entry(sel, ROOT)
+            assert mine in look["entries"] and mine["feet"] == sel["feet"] and mine["status"] == "analysed in simulation"
+            assert figures == {"mass_g": mine["mass_g"], "speed_mm_s": look["walking_speed_by_feet"][sel["feet"]]["speed_mm_s"]}
+            assert f"Mass {mine['mass_g']:g} g by the model." in recipe.evaluate(data, sel)["analysis"]
+            continue
         if sel["locomotion"] == "biped":
             study = json.loads((ROOT / "reports" / "motion.json").read_text(encoding="utf-8"))
             walk = study["presets"][sel["feet"]]["walk"]["nominal"]["speed_mm_s"]
@@ -151,6 +158,27 @@ def test_every_build_has_a_current_picture(data):
             assert image.size == buildpics.SIZE and image.mode == "P"
             assert len(image.getcolors()) > 4, "not a blank card"
         assert len(content) < 20_000, "card pictures stay small"
+
+
+def test_the_look_card_is_on_the_feet_that_walk_faster(data, written):
+    """The Microduck-look card names its feet, and names the set that the
+    simulation walks faster on; its recipe gives the source model and the
+    terms of its parts."""
+    look = json.loads((ROOT / "reports" / "microduck-look" / "summary.json").read_text(encoding="utf-8"))
+    card = next(item for item in written["builds"] if item["selection"]["locomotion"] == "biped_look")
+    speeds = look["walking_speed_by_feet"]
+    assert card["selection"]["feet"] == speeds["faster"]
+    assert speeds[speeds["faster"]]["truly_steps"] and not speeds[speeds["faster"]]["poses_with_mesh_overlap"]
+    entry = next(e for e in data["builds"]["list"] if e["id"] == card["id"])
+    rec = recipe.evaluate(data, recipe.build_selection(data, entry))
+    assert rec["flash"] == "look" and rec["base"] == "unoq_braccio"
+    assert any("Microduck by Pollen Robotics, https://github.com/pollen-robotics/microduck_rl" in text and "CC BY-NC-SA 4.0" in text
+               for text in rec["reasons"])
+    names = [item["file"] for item in rec["print"]["files"]]
+    comb = card["selection"]["feet"] == "comb"
+    assert ("microduck-look/left_foot_comb.stl" in names) == comb and ("microduck-look/left_foot.stl" in names) != comb
+    job = buildpics.plan(data, entry)
+    assert job["kind"] == "look" and job["feet"] == ("comb" if comb else "web")
 
 
 def test_the_site_gets_the_builds_and_their_pictures():

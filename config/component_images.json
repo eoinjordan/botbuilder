@@ -311,7 +311,8 @@
    "origin": "Wikimedia Commons",
    "title": "File:Tower Pro SG90 micro servo motor.jpg",
    "match": [
-    "sg90"
+    "sg90",
+    "servo kit 180"
    ],
    "author": "Suyash Dwivedi",
    "licence": "CC BY-SA 4.0",
@@ -599,6 +600,14 @@
    "build": "pi-rover"
   },
   {
+   "id": "loco_look",
+   "name": "Microduck-look biped",
+   "kind": "render",
+   "origin": "rendered by this project from the Microduck-look parts, which are adapted from the Microduck by Pollen Robotics (CC BY-NC-SA 4.0)",
+   "match": [],
+   "build": "look"
+  },
+  {
    "id": "face_none",
    "name": "Camera mount only",
    "kind": "render",
@@ -746,7 +755,8 @@
   "locomotion": {
    "biped": "loco_biped",
    "crank": "loco_crank",
-   "wheeled": "loco_wheeled"
+   "wheeled": "loco_wheeled",
+   "biped_look": "loco_look"
   },
   "drive": {
    "braccio_shield": "braccio_shield",
@@ -756,7 +766,8 @@
    "ev3_motors": "ev3_large_motor",
    "basex_ev3": "m5core",
    "m5_360_wheels": "m5_360",
-   "tt_hbridge": "tt_motor"
+   "tt_hbridge": "tt_motor",
+   "braccio_two_shields": "braccio_shield"
   },
   "camera": {
    "none": "camera_none",

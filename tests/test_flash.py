@@ -203,3 +203,12 @@ def test_every_configurator_base_resolves(tmp_path):
         "unoq_braccio": "unoq", "pi_servo": "raspberrypi", "pi_full_servo": "raspberrypi", "hub51515": "lego", "ev3": "lego", "m5_basex_ev3": "m5stack",
         "pi_buildhat_51515": "raspberrypi"}
     assert [base for base, plan in out.items() if plan["written"]] == ["unoq_braccio"]
+    # A support row may name its own flash id: the Microduck-look biped is on an UNO Q, and the
+    # six-joint agent is not its firmware, so its recipe links here with that id and gets no commands.
+    compat = json.loads((ROOT / "config" / "compat.json").read_text(encoding="utf-8"))
+    named = {row["flash"] for row in compat["support"] if "flash" in row}
+    assert named == {"look"}
+    look = dump(tmp_path, {"plans": {"look": {"base": "look", "host": "unoq.local"}}})["plans"]["look"]
+    assert look["base"]["key"] == "look" and not look["written"] and look["steps"] == []
+    script = (ROOT / "site" / "flash.js").read_text(encoding="utf-8")
+    assert "robot/microduck-look/joints.json" in script and "fifteen joints" in script

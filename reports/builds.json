@@ -41,6 +41,14 @@
    "bytes": 12996,
    "sha256": "15dc8b6ac59cceb2c21fbdd8046e7aa1c4817a6d677a382d3aae5a6926b27ddc",
    "inputs_sha256": "c671c83d02f89ff573c7d46b09a20add9c5130efd372248debc900adbfe36bc9"
+  },
+  "look": {
+   "file": "docs/images/build-look.png",
+   "drawn_from": "the Microduck-look model at the stand pose (microduck/look/model.py)",
+   "kind": "look",
+   "bytes": 10326,
+   "sha256": "d2912d39bb8266664e19c11d705ad44f630da3b207efc16a224ea66fcc880348",
+   "inputs_sha256": "3b676cbbc729dbae99f17e1bb53abb6343334b54e60846a933be9d2f32320e20"
   }
  }
 }

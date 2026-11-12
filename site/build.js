@@ -313,6 +313,7 @@ function pass(data, sel) {
     status,
     reasons: reasons.map((text) => fill(text, values)),
     base: row.base,
+    flash: row.flash ?? row.base,
     build: buildId(sel),
     validated: mark,
     sources: base.sources,
@@ -424,6 +425,7 @@ export function evaluate(data, selection) {
     reasons: first.reasons,
     refusal: first.codes,
     base: null,
+    flash: null,
     build: buildId(sel),
     validated: null,
     sources: [],
@@ -727,7 +729,7 @@ function render(data, recipe, target) {
   if (more) {
     const para = el("p", undefined, "type-link no-print");
     const link = el("a", more.text);
-    link.href = `./${more.page}`;
+    link.href = `./${more.page}${more.anchor ? `#${more.anchor}` : ""}`;
     para.append(link);
     what.append(para);
   }
@@ -822,7 +824,7 @@ function render(data, recipe, target) {
         // The Flash page builds the commands for this controller, or says
         // that none are written.
         const link = el("a", "Flash steps for this controller");
-        link.href = `./flash.html?base=${encodeURIComponent(recipe.base)}`;
+        link.href = `./flash.html?base=${encodeURIComponent(recipe.flash)}`;
         const para = el("p");
         para.append(link);
         section.append(para);

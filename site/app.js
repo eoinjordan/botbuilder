@@ -264,8 +264,31 @@ async function viewer(model, joints) {
   window.microduckViewer = { hinges, setJoint, pose, draw };
 }
 
+// The Microduck-look biped: mass, size and the simulated walking speed on
+// each set of feet, from its summary (reports/microduck-look/summary.json).
+function fillLook(summary) {
+  const facts = document.getElementById("look-facts");
+  const first = summary.entries[0];
+  const items = [
+    ["Mass", `${Math.round(first.mass_g)} g`],
+    ["Size (L x W x H)", first.size_mm.map((value) => Math.round(value)).join(" x ") + " mm"],
+    ["Actuated joints", "15"],
+  ];
+  const speeds = summary.walking_speed_by_feet;
+  if (speeds) {
+    items.push(["Simulated walk, plain feet", `${speeds.flat.speed_mm_s} mm/s`]);
+    items.push(["Simulated walk, comb feet", `${speeds.comb.speed_mm_s} mm/s`]);
+  }
+  for (const [name, value] of items) {
+    const box = document.createElement("div");
+    box.append(el("dt", name), el("dd", value));
+    facts.append(box);
+  }
+}
+
 async function main() {
   checklist();
+  getJson("look-summary.json").then(fillLook).catch(() => {});
   try {
     const [report, sim, joints, model, hardware] = await Promise.all(
       ["assembly.json", "sim.json", "joints.json", "model.json", "hardware.json"].map(getJson));

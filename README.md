@@ -3,15 +3,15 @@
 # Botbuilder: build your own bot from the parts you have
 
 Small printed robots for the controllers, motors and cameras you already
-own. The site, https://eoinjordan.github.io/botbuilder/, opens with five
+own. The site, https://eoinjordan.github.io/botbuilder/, opens with six
 finished builds to pick from, and a configurator beside them: pick a
 controller (Arduino UNO Q, Raspberry Pi, LEGO 51515 hub, LEGO EV3 brick,
-M5Stack Core), a locomotion (six-servo biped, two-motor crank walker, two
-driven wheels), a drive and a camera, and it answers with a recipe for that
+M5Stack Core), a locomotion (six-servo biped, the fifteen-servo
+Microduck-look biped, two-motor crank walker, two driven wheels), a drive and a camera, and it answers with a recipe for that
 robot: status first, then the files to print, parts, wiring, power and
 software, as a page, a PDF or a zip. See [Build yours](#build-yours).
 
-![The landing page: five finished builds as cards](docs/images/site-landing.png)
+![The landing page: six finished builds as cards](docs/images/site-landing.png)
 
 The biped is the one design analysed so far, and most of this README is about
 it. Site: https://eoinjordan.github.io/botbuilder/. What has been simulated,
@@ -263,12 +263,18 @@ A second biped that keeps the original's shells: the Microduck's body, head,
 thigh covers and feet at 1.25 times the size, on the twelve servos of two
 Braccio kits and three small position servos, with the original's fifteen
 servo positions. Parts in `stl/microduck-look/`, assembly test, model and
-simulation under `microduck/look/`, offered in the configurator as "Biped,
-Microduck look". Report: [docs/microduck-look.md](docs/microduck-look.md).
+simulation under `microduck/look/`. It is the sixth finished build on the
+landing page and "Biped, Microduck look" in the configurator, with two sets
+of feet to choose from: the Microduck's soles widened towards the centre
+line, or comb feet whose fingers cross it. Report:
+[docs/microduck-look.md](docs/microduck-look.md).
 
+Source model: Microduck by Pollen Robotics,
+https://github.com/pollen-robotics/microduck_rl.
 Microduck-look parts: CC BY-NC-SA 4.0, adapted from Pollen Robotics'
-Microduck; not for commercial use (`stl/microduck-look/LICENSE`). The rest of
-the repository is MIT.
+Microduck; not for commercial use (`stl/microduck-look/LICENSE`). That covers
+every file in `stl/microduck-look/`, the comb feet included, and the pictures
+of those parts. The rest of the repository is MIT.
 
 ## Layout
 
@@ -325,5 +331,8 @@ local design directory after its generator has run.
 
 ## Licence
 
-MIT for the code and documentation, see [LICENSE](LICENSE). Third-party
-material and sources: [NOTICE](NOTICE).
+MIT for the code and documentation, see [LICENSE](LICENSE). The one
+exception is the Microduck-look parts in `stl/microduck-look/` and the
+pictures of them: CC BY-NC-SA 4.0, adapted from the Microduck by Pollen
+Robotics (`stl/microduck-look/LICENSE`). Third-party material and sources:
+[NOTICE](NOTICE).

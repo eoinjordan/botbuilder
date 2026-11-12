@@ -172,7 +172,9 @@ def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):
 def test_each_type_links_to_its_tab_and_back():
     compat = json.loads((ROOT / "config" / "compat.json").read_text(encoding="utf-8"))
     assert {key: value["page"] for key, value in compat["locomotion_pages"].items()} == {
-        "biped": "biped.html", "wheeled": "wheeled.html", "crank": "walkers.html"}
+        "biped": "biped.html", "wheeled": "wheeled.html", "crank": "walkers.html", "biped_look": "biped.html"}
+    assert compat["locomotion_pages"]["biped_look"]["anchor"] == "look" and '<section id="look">' in read("biped.html")
+    assert "more.anchor" in read("build.js")
     assert "data.compat.locomotion_pages[recipe.selection.locomotion]" in read("build.js")
     for key, value in compat["locomotion_pages"].items():
         assert (SITE / value["page"]).is_file()

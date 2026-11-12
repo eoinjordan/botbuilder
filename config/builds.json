@@ -75,6 +75,20 @@
     "wheel": "printed_ring"
    },
    "picture": "images/build-pi-rover.png"
+  },
+  {
+   "id": "look",
+   "order": 6,
+   "name": "Microduck-look biped",
+   "description": "The Microduck's own shape, a quarter larger: fifteen servos on two Arduino UNO Q boards, comb feet.",
+   "selection": {
+    "controller": "unoq",
+    "locomotion": "biped_look",
+    "drive": "braccio_two_shields",
+    "feet": "comb",
+    "head": "fixed"
+   },
+   "picture": "images/build-look.png"
   }
  ]
 }
