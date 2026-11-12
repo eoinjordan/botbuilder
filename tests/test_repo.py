@@ -68,16 +68,17 @@ def test_only_the_generated_printable_parts_are_tracked_as_meshes():
 def test_repository_stays_small():
     # Printable files and their pictures under stl/ have their own budget.
     rest = [path for path in tracked() if not under_stl(path)]
-    # 7.6 MB of code, documents, reports and recordings, and under 1 MB of pictures for the site:
+    # 8 MB of code, documents, reports and recordings, and under 1 MB of pictures for the site:
     # the bought components (docs/components), the build cards and the logo.
-    assert sum(path.stat().st_size for path in rest) < 8_800_000
+    assert sum(path.stat().st_size for path in rest) < 9_200_000
     for path in rest:
         assert path.stat().st_size < 1_000_000, path.name
     meshes = [path for path in tracked() if under_stl(path)]
-    # About 22 MB of printable files and their pictures, and 8.5 MB of everything else: the whole
-    # checkout stays under 32 MB, a little under the two budgets added together.
-    assert sum(path.stat().st_size for path in meshes) < 24_000_000
-    assert sum(path.stat().st_size for path in tracked()) < 32_000_000
+    # About 24.7 MB of printable files and their pictures (2.5 MB of that the Microduck-look parts
+    # with their comb feet), and 8.9 MB of everything else: the whole checkout stays under 34 MB,
+    # a little under the two budgets added together.
+    assert sum(path.stat().st_size for path in meshes) < 25_000_000
+    assert sum(path.stat().st_size for path in tracked()) < 34_000_000
     for path in meshes:
         assert path.stat().st_size < 3_000_000, path.name
 
