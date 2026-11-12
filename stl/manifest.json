@@ -14,7 +14,7 @@
  "face_default": "eyes_above",
  "controller_default": "unoq",
  "feet_default": "comb",
- "total_bytes": 23442800,
+ "total_bytes": 23824468,
  "files": [
   {
    "file": "01_torso_hub51515_cam_esp32cam.stl",
@@ -3604,7 +3604,8 @@
    "options": {
     "style": "microduck",
     "locomotion": "biped_look",
-    "part": "left_foot"
+    "part": "left_foot",
+    "feet": "flat"
    },
    "print_quantity": 1,
    "material": "PLA; sole on the bed; supports: supports under the cheek and inside the well",
@@ -3639,7 +3640,8 @@
    "options": {
     "style": "microduck",
     "locomotion": "biped_look",
-    "part": "right_foot"
+    "part": "right_foot",
+    "feet": "flat"
    },
    "print_quantity": 1,
    "material": "PLA; sole on the bed; supports: supports under the cheek and inside the well",
@@ -4191,6 +4193,82 @@
     "file": "thumbs/microduck-look/fit_eye_esp_eye.png",
     "stl_sha256": "92f40f74632c1743dfaa8bd6f0dc4b269acf6a3ae95ee0595183b655ac8a3801",
     "bytes": 2739
+   }
+  },
+  {
+   "file": "microduck-look/left_foot_comb.stl",
+   "what": "left comb foot: the foot with fingers that cross the centre line between the other foot's fingers",
+   "options": {
+    "style": "microduck",
+    "locomotion": "biped_look",
+    "part": "left_foot_comb",
+    "feet": "comb"
+   },
+   "print_quantity": 1,
+   "material": "PLA; sole on the bed; supports: supports under the cheek and inside the well",
+   "triangles": 3824,
+   "volume_mm3": 51045.0,
+   "bounding_box_mm": [
+    [
+     -33.14,
+     -83.54,
+     0.0
+    ],
+    [
+     33.14,
+     44.54,
+     44.14
+    ]
+   ],
+   "watertight": true,
+   "bytes": 191284,
+   "sha256": "848eef621e9fd5c9cebda3efbe1403d8166093e28e9b78faac3a504caf6f9348",
+   "design_commit": "cbb64dc53db9efb47781ae726479f385b05ab067",
+   "licence": "CC-BY-NC-SA-4.0",
+   "made_from": "microduck-look/left_foot.stl",
+   "generated_by": "microduck/look/combfeet.py",
+   "thumbnail": {
+    "file": "thumbs/microduck-look/left_foot_comb.png",
+    "stl_sha256": "848eef621e9fd5c9cebda3efbe1403d8166093e28e9b78faac3a504caf6f9348",
+    "bytes": 4682
+   }
+  },
+  {
+   "file": "microduck-look/right_foot_comb.stl",
+   "what": "right comb foot: the foot with fingers that cross the centre line between the other foot's fingers",
+   "options": {
+    "style": "microduck",
+    "locomotion": "biped_look",
+    "part": "right_foot_comb",
+    "feet": "comb"
+   },
+   "print_quantity": 1,
+   "material": "PLA; sole on the bed; supports: supports under the cheek and inside the well",
+   "triangles": 3806,
+   "volume_mm3": 47176.0,
+   "bounding_box_mm": [
+    [
+     -33.14,
+     -44.54,
+     0.0
+    ],
+    [
+     33.14,
+     83.54,
+     44.14
+    ]
+   ],
+   "watertight": true,
+   "bytes": 190384,
+   "sha256": "b4dc70671d7b732605df452d6949ada486418eaab626755770208a8680f6a958",
+   "design_commit": "cbb64dc53db9efb47781ae726479f385b05ab067",
+   "licence": "CC-BY-NC-SA-4.0",
+   "made_from": "microduck-look/right_foot.stl",
+   "generated_by": "microduck/look/combfeet.py",
+   "thumbnail": {
+    "file": "thumbs/microduck-look/right_foot_comb.png",
+    "stl_sha256": "b4dc70671d7b732605df452d6949ada486418eaab626755770208a8680f6a958",
+    "bytes": 5682
    }
   }
  ],

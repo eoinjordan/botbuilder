@@ -12,7 +12,7 @@ import json
 import numpy as np
 
 from .. import render
-from . import analyse
+from . import analyse, combfeet
 from .model import FOLDER, HEAD, JOINTS, LEG, ROOT, Robot, to_arrays, union
 
 REPORT = ROOT / "reports" / "microduck-look" / "assembly.json"
@@ -129,6 +129,28 @@ def analyse_all(robot: Robot, progress=print) -> dict:
     return report
 
 
+def comb_feet(stand: dict, folder=None, progress=print) -> dict:
+    """The same robot on the comb feet of combfeet.py, at the stand pose found for the feet as generated:
+    what changes is the feet, so only what the feet decide is taken again."""
+    robot = Robot(folder, feet="comb")
+    record = combfeet.record(robot.folder)
+    progress("comb feet")
+    two = analyse.support(robot, analyse.in_stance_frame(robot, stand, "left"))
+    feet = {side: analyse.one_foot(robot, stand, side) for side in ("left", "right")}
+    legs = [f"{side}_{joint}" for side in ("left", "right") for joint in ("hip_yaw", "hip_roll")]
+    return {
+        "feet": "comb", "comb_mm": record["comb"],
+        "foot_mass_g": {part["link"]: part["mass_g"] for part in record["parts"]},
+        "mass": {"total_kg": _r(robot.mass_kg(), 4)},
+        "interferences": {"zero_pose": analyse.interferences(robot), "stand_pose": analyse.interferences(robot, stand)},
+        "stand_pose": {"q_deg": stand, "com_mm": two["com_mm"], "margin_mm": two["margin_mm"], "polygon_mm": two["polygon_mm"]},
+        "one_foot": feet,
+        "sway_both_hips": sway_range(robot, stand),
+        "joint_ranges": {j: analyse.sweep(robot, j, stand) for j in legs},
+        "leg_clearance": leg_table(robot, stand),
+    }
+
+
 # ---------------------------------------------------------------- pictures
 def _items(placed, cut=None):
     items = []
@@ -166,12 +188,18 @@ def pictures(robot: Robot, report: dict) -> dict:
     if foot.get("found"):
         out["one-foot"] = _save(render.render(_items(robot.placed(foot["q_deg"])), view="front", size=(620, 760), supersample=2,
                                               title="on the left foot, the right lifted"), "look-one-foot.png")
+    if "comb_feet" in report:
+        comb = Robot(robot.folder, feet="comb")
+        out["comb-feet"] = _save(render.render(_items(comb.placed(stand)), view="iso", size=(700, 760), supersample=2,
+                                               title="on the comb feet"), "look-comb-feet.png")
     return out
 
 
 def run(progress=print) -> dict:
     robot = Robot()
     report = analyse_all(robot, progress)
+    if combfeet.have(robot.folder):
+        report["comb_feet"] = comb_feet(report["stand_pose"]["q_deg"], robot.folder, progress)
     progress("pictures")
     report["pictures"] = pictures(robot, report)
     REPORT.parent.mkdir(parents=True, exist_ok=True)

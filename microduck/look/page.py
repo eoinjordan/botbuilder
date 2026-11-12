@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import json
 
-from .install import LICENCE_LINE, PARTS, SOURCES
+from . import combfeet
+from .install import LICENCE_LINE, PARTS, SOURCE_MODEL, SOURCES, feet_compared
 from .model import JOINTS, ROOT, parameters
 
 PAGE = ROOT / "docs" / "microduck-look.md"
@@ -45,7 +46,8 @@ def markdown() -> str:
         "servos of a BALA-C turn continuously: a pulse sets their speed, not an angle, so they cannot hold a joint. "
         "Without the small servos the head yaw, head roll and beak joints stay as fitted and the other twelve joints work.")
     add("")
-    add(LICENCE_LINE + ". The credit and the list of changes are in `stl/microduck-look/LICENSE`. The code is MIT.")
+    add(f"Source model: {SOURCE_MODEL}. {LICENCE_LINE}. That covers every file in `stl/microduck-look/`, the comb feet included. "
+        "The credit and the list of changes are in `stl/microduck-look/LICENSE`. The code is MIT.")
     add("")
     add("All numbers on this page come from the digital assembly and the simulation. What was assumed is in [status.md](status.md).")
     add("")
@@ -155,7 +157,8 @@ def markdown() -> str:
     add("The pose on one foot below is a static one: the trunk tilted over a flat sole. The legs have no ankle roll, as the original's have none, "
         "so the robot cannot move into that pose slowly: while both soles are down a roll of both hips leans the legs and sets the soles on their edges. "
         "The simulation shows it (see below). The weight has to be rocked from foot to foot, which is what the gait does. Soles whose fingers cross the "
-        "centre line, as on the plate biped, would let a foot be lifted with no shift at all; they would not look like the original's feet.")
+        "centre line, as on the plate biped, let a foot be lifted with no shift at all; they do not look like the original's feet. "
+        "They are the other choice of feet: see Comb feet below.")
     add("")
     rows = [["two feet, stand pose", "", stand["margin_mm"], "", ""]]
     for side in ("left", "right"):
@@ -176,6 +179,40 @@ def markdown() -> str:
     L.extend(_table(["left (rows), right (columns)"] + [str(a) for a in lt["hip_roll_deg"]],
                     [[a] + row for a, row in zip(lt["hip_roll_deg"], lt["gap_mm_or_minus_overlap_mm3"])]))
     add("")
+    comb = rep.get("comb_feet")
+    if comb:
+        c = comb["comb_mm"]
+        add("### Comb feet")
+        add("")
+        add("`left_foot_comb.stl` and `right_foot_comb.stl`, made from the two feet by `microduck/look/combfeet.py`: part of each web is cut away "
+            f"and fingers {c['t']:g} mm thick and {c['finger_x']['right'][0][1] - c['finger_x']['right'][0][0]:g} mm wide, each with a rib on top, "
+            f"reach {c['tip_past_centre']:g} mm past the centre line. The left foot has a finger at the heel and one at the toe, the right foot one "
+            f"between them, with {c['clear_x']:g} mm fore and aft between a finger and the other foot and {c['clear_tip']:g} mm at each tip. "
+            "They bolt to the ankle horn as the feet do; nothing else changes. "
+            f"The robot is {round(comb['mass']['total_kg'] * 1000 - mass['total_kg'] * 1000, 1)} g heavier on them.")
+        add("")
+        add(f"![on the comb feet]({IMG}look-comb-feet.png)")
+        add("")
+        rows = [["two feet, stand pose", "", comb["stand_pose"]["margin_mm"], "", ""]]
+        for side in ("left", "right"):
+            f = comb["one_foot"][side]
+            if f.get("found"):
+                rows.append([f"{side} foot, other lifted", f["roll_deg"], f["margin_mm"], f["swing_sole_height_mm"], len(f["interferences"])])
+            else:
+                rows.append([f"{side} foot, other lifted", "not found", f.get("margin_at_22_deg_mm", ""), "", ""])
+        L.extend(_table(["pose on the comb feet", "both hips rolled (deg)", "centre of mass inside the support (mm)", "lifted sole above the floor (mm)", "overlapping parts"], rows))
+        add("")
+        cz, cs = comb["interferences"]["zero_pose"], comb["interferences"]["stand_pose"]
+        yaw, roll = comb["joint_ranges"]["left_hip_yaw"], comb["joint_ranges"]["left_hip_roll"]
+        add(f"Overlaps above 8 mm3 on the comb feet: {len(cz)} with every joint at zero, {len(cs)} at the stand pose. "
+            "What they cost: with both feet level the fingers lie between each other, so one hip turned alone is free for "
+            f"{yaw['min_free_deg']} to {yaw['max_free_deg']} degrees of yaw (left hip; {rep['joint_ranges']['left_hip_yaw']['min_free_deg']} to "
+            f"{rep['joint_ranges']['left_hip_yaw']['max_free_deg']} on the plain feet) and {roll['min_free_deg']} to {roll['max_free_deg']} degrees of roll "
+            "before the fingers meet. Both hips rolled the same way are free for at least "
+            f"{min(comb['sway_both_hips']['to_the_left_deg'], comb['sway_both_hips']['to_the_right_deg'])} degrees. A foot has to be lifted before it is turned. "
+            "The joint table in `robot/microduck-look/joints.json` holds the limits of the plain feet; a controller for the comb feet needs a rule "
+            "for the fingers, as the plate biped's control core has for its comb soles.")
+        add("")
     add("## Assembly test")
     add("")
     z, s = rep["interferences"]["zero_pose"], rep["interferences"]["stand_pose"]
@@ -242,6 +279,57 @@ def markdown() -> str:
         add("Supply current while walking, each servo taken to draw in proportion to its torque: "
             + "; ".join(f"{name} {v['mean']} A mean, {v['peak']} A peak" for name, v in cur.items()) + ". Each shield has a 4 A supply.")
         add("")
+    both = feet_compared(sim)
+    if both:
+        cw = sim["comb_feet"]
+        walk_c, sr = cw["walk"], cw["walk"]["search"]
+        add("### Walking on each set of feet")
+        add("")
+        add(f"`robot/microduck-look/microduck_look_comb.xml` is the same model on the comb feet ({cw['mass_kg']} kg), each foot the slab under its sole "
+            f"and fingers. The same search was run on it: seed {sr['seed']}, {sr['generations']} generations of {sr['popsize']}, {sr['simulated_runs']} runs of "
+            f"{sr['seconds_each']} s, {sr['wall_clock_s']} s of wall clock. The simulation lets the two feet pass through each other, so on the comb feet the "
+            "search also puts the feet of every candidate through their exact meshes for one gait cycle and refuses a gait in which they overlap. "
+            f"Parameters found: {walk_c['params']} (`config/microduck-look/gait_comb.json`).")
+        add("")
+        rows = []
+        for option, label in (("flat", "as generated, with the web"), ("comb", "comb")):
+            r = both[option]
+            rows.append([label, _yes(r["truly_steps"]), _yes(r["fell"]), r["speed_mm_s"], f"{r['steps']} of {r['steps_commanded']}", r["median_clearance_mm"],
+                         r["step_length_mm"], round(r["single_support_fraction"] * 100), r["heading_change_deg"], r["max_tilt_deg"], r["poses_with_mesh_overlap"]])
+        L.extend(_table(["feet", "truly steps", "fell", "speed (mm/s)", "swings in 30 s", "clearance (mm)", "step (mm)", "one foot loaded (percent)",
+                         "heading change (deg)", "largest tilt (deg)", "poses of one cycle with overlapping meshes"], rows))
+        add("")
+        cst = cw["stand"]
+        add(f"On the comb feet it stands for 10 s with a tilt of at most {cst['max_tilt_deg']} degrees.")
+        for side in ("left", "right"):
+            o = cw["one_foot"][side]
+            if "held" in o and "fell" in o:
+                other = "right" if side == "left" else "left"
+                add(f"- Comb feet, the {other} leg bent slowly with the weight meant for the {side} foot: "
+                    + ("the weight comes on to that sole" if o["held"] else
+                       f"{'it falls' if o['fell'] else 'the weight does not come wholly on to that sole'}: {o['foot_load_n'][side]} N and {o['foot_load_n'][other]} N")
+                    + f", largest tilt {o['max_tilt_deg']} degrees; meshes overlapping in {o['mesh_overlaps']['poses_with_overlap']} of "
+                    f"{o['mesh_overlaps']['poses_checked']} poses on the way.")
+        cross = cw.get("walk_with_the_gait_of_the_plain_feet")
+        if cross:
+            add(f"- The gait found for the plain feet, played on the comb feet: {'falls' if cross['fell'] else 'stays up'}, "
+                f"{'truly steps' if cross['truly_steps'] else 'does not truly step'}, {cross['speed_mm_s']} mm/s, "
+                f"{cross['stepping']['steps']} swings of {cross['stepping']['steps_commanded']}, the feet's meshes overlapping in "
+                f"{cross['feet_overlap']['poses_with_overlap']} of {cross['feet_overlap']['poses_checked']} poses of one cycle.")
+        add("")
+        fast = both["faster"]
+        if fast == "comb":
+            add(f"In this simulation the comb feet walk faster: {both['comb']['speed_mm_s']} mm/s against {both['flat']['speed_mm_s']} mm/s.")
+        elif fast == "flat":
+            add(f"In this simulation the comb feet do not walk faster: {both['comb']['speed_mm_s']} mm/s against {both['flat']['speed_mm_s']} mm/s on the feet as generated.")
+        else:
+            add("In this simulation neither set of feet gives a gait that truly steps without the meshes overlapping.")
+        strides = [both[option]["gait"]["step_amplitude_deg"] for option in ("flat", "comb")]
+        if max(strides) < 2.0:
+            add(f"Both gaits have a stride of {strides[0]} and {strides[1]} degrees at the hips, the small end of the 1 to 14 searched: "
+                "on either set of feet the model lifts its feet in turn and creeps forward.")
+        add("One search on one model for each: a difference of a few mm/s is within what another seed would move.")
+        add("")
     add("## Signals and power")
     add("")
     L.extend(_table(["joint", "servo", "driven by", "output", "UNO Q pin"],
@@ -271,6 +359,10 @@ def markdown() -> str:
             continue
         name = part["file"].replace("left_", "left_ and right_") if part["file"].startswith("left_") else part["file"]
         rows.append([f"`{name}`", " x ".join(f"{v:.0f}" for v in part["size_mm"]), part["mass_g"], part["orientation"], part["supports"]])
+    if combfeet.have():
+        for part in combfeet.record()["parts"]:
+            rows.append([f"`{part['file']}` (in place of `{part['replaces']}`)", " x ".join(f"{v:.0f}" for v in part["size_mm"]), part["mass_g"],
+                         part["orientation"], part["supports"]])
     L.extend(_table(["file in `stl/microduck-look/`", "size as printed (mm)", "mass (g)", "orientation", "supports"], rows))
     add("")
     tri = rep["triangles"]
@@ -314,9 +406,9 @@ def markdown() -> str:
     add("")
     add("## Files")
     add("")
-    add("- `stl/microduck-look/`: the parts, `parameters.json`, `LICENSE`, the pictures.")
-    add("- `config/microduck-look/build.json`: servos, signal map, supply, parts, sources. `config/microduck-look/gait.json`: the gait found.")
-    add("- `robot/microduck-look/`: `joints.json`, `microduck_look.xml` (MJCF), `microduck_look.urdf`.")
+    add("- `stl/microduck-look/`: the parts, the comb feet with `comb_feet.json`, `parameters.json`, `LICENSE`, the pictures.")
+    add("- `config/microduck-look/build.json`: servos, signal map, supply, parts, sources. `config/microduck-look/gait.json` and `gait_comb.json`: the gaits found.")
+    add("- `robot/microduck-look/`: `joints.json`, `microduck_look.xml` (MJCF), `microduck_look.urdf`, `microduck_look_comb.xml` (MJCF on the comb feet).")
     add("- `reports/microduck-look/`: `assembly.json`, `sim.json`, `summary.json` (the entry the configurator reads).")
     add("- `microduck/look/`: model, assembly test, description, simulation, this page. `scripts/run_look.py` runs them.")
     add("")

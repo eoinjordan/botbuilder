@@ -52,3 +52,13 @@ What is not covered
   build.py, the script that generates the parts, is MIT licensed
   (SPDX-License-Identifier: MIT). The source meshes are not in this
   directory.
+
+Comb feet
+
+  left_foot_comb.stl and right_foot_comb.stl are the two feet above with
+  part of the web cut away and fingers added that cross the centre line
+  between the fingers of the other foot. They are made from left_foot.stl
+  and right_foot.stl by microduck/look/combfeet.py (MIT); their dimensions
+  are in comb_feet.json. They are adapted from the same model, the Microduck
+  by Pollen Robotics, and carry the same licence and credit as the other
+  files in this directory.

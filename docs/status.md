@@ -156,6 +156,21 @@ assembly test and a simulation; nothing printed.
   (docs/motion.md) was not applied to it.
 - The gait is open loop and was searched on three variations of the model
   with a small budget. Whether it steps on the real floor is not known.
+- The comb feet are the two feet with fingers added by
+  `microduck/look/combfeet.py`: 4 mm thick, 10 mm wide, reaching 32 mm past
+  the centre line, one rib each. Their stiffness and strength under the
+  robot's weight were not calculated; the simulation takes them as rigid. Not
+  printed.
+- Walking speed on each set of feet (`reports/microduck-look/summary.json`,
+  `walking_speed_by_feet`) is one seeded search and one 30 s run for each, in
+  the same simple simulation. The stride the search settled on is at the
+  small end of its range on both. In the simulation the two feet do not
+  collide with each other; for the comb feet the search checks the feet's
+  exact meshes at the commanded poses of one gait cycle instead, which is not
+  the same as the poses the model reaches.
+- With comb feet and both soles down, one hip turned or rolled alone brings
+  the fingers together after a few degrees. No rule in any controller stops
+  that; the joint table holds the limits of the plain feet.
 - Firmware for fifteen joints, for two boards as one controller and for the
   I2C driver: not written. The channel map in
   `config/microduck-look/build.json` is a proposal.

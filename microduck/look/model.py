@@ -26,7 +26,8 @@ ROOT = Path(__file__).resolve().parents[2]
 FOLDER = Path(os.environ.get("MICRODUCK_LOOK_DIR", ROOT / "stl" / "microduck-look"))
 COLORS = {"shell": (238, 234, 222), "orange": (240, 150, 45), "frame": (70, 72, 78), "servo": (38, 40, 46),
           "horn": (200, 202, 206), "board": (40, 120, 110), "camera": (30, 90, 160)}
-ORANGE_PARTS = ("left_foot", "right_foot", "beak_jaw", "beak_top")
+ORANGE_PARTS = ("left_foot", "right_foot", "left_foot_comb", "right_foot_comb", "beak_jaw", "beak_top")
+FEET = ("web", "comb")       # the feet as the part generator wrote them; the comb feet of combfeet.py
 LEG = ("hip_yaw", "hip_roll", "hip_pitch", "knee", "ankle")
 HEAD = ("neck_pitch", "head_pitch", "head_yaw", "head_roll", "beak")
 JOINTS = [f"left_{j}" for j in LEG] + [f"right_{j}" for j in LEG] + list(HEAD)
@@ -35,6 +36,19 @@ JOINTS = [f"left_{j}" for j in LEG] + [f"right_{j}" for j in LEG] + list(HEAD)
 def parameters(folder: Path | None = None) -> dict:
     with open((folder or FOLDER) / "parameters.json", encoding="utf-8") as handle:
         return json.load(handle)
+
+
+def part_list(folder: Path | None = None, feet: str = "web") -> list:
+    """The printed parts of parameters.json, with the comb feet in place of the feet when asked for."""
+    folder = folder or FOLDER
+    parts = parameters(folder)["parts"]
+    if feet == "comb":
+        with open(folder / "comb_feet.json", encoding="utf-8") as handle:
+            swap = {part["replaces"]: part for part in json.load(handle)["parts"]}
+        parts = [swap.get(part["file"], part) for part in parts]
+    elif feet != "web":
+        raise ValueError(f"feet: {feet}")
+    return parts
 
 
 def have_parts(folder: Path | None = None) -> bool:
@@ -113,9 +127,10 @@ class Joint:
 
 
 class Robot:
-    def __init__(self, folder: Path | None = None, assignment: dict | None = None):
+    def __init__(self, folder: Path | None = None, assignment: dict | None = None, feet: str = "web"):
         self.folder = folder or FOLDER
-        self.p = parameters(self.folder)
+        self.feet = feet
+        self.p = dict(parameters(self.folder), parts=part_list(self.folder, feet))
         self.types = self.p["servo_types"]
         self.floor_z = self.p["floor_z_mm"]
         self.joints = {j["name"]: Joint(j["name"], j["parent"], j["child"], np.array(j["anchor_mm"], float), np.array(j["axis"], float),

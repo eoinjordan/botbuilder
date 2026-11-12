@@ -12,6 +12,11 @@ rolled the same way to unload one foot, the hips swung fore and aft with the
 ankles turned against them so the soles stay level, and the unloaded leg bent
 a little more to lift its foot. Its parameters are searched with
 microduck/cmaes.py and scored with microduck/gaitsearch.gait_score.
+
+Two sets of feet are studied: the feet as generated ("web") and the comb feet
+of microduck/look/combfeet.py ("comb"). Parts collide with the floor only, so
+on the comb feet the search also puts the two feet through their exact meshes
+for one gait cycle and refuses a gait in which they overlap.
 """
 from __future__ import annotations
 
@@ -24,11 +29,14 @@ import numpy as np
 
 from .. import cmaes, gaitsearch, motionsim
 from . import analyse
-from .model import JOINTS, ROOT, Robot, parameters
+from .model import FEET, JOINTS, ROOT, Robot, apply, parameters
 
 FOLDER = ROOT / "robot" / "microduck-look"
 REPORT = ROOT / "reports" / "microduck-look" / "sim.json"
 GAIT_FILE = ROOT / "config" / "microduck-look" / "gait.json"
+GAIT_FILES = {"web": GAIT_FILE, "comb": ROOT / "config" / "microduck-look" / "gait_comb.json"}
+MODEL_FILES = {"web": "microduck_look.xml", "comb": "microduck_look_comb.xml"}
+FEET_OVERLAP_MM3 = 1.0     # above this the two feet are taken to be in each other
 TICK_MS = 20
 MAX_SPEED_DEG_S = 120.0
 FALL_TILT_DEG = 45.0
@@ -51,9 +59,10 @@ def table() -> dict:
 
 
 class LookSim:
-    def __init__(self, joints: dict | None = None):
+    def __init__(self, joints: dict | None = None, feet: str = "web"):
         self.table = joints or table()
-        self.model = mujoco.MjModel.from_xml_path(str(FOLDER / "microduck_look.xml"))
+        self.feet_kind = feet
+        self.model = mujoco.MjModel.from_xml_path(str(FOLDER / MODEL_FILES[feet]))
         self.data = mujoco.MjData(self.model)
         name2id = lambda kind, name: mujoco.mj_name2id(self.model, kind, name)      # noqa: E731
         self.trunk = name2id(mujoco.mjtObj.mjOBJ_BODY, "trunk")
@@ -208,11 +217,35 @@ def mesh_overlaps(robot: Robot, rows, every: int = 5) -> dict:
     return {"poses_checked": len(picked), "poses_with_overlap": hits, "pairs": sorted(pairs)}
 
 
+def feet_overlap(robot: Robot, rows, every: int = 4) -> dict:
+    """The two feet alone through their exact meshes at every few rows: cheap enough to run for every
+    candidate of a search. With comb feet the fingers of one foot lie between those of the other."""
+    solids = {side: next(s.solid for s in robot.links[f"{side}_foot"].solids if s.kind == "shell") for side in ("left", "right")}
+    picked = rows[::every]
+    hits = 0
+    for _, q in picked:
+        poses = robot.poses(dict(zip(JOINTS, [float(v) for v in q])))
+        left, right = (apply(solids[side], poses[f"{side}_foot"]) for side in ("left", "right"))
+        hits += bool((left ^ right).volume() > FEET_OVERLAP_MM3)
+    return {"poses_checked": len(picked), "poses_with_overlap": hits}
+
+
+def one_cycle(joints: dict, params: dict) -> list:
+    """The commanded rows of the second gait cycle, the first at full amplitude."""
+    lead = params.get("lead_in_s", LEAD_IN_S)
+    rows = gait(joints, params, lead + 2.0 * params["period_s"])
+    return [row for row in rows if lead + params["period_s"] <= row[0] / 1000.0 < lead + 2.0 * params["period_s"]]
+
+
 def from_unit(x) -> dict:
     return {name: lo + min(max(float(v), 0.0), 1.0) * (hi - lo) for (name, lo, hi), v in zip(GAIT_SPACE, x)}
 
 
-def score(sim: LookSim, params: dict) -> tuple:
+def score(sim: LookSim, params: dict, guard: Robot | None = None) -> tuple:
+    if guard is not None:
+        met = feet_overlap(guard, one_cycle(sim.table, params))
+        if met["poses_with_overlap"]:
+            return -10.0 - met["poses_with_overlap"] / met["poses_checked"], []
     trajectory = gait(sim.table, params, SEARCH_SECONDS)
     scores, facts = [], []
     for friction, tilt in SCENARIOS:
@@ -223,8 +256,8 @@ def score(sim: LookSim, params: dict) -> tuple:
     return 0.6 * float(np.mean(scores)) + 0.4 * float(np.min(scores)), facts
 
 
-def search(sim: LookSim, seed: int, generations: int, popsize: int, budget_s: float, progress=None) -> dict:
-    result = cmaes.maximise(lambda xs: [score(sim, from_unit(x))[0] for x in xs], len(GAIT_SPACE), seed, None, 0.25,
+def search(sim: LookSim, seed: int, generations: int, popsize: int, budget_s: float, progress=None, guard: Robot | None = None) -> dict:
+    result = cmaes.maximise(lambda xs: [score(sim, from_unit(x), guard)[0] for x in xs], len(GAIT_SPACE), seed, None, 0.25,
                             popsize, generations, budget_s, progress)
     result["params"] = {k: round(v, 2) for k, v in from_unit(result["x"]).items()}
     result["runs_per_candidate"] = len(SCENARIOS)
@@ -261,10 +294,38 @@ def describe_run(sim: LookSim, log: dict, params: dict | None, seconds: float) -
     return out
 
 
-def study(seed: int = 1, generations: int = 12, popsize: int = 12, budget_s: float = 420.0, progress=print) -> dict:
-    sim = LookSim()
-    robot = Robot()
-    report = {"generated_by": "scripts/run_look.py", "model": "robot/microduck-look/microduck_look.xml",
+def study(seed: int = 1, generations: int = 12, popsize: int = 12, budget_s: float = 420.0, progress=print, feet=FEET) -> dict:
+    """Stand, one foot and the walking attempt for each set of feet named. The feet as generated fill the
+    report; the comb feet are its "comb_feet" entry. A set that is not named keeps what the report holds."""
+    report = json.loads(REPORT.read_text(encoding="utf-8")) if REPORT.is_file() else {}
+    with open(ROOT / "reports" / "microduck-look" / "assembly.json", encoding="utf-8") as handle:
+        assembly = json.load(handle)
+    if "web" in feet:
+        kept = report.get("comb_feet")
+        report = _study("web", assembly, seed, generations, popsize, budget_s)
+        if kept is not None:
+            report["comb_feet"] = kept
+    if "comb" in feet:
+        comb = _study("comb", assembly["comb_feet"], seed, generations, popsize, budget_s)
+        if "walk" in report:
+            # the gait found on the other feet, on these: the feet changed and nothing else
+            sim = LookSim(feet="comb")
+            params = report["walk"]["params"]
+            seconds = 30.0
+            other = describe_run(sim, run(sim, gait(sim.table, params, seconds)), params, seconds)
+            other["params"] = params
+            other["feet_overlap"] = feet_overlap(Robot(feet="comb"), one_cycle(sim.table, params))
+            comb["walk_with_the_gait_of_the_plain_feet"] = other
+        report["comb_feet"] = comb
+    REPORT.parent.mkdir(parents=True, exist_ok=True)
+    REPORT.write_text(json.dumps(report, indent=1) + "\n", encoding="utf-8", newline="\n")
+    return report
+
+
+def _study(feet: str, assembly: dict, seed: int, generations: int, popsize: int, budget_s: float) -> dict:
+    sim = LookSim(feet=feet)
+    robot = Robot(feet=feet)
+    report = {"generated_by": "scripts/run_look.py", "model": "robot/microduck-look/" + MODEL_FILES[feet],
               "mass_kg": round(float(sim.model.body_mass.sum()), 4),
               "command_path": {"tick_ms": TICK_MS, "max_speed_deg_s": MAX_SPEED_DEG_S, "delay_ticks": 1,
                                "floor_friction": float(sim.model.geom_friction[sim.floor, 0])}}
@@ -290,8 +351,6 @@ def study(seed: int = 1, generations: int = 12, popsize: int = 12, budget_s: flo
     sim.reset()
     report["head_motion_while_standing"] = describe_run(sim, run(sim, rows), None, 12.0)
     # one foot, slowly: the pose of the assembly test
-    with open(ROOT / "reports" / "microduck-look" / "assembly.json", encoding="utf-8") as handle:
-        assembly = json.load(handle)
     report["one_foot"] = one_foot_runs(sim, robot, assembly)
     # walking attempt
     started = time.time()
@@ -338,15 +397,19 @@ def one_foot_runs(sim: LookSim, robot: Robot, assembly: dict) -> dict:
 
 
 def _walk(sim: LookSim, robot: Robot, report: dict, seed: int, generations: int, popsize: int, budget_s: float, started: float) -> dict:
-    found = search(sim, seed, generations, popsize, budget_s, None)
+    guard = robot if sim.feet_kind == "comb" else None
+    found = search(sim, seed, generations, popsize, budget_s, None, guard)
     params = dict(found["params"], lead_in_s=LEAD_IN_S)
     seconds = 30.0
     sim.reset()
     log = run(sim, gait(sim.table, params, seconds))
     walk = describe_run(sim, log, params, seconds)
     walk["params"] = params
-    one_period = [row for row in gait(sim.table, params, seconds) if LEAD_IN_S + params["period_s"] <= row[0] / 1000.0 < LEAD_IN_S + 2.0 * params["period_s"]]
+    one_period = one_cycle(sim.table, params)
     walk["mesh_overlaps"] = mesh_overlaps(robot, one_period, 4)
+    if guard is not None:
+        walk["search_refuses_feet_that_overlap"] = True
+        walk["feet_overlap"] = feet_overlap(robot, one_period)
     walk["search"] = {"seed": seed, "generations": found["generations"], "popsize": popsize, "candidates": found["evaluations"],
                       "simulated_runs": found["evaluations"] * len(SCENARIOS), "seconds_each": SEARCH_SECONDS,
                       "wall_clock_s": round(time.time() - started, 1), "best_score": round(found["score"], 3), "history": found["history"]}
@@ -360,9 +423,10 @@ def _walk(sim: LookSim, robot: Robot, report: dict, seed: int, generations: int,
     sim.reset((0.0, 0.0), 0.6)
     walk["by_floor_friction"] = by_friction
     report["walk"] = walk
-    REPORT.parent.mkdir(parents=True, exist_ok=True)
-    REPORT.write_text(json.dumps(report, indent=1) + "\n", encoding="utf-8", newline="\n")
-    GAIT_FILE.parent.mkdir(parents=True, exist_ok=True)
-    GAIT_FILE.write_text(json.dumps({"_comment": "Open-loop gait parameters of the Microduck-look build, found by scripts/run_look.py --sim. Simulation only.",
-                                     **params}, indent=1) + "\n", encoding="utf-8", newline="\n")
+    target = GAIT_FILES[sim.feet_kind]
+    target.parent.mkdir(parents=True, exist_ok=True)
+    comment = "Open-loop gait parameters of the Microduck-look build, found by scripts/run_look.py --sim. Simulation only."
+    if sim.feet_kind == "comb":
+        comment = "Open-loop gait parameters of the Microduck-look build on its comb feet, found by scripts/run_look.py --sim. Simulation only."
+    target.write_text(json.dumps({"_comment": comment, **params}, indent=1) + "\n", encoding="utf-8", newline="\n")
     return report

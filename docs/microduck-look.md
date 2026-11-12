@@ -6,7 +6,7 @@ A second biped beside the plate biped: the shells of Pollen Robotics' Microduck,
 
 The three small servos must be position servos: the M5Stack Servo Kit 180 (9 g, 0 to 180 degrees). The Servo Kit 360 and the servos of a BALA-C turn continuously: a pulse sets their speed, not an angle, so they cannot hold a joint. Without the small servos the head yaw, head roll and beak joints stay as fitted and the other twelve joints work.
 
-Microduck-look parts: CC BY-NC-SA 4.0, adapted from Pollen Robotics' Microduck; not for commercial use. The credit and the list of changes are in `stl/microduck-look/LICENSE`. The code is MIT.
+Source model: Microduck by Pollen Robotics, https://github.com/pollen-robotics/microduck_rl. Microduck-look parts: CC BY-NC-SA 4.0, adapted from Pollen Robotics' Microduck; not for commercial use. That covers every file in `stl/microduck-look/`, the comb feet included. The credit and the list of changes are in `stl/microduck-look/LICENSE`. The code is MIT.
 
 All numbers on this page come from the digital assembly and the simulation. What was assumed is in [status.md](status.md).
 
@@ -91,7 +91,7 @@ The original's eye is a camera. Default (`EYE = 'camera'`): an Espressif ESP-EYE
 
 The feet are the original's, scaled, with a web of 4 mm plate added under the body, 14 mm apart at the stand pose. The original's soles are 73 mm apart at this scale and its hip roll range is 22 degrees: rolling both hips that far leaves the centre of mass short of the inner edge of a sole. It walks dynamically. Open-loop hobby servos cannot, so the soles are widened inward until the centre of mass can stand over one of them. The webs do not cross the centre line. The trade: seen from the front the feet are wider than the original's and nearly meet.
 
-The pose on one foot below is a static one: the trunk tilted over a flat sole. The legs have no ankle roll, as the original's have none, so the robot cannot move into that pose slowly: while both soles are down a roll of both hips leans the legs and sets the soles on their edges. The simulation shows it (see below). The weight has to be rocked from foot to foot, which is what the gait does. Soles whose fingers cross the centre line, as on the plate biped, would let a foot be lifted with no shift at all; they would not look like the original's feet.
+The pose on one foot below is a static one: the trunk tilted over a flat sole. The legs have no ankle roll, as the original's have none, so the robot cannot move into that pose slowly: while both soles are down a roll of both hips leans the legs and sets the soles on their edges. The simulation shows it (see below). The weight has to be rocked from foot to foot, which is what the gait does. Soles whose fingers cross the centre line, as on the plate biped, let a foot be lifted with no shift at all; they do not look like the original's feet. They are the other choice of feet: see Comb feet below.
 
 | pose | both hips rolled (deg) | centre of mass inside the support (mm) | lifted sole above the floor (mm) | overlapping parts |
 |---|---|---|---|---|
@@ -112,6 +112,20 @@ Gap between the two legs (mm) for the two hip roll angles, other joints at the s
 | 0.0 | 7.5 | 7.5 | 7.5 | -228.0 | -445.0 |
 | 10.0 | 7.5 | 7.5 | 7.5 | 7.5 | 4.0 |
 | 20.0 | 7.5 | 7.5 | 7.5 | 7.5 | 7.5 |
+
+### Comb feet
+
+`left_foot_comb.stl` and `right_foot_comb.stl`, made from the two feet by `microduck/look/combfeet.py`: part of each web is cut away and fingers 4 mm thick and 10 mm wide, each with a rib on top, reach 32 mm past the centre line. The left foot has a finger at the heel and one at the toe, the right foot one between them, with 6 mm fore and aft between a finger and the other foot and 4 mm at each tip. They bolt to the ankle horn as the feet do; nothing else changes. The robot is 5.2 g heavier on them.
+
+![on the comb feet](../stl/microduck-look/images/look-comb-feet.png)
+
+| pose on the comb feet | both hips rolled (deg) | centre of mass inside the support (mm) | lifted sole above the floor (mm) | overlapping parts |
+|---|---|---|---|---|
+| two feet, stand pose |  | 30.1 |  |  |
+| left foot, other lifted | 0.0 | 30.1 | 11.5 | 0 |
+| right foot, other lifted | 0.0 | 15.1 | 11.5 | 0 |
+
+Overlaps above 8 mm3 on the comb feet: 0 with every joint at zero, 0 at the stand pose. What they cost: with both feet level the fingers lie between each other, so one hip turned alone is free for -6.0 to 6.0 degrees of yaw (left hip; -12.0 to 90.0 on the plain feet) and 0.0 to 33.0 degrees of roll before the fingers meet. Both hips rolled the same way are free for at least 30.0 degrees. A foot has to be lifted before it is turned. The joint table in `robot/microduck-look/joints.json` holds the limits of the plain feet; a controller for the comb feet needs a rule for the fingers, as the plate biped's control core has for its comb soles.
 
 ## Assembly test
 
@@ -153,6 +167,24 @@ The search settled on a stride of 1.33 degrees at the hips, at the small end of 
 | beak | 0.014 | 0.157 | 0.09 |
 
 Supply current while walking, each servo taken to draw in proportion to its torque: board 1 with the driver 1.03 A mean, 1.77 A peak; board 2 0.92 A mean, 1.69 A peak. Each shield has a 4 A supply.
+
+### Walking on each set of feet
+
+`robot/microduck-look/microduck_look_comb.xml` is the same model on the comb feet (1.238 kg), each foot the slab under its sole and fingers. The same search was run on it: seed 1, 25 generations of 14, 1050 runs of 10.0 s, 160.8 s of wall clock. The simulation lets the two feet pass through each other, so on the comb feet the search also puts the feet of every candidate through their exact meshes for one gait cycle and refuses a gait in which they overlap. Parameters found: {'period_s': 1.23, 'roll_amplitude_deg': 0.0, 'step_amplitude_deg': 1.0, 'lift_deg': 9.29, 'step_phase_deg': 118.56, 'lead_in_s': 1.0} (`config/microduck-look/gait_comb.json`).
+
+| feet | truly steps | fell | speed (mm/s) | swings in 30 s | clearance (mm) | step (mm) | one foot loaded (percent) | heading change (deg) | largest tilt (deg) | poses of one cycle with overlapping meshes |
+|---|---|---|---|---|---|---|---|---|---|---|
+| as generated, with the web | yes | no | 3.3 | 32 of 31.7 | 3.89 | 4.41 | 9 | -2.0 | 11.32 | 0 |
+| comb | yes | no | 6.3 | 46 of 45.2 | 5.02 | 7.68 | 76 | 2.9 | 3.14 | 0 |
+
+On the comb feet it stands for 10 s with a tilt of at most 0.61 degrees.
+- Comb feet, the right leg bent slowly with the weight meant for the left foot: the weight comes on to that sole, largest tilt 1.6 degrees; meshes overlapping in 0 of 19 poses on the way.
+- Comb feet, the left leg bent slowly with the weight meant for the right foot: the weight comes on to that sole, largest tilt 1.6 degrees; meshes overlapping in 0 of 19 poses on the way.
+- The gait found for the plain feet, played on the comb feet: stays up, does not truly step, 2.7 mm/s, 43 swings of 31.7, the feet's meshes overlapping in 0 of 22 poses of one cycle.
+
+In this simulation the comb feet walk faster: 6.3 mm/s against 3.3 mm/s.
+Both gaits have a stride of 1.33 and 1.0 degrees at the hips, the small end of the 1 to 14 searched: on either set of feet the model lifts its feet in turn and creeps forward.
+One search on one model for each: a difference of a few mm/s is within what another seed would move.
 
 ## Signals and power
 
@@ -212,6 +244,8 @@ The firmware and the control core in this repository (`microduck/protocol.py` an
 | `fit_M5_180.stl` | 29 x 18 x 22 | 3.5 | floor on the bed | none |
 | `fit_horn_M5_180.stl` | 17 x 17 x 3 | 0.4 | flat | none |
 | `fit_eye_esp_eye.stl` | 28 x 18 x 8 | 1.3 | back on the bed | none |
+| `left_foot_comb.stl` (in place of `left_foot.stl`) | 66 x 128 x 44 | 50.6 | sole on the bed | supports under the cheek and inside the well |
+| `right_foot_comb.stl` (in place of `right_foot.stl`) | 66 x 128 x 44 | 46.8 | sole on the bed | supports under the cheek and inside the well |
 
 Print the fit pieces first. The shells keep the source's walls, scaled: about 2.5 mm on the body and head, 1.2 mm on the thigh covers. The files hold 36568 triangles; the source parts they come from hold 168878. They follow the scaled surface to within 0.45 mm (0.7 mm on the soles); texture finer than that is gone.
 
@@ -256,8 +290,8 @@ To order:
 
 ## Files
 
-- `stl/microduck-look/`: the parts, `parameters.json`, `LICENSE`, the pictures.
-- `config/microduck-look/build.json`: servos, signal map, supply, parts, sources. `config/microduck-look/gait.json`: the gait found.
-- `robot/microduck-look/`: `joints.json`, `microduck_look.xml` (MJCF), `microduck_look.urdf`.
+- `stl/microduck-look/`: the parts, the comb feet with `comb_feet.json`, `parameters.json`, `LICENSE`, the pictures.
+- `config/microduck-look/build.json`: servos, signal map, supply, parts, sources. `config/microduck-look/gait.json` and `gait_comb.json`: the gaits found.
+- `robot/microduck-look/`: `joints.json`, `microduck_look.xml` (MJCF), `microduck_look.urdf`, `microduck_look_comb.xml` (MJCF on the comb feet).
 - `reports/microduck-look/`: `assembly.json`, `sim.json`, `summary.json` (the entry the configurator reads).
 - `microduck/look/`: model, assembly test, description, simulation, this page. `scripts/run_look.py` runs them.

@@ -1,0 +1,9 @@
+{
+ "_comment": "Open-loop gait parameters of the Microduck-look build on its comb feet, found by scripts/run_look.py --sim. Simulation only.",
+ "period_s": 1.23,
+ "roll_amplitude_deg": 0.0,
+ "step_amplitude_deg": 1.0,
+ "lift_deg": 9.29,
+ "step_phase_deg": 118.56,
+ "lead_in_s": 1.0
+}
