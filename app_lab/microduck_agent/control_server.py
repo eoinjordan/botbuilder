@@ -36,7 +36,7 @@ from microduck import motions, player, webcontrol  # noqa: E402
 
 SITE = ROOT / "site"
 PAGES = {"/": "control.html", "/control.html": "control.html", "/control.js": "control.js",
-         "/flash.html": "flash.html", "/flash.js": "flash.js", "/style.css": "style.css"}
+         "/flash.html": "flash.html", "/flash.js": "flash.js", "/style.css": "style.css", "/tour.js": "tour.js"}
 TYPES = {".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8",
          ".json": "application/json", ".csv": "text/csv; charset=utf-8", ".woff2": "font/woff2", ".txt": "text/plain; charset=utf-8"}
 

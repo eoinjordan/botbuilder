@@ -1,0 +1,225 @@
+{
+ "generated_by": "python -m microduck.componentpics",
+ "pictures": {
+  "lipo": {
+   "file": "docs/components/lipo.png",
+   "bytes": 3231,
+   "sha256": "f9bb6870eafb2de1303988d4583b37c6099b102e0c648a6added020ebff33cdf",
+   "inputs_sha256": "e4fbdbd7ac6fe639a45a8d7f00fb30448653aba0b1c38add3beef8f7fda8a06d",
+   "dimensions_from": "config/hardware.json battery"
+  },
+  "pca9685": {
+   "file": "docs/components/pca9685.png",
+   "bytes": 3672,
+   "sha256": "bf970d963964960b20a5771a62d7a19879d02bd9ab8ff75befc9c942a1d1a170",
+   "inputs_sha256": "96d8419a14b398d84cb1e9ee5893eb827e6a1b9a985303f0f08f51809f46bcf6",
+   "dimensions_from": "config/hardware.json controllers.pi driver_board_mm"
+  },
+  "unoq": {
+   "file": "docs/components/unoq.png",
+   "bytes": 3666,
+   "sha256": "897b2be133f6402da00a0252eecea27408c32a3fdbe504abeb8b9ae95aa934e9",
+   "inputs_sha256": "1d144d2aef20c224a1a3bd7f731727b755302b489d46397d51289e5ae1430858",
+   "dimensions_from": "config/hardware.json board"
+  },
+  "pi_zero_2w": {
+   "file": "docs/components/pi_zero_2w.png",
+   "bytes": 3908,
+   "sha256": "1d8fbe341cf326cbe944ef8a10bad5d5e4fe7257a7c396aeaa85e8a1e16ade92",
+   "inputs_sha256": "6de2b03d9a4fb56aca2e6458e7a9f5e85da3fdd420fa6e5b19d31a554502d31f",
+   "dimensions_from": "config/hardware.json controllers.pi_zero_2w"
+  },
+  "pi_full": {
+   "file": "docs/components/pi_full.png",
+   "bytes": 4312,
+   "sha256": "5262a9c335652b0c42036cde868d55b84ae612ded042163e5413d256844f537f",
+   "inputs_sha256": "ac05c8937aeff93da22dec7bf91190ec6f6ad3b309542a4bcd5192f89e0d2d0f",
+   "dimensions_from": "config/hardware.json controllers.pi"
+  },
+  "buildhat": {
+   "file": "docs/components/buildhat.png",
+   "bytes": 3989,
+   "sha256": "ea6f4580c9e755f20505c4d8278cc6bfff8af28dcbd9718b1dcaf6664c54e406",
+   "inputs_sha256": "696e32272140def648b7312e273b95cb7ac3287c02ea18c0ec86f89a00912098",
+   "dimensions_from": "walkers/config/components.json build_hat"
+  },
+  "hub51515": {
+   "file": "docs/components/hub51515.png",
+   "bytes": 3741,
+   "sha256": "6cd23364b19bb90dc6427fbf0e9a33c48b52e9ce4600ecf45d474e93f8a027f3",
+   "inputs_sha256": "979ab7a2a2311293aa4b1a67648aa1681beefb397295b5d9885595715702965c",
+   "dimensions_from": "walkers/config/components.json hub51515"
+  },
+  "m5core": {
+   "file": "docs/components/m5core.png",
+   "bytes": 4230,
+   "sha256": "84aadbfbb5e015c79af49464bec34d2850ffe899384d225caf9f8bc9bf987601",
+   "inputs_sha256": "98f3d1b8d6addf3b12398d8f00e02a8530148b6b13414afe83a4d48f679e6278",
+   "dimensions_from": "config/bases.json m5_basex_ev3 outline_mm"
+  },
+  "braccio_shield": {
+   "file": "docs/components/braccio_shield.png",
+   "bytes": 3893,
+   "sha256": "6ea46f167a530d077fd5c1250e79e6933f0fcb5784530d4f9ec4927fc3b18ed4",
+   "inputs_sha256": "d5a2a30cdfc5cbb2da861527e20992f73894449c0b3dcd844ec3fa85e175df49",
+   "dimensions_from": "config/hardware.json shield"
+  },
+  "sr431": {
+   "file": "docs/components/sr431.png",
+   "bytes": 3251,
+   "sha256": "29f12444203dcb3ff3859a6c5e3cd9ca92983dbaf74555c5cc0febf74cdbc5d1",
+   "inputs_sha256": "e7ac85dd099cc0b8df5c1a6f57b202796b3dd593e797e921804325ef3fe2552c",
+   "dimensions_from": "config/hardware.json servos.SR431"
+  },
+  "sr311": {
+   "file": "docs/components/sr311.png",
+   "bytes": 3505,
+   "sha256": "8a4f0561529047f38a271c88f5556f8b9561aded164a1f036b10d48c481b6877",
+   "inputs_sha256": "cd09897eda87d0e3659376fa75d68513833849dcfb4982242e26d944f846dc57",
+   "dimensions_from": "config/hardware.json servos.SR311"
+  },
+  "angular_motor": {
+   "file": "docs/components/angular_motor.png",
+   "bytes": 3115,
+   "sha256": "0400d75077245c776b1cce687cb7d58424652aa305e3544ac7fc11750e0f82f7",
+   "inputs_sha256": "1bbcfff771458ed56cd3076cb212bbff06f4399fe81a34b8382a21aca197cd49",
+   "dimensions_from": "walkers/config/components.json angular_motor"
+  },
+  "m5_360": {
+   "file": "docs/components/m5_360.png",
+   "bytes": 3375,
+   "sha256": "ec43a64642ab701901f818c574691a8f26aea656ef03bba1db1036ae7f832d47",
+   "inputs_sha256": "6a468d3e818056022ca1c28a1422e04f7bbbeb76eecdc568f1652a480d314e09",
+   "dimensions_from": "config/hardware.json head_servo"
+  },
+  "tt_wheel": {
+   "file": "docs/components/tt_wheel.png",
+   "bytes": 4426,
+   "sha256": "b9c0bf68b4f185dd866da9873777c85f6948c392a60217c5004356f5e674d8ab",
+   "inputs_sha256": "91ce425f2da4bccffbb8ae14d1c93e2c0b1381e9a510f126319c76291227a035",
+   "dimensions_from": "walkers/config/wheeled.json wheels.tt_65"
+  },
+  "tt_motor": {
+   "file": "docs/components/tt_motor.png",
+   "bytes": 3637,
+   "sha256": "82890d9da78afeb147e2dc3888d65d944248330eaa54a0e21506d728b25c59fe",
+   "inputs_sha256": "ee537afd72a2abb9bc23a2c0d12ee14bf844419591e48ca06d43b4ce388fe8f1",
+   "dimensions_from": "walkers/wheeled.py viewer, the TT motor box"
+  },
+  "pixy_pantilt": {
+   "file": "docs/components/pixy_pantilt.png",
+   "bytes": 3227,
+   "sha256": "754b11a41e5460b2f2361d7cc473e7502490f0072393edd350efeb238b5acc39",
+   "inputs_sha256": "1a1cf129d5f9397b036a404f81008ee995379472bf7ce1d97030297cddc0aa48",
+   "dimensions_from": "walkers/config/components.json pixy2_pan_tilt"
+  },
+  "pixy2": {
+   "file": "docs/components/pixy2.png",
+   "bytes": 3735,
+   "sha256": "3bc00f6ee0aadc67731b1d9aa048499fa45c44193cfee3d6a718a703b871880b",
+   "inputs_sha256": "406ba74684e9125d203b1d8472724584e9da89c5647a81ff33902b4994924c74",
+   "dimensions_from": "config/hardware.json pixy"
+  },
+  "esp_eye": {
+   "file": "docs/components/esp_eye.png",
+   "bytes": 2738,
+   "sha256": "cde7c0001a7848dc5d72c082d2cc20bac641eb32caf889ed7848b3d80b7da3ea",
+   "inputs_sha256": "92bad415ca7ecbe01719409dcf0fbad33f7f16ebc6d7858ff0ed2f4c518c82cf",
+   "dimensions_from": "config/hardware.json cameras.esp_eye"
+  },
+  "esp32_s3_eye": {
+   "file": "docs/components/esp32_s3_eye.png",
+   "bytes": 3914,
+   "sha256": "8aa54c94e9ce03b08937e9e819a1d9e0e9223222299459c518cb01ec1cfe5122",
+   "inputs_sha256": "2bbfea582b72fb5efff14d0a9d26478ec350f013ac5c7bb05164e25821ff6455",
+   "dimensions_from": "config/hardware.json cameras.esp32_s3_eye"
+  },
+  "xiao_sense": {
+   "file": "docs/components/xiao_sense.png",
+   "bytes": 4870,
+   "sha256": "8ea9d65cae8d3a7bbd42a8dfa26ef14c0fa2b78aa0bd49adda4a524702ecee83",
+   "inputs_sha256": "e761874e8ee30f8291f6733f332e08c55bbb07795d5ad29504f3a84840c21b8d",
+   "dimensions_from": "config/hardware.json round_display xiao_sense_stack_mm"
+  },
+  "round_display": {
+   "file": "docs/components/round_display.png",
+   "bytes": 5967,
+   "sha256": "b38a41cd8f5e0cc5ae295dad1ac4f241674e3c934b32cfe006206747c4759b3b",
+   "inputs_sha256": "138109f0300dc44fc95ae5e3081632e5544198d86e704b661f5959b0740c6ac3",
+   "dimensions_from": "config/hardware.json round_display"
+  },
+  "lego_wheel": {
+   "file": "docs/components/lego_wheel.png",
+   "bytes": 4517,
+   "sha256": "20fe3fd061af364fd7470de2d2b33ea4796c511d772aa148b755d2f51c5ef67b",
+   "inputs_sha256": "f877cd28fab1453abf6dacc05ac1b42c75d2e3c6d6c35de2cfebb72037cf94d1",
+   "dimensions_from": "walkers/config/wheeled.json wheels.lego_56"
+  },
+  "o_ring": {
+   "file": "docs/components/o_ring.png",
+   "bytes": 5907,
+   "sha256": "6c06131a85c5cf5ff98d20965f618a294679d6948e7f1bd98e7fa476c7974389",
+   "inputs_sha256": "d2061598984667d55a228d62f654fe4ce67fdd6ce3e66007e8f086830ddd5993",
+   "dimensions_from": "walkers/config/wheeled.json o_rings"
+  },
+  "ball": {
+   "file": "docs/components/ball.png",
+   "bytes": 8370,
+   "sha256": "e5bdda9adc4354d59b5fde7550f57353eefff2ccc7ceaa9bf0ba5d1339da02d6",
+   "inputs_sha256": "dce48a405db3c35f98eb1eb232df6a41f33d4eefa1ff4972caa8905aa24106ca",
+   "dimensions_from": "walkers/config/wheeled.json supports.ball"
+  },
+  "technic_beam": {
+   "file": "docs/components/technic_beam.png",
+   "bytes": 3778,
+   "sha256": "642b493300f71c9a10f965c6e957c947219fa33193feb16ac535c201f3098810",
+   "inputs_sha256": "ed1b8c67a95884b8f698af3dfe2b71f4392977c7f0a7d190dd68214bc1e265d0",
+   "dimensions_from": "walkers/config/components.json technic"
+  },
+  "technic_bush": {
+   "file": "docs/components/technic_bush.png",
+   "bytes": 4657,
+   "sha256": "2bf6a20685cbdd32d9c3302a72766553be81e27b0ee34a8ed56e10d2cc644294",
+   "inputs_sha256": "da94d264361e77217b2524bfb46c7cc3cc0784fe4744359abcca7c2757f535c9",
+   "dimensions_from": "walkers/config/components.json technic bush_length_mm"
+  },
+  "technic_axle": {
+   "file": "docs/components/technic_axle.png",
+   "bytes": 3126,
+   "sha256": "3601ba28872570a62850fd1303c4f4ec23831eed5c861d10c82c204a270aa2d0",
+   "inputs_sha256": "e8041142c88147aff7dcee83e926bf564d689faf1771d9bac31101cce55e2823",
+   "dimensions_from": "walkers/config/components.json technic"
+  },
+  "technic_pin": {
+   "file": "docs/components/technic_pin.png",
+   "bytes": 4688,
+   "sha256": "a556389ff2eba99935b5857d04c165d2f976904da6c4caee45929cab3e78242e",
+   "inputs_sha256": "03d569daa242d7b9c9047b6ff4b81ab702cfcd0e62aaf0bc2295a53e0107da4f",
+   "dimensions_from": "walkers/config/components.json technic"
+  },
+  "camera_none": {
+   "file": "docs/components/camera_none.png",
+   "bytes": 807,
+   "sha256": "05a7614dd606ccb4508ec20201dfadcd6ad552e6a3c0e69c9862f1c600736f0f",
+   "inputs_sha256": "f9ca06baa81b009ea71e16906809c00e3a8b8952cbe8d06e7b3b605ad9e9b9f8"
+  },
+  "lego_off": {
+   "file": "docs/components/lego_off.png",
+   "bytes": 775,
+   "sha256": "5b79f2b0dafe450e333bd43f4559f34f836abf8c80b01abbdf3dcef026afa514",
+   "inputs_sha256": "33f85c3cf2fb8842d40b9900171d04a20da510f7e3d9e9eb5afab1016aef2dda"
+  },
+  "wheels_back": {
+   "file": "docs/components/wheels_back.png",
+   "bytes": 8030,
+   "sha256": "5226f6f309917115880b4730c92e6e5e353a8b1031227e428d585bb99f483f76",
+   "inputs_sha256": "7b8480320652afbfee901926295fa33f3d4f6db05768e98088d8adf59215d603"
+  },
+  "wheels_front": {
+   "file": "docs/components/wheels_front.png",
+   "bytes": 7809,
+   "sha256": "5c71cdf782073583636e740829c3d149501a4e5eeb6353d3046a816211a2afd8",
+   "inputs_sha256": "f2c3f74c478877da9ce527b6fbf3f797dc48a2d1edad2cef2ff56215627fe753"
+  }
+ }
+}

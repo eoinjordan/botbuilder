@@ -28,6 +28,8 @@ EXTRA_SUMMARIES = ("reports/microduck-look/summary.json",)
 MANIFEST_PATHS = ("stl/manifest.json", "stl/MANIFEST.json")
 PROGRAM_PATHS = ("programs/index.json",)
 VALIDATED_PATH = "config/validated.json"
+BUILDS_PATH = "config/builds.json"
+COMPONENTS_PATH = "config/component_images.json"
 SEARCH_DEPTH = 6
 
 
@@ -446,9 +448,144 @@ def validated(root: Path = ROOT) -> list[dict]:
     return out
 
 
+def summary_entry(sel: dict, root: Path = ROOT):
+    """The entry of the variants summary for a selection, as written there,
+    or None. Wheeled entries are also matched on the wheel choices."""
+    for name in SUMMARY_PATHS:
+        path = root / name
+        if not path.is_file():
+            continue
+        content = _load(path)
+        for entry in content.get("entries", []) if isinstance(content, dict) else []:
+            keys = ["controller", "locomotion", "drive"] + [key for key in ("wheels", "support", "wheel") if key in entry]
+            if all(entry.get(key) == sel[key] for key in keys):
+                return entry
+    return None
+
+
+def build_figures(data: dict, sel: dict, root: Path = ROOT) -> dict:
+    """Mass and speed of a finished build for its card, from the reports:
+    the variants summary for a walker or a wheeled build, the assembly and
+    simulation reports for the biped. Empty when the reports have none."""
+    row = _find_row(data["compat"], sel)
+    out = {}
+    if row is not None and row["status"] == "summary":
+        entry = summary_entry(sel, root) or {}
+        if isinstance(entry.get("mass_g"), (int, float)):
+            out["mass_g"] = entry["mass_g"]
+        if isinstance(entry.get("speed_mm_s"), (int, float)):
+            out["speed_mm_s"] = entry["speed_mm_s"]
+        elif isinstance(entry.get("speed_m_s"), (int, float)):
+            out["speed_mm_s"] = round(entry["speed_m_s"] * 1000.0, 1)
+    elif row is not None and row["status"] == "report":
+        assembly = _load(root / "reports" / "assembly.json")
+        sim = _load(root / "reports" / "sim.json")
+        out["mass_g"] = assembly["variants"][assembly["selected"]]["mass"]["total_g"]
+        # The walk of the motion study, the figure the simulation verdict quotes; without that
+        # report, the same gait in the plain simulation.
+        speed = (sim.get("gait_default") or {}).get("speed_mm_s")
+        study = root / "reports" / "motion.json"
+        if study.is_file():
+            walks = _load(study).get("presets", {})
+            feet = assembly.get("feet_preset") or data["compat"]["defaults"]["feet"]
+            speed = walks.get(feet, {}).get("walk", {}).get("nominal", {}).get("speed_mm_s", speed)
+        if isinstance(speed, (int, float)):
+            out["speed_mm_s"] = speed
+    return out
+
+
+def builds(data: dict, root: Path = ROOT) -> dict:
+    """The finished builds offered as cards at the top of the landing page,
+    from config/builds.json, in their order, each with its figures."""
+    path = root / BUILDS_PATH
+    if not path.is_file():
+        return {"default": "", "list": []}
+    content = _load(path)
+    listed = sorted(content.get("builds", []), key=lambda item: item.get("order", 0))
+    out = []
+    for item in listed:
+        entry = {"id": item["id"], "name": item["name"], "description": item["description"],
+                 "selection": dict(item["selection"]), "picture": item["picture"]}
+        entry["figures"] = build_figures(data, build_selection(data, entry), root)
+        out.append(entry)
+    default = content.get("default")
+    ids = [item["id"] for item in out]
+    return {"default": default if default in ids else (ids[0] if ids else ""), "list": out}
+
+
+def credit_line(entry: dict) -> str:
+    """One plain line of credit for a component picture, as the PDF and the
+    credits page give it. A picture this project renders needs none."""
+    if entry.get("kind") == "photo":
+        parts = [f"{entry['name']}: photograph by {entry.get('author', '')}", entry.get("licence", ""), entry.get("origin", "")]
+        if entry.get("source_url"):
+            parts.append(entry["source_url"])
+        if entry.get("changes"):
+            parts.append(entry["changes"])
+        return ", ".join(part for part in parts if part) + "."
+    if entry.get("kind") == "drawing":
+        return f"{entry['name']}: {entry.get('origin', 'drawing')}; not a photograph."
+    return ""
+
+
+def components(data: dict, root: Path = ROOT) -> dict:
+    """The pictures of the bought components and of every choice in the
+    configurator, from config/component_images.json: 'list' in the order
+    parts are matched, each with the address of its picture on the site,
+    and 'options', the component of each choice."""
+    path = root / COMPONENTS_PATH
+    if not path.is_file():
+        return {"list": [], "options": {}, "not_bought": []}
+    content = _load(path)
+    listing = data["manifest"]
+    pictures = {item["id"]: item["picture"] for item in data.get("builds", {}).get("list", [])}
+    out = []
+    for entry in content.get("components", []):
+        picture = None
+        if entry.get("file"):
+            picture = "./components/" + entry["file"]
+        elif entry.get("stl"):
+            picture = listing["info"].get(entry["stl"], {}).get("thumb")
+        elif entry.get("manifest"):
+            for item in listing["files"]:
+                if all(item.get(key) == value for key, value in entry["manifest"].items()):
+                    picture = listing["info"].get(item["file"], {}).get("thumb")
+                    break
+        elif entry.get("build") in pictures:
+            picture = "./" + pictures[entry["build"]]
+        credit = ""
+        if entry.get("kind") == "photo":
+            credit = f"Photo: {entry.get('author', '')}, {entry.get('licence', '')}"
+        elif entry.get("kind") == "drawing":
+            credit = "Drawing"
+        out.append({"id": entry["id"], "name": entry["name"], "kind": entry.get("kind", ""), "picture": picture,
+                    "credit": credit, "credit_line": credit_line(entry), "match": list(entry.get("match", []))})
+    return {"list": out, "options": content.get("options", {}), "not_bought": list(content.get("not_bought", []))}
+
+
+def component_for(data: dict, name: str):
+    """The component whose picture a part of a recipe takes: the first in
+    the list with one of its patterns in the part's name. None for a part
+    with no picture (a printed part named in the parts list)."""
+    low = name.lower()
+    if any(low.startswith(prefix) for prefix in data["components"]["not_bought"]):
+        return None
+    for entry in data["components"]["list"]:
+        if any(pattern in low for pattern in entry["match"]):
+            return entry
+    return None
+
+
 def bundle(root: Path = ROOT) -> dict:
     """Everything evaluate() needs, as one JSON-serialisable object. The site
     build writes this to site/data/recipe.json for site/build.js."""
+    data = _bundle(root)
+    data["builds"] = builds(data, root)
+    data["components"] = components(data, root)
+    return data
+
+
+def _bundle(root: Path) -> dict:
     compat = _load(root / "config" / "compat.json")
     # One switch: the default camera is config/assembly.json camera.preset.
     compat["defaults"].update(design_defaults(compat, root))
@@ -811,6 +948,14 @@ def search(data: dict, selection: dict, pinned: list) -> dict | None:
         return None
 
     return walk(start, SEARCH_DEPTH)
+
+
+def build_selection(data: dict, entry: dict) -> dict:
+    """The full selection of a finished build: the fields its entry names
+    are kept, the rest take the defaults and then compatible values."""
+    start = normalise(data["compat"], entry["selection"])
+    found = search(data, start, list(entry["selection"]))
+    return start if found is None else found
 
 
 def option_state(data: dict, selection: dict, dim_id: str, option_id: str) -> dict:

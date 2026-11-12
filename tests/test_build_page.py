@@ -53,8 +53,9 @@ def test_paths_are_relative_so_any_base_path_works():
 
 def test_no_external_script_style_or_tracker():
     html = read("index.html")
-    assert re.findall(r'<script[^>]*src="([^"]+)"', html) == ["./nav.js", "./build.js"]
-    assert re.findall(r'<link[^>]*href="([^"]+)"', html) == ["./style.css", "./recipe.css"]
+    assert re.findall(r'<script[^>]*src="([^"]+)"', html) == ["./nav.js", "./build.js", "./tour.js"]
+    assert re.findall(r'<link[^>]*href="([^"]+)"', html) == [
+        "./assets/favicon.svg", "./assets/favicon-32.png", "./assets/apple-touch-icon.png", "./style.css", "./recipe.css"]
     assert "import " not in read("build.js").replace("import { ", "")
     text = "".join(read(name).lower() for name in PAGE_FILES)
     for needle in ("google-analytics", "googletagmanager", "gtag(", "plausible", "matomo", "facebook", "document.cookie",
@@ -69,7 +70,9 @@ def test_page_shows_the_tag_first_and_the_trademarks():
     assert "LEGO, Mindstorms and Technic are trademarks of the LEGO Group" in html
     assert "does not sponsor" in html
     assert "Raspberry Pi is a trademark of Raspberry Pi Ltd" in html
-    assert "<img" not in html and "<svg" not in html  # no logos
+    # No logo but the site's own mark in the masthead.
+    assert re.findall(r"<img[^>]*>", html) == ['<img class="brand-icon" src="./assets/logo-mark-light.svg" alt="" width="44" height="44">']
+    assert "<svg" not in html
     script = read("build.js")
     assert "recipe.not_built" not in script and "recipe.status_label" in script and "recipe.trademarks" in script
     # The verdict is rendered before anything else in the recipe.
@@ -111,11 +114,28 @@ def test_keyboard_print_and_phone_width():
     assert "overflow-wrap: anywhere" in css and "max-width: 100%" in css
 
 
-def test_the_configurator_is_the_landing_page():
+def test_the_finished_builds_and_the_configurator_are_the_landing_page():
     html = read("index.html")
-    assert "<h1>Build your own bot from the parts you have</h1>" in html
+    assert "<title>Botbuilder</title>" in html and '<h1 id="builds-heading">Botbuilder</h1>' in html and html.count("<h1") == 1
     assert 'id="picker"' in html and 'id="recipe"' in html
     assert not (SITE / "build.html").exists()
+    # The card row is the first thing under the masthead; the configurator is a sidebar beside the recipe.
+    main = html.split('<main id="content">')[1]
+    assert main.index('id="builds"') < main.index('id="customise"') < main.index('id="picker"') < main.index('id="recipe"')
+    assert main.lstrip().startswith('<section class="builds')
+    assert 'id="builds" class="build-cards" role="radiogroup" aria-labelledby="builds-heading"' in html
+    assert '<details id="customise"' in html and ">Customise</span></summary>" in html
+    assert '<form id="picker" class="picker" autocomplete="off" aria-labelledby="pick-heading">' in html
+    assert 'id="custom-note"' in html and ">Custom</span>" in html and 'id="custom-note" class="custom-note" role="status" hidden' in html
+    script = read("build.js")
+    # Cards are radios with arrow-key movement; a selection that is no finished build leaves none checked.
+    assert 'button.setAttribute("role", "radio")' in script and "ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1" in script
+    assert 'card.button.setAttribute("aria-checked", card === current ? "true" : "false")' in script
+    assert 'document.getElementById("custom-note").hidden = current !== null;' in script
+    # Open on a wide screen, behind its control on a phone.
+    assert 'window.matchMedia("(min-width: 861px)")' in script and "panel.open = wide.matches ||" in script
+    css = read("recipe.css")
+    assert ".build-cards { display: flex; overflow-x: auto;" in css and '.build-card[aria-checked="true"]' in css
 
 
 def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):
@@ -126,7 +146,7 @@ def test_navigation_is_the_same_on_every_page_and_has_no_dead_link(built):
         html = read(name)
         nav = re.search(r'<nav id="site-nav" aria-label="Site">(.*?)</nav>', html, re.S).group(1)
         blocks.append(nav.replace(' aria-current="page"', ""))
-        assert html.count('aria-current="page"') == (0 if name == "admin.html" else 1), name   # Admin is a footer link
+        assert html.count('aria-current="page"') == (0 if name in ("admin.html", "credits.html", "about.html", "404.html") else 1), name   # footer links
         assert '<script type="module" src="./nav.js"></script>' in html, name
         targets = re.findall(r'<a href="\./([a-z]*\.html)"([^>]*)>', nav)
         # Tabs by robot type, then the tools, then the arm project as a marked link out, then the source.

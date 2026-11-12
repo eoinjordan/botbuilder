@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 64" role="img" aria-labelledby="logo-title">
+  <title id="logo-title">Botbuilder: a robot head in a gear with a screwdriver</title>
+  <path d="M34.4 17.64 L36.52 12.4 L40.64 13.51 L39.85 19.1 L44.01 21.51 L48.46 18.02 L51.48 21.04 L47.99 25.49 L50.4 29.65 L55.99 28.86 L57.1 32.98 L51.86 35.1 L51.86 39.9 L57.1 42.02 L55.99 46.14 L50.4 45.35 L47.99 49.51 L51.48 53.96 L48.46 56.98 L44.01 53.49 L39.85 55.9 L40.64 61.49 L36.52 62.6 L34.4 57.36 L29.6 57.36 L27.48 62.6 L23.36 61.49 L24.15 55.9 L19.99 53.49 L15.54 56.98 L12.52 53.96 L16.01 49.51 L13.6 45.35 L8.01 46.14 L6.9 42.02 L12.14 39.9 L12.14 35.1 L6.9 32.98 L8.01 28.86 L13.6 29.65 L16.01 25.49 L12.52 21.04 L15.54 18.02 L19.99 21.51 L24.15 19.1 L23.36 13.51 L27.48 12.4 L29.6 17.64 Z" fill="#087f60" stroke="#087f60" stroke-width="1" stroke-linejoin="round"/>
+  <rect x="30.5" y="12" width="3" height="12" rx="0" fill="#172c2c"/>
+  <rect x="29" y="10.5" width="6" height="3.6" rx="1.2" fill="#172c2c"/>
+  <rect x="26.8" y="0.8" width="10.4" height="10.6" rx="3.4" fill="#172c2c"/>
+  <rect x="13.5" y="24.5" width="37" height="26" rx="8" fill="#ffffff" stroke="#172c2c" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="24.5" cy="36" r="5" fill="#172c2c"/>
+  <circle cx="39.5" cy="36" r="5" fill="#172c2c"/>
+  <path d="M27 44.5 L37 44.5" fill="none" stroke="#172c2c" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M30.3 3.6 L30.3 8.2" fill="none" stroke="#ffffff" stroke-width="1.1" stroke-linecap="round"/>
+  <path d="M33.7 3.6 L33.7 8.2" fill="none" stroke="#ffffff" stroke-width="1.1" stroke-linecap="round"/>
+  <circle cx="9.6" cy="37.5" r="2.2" fill="#172c2c"/>
+  <circle cx="54.4" cy="37.5" r="2.2" fill="#172c2c"/>
+  <circle cx="26.2" cy="34.3" r="1.5" fill="#ffffff"/>
+  <circle cx="41.2" cy="34.3" r="1.5" fill="#ffffff"/>
+  <text x="76" y="43" font-family="'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="30" font-weight="600" fill="#172c2c">Bot<tspan font-weight="400" fill="#5f726c">builder</tspan></text>
+</svg>

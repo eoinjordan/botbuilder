@@ -1,0 +1,80 @@
+{
+ "_comment": "The finished builds shown as cards at the top of the landing page (site/index.html), in this order. 'selection' names only the fields that make the build; the rest follow the defaults (the biped's camera is config/assembly.json camera.preset). Each must resolve to a recipe tagged Simulated: tests/test_builds.py fails otherwise. 'picture' is drawn by python -m microduck.buildpics and recorded in reports/builds.json. The address ?build=<id> selects one.",
+ "default": "duck",
+ "builds": [
+  {
+   "id": "duck",
+   "order": 1,
+   "name": "Microduck biped",
+   "description": "A small walking duck: six servos on an Arduino UNO Q, a round display for eyes and wide comb feet.",
+   "selection": {
+    "controller": "unoq",
+    "locomotion": "biped",
+    "drive": "braccio_shield",
+    "face": "eyes_above",
+    "feet": "comb",
+    "head": "fixed"
+   },
+   "picture": "images/build-duck.png"
+  },
+  {
+   "id": "ev3-walker",
+   "order": 2,
+   "name": "EV3 crank walker",
+   "description": "A two-motor walker that carries the LEGO EV3 brick and sees with a Pixy2 camera.",
+   "selection": {
+    "controller": "ev3",
+    "locomotion": "crank",
+    "drive": "ev3_motors",
+    "camera": "pixy2",
+    "head": "fixed"
+   },
+   "picture": "images/build-ev3-walker.png"
+  },
+  {
+   "id": "hub-walker",
+   "order": 3,
+   "name": "51515 hub crank walker",
+   "description": "The same walker on the LEGO Robot Inventor 51515 hub, driven by its own two motors.",
+   "selection": {
+    "controller": "hub51515",
+    "locomotion": "crank",
+    "drive": "hub_motors",
+    "camera": "none",
+    "head": "fixed"
+   },
+   "picture": "images/build-hub-walker.png"
+  },
+  {
+   "id": "pi-walker",
+   "order": 4,
+   "name": "Pi Build HAT crank walker",
+   "description": "A light walker on a Raspberry Pi Zero 2 W with the Build HAT and a Pi camera.",
+   "selection": {
+    "controller": "pi",
+    "locomotion": "crank",
+    "drive": "buildhat_51515",
+    "camera": "picam2",
+    "head": "fixed"
+   },
+   "picture": "images/build-pi-walker.png"
+  },
+  {
+   "id": "pi-rover",
+   "order": 5,
+   "name": "Pi two-wheeled rover",
+   "description": "A quick two-wheeler on a Raspberry Pi Zero 2 W: TT motors at the back, a skid in front.",
+   "selection": {
+    "controller": "pi",
+    "locomotion": "wheeled",
+    "drive": "tt_hbridge",
+    "camera": "none",
+    "head": "fixed",
+    "wheels": "back",
+    "support": "skid",
+    "wheel": "printed_ring"
+   },
+   "picture": "images/build-pi-rover.png"
+  }
+ ]
+}

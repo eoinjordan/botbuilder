@@ -52,7 +52,13 @@ been built.
 - The camera boards: only the ESP32-CAM outline and mass and the ESP32-S3-EYE
   outline are the makers' figures. Lens, button, connector and pin positions,
   board thickness and the other masses are assumed or scaled from pictures.
-- The camera firmware on an ESP32-CAM: see [docs/camera.md](camera.md).
+- The default camera is the ESP-EYE, mounted connector up. That its picture
+  is upright with the connector down, so that VFLIP and HMIRROR are needed
+  as mounted, is read from the lettering on the board. The sketchbot sketch
+  has not been flashed for this robot, and how the board gets its 5 V on
+  the robot is not chosen. The plug and cable above the board are not in
+  the mass model.
+- There is no camera firmware for an ESP32-CAM: see [docs/camera.md](camera.md).
 - Every assumed dimension: servo ears, shaft position, horn size, board and
   shield mass, print density and infill.
 - Holding torque, backlash, tie slip, flex of the 4 mm plates.

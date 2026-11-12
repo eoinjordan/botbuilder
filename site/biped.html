@@ -6,20 +6,34 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#087f60">
   <meta name="description" content="A printed biped on six Braccio servos and an Arduino UNO Q: digital assembly test, MuJoCo emulation and the path to the real robot.">
+  <!-- shared:head -->
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Botbuilder">
+  <meta property="og:title" content="Biped: sim to real / Botbuilder">
+  <meta property="og:description" content="A printed biped on six Braccio servos and an Arduino UNO Q: digital assembly test, MuJoCo emulation and the path to the real robot.">
+  <meta property="og:image" content="https://eoinjordan.github.io/botbuilder/assets/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /shared:head -->
   <link rel="stylesheet" href="./style.css">
   <title>Biped: sim to real / Botbuilder</title>
   <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
 </head>
 <body>
+  <!-- shared:masthead -->
+  <a class="skip-link" href="#content">Skip to content</a>
   <header class="masthead">
-    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <a class="brand" href="./"><img class="brand-icon" src="./assets/logo-mark-light.svg" alt="" width="44" height="44"><span>Bot<b>builder</b></span></a>
     <nav id="site-nav" aria-label="Site">
       <a href="./">Build yours</a><a href="./biped.html" aria-current="page">Biped</a><a href="./wheeled.html">Two-wheeled</a><a href="./walkers.html">Walkers</a><a href="./flash.html">Flash</a><a href="./control.html">Control</a>
       <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
       <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
     </nav>
   </header>
-  <main>
+  <!-- /shared:masthead -->
+  <main id="content">
     <div class="title-row">
       <div><p class="eyebrow">ARDUINO UNO Q / TINKERKIT BRACCIO SERVOS</p><h1>A printed biped, from simulation to the bench</h1></div>
       <span class="release-tag">Bench prototype</span>
@@ -92,9 +106,9 @@
     <section id="motion">
       <div class="section-heading"><span class="step">04b</span><h2>Walk, turn, jump, sit</h2><a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/motion.md" rel="noopener noreferrer">Motion study</a></div>
       <p>The same robot in a fuller servo model (dead band, gear play, compliance, command delay, the 4 A supply), with the
-        gait's parameters found by a seeded search. On the comb soles it steps: 41.9 mm/s, a sole 3.86 mm clear of the
-        floor, peak torque 0.658 of the limit, upright in all 30 runs over floor friction 0.3 to 1.0 and mass 0.9 to 1.1 times.
-        With the flat soles first drawn the same search finds no gait that lifts a foot. The heading drifts about 1.31 deg/s
+        gait's parameters found by a seeded search. On the comb soles it steps: 44.4 mm/s, a sole 3.85 mm clear of the
+        floor, peak torque 0.647 of the limit, upright in all 30 runs over floor friction 0.3 to 1.0 and mass 0.9 to 1.1 times.
+        With the flat soles first drawn the same search finds no gait that lifts a foot. The heading drifts about 0.81 deg/s
         and a step difference between the legs does not steer it reliably, so the control page offers forward only.</p>
       <p>Sitting is a squat to the hip pitch limit. With the pulses stopped the robot sinks on to the servo travel stops and stays
         on its soles; enabled again it stands up. The jump is a hop of 0.06 s and stays locked: it runs four servos at
@@ -131,11 +145,23 @@
     </section>
   </main>
   <footer>
-    <p>Code under the MIT licence. The printable parts are flat plates whose outlines started from Microduck meshes; they are not in the repository;
-      see NOTICE. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
-      No analytics, no cookies; the checklist ticks stay in this browser. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./admin.html">Admin</a>.</p>
+    <p class="foot-note">The printable parts are flat plates whose outlines started from Microduck meshes; those meshes are not in the repository; see NOTICE. No analytics, no cookies; the checklist ticks stay in this browser.</p>
+    <!-- shared:footer -->
+    <nav class="foot-links" aria-label="About this site">
+      <a href="./?tour=1" data-tour>Take the tour</a>
+      <a href="./about.html">About</a>
+      <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>
+      <a href="./credits.html">Picture credits</a>
+      <a href="./admin.html">Admin</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+      <a href="https://github.com/eoinjordan/botbuilder/issues" rel="noopener noreferrer">Report a problem</a>
+    </nav>
+    <p class="foot-legal">Code and printable parts under the MIT licence; pictures as on the credits page. Fonts: Space Grotesk, SIL Open Font
+      License (<a href="./assets/licenses/space-grotesk.txt">text</a>). <span id="trademarks">LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. No affiliation with any of them.</span></p>
+    <!-- /shared:footer -->
   </footer>
   <script type="module" src="./nav.js"></script>
   <script type="module" src="./app.js"></script>
+  <script type="module" src="./tour.js"></script>
 </body>
 </html>

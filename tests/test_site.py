@@ -53,7 +53,7 @@ def test_three_is_pinned_and_is_the_only_external_script():
     html = (SITE / "biped.html").read_text(encoding="utf-8")
     assert "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js" in html
     scripts = re.findall(r"<script[^>]*src=\"([^\"]+)\"", html)
-    assert scripts == ["./nav.js", "./app.js"]
+    assert scripts == ["./nav.js", "./app.js", "./tour.js"]
     external = set(re.findall(r'https://[a-z0-9.-]+', html + (SITE / "app.js").read_text(encoding="utf-8")))
     assert external <= {"https://cdn.jsdelivr.net", "https://github.com", "https://eoinjordan.github.io"}
 

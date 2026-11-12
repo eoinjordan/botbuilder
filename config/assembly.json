@@ -7,7 +7,7 @@
   "board_x_offset_mm": 0.0,
   "face": "eyes_above",
   "feet": "comb",
-  "camera": {"preset": "esp32cam", "back_x_mm": 40.0, "base_z_mm": 32.0, "tilt_deg": 10.0},
+  "camera": {"preset": "esp_eye", "back_x_mm": 40.0, "base_z_mm": 32.0, "tilt_deg": 10.0},
   "sweep_step_deg": 2.0,
   "limit_margin_deg": 3.0,
   "interference_threshold_mm3": 0.5,

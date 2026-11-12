@@ -19,9 +19,14 @@
   letter-spacing: 0;
   color: #172c2c;
   background: #f7faf8;
+  /* The palette: the logo's green, a deeper green for the masthead, a pale green for fills,
+     one warm accent for highlights, and the ink of the logo's head. */
   --green: #087f60;
+  --green-deep: #065a45;
+  --green-soft: #e1f5eb;
+  --sun: #ffc857;
   --ink: #172c2c;
-  --muted: #687b75;
+  --muted: #5f726c;
   --line: #d6e3dc;
   --blue: #4453c7;
   --warn: #9a5a00;
@@ -36,33 +41,38 @@ button { cursor: pointer; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #76b4ee; outline-offset: 3px; }
 h1, h2, h3, p { margin: 0; }
 h1 { font-size: 36px; line-height: 1.15; font-weight: 600; }
-h2 { font-size: 20px; font-weight: 600; }
+h2 { font-size: 20px; font-weight: 600; color: var(--green-deep); }
 h3 { font-size: 17px; font-weight: 600; margin: 22px 0 10px; }
 p { margin-bottom: 12px; }
 img { max-width: 100%; height: auto; display: block; }
 
-.masthead { min-height: 82px; padding: 12px 5%; background: #fff; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-.brand { display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: 600; color: var(--ink); }
+/* The masthead: a band from the deep green to the logo's green, white text, the tabs as pills.
+   White on --green is 4.99 to 1 and on --green-deep 8.20 to 1; the current tab is --green-deep on white. */
+.skip-link { position: absolute; left: 8px; top: -60px; z-index: 1000; background: #fff; color: var(--green-deep); font-weight: 600; padding: 8px 14px; border-radius: 8px; border: 2px solid var(--green-deep); }
+.skip-link:focus { top: 8px; }
+.masthead { min-height: 76px; padding: 10px 5%; background: var(--green-deep); background: linear-gradient(100deg, var(--green-deep) 0%, var(--green) 100%); border-bottom: 4px solid var(--sun); display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 30px; font-weight: 600; color: #fff; line-height: 1; }
 .brand:hover { text-decoration: none; }
-.brand b { font-weight: 400; color: var(--muted); }
-.brand-icon { width: 41px; height: 41px; display: grid; place-items: center; border-radius: 7px; background: #e1f5eb; color: var(--green); font-size: 14px; }
-.masthead nav { display: flex; align-items: center; gap: 22px; font-size: 13px; flex-wrap: wrap; }
-.masthead nav a { color: var(--ink); }
-.masthead nav a:hover { color: var(--green); text-decoration: none; }
-.masthead nav a[aria-current="page"] { color: var(--green); font-weight: 600; }
+.brand b { font-weight: 400; color: #fff; }
+.brand-icon { width: 44px; height: 44px; flex: 0 0 44px; }
+.masthead nav { display: flex; align-items: center; gap: 6px; font-size: 14px; flex-wrap: wrap; }
+.masthead nav a { color: #fff; font-weight: 600; padding: 7px 13px; border-radius: 999px; border: 2px solid transparent; }
+.masthead nav a:hover { background: rgba(255, 255, 255, 0.16); text-decoration: none; }
+.masthead nav a[aria-current="page"] { background: #fff; color: var(--green-deep); }
 .masthead nav a[hidden] { display: none; }
+.masthead a:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 .lead { max-width: 900px; margin: -8px 0 26px; }
 .subnav { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin: -14px 0 24px; }
 
 main { max-width: 1400px; margin: auto; padding: 36px 5% 0; }
 .title-row { display: flex; align-items: center; justify-content: space-between; gap: 22px; margin-bottom: 30px; flex-wrap: wrap; }
-.eyebrow { font-size: 10px; color: var(--muted); margin-bottom: 12px; }
+.eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--green-deep); margin-bottom: 10px; }
 .release-tag { font-size: 12px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--muted); white-space: nowrap; }
 
-section { min-width: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 26px; margin-bottom: 26px; }
+section { min-width: 0; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 26px; margin-bottom: 26px; }
 .section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
 .section-heading a { margin-left: auto; font-size: 13px; }
-.step { font-size: 12px; font-weight: 600; color: var(--green); background: #e1f5eb; border-radius: 6px; padding: 4px 8px; }
+.step { font-size: 12px; font-weight: 600; color: var(--green-deep); background: var(--sun); border-radius: 999px; padding: 4px 10px; }
 .two-col { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 28px; align-items: start; }
 .two-col > *, .viewer-layout > * { min-width: 0; }
 
@@ -103,19 +113,68 @@ th { font-size: 11px; color: var(--muted); font-weight: 600; }
 .slider input { grid-column: 1 / -1; width: 100%; accent-color: var(--green); }
 .slider output { font-variant-numeric: tabular-nums; color: var(--muted); }
 .form-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
-.primary, .secondary { border-radius: 7px; padding: 9px 16px; border: 1px solid var(--green); font-weight: 600; font-size: 14px; }
+.primary, .secondary { border-radius: 9px; padding: 9px 16px; border: 1px solid var(--green); font-weight: 600; font-size: 14px; }
 .primary { background: var(--green); color: #fff; }
-.secondary { background: #fff; color: var(--green); }
+.primary:hover { background: var(--green-deep); border-color: var(--green-deep); }
+.secondary { background: #fff; color: var(--green-deep); }
+.secondary:hover { background: var(--green-soft); }
+/* Small pictures on buttons and safety notes, drawn as masks so they take the text colour. */
+.icon::before, .safety > h3::before, .status.warn > h3::before { content: ""; display: inline-block; width: 1em; height: 1em; margin-right: 7px; vertical-align: -0.14em; background: currentColor; -webkit-mask: var(--icon) center / contain no-repeat; mask: var(--icon) center / contain no-repeat; }
+.icon-download { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M7 1h2v6.5h3L8 12 4 7.5h3zM2 13h12v2H2z'/%3E%3C/svg%3E"); }
+.icon-print { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4 1h8v3H4zM1.5 5h13v7H12v3H4v-3H1.5zM5.5 10.5v3h5v-3z'/%3E%3C/svg%3E"); }
+.icon-link { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M6.6 9.4a3 3 0 0 1 0-4.2l2.1-2.1a3 3 0 0 1 4.2 4.2l-1 1-1.1-1.1 1-1a1.4 1.4 0 0 0-2-2L7.7 6.3a1.4 1.4 0 0 0 0 2zM9.4 6.6a3 3 0 0 1 0 4.2l-2.1 2.1a3 3 0 0 1-4.2-4.2l1-1 1.1 1.1-1 1a1.4 1.4 0 0 0 2 2l2.1-2.1a1.4 1.4 0 0 0 0-2z'/%3E%3C/svg%3E"); }
+.safety > h3, .status.warn > h3 { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 1l7.2 13H.8zM7.2 6v4.2h1.6V6zM7.2 11.2v1.6h1.6v-1.6z'/%3E%3C/svg%3E"); }
+.safety > h3 { color: var(--warn); }
 
 .checklist { margin: 16px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: 14px; }
 .checklist label { display: flex; gap: 10px; align-items: flex-start; }
 .checklist input { margin-top: 4px; accent-color: var(--green); }
 
-footer { max-width: 1400px; margin: auto; padding: 10px 5% 40px; font-size: 12px; color: var(--muted); }
+footer { max-width: 1400px; margin: 10px auto 0; padding: 18px 5% 40px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+.foot-links { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 4px 0 12px; font-size: 13px; font-weight: 600; }
+.foot-links a { color: var(--green-deep); }
+.foot-note, .foot-legal { margin: 0 0 8px; max-width: 1000px; }
 
 @media (max-width: 860px) {
   h1 { font-size: 28px; }
+  .masthead { min-height: 0; padding: 8px 16px 10px; }
+  .brand { font-size: 24px; }
+  .brand-icon { width: 36px; height: 36px; flex-basis: 36px; }
+  /* One row of tabs that scrolls inside itself, so the band stays two lines tall. */
+  .masthead nav { gap: 4px; font-size: 13px; flex-wrap: nowrap; overflow-x: auto; width: 100%; padding: 3px 0 5px; scrollbar-width: thin; }
+  .masthead nav a { padding: 5px 10px; white-space: nowrap; flex: 0 0 auto; }
   .two-col, .viewer-layout { grid-template-columns: minmax(0, 1fr); }
   section { padding: 18px; }
   #view { height: 340px; }
+}
+
+/* The guided tour (tour.js): a card beside the control a step is about, and a small offer for a new visitor. */
+.tour-spot { position: fixed; z-index: 900; border-radius: 10px; box-shadow: 0 0 0 9999px rgba(23, 44, 44, 0.45), 0 0 0 3px #76b4ee; pointer-events: none; transition: left 0.2s, top 0.2s, width 0.2s, height 0.2s; }
+.tour-spot[hidden] { display: none; }
+.tour-card, .tour-offer { position: fixed; z-index: 901; width: min(360px, calc(100vw - 16px)); background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; box-shadow: 0 8px 28px rgba(23, 44, 44, 0.25); font-size: 14px; overflow-wrap: anywhere; }
+.tour-card h2 { font-size: 17px; margin-bottom: 6px; }
+.tour-card p, .tour-offer p { margin: 0 0 12px; }
+.tour-count { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.tour-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.tour-actions button { padding: 7px 14px; }
+.tour-actions button:disabled { opacity: 0.45; cursor: default; }
+.tour-skip { margin-left: auto; border: 0; background: none; color: var(--muted); font-weight: 600; font-size: 13px; text-decoration: underline; }
+.tour-card.tour-centred { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.tour-card.tour-docked { left: 8px; right: 8px; bottom: 8px; top: auto; width: auto; }
+.tour-offer { right: 16px; bottom: 16px; width: min(300px, calc(100vw - 32px)); }
+@media (prefers-reduced-motion: reduce) {
+  .tour-spot { transition: none; }
+}
+@media print {
+  .tour-spot, .tour-card, .tour-offer { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none; animation: none; }
+}
+@media print {
+  .skip-link, .foot-links { display: none; }
+  .masthead { background: #fff; border-bottom: 1px solid #000; min-height: 0; }
+  .brand, .brand b { color: #000; }
+  .brand-icon { display: none; }
 }

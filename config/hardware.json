@@ -250,7 +250,7 @@
       "source": "https://github.com/espressif/esp-who/blob/master/docs/en/get-started/ESP-EYE_Getting_Started_Guide.md",
       "source_note": "Espressif's guide names the parts (OV2640 camera, Micro-USB, BOOT and RST buttons on the camera face, a side function button, microphone, 3D antenna) and gives no dimensions. Positions were scaled from its annotated photograph esp-eye_callout.png.",
       "published": {
-        "connector": "Micro-USB on the back face at the lower short edge; powers the board",
+        "connector": "Micro-USB on the back face at the short edge away from the camera; powers the board. Mounted upward here.",
         "mounting_holes": 1,
         "mounting_hole_note": "one hole of about 2.3 mm in a corner at the antenna end; one hole cannot locate the board, so it is held by its edges"
       },
@@ -291,8 +291,8 @@
           "why": "not published"
         },
         "lens_centre_above_lower_edge_mm": {
-          "value": 32.0,
-          "why": "scaled from Espressif's photograph: 9 mm from the antenna end, centred; tolerance 1 mm"
+          "value": 9.0,
+          "why": "scaled from Espressif's photograph: 9 mm from the camera end, centred; tolerance 1 mm"
         },
         "lens_front_above_board_mm": {
           "value": 6.5,
@@ -303,18 +303,23 @@
           "why": "module body about 7.7 mm square in the photograph"
         },
         "boot_and_reset_above_lower_edge_mm": {
-          "value": 25.5,
+          "value": 15.5,
           "why": "scaled from the photograph: on the camera face, 1.6 mm from each long edge; tolerance 1 mm"
         },
         "side_button_above_lower_edge_mm": {
-          "value": 9.0,
-          "why": "scaled from the photograph: 7 to 11.5 mm, on the long edge at the robot's right; tolerance 1 mm"
+          "value": 31.75,
+          "why": "scaled from the photograph: 29.5 to 34 mm, on the long edge at the robot's left as mounted; tolerance 1 mm"
         },
         "microphone_above_lower_edge_mm": {
-          "value": 2.0,
+          "value": 39.0,
           "why": "scaled from the photograph: camera face, centred, at the USB end"
+        },
+        "picture_is_upright_with_usb_down": {
+          "value": true,
+          "why": "the board's lettering reads upright with the connector down; taken as the sensor's upright, not confirmed on a board"
         }
-      }
+      },
+      "mounting_note": "Mounted with the Micro-USB connector up and the camera end down, so nothing has to be kept clear under the board. Heights below are from the lower edge as mounted, which is the camera and antenna end. The picture is then upside down: set VFLIP and HMIRROR to 1 in the sketchbot's esp_eye_camera sketch."
     },
     "esp32_s3_eye": {
       "name": "Espressif ESP32-S3-EYE v2.2",

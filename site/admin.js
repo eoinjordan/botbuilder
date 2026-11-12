@@ -5,7 +5,7 @@
 // changes nothing by itself: the mark is recorded by a workflow that applies
 // the repository owner's own submissions only.
 
-import { evaluate, search } from "./build.js";
+import { buildSelection, evaluate, search } from "./build.js";
 
 // The address of the issue form with its fields filled in from the query
 // string. Field ids are those of .github/ISSUE_TEMPLATE/validated.yml.
@@ -17,13 +17,34 @@ export function issueLink(repoUrl, fields) {
   return `${repoUrl}issues/new?${query.toString()}`;
 }
 
-// One row per build (a row of the support table) and one per printable part.
+// One row per build (the finished builds, then the other rows of the support
+// table) and one per printable part.
 export function adminRows(data) {
   const compat = data.compat;
   const text = (dimId, optionId) => compat.dimensions.find((dim) => dim.id === dimId).options.find((option) => option.id === optionId).label;
   const rows = [];
+  // The finished builds of the landing page first, by name.
+  const named = new Set();
+  for (const entry of data.builds.list) {
+    const recipe = evaluate(data, buildSelection(data, entry));
+    if (named.has(recipe.build)) continue;
+    named.add(recipe.build);
+    const record = data.validated.find((item) => item.id === recipe.build && !item.part);
+    rows.push({
+      kind: "build",
+      build: recipe.build,
+      part: "",
+      name: entry.name,
+      detail: `${recipe.labels.controller}: ${recipe.labels.locomotion}, ${recipe.labels.drive}`,
+      tag: recipe.status_label,
+      link: `./?build=${entry.id}`,
+      thumb: `./${entry.picture}`,
+      record: record || null,
+    });
+  }
   for (const row of compat.support) {
     const build = `${row.controller}-${row.locomotion}-${row.drive}`;
+    if (named.has(build)) continue;
     const sel = search(data, { controller: row.controller, locomotion: row.locomotion, drive: row.drive }, ["controller", "locomotion", "drive"]);
     if (sel === null) continue;
     const recipe = evaluate(data, sel);

@@ -1,7 +1,8 @@
 # Marking a build as printed and checked
 
 For the repository owner. The site's Admin page (`site/admin.html`, linked
-from every footer) lists every build and every printable part with its mark.
+from every footer) lists every build and every printable part with its mark,
+the finished builds of the landing page first, by name.
 
 1. Press "Mark validated" beside the build or part. GitHub opens the "Mark a
    build as validated" form in a new tab with the build id and today's date

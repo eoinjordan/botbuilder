@@ -16,10 +16,15 @@ export const DEFAULTS = { host: "", user: "arduino", repoDir: "botbuilder", apps
 
 export const BASES = {
   unoq: { label: "Arduino UNO Q", written: true },
+  espeye: { label: "Espressif ESP-EYE", written: false,
+    note: "The camera runs the sketch in the sketchbot repository (firmware/esp_eye_camera). Flash it by hand from the " +
+      "Arduino IDE over the board's own Micro-USB connector: esp32 boards package, board ESP32 Wrover Module, partition " +
+      "Huge APP (3MB No OTA), secrets.h with the Wi-Fi name and password, VFLIP and HMIRROR set to 1 for the way the " +
+      "board stands on this robot, Upload. The stream is then at http://esp-eye.local/stream. There is no command to " +
+      "give here; docs/camera.md has the steps in full." },
   esp32cam: { label: "AI Thinker ESP32-CAM", written: false,
-    note: "No firmware for an ESP32-CAM exists in this repository. In the sketchbot arrangement the camera board is " +
-      "flashed by hand from the Arduino IDE over its serial port (esp32 boards package, PSRAM enabled, Huge APP " +
-      "partition, Upload); neither its site nor its SSH commands flash it. There is no command to give here." },
+    note: "No firmware for an ESP32-CAM exists. The sketchbot flashes its camera board, an ESP-EYE, by hand from the " +
+      "Arduino IDE; that sketch does not run on an ESP32-CAM as it is. There is no command to give here." },
   raspberrypi: { label: "Raspberry Pi", written: false },
   lego: { label: "LEGO hub", written: false },
   m5stack: { label: "M5Stack", written: false },
@@ -36,6 +41,7 @@ export function resolveBase(value) {
   const id = raw.toLowerCase().replace(/[^a-z0-9]/g, "");
   let key = "other";
   if (/^(arduino)?unoq/.test(id)) key = "unoq";
+  else if (id.includes("espeye")) key = "espeye";
   else if (id.includes("esp32cam")) key = "esp32cam";
   else if (id.includes("raspberry") || /^r?pi/.test(id)) key = "raspberrypi";
   else if (id.includes("m5")) key = "m5stack";
@@ -174,7 +180,8 @@ function start() {
   baseNote.textContent = base.written
     ? `Controller: ${base.label}.`
     : `Controller: ${base.label}${base.given ? ` (base=${base.given})` : ""}. Not written.`;
-  byId("base-detail").textContent = base.written ? "" : (base.note || "No firmware and no flash steps exist for it in this repository. No command is shown rather than a made-up one.");
+  byId("base-detail").textContent = base.written ? "" : (base.note || "No firmware and no flash steps exist for it in this repository, so no command is shown rather than a made-up one. " +
+      "What you can do: use the programs listed below if there are any for this controller, or go back to Build yours and pick the Arduino UNO Q, the one board with flash steps.");
   byId("flash-form").hidden = !base.written;
   // Programs written for this controller's builds, with how each is loaded.
   fetch("./data/recipe.json").then((reply) => (reply.ok ? reply.json() : null)).then((data) => {

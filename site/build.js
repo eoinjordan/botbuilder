@@ -354,6 +354,28 @@ export function search(data, selection, pinned) {
   return walk(start, SEARCH_DEPTH);
 }
 
+// The full selection of a finished build (data.builds.list): the fields its
+// entry names are kept, the rest take the defaults and then compatible values.
+export function buildSelection(data, entry) {
+  const start = normalise(data.compat, entry.selection);
+  const found = search(data, start, Object.keys(entry.selection));
+  return found === null ? start : found;
+}
+
+// The component whose picture a part of a recipe takes (data.components):
+// the first in the list with one of its patterns in the part's name, or null.
+export function componentFor(data, name) {
+  const low = name.toLowerCase();
+  if (data.components.not_bought.some((prefix) => low.startsWith(prefix))) return null;
+  return data.components.list.find((entry) => entry.match.some((pattern) => low.includes(pattern))) || null;
+}
+
+// The component that pictures one choice of the configurator, or null.
+export function optionComponent(data, dimId, optionId) {
+  const id = (data.components.options[dimId] || {})[optionId];
+  return data.components.list.find((entry) => entry.id === id) || null;
+}
+
 // Whether an option can be chosen with the current controller, and what the
 // selection becomes if it is. Not possible: the short reason.
 export function optionState(data, selection, dimId, optionId) {
@@ -462,6 +484,9 @@ function fromUrl() {
   return found;
 }
 
+// The picture beside each field and the picture buttons of its options.
+const pictures = {};
+
 function buildForm(data, form, onChange) {
   const controls = {};
   for (const dim of data.compat.dimensions) {
@@ -477,11 +502,115 @@ function buildForm(data, form, onChange) {
       select.append(item);
     }
     select.addEventListener("change", onChange);
-    wrap.append(name, select);
+    // The chosen option's picture beside the field; the list itself stays a native select.
+    const row = el("div", undefined, "field-row");
+    const chosen = document.createElement("img");
+    chosen.className = "field-picture";
+    chosen.width = 64;
+    chosen.height = 48;
+    row.append(chosen, select);
+    // The same options as pictures: buttons that set the select.
+    const more = el("details", undefined, "option-pictures");
+    more.append(el("summary", "Pictures"));
+    const group = el("div", undefined, "option-cards");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-label", `${dim.label}, as pictures`);
+    const cards = [];
+    for (const option of dim.options) {
+      const about = optionComponent(data, dim.id, option.id);
+      const card = el("button", undefined, "option-card");
+      card.type = "button";
+      card.setAttribute("aria-pressed", "false");
+      if (about && about.picture) {
+        const picture = document.createElement("img");
+        picture.src = about.picture;
+        picture.alt = "";
+        picture.width = 96;
+        picture.height = 72;
+        picture.loading = "lazy";
+        card.append(picture);
+      }
+      card.append(el("span", option.label));
+      card.addEventListener("click", () => {
+        if (card.getAttribute("aria-disabled") === "true") return;
+        select.value = option.id;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      group.append(card);
+      cards.push({ id: option.id, card });
+    }
+    more.append(group);
+    wrap.append(name);
+    if (dim.hint) {
+      const hint = el("p", dim.hint, "field-hint");
+      hint.id = `hint-${dim.id}`;
+      select.setAttribute("aria-describedby", hint.id);
+      wrap.append(hint);
+    }
+    wrap.append(row, more);
     form.append(wrap);
     controls[dim.id] = select;
+    pictures[dim.id] = { chosen, cards };
   }
   return controls;
+}
+
+function speedText(mmPerSecond) {
+  return mmPerSecond >= 100 ? `${(mmPerSecond / 1000).toFixed(2)} m/s` : `${Math.round(mmPerSecond)} mm/s`;
+}
+
+// The finished builds as a row of cards: one radio group. Each card is the
+// recipe of its selection, so its tag, labels and mark are what the recipe
+// below will say. Returns the cards with their selections.
+function buildCards(data, row, onPick) {
+  row.replaceChildren();
+  const cards = [];
+  for (const entry of data.builds.list) {
+    const selection = buildSelection(data, entry);
+    const recipe = evaluate(data, selection);
+    const button = el("button", undefined, "build-card");
+    button.type = "button";
+    button.setAttribute("role", "radio");
+    button.setAttribute("aria-checked", "false");
+    button.dataset.build = entry.id;
+    const picture = document.createElement("img");
+    picture.src = `./${entry.picture}`;
+    picture.alt = "";
+    picture.width = 400;
+    picture.height = 300;
+    button.append(picture);
+    const text = el("span", undefined, "build-text");
+    const head = el("span", undefined, "build-head");
+    head.append(el("span", entry.name, "build-name"), el("span", recipe.status_label, `build-tag tag-${recipe.status}`));
+    text.append(head, el("span", entry.description, "build-desc"));
+    const facts = el("span", undefined, "build-facts");
+    const fact = (name, value) => {
+      const line = el("span");
+      line.append(el("b", name), el("span", value));
+      facts.append(line);
+    };
+    fact("Controller", recipe.labels.controller);
+    fact("Moves", recipe.labels.locomotion);
+    if (entry.figures.speed_mm_s !== undefined) fact("Speed", speedText(entry.figures.speed_mm_s));
+    if (entry.figures.mass_g !== undefined) fact("Mass", `${Math.round(entry.figures.mass_g)} g`);
+    fact("Prints", `${recipe.print.files.reduce((sum, item) => sum + item.qty, 0)} parts`);
+    text.append(facts);
+    // Shown only when the owner has recorded a check of this build.
+    if (recipe.validated) text.append(el("span", `Printed and checked on ${recipe.validated.date}`, "checked-mark"));
+    button.append(text);
+    button.addEventListener("click", () => onPick(entry.id, false));
+    row.append(button);
+    cards.push({ id: entry.id, name: entry.name, selection, query: recipe.query, button });
+  }
+  // Arrow keys move through the group and select, as in a native radio group.
+  row.addEventListener("keydown", (event) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+    const at = cards.findIndex((card) => card.button === document.activeElement);
+    if (step === undefined || at < 0) return;
+    event.preventDefault();
+    onPick(cards[(at + step + cards.length) % cards.length].id, true);
+  });
+  return cards;
 }
 
 // Every option is either selectable (choosing it brings the other fields to
@@ -504,6 +633,21 @@ function syncForm(data, controls, sel) {
       item.disabled = !state.enabled;
       item.title = state.short;
       if (!state.enabled) greyed.push([item.textContent, state.short]);
+    }
+    const about = optionComponent(data, dim.id, sel[dim.id]);
+    const shown = pictures[dim.id];
+    shown.chosen.hidden = !(about && about.picture);
+    if (about && about.picture) {
+      shown.chosen.src = about.picture;
+      shown.chosen.alt = about.name;
+      shown.chosen.title = about.credit;
+    }
+    for (const { id, card } of shown.cards) {
+      const option = [...select.options].find((item) => item.value === id);
+      const off = select.disabled || option.disabled;
+      card.setAttribute("aria-pressed", id === sel[dim.id] ? "true" : "false");
+      card.setAttribute("aria-disabled", off ? "true" : "false");
+      card.title = option.title;
     }
   }
   return greyed;
@@ -632,16 +776,38 @@ function render(data, recipe, target) {
 
   const parts = el("table");
   const head = el("tr");
-  for (const name of ["Part", "Qty", "Note"]) head.append(el("th", name));
+  for (const name of ["Picture", "Part", "Qty", "Note"]) head.append(el("th", name));
   parts.append(head);
+  let credited = false;
   for (const item of recipe.parts) {
     const tr = el("tr");
-    tr.append(el("td", item.name), el("td", item.qty === null ? "not set" : String(item.qty)), el("td", item.note));
+    const cell = el("td", undefined, "part-picture");
+    const about = componentFor(data, item.name);
+    if (about && about.picture) {
+      const picture = document.createElement("img");
+      picture.src = about.picture;
+      picture.alt = about.name;
+      picture.title = about.credit;
+      picture.width = 96;
+      picture.height = 72;
+      picture.loading = "lazy";
+      cell.append(picture);
+      credited = credited || about.kind !== "render";
+    }
+    tr.append(cell, el("td", item.name), el("td", item.qty === null ? "not set" : String(item.qty)), el("td", item.note));
     parts.append(tr);
   }
   const partsScroll = el("div", undefined, "table-wrap wrap-cells");
   partsScroll.append(parts);
-  target.append(block("Parts", partsScroll));
+  const partsBlock = block("Parts", partsScroll);
+  if (credited) {
+    const credit = el("p", "Pictures of bought parts are openly licensed photographs or drawings: ", "small-note flush no-print");
+    const link = el("a", "picture credits");
+    link.href = "./credits.html";
+    credit.append(link, document.createTextNode("."));
+    partsBlock.append(credit);
+  }
+  target.append(partsBlock);
 
   for (const name of data.compat.sections) {
     if (!(name in SECTION_TITLES)) continue;
@@ -651,6 +817,7 @@ function render(data, recipe, target) {
       target.append(block(SECTION_TITLES[name], steps));
     } else {
       const section = block(SECTION_TITLES[name], list(recipe[name]));
+      if (name === "power") section.classList.add("safety");
       if (name === "firmware" && recipe.base) {
         // The Flash page builds the commands for this controller, or says
         // that none are written.
@@ -690,9 +857,34 @@ async function start() {
     return;
   }
   const compat = data.compat;
-  // A linked recipe is the address alone; the remembered one is used only without it.
+  let recipe;
+  let sel;
+  // The address of the recipe on show: "build=<id>" for a finished build, every field otherwise.
+  const address = () => {
+    const card = cards.find((item) => item.query === recipe.query);
+    return card ? `build=${card.id}` : recipe.query;
+  };
+  const pick = (id, focus) => {
+    const card = cards.find((item) => item.id === id);
+    sel = card.selection;
+    document.getElementById("action-note").textContent = "";
+    show(true);
+    if (focus) card.button.focus();
+  };
+  const cards = buildCards(data, document.getElementById("builds"), pick);
+  const first = cards.find((item) => item.id === data.builds.default) || cards[0];
+  // A linked recipe is the address alone; the remembered one is used only without it, and
+  // without either the first finished build is shown.
   const linked = fromUrl();
-  let sel = normalise(compat, Object.keys(linked).length ? linked : readStored());
+  // The tour's own parameters (tour.js) are not part of a selection.
+  delete linked.tour;
+  delete linked.tourstep;
+  const linkedCard = cards.find((item) => item.id === linked.build);
+  delete linked.build;
+  const stored = readStored();
+  if (Object.keys(linked).length) sel = normalise(compat, linkedCard ? { ...linkedCard.selection, ...linked } : linked);
+  else if (linkedCard) sel = linkedCard.selection;
+  else sel = Object.keys(stored).length ? normalise(compat, stored) : first.selection;
   // A link that names only some fields (a type page's "?locomotion=wheeled") keeps those and takes
   // compatible values for the rest. A link that names a contradiction gets the plain answer.
   const named = compat.dimensions.map((dim) => dim.id).filter((id) => id in linked);
@@ -700,11 +892,33 @@ async function start() {
     const fitted = search(data, sel, named);
     if (fitted !== null) sel = fitted;
   }
-  let recipe;
+  // The sidebar: open on a wide screen, behind its "Customise" control on a phone.
+  const panel = document.getElementById("customise");
+  const wide = window.matchMedia("(min-width: 861px)");
+  wide.addEventListener("change", () => {
+    if (wide.matches) panel.open = true;
+  });
+  panel.querySelector("summary").addEventListener("click", (event) => {
+    if (wide.matches) event.preventDefault();
+  });
 
   const show = (push) => {
     recipe = evaluate(data, sel);
     sel = recipe.selection;
+    // A selection that is a finished build marks its card; any other is a custom build.
+    const current = cards.find((item) => item.query === recipe.query) || null;
+    for (const card of cards) {
+      card.button.setAttribute("aria-checked", card === current ? "true" : "false");
+      card.button.tabIndex = card === (current || cards[0]) ? 0 : -1;
+    }
+    // On a narrow screen the row scrolls sideways: bring the chosen card into it without moving the page.
+    if (current) {
+      const row = current.button.parentElement;
+      const left = current.button.offsetLeft - row.offsetLeft;
+      if (left < row.scrollLeft || left + current.button.offsetWidth > row.scrollLeft + row.clientWidth) row.scrollLeft = left - 4;
+    }
+    document.getElementById("custom-note").hidden = current !== null;
+    document.getElementById("recipe-name").textContent = current ? current.name : "Custom build";
     const greyed = syncForm(data, controls, sel);
     const why = document.getElementById("greyed");
     why.replaceChildren();
@@ -717,7 +931,7 @@ async function start() {
     }
     render(data, recipe, output);
     document.getElementById("trademarks").textContent = recipe.trademarks;
-    if (push) window.history.replaceState(null, "", `?${recipe.query}`);
+    if (push) window.history.replaceState(null, "", `?${address()}`);
     store(sel);
   };
   const controls = buildForm(data, document.getElementById("picker"), (event) => {
@@ -735,6 +949,7 @@ async function start() {
     show(true);
   });
   show(window.location.search.length > 1);
+  panel.open = wide.matches || !cards.some((item) => item.query === recipe.query);
 
   output.addEventListener("click", (event) => {
     const link = event.target.closest("a[data-query]");
@@ -744,24 +959,22 @@ async function start() {
     for (const [key, value] of new URLSearchParams(link.dataset.query)) next[key] = value;
     sel = normalise(compat, next);
     show(true);
+    panel.open = true;
     document.getElementById("picker").querySelector("select").focus();
   });
-  document.getElementById("reset").addEventListener("click", () => {
-    sel = normalise(compat, compat.defaults);
-    show(true);
-  });
+  document.getElementById("reset").addEventListener("click", () => pick(first.id, false));
+  const pageUrl = () => `${window.location.origin}${window.location.pathname}?${address()}`;
   document.getElementById("copy-link").addEventListener("click", async () => {
-    const url = `${window.location.origin}${window.location.pathname}?${recipe.query}`;
     const note = document.getElementById("action-note");
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(pageUrl());
       note.textContent = "Link copied.";
     } catch (error) {
-      window.history.replaceState(null, "", `?${recipe.query}`);
+      window.history.replaceState(null, "", `?${address()}`);
       note.textContent = "Copy the address from the address bar.";
     }
   });
-  const stem = () => `botbuilder-recipe-${recipe.query.replace(/[^a-z0-9]+/gi, "-")}`;
+  const stem = () => `botbuilder-recipe-${address().replace(/[^a-z0-9]+/gi, "-")}`;
   const save = (bytes, type, name) => {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(new Blob([bytes], { type }));
@@ -789,8 +1002,36 @@ async function start() {
         images[item.thumb] = null;                 // the PDF leaves that box empty
       }
     }
+    // The pictures of the bought parts, and one credit line for each one used.
+    const parts = recipe.parts.map((part) => {
+      const about = componentFor(data, part.name);
+      return about && about.picture ? about : null;
+    });
+    const credits = [];
+    for (const about of parts) {
+      if (!about) continue;
+      if (!(about.picture in images)) {
+        try {
+          images[about.picture] = await bytesOf(about.picture);
+        } catch (error) {
+          images[about.picture] = null;
+        }
+      }
+      if (about.credit_line && !credits.includes(about.credit_line)) credits.push(about.credit_line);
+    }
+    // The site's mark, for the first page.
+    const logo = "./assets/logo-mark-96.png";
+    try {
+      images[logo] = await bytesOf(logo);
+    } catch (error) {
+      images[logo] = null;
+    }
     return recipePdf(recipe, images, {
-      url: `${window.location.origin}${window.location.pathname}?${recipe.query}`,
+      logo,
+      parts: parts.map((about) => (about ? about.picture : null)),
+      credits,
+      creditsUrl: `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}credits.html`,
+      url: pageUrl(),
       date: new Date().toISOString().slice(0, 10),
       selection: compat.dimensions
         .filter((dim) => !dim.only_for || matches(dim.only_for, recipe.selection))
@@ -833,9 +1074,15 @@ async function start() {
         left.push(item.file);
       }
     }
-    const lines = ["Botbuilder recipe", `${window.location.origin}${window.location.pathname}?${recipe.query}`, "",
+    const lines = ["Botbuilder recipe", pageUrl(), "",
       "recipe.pdf   the recipe with the part pictures", "recipe.json  the same recipe as data",
       `stl/         ${entries.length - 2} printable files, quantities in the recipe`];
+    try {
+      entries.push({ name: "botbuilder-logo.svg", data: await bytesOf("./assets/logo.svg") });
+      lines.push("botbuilder-logo.svg  the Botbuilder logo");
+    } catch (error) {
+      // The zip is complete without it.
+    }
     if (left.length) lines.push("", "Not in this zip (no file on the site):", ...left.map((name) => `  ${name}`));
     entries.push({ name: "README.txt", data: new TextEncoder().encode(`${lines.join("\n")}\n`) });
     save(zipStore(entries, new Date()), "application/zip", `${stem()}.zip`);

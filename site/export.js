@@ -158,12 +158,26 @@ class Layout {
 
 // recipe: what evaluate() in build.js returns. images: thumb path -> PNG
 // bytes (a missing or unusable picture leaves its box empty). meta: { url,
-// date, titles } where titles names the text sections.
+// date, titles } where titles names the text sections; optionally parts (a
+// picture path or null for each part of the recipe), credits (one line for
+// each credited picture), creditsUrl, and logo (the path of the site's mark
+// among the images, drawn at the top right of the first page).
 export function recipePdf(recipe, images, meta) {
   const doc = new Layout();
   const pictures = [];             // { name, png }
   const pictureOf = {};
+  // The index of a picture among the PDF's images, or -1 if it cannot be used.
+  const use = (path) => {
+    if (!path) return -1;
+    if (!(path in pictureOf)) {
+      const png = readPng(images[path]);
+      pictureOf[path] = png ? pictures.push({ name: `Im${pictures.length + 1}`, png }) - 1 : -1;
+    }
+    return pictureOf[path];
+  };
 
+  const mark = use(meta.logo);
+  if (mark >= 0) doc.ops.push(`q 40 0 0 40 ${PAGE_W - MARGIN - 40} ${PAGE_H - MARGIN - 40} cm /${pictures[mark].name} Do Q`);
   doc.para("Botbuilder recipe", { size: 9, grey: true, after: 0 });
   doc.para(`${recipe.labels.controller}: ${recipe.labels.locomotion}`, { size: 18, bold: true, after: 4 });
   doc.para(`Status: ${recipe.status_label}`, { size: 12, bold: true, after: 1 });
@@ -211,13 +225,9 @@ export function recipePdf(recipe, images, meta) {
       row.forEach((card, i) => {
         const x = MARGIN + i * (cell + gap);
         doc.ops.push(`0.84 0.89 0.86 RG 0.7 w ${x.toFixed(1)} ${(top - picH).toFixed(1)} ${picW.toFixed(1)} ${picH.toFixed(1)} re S`);
-        const thumb = card.item.thumb;
-        if (thumb && !(thumb in pictureOf)) {
-          const png = readPng(images[thumb]);
-          pictureOf[thumb] = png ? pictures.push({ name: `Im${pictures.length + 1}`, png }) - 1 : -1;
-        }
-        if (thumb && pictureOf[thumb] >= 0) {
-          doc.ops.push(`q ${picW.toFixed(1)} 0 0 ${picH.toFixed(1)} ${x.toFixed(1)} ${(top - picH).toFixed(1)} cm /${pictures[pictureOf[thumb]].name} Do Q`);
+        const index = use(card.item.thumb);
+        if (index >= 0) {
+          doc.ops.push(`q ${picW.toFixed(1)} 0 0 ${picH.toFixed(1)} ${x.toFixed(1)} ${(top - picH).toFixed(1)} cm /${pictures[index].name} Do Q`);
         }
         let y = top - picH - 6;
         const put = (textLines, bold, grey) => {
@@ -236,10 +246,20 @@ export function recipePdf(recipe, images, meta) {
     }
 
     doc.heading("Parts");
-    for (const part of recipe.parts) {
-      doc.para(`${part.qty === null ? "-" : `${part.qty} x`} ${part.name}`, { bold: true, after: 0 });
-      doc.para(part.note, { indent: 16, size: 9, grey: true });
-    }
+    recipe.parts.forEach((part, i) => {
+      // A bought part with a picture: the picture on the left, the text beside it.
+      const index = use(meta.parts ? meta.parts[i] : null);
+      const indent = index >= 0 ? 52 : 0;
+      let top = 0;
+      if (index >= 0) {
+        doc.need(40);
+        top = doc.y;
+        doc.ops.push(`q 44 0 0 33 ${MARGIN} ${(top - 36).toFixed(1)} cm /${pictures[index].name} Do Q`);
+      }
+      doc.para(`${part.qty === null ? "-" : `${part.qty} x`} ${part.name}`, { bold: true, after: 0, indent });
+      doc.para(part.note, { indent: indent + 16, size: 9, grey: true });
+      if (index >= 0 && doc.y > top - 40 && doc.y < top) doc.y = top - 40;
+    });
     for (const [key, title] of meta.titles) {
       if (!recipe[key] || !recipe[key].length) continue;
       doc.heading(title);
@@ -255,6 +275,11 @@ export function recipePdf(recipe, images, meta) {
   doc.para(`Link: ${meta.url}`);
   doc.para(`Made on ${meta.date}.`);
   doc.para(recipe.trademarks, { size: 8, grey: true });
+  if (meta.credits && meta.credits.length) {
+    doc.heading("Picture credits");
+    for (const line of meta.credits) doc.para(line, { size: 8, grey: true, after: 1 });
+    if (meta.creditsUrl) doc.para(`All picture credits: ${meta.creditsUrl}`, { size: 8, grey: true });
+  }
 
   // Objects: 1 catalog, 2 pages, 3 and 4 fonts, then pictures, then a content stream and a page for each page.
   const objects = [];

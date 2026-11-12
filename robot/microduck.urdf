@@ -10,7 +10,7 @@
   <material name="display"><color rgba="0.12 0.12 0.14 1"/></material>
   <material name="battery"><color rgba="0.35 0.43 0.78 1"/></material>
   <link name="torso">
-    <inertial><origin xyz="0.0191349 -0.000158357 0.00166164" rpy="0 0 0"/><mass value="0.268549"/><inertia ixx="0.000806014" ixy="1.32177e-06" ixz="-6.92991e-05" iyy="0.000449995" iyz="1.7695e-06" izz="0.000647272"/></inertial>
+    <inertial><origin xyz="0.0187028 -0.000166447 0.000522261" rpy="0 0 0"/><mass value="0.26567"/><inertia ixx="0.000772098" ixy="1.40578e-06" ixz="-5.67017e-05" iyy="0.000412183" iyz="1.98714e-06" izz="0.000641655"/></inertial>
     <visual><origin xyz="0.002 -0.057 -0.044" rpy="0 0 0"/><geometry><box size="0.0039992 0.0364927 0.0029994"/></geometry><material name="print"/></visual>
     <collision><origin xyz="0.002 -0.057 -0.044" rpy="0 0 0"/><geometry><box size="0.0039992 0.0364927 0.0029994"/></geometry></collision>
     <visual><origin xyz="0.002 0.057 -0.044" rpy="0 0 0"/><geometry><box size="0.0039992 0.0364927 0.0029994"/></geometry><material name="print"/></visual>
@@ -107,56 +107,62 @@
     <collision><origin xyz="3.19725e-10 -0.0279 0.00675" rpy="0 0 0"/><geometry><box size="0.0639872 0.00139972 0.00209958"/></geometry></collision>
     <visual><origin xyz="3.19725e-10 0.0279 0.00675" rpy="0 0 0"/><geometry><box size="0.0639872 0.00139972 0.00209958"/></geometry><material name="print"/></visual>
     <collision><origin xyz="3.19725e-10 0.0279 0.00675" rpy="0 0 0"/><geometry><box size="0.0639872 0.00139972 0.00209958"/></geometry></collision>
-    <visual><origin xyz="0.0533937 -0.029 0.077506" rpy="0 0 0"/><geometry><box size="0.0138241 0.00299939 0.00762552"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0533937 -0.029 0.077506" rpy="0 0 0"/><geometry><box size="0.0138241 0.00299939 0.00762552"/></geometry></collision>
-    <visual><origin xyz="0.0498231 -0.0252478 0.0434678" rpy="0 0 0"/><geometry><box size="0.0207838 0.00449471 0.0755206"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0498231 -0.0252478 0.0434678" rpy="0 0 0"/><geometry><box size="0.0207838 0.00449471 0.0755206"/></geometry></collision>
-    <visual><origin xyz="0.0528598 -0.02225 0.0745315" rpy="0 0 0"/><geometry><box size="0.0148775 0.0014997 0.0135604"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0528598 -0.02225 0.0745315" rpy="0 0 0"/><geometry><box size="0.0148775 0.0014997 0.0135604"/></geometry></collision>
-    <visual><origin xyz="0.0538676 -0.0197501 0.0534728" rpy="0 0 0"/><geometry><box size="0.0107182 0.00349918 0.0288407"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0538676 -0.0197501 0.0534728" rpy="0 0 0"/><geometry><box size="0.0107182 0.00349918 0.0288407"/></geometry></collision>
-    <visual><origin xyz="0.0525829 -0.01975 0.0730535" rpy="0 0 0"/><geometry><box size="0.0154103 0.0034993 0.0172681"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0525829 -0.01975 0.0730535" rpy="0 0 0"/><geometry><box size="0.0154103 0.0034993 0.0172681"/></geometry></collision>
-    <visual><origin xyz="0.0542532 -0.0175 0.0903869" rpy="0 0 0"/><geometry><box size="0.019092 0.0009998 0.0538939"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0542532 -0.0175 0.0903869" rpy="0 0 0"/><geometry><box size="0.019092 0.0009998 0.0538939"/></geometry></collision>
-    <visual><origin xyz="0.047367 -0.0155 0.0254512" rpy="0 0 0"/><geometry><box size="0.01597 0.0029994 0.0394957"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.047367 -0.0155 0.0254512" rpy="0 0 0"/><geometry><box size="0.01597 0.0029994 0.0394957"/></geometry></collision>
-    <visual><origin xyz="0.0549875 -0.0155 0.0941882" rpy="0 0 0"/><geometry><box size="0.0214016 0.00299937 0.0670469"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0549875 -0.0155 0.0941882" rpy="0 0 0"/><geometry><box size="0.0214016 0.00299937 0.0670469"/></geometry></collision>
-    <visual><origin xyz="0.0470199 -0.0135 0.0232433" rpy="0 0 0"/><geometry><box size="0.015275 0.0009998 0.03508"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0470199 -0.0135 0.0232433" rpy="0 0 0"/><geometry><box size="0.015275 0.0009998 0.03508"/></geometry></collision>
-    <visual><origin xyz="0.0537731 -0.0135 0.0876894" rpy="0 0 0"/><geometry><box size="0.0196022 0.0009998 0.056522"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0537731 -0.0135 0.0876894" rpy="0 0 0"/><geometry><box size="0.0196022 0.0009998 0.056522"/></geometry></collision>
-    <visual><origin xyz="0.0520312 -0.0125 0.072175" rpy="0 0 0"/><geometry><box size="0.016481 0.0009998 0.0274898"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0520312 -0.0125 0.072175" rpy="0 0 0"/><geometry><box size="0.016481 0.0009998 0.0274898"/></geometry></collision>
-    <visual><origin xyz="0.048998 -0.01125 0.0184573" rpy="0 0 0"/><geometry><box size="0.00794042 0.0014997 0.0255095"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.048998 -0.01125 0.0184573" rpy="0 0 0"/><geometry><box size="0.00794042 0.0014997 0.0255095"/></geometry></collision>
-    <visual><origin xyz="0.0536028 -0.01125 0.0796481" rpy="0 0 0"/><geometry><box size="0.0133869 0.0014997 0.0125926"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0536028 -0.01125 0.0796481" rpy="0 0 0"/><geometry><box size="0.0133869 0.0014997 0.0125926"/></geometry></collision>
-    <visual><origin xyz="0.0495433 8.28175e-11 0.0217472" rpy="0 0 0"/><geometry><box size="0.00902311 0.0209963 0.0320887"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0495433 8.28175e-11 0.0217472" rpy="0 0 0"/><geometry><box size="0.00902311 0.0209963 0.0320887"/></geometry></collision>
-    <visual><origin xyz="0.0538642 7.86471e-11 0.075074" rpy="0 0 0"/><geometry><box size="0.0139149 0.0209964 0.0137509"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0538642 7.86471e-11 0.075074" rpy="0 0 0"/><geometry><box size="0.0139149 0.0209964 0.0137509"/></geometry></collision>
-    <visual><origin xyz="0.048998 0.01125 0.0184573" rpy="0 0 0"/><geometry><box size="0.00794042 0.0014997 0.0255095"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.048998 0.01125 0.0184573" rpy="0 0 0"/><geometry><box size="0.00794042 0.0014997 0.0255095"/></geometry></collision>
-    <visual><origin xyz="0.0536028 0.01125 0.0796481" rpy="0 0 0"/><geometry><box size="0.0133869 0.0014997 0.0125926"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0536028 0.01125 0.0796481" rpy="0 0 0"/><geometry><box size="0.0133869 0.0014997 0.0125926"/></geometry></collision>
-    <visual><origin xyz="0.0520312 0.0125 0.072175" rpy="0 0 0"/><geometry><box size="0.016481 0.0009998 0.0274898"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0520312 0.0125 0.072175" rpy="0 0 0"/><geometry><box size="0.016481 0.0009998 0.0274898"/></geometry></collision>
-    <visual><origin xyz="0.0470199 0.0135 0.0232433" rpy="0 0 0"/><geometry><box size="0.015275 0.0009998 0.03508"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0470199 0.0135 0.0232433" rpy="0 0 0"/><geometry><box size="0.015275 0.0009998 0.03508"/></geometry></collision>
-    <visual><origin xyz="0.0537731 0.0135 0.0876894" rpy="0 0 0"/><geometry><box size="0.0196022 0.0009998 0.056522"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0537731 0.0135 0.0876894" rpy="0 0 0"/><geometry><box size="0.0196022 0.0009998 0.056522"/></geometry></collision>
-    <visual><origin xyz="0.0473655 0.0155 0.0254435" rpy="0 0 0"/><geometry><box size="0.0159613 0.0029994 0.0394799"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0473655 0.0155 0.0254435" rpy="0 0 0"/><geometry><box size="0.0159613 0.0029994 0.0394799"/></geometry></collision>
-    <visual><origin xyz="0.0540367 0.0155 0.0889889" rpy="0 0 0"/><geometry><box size="0.0195215 0.0029994 0.0566865"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0540367 0.0155 0.0889889" rpy="0 0 0"/><geometry><box size="0.0195215 0.0029994 0.0566865"/></geometry></collision>
-    <visual><origin xyz="0.0542532 0.0175 0.0903869" rpy="0 0 0"/><geometry><box size="0.019092 0.0009998 0.0538939"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0542532 0.0175 0.0903869" rpy="0 0 0"/><geometry><box size="0.019092 0.0009998 0.0538939"/></geometry></collision>
-    <visual><origin xyz="0.05314 0.0204865 0.0534698" rpy="0 0 0"/><geometry><box size="0.0121801 0.00497226 0.0288582"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.05314 0.0204865 0.0534698" rpy="0 0 0"/><geometry><box size="0.0121801 0.00497226 0.0288582"/></geometry></collision>
-    <visual><origin xyz="0.0526255 0.0242494 0.0730598" rpy="0 0 0"/><geometry><box size="0.0153409 0.012497 0.0170052"/></geometry><material name="print"/></visual>
-    <collision><origin xyz="0.0526255 0.0242494 0.0730598" rpy="0 0 0"/><geometry><box size="0.0153409 0.012497 0.0170052"/></geometry></collision>
+    <visual><origin xyz="0.0498253 -0.0259986 0.0434697" rpy="0 0 0"/><geometry><box size="0.0207868 0.00299678 0.0755242"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0498253 -0.0259986 0.0434697" rpy="0 0 0"/><geometry><box size="0.0207868 0.00299678 0.0755242"/></geometry></collision>
+    <visual><origin xyz="0.049819 -0.02375 0.0434645" rpy="0 0 0"/><geometry><box size="0.0207791 0.0014997 0.0755143"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.049819 -0.02375 0.0434645" rpy="0 0 0"/><geometry><box size="0.0207791 0.0014997 0.0755143"/></geometry></collision>
+    <visual><origin xyz="0.0528864 -0.0207499 0.0745777" rpy="0 0 0"/><geometry><box size="0.0148303 0.00449907 0.013474"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0528864 -0.0207499 0.0745777" rpy="0 0 0"/><geometry><box size="0.0148303 0.00449907 0.013474"/></geometry></collision>
+    <visual><origin xyz="0.0537848 -0.0207439 0.0534765" rpy="0 0 0"/><geometry><box size="0.010609 0.00448664 0.0274503"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0537848 -0.0207439 0.0534765" rpy="0 0 0"/><geometry><box size="0.010609 0.00448664 0.0274503"/></geometry></collision>
+    <visual><origin xyz="0.0527322 -0.01775 0.0738009" rpy="0 0 0"/><geometry><box size="0.0151155 0.0014997 0.0150043"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0527322 -0.01775 0.0738009" rpy="0 0 0"/><geometry><box size="0.0151155 0.0014997 0.0150043"/></geometry></collision>
+    <visual><origin xyz="0.0473867 -0.016 0.0255017" rpy="0 0 0"/><geometry><box size="0.01601 0.0019996 0.0395967"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0473867 -0.016 0.0255017" rpy="0 0 0"/><geometry><box size="0.01601 0.0019996 0.0395967"/></geometry></collision>
+    <visual><origin xyz="0.0525669 -0.016 0.073051" rpy="0 0 0"/><geometry><box size="0.0154397 0.0019996 0.0173727"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0525669 -0.016 0.073051" rpy="0 0 0"/><geometry><box size="0.0154397 0.0019996 0.0173727"/></geometry></collision>
+    <visual><origin xyz="0.0471112 -0.01425 0.0238315" rpy="0 0 0"/><geometry><box size="0.015457 0.0014997 0.0362563"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0471112 -0.01425 0.0238315" rpy="0 0 0"/><geometry><box size="0.015457 0.0014997 0.0362563"/></geometry></collision>
+    <visual><origin xyz="0.054224 -0.01425 0.0901663" rpy="0 0 0"/><geometry><box size="0.0191499 0.0014997 0.0543348"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.054224 -0.01425 0.0901663" rpy="0 0 0"/><geometry><box size="0.0191499 0.0014997 0.0543348"/></geometry></collision>
+    <visual><origin xyz="0.0469919 -0.0127503 0.0230053" rpy="0 0 0"/><geometry><box size="0.0152013 0.00149933 0.0346027"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0469919 -0.0127503 0.0230053" rpy="0 0 0"/><geometry><box size="0.0152013 0.00149933 0.0346027"/></geometry></collision>
+    <visual><origin xyz="0.0550934 -0.01275 0.0948791" rpy="0 0 0"/><geometry><box size="0.0213852 0.0014997 0.0666716"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0550934 -0.01275 0.0948791" rpy="0 0 0"/><geometry><box size="0.0213852 0.0014997 0.0666716"/></geometry></collision>
+    <visual><origin xyz="0.0563858 -0.0115 0.100821" rpy="0 0 0"/><geometry><box size="0.0188208 0.0009998 0.0548073"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0563858 -0.0115 0.100821" rpy="0 0 0"/><geometry><box size="0.0188208 0.0009998 0.0548073"/></geometry></collision>
+    <visual><origin xyz="0.0553439 -0.0105 0.0916784" rpy="0 0 0"/><geometry><box size="0.0168319 0.0009998 0.0480247"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0553439 -0.0105 0.0916784" rpy="0 0 0"/><geometry><box size="0.0168319 0.0009998 0.0480247"/></geometry></collision>
+    <visual><origin xyz="0.048998 -0.00925 0.0184573" rpy="0 0 0"/><geometry><box size="0.00794042 0.0014997 0.0255095"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.048998 -0.00925 0.0184573" rpy="0 0 0"/><geometry><box size="0.00794042 0.0014997 0.0255095"/></geometry></collision>
+    <visual><origin xyz="0.0537251 -0.00925 0.0759059" rpy="0 0 0"/><geometry><box size="0.0136226 0.0014997 0.0151441"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0537251 -0.00925 0.0759059" rpy="0 0 0"/><geometry><box size="0.0136226 0.0014997 0.0151441"/></geometry></collision>
+    <visual><origin xyz="0.0494256 5.71089e-11 0.0208691" rpy="0 0 0"/><geometry><box size="0.0087906 0.0149974 0.0303327"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0494256 5.71089e-11 0.0208691" rpy="0 0 0"/><geometry><box size="0.0087906 0.0149974 0.0303327"/></geometry></collision>
+    <visual><origin xyz="0.0538711 5.09368e-10 0.0755279" rpy="0 0 0"/><geometry><box size="0.0139328 0.0149973 0.0115723"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0538711 5.09368e-10 0.0755279" rpy="0 0 0"/><geometry><box size="0.0139328 0.0149973 0.0115723"/></geometry></collision>
+    <visual><origin xyz="0.048998 0.00875 0.0184573" rpy="0 0 0"/><geometry><box size="0.00794042 0.0024995 0.0255095"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.048998 0.00875 0.0184573" rpy="0 0 0"/><geometry><box size="0.00794042 0.0024995 0.0255095"/></geometry></collision>
+    <visual><origin xyz="0.0537501 0.00875002 0.0759252" rpy="0 0 0"/><geometry><box size="0.0136741 0.00249949 0.015107"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0537501 0.00875002 0.0759252" rpy="0 0 0"/><geometry><box size="0.0136741 0.00249949 0.015107"/></geometry></collision>
+    <visual><origin xyz="0.0536711 0.0105 0.0883666" rpy="0 0 0"/><geometry><box size="0.0134893 0.0009998 0.0414075"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0536711 0.0105 0.0883666" rpy="0 0 0"/><geometry><box size="0.0134893 0.0009998 0.0414075"/></geometry></collision>
+    <visual><origin xyz="0.0547796 0.0115 0.0953759" rpy="0 0 0"/><geometry><box size="0.0156396 0.0009998 0.0439474"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0547796 0.0115 0.0953759" rpy="0 0 0"/><geometry><box size="0.0156396 0.0009998 0.0439474"/></geometry></collision>
+    <visual><origin xyz="0.0534716 0.0125 0.0894002" rpy="0 0 0"/><geometry><box size="0.0182319 0.0009998 0.055875"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0534716 0.0125 0.0894002" rpy="0 0 0"/><geometry><box size="0.0182319 0.0009998 0.055875"/></geometry></collision>
+    <visual><origin xyz="0.0471005 0.014 0.0238071" rpy="0 0 0"/><geometry><box size="0.0154352 0.0019996 0.0362074"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0471005 0.014 0.0238071" rpy="0 0 0"/><geometry><box size="0.0154352 0.0019996 0.0362074"/></geometry></collision>
+    <visual><origin xyz="0.0535832 0.014 0.0899364" rpy="0 0 0"/><geometry><box size="0.0180113 0.0019996 0.0548054"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0535832 0.014 0.0899364" rpy="0 0 0"/><geometry><box size="0.0180113 0.0019996 0.0548054"/></geometry></collision>
+    <visual><origin xyz="0.0473851 0.016 0.0254932" rpy="0 0 0"/><geometry><box size="0.0159993 0.0019996 0.0395793"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0473851 0.016 0.0254932" rpy="0 0 0"/><geometry><box size="0.0159993 0.0019996 0.0395793"/></geometry></collision>
+    <visual><origin xyz="0.0525669 0.016 0.073051" rpy="0 0 0"/><geometry><box size="0.0154397 0.0019996 0.0173727"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0525669 0.016 0.073051" rpy="0 0 0"/><geometry><box size="0.0154397 0.0019996 0.0173727"/></geometry></collision>
+    <visual><origin xyz="0.05314 0.0199848 0.0534698" rpy="0 0 0"/><geometry><box size="0.0125741 0.00596854 0.0311466"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.05314 0.0199848 0.0534698" rpy="0 0 0"/><geometry><box size="0.0125741 0.00596854 0.0311466"/></geometry></collision>
+    <visual><origin xyz="0.0527895 0.0222495 0.0738999" rpy="0 0 0"/><geometry><box size="0.015017 0.0104976 0.0148224"/></geometry><material name="print"/></visual>
+    <collision><origin xyz="0.0527895 0.0222495 0.0738999" rpy="0 0 0"/><geometry><box size="0.015017 0.0104976 0.0148224"/></geometry></collision>
     <visual><origin xyz="0 0 0.0073" rpy="0 0 0"/><geometry><box size="0.06858 0.05334 0.0016"/></geometry><material name="board"/></visual>
     <collision><origin xyz="0 0 0.0073" rpy="0 0 0"/><geometry><box size="0.06858 0.05334 0.0016"/></geometry></collision>
     <visual><origin xyz="0 0 0.0199" rpy="0 0 0"/><geometry><box size="0.06858 0.05334 0.0016"/></geometry><material name="shield"/></visual>
@@ -165,8 +171,8 @@
     <collision><origin xyz="0.024 0 -0.00275" rpy="0 0 0"/><geometry><box size="0.036 0.02 0.0055"/></geometry></collision>
     <visual><origin xyz="0.0486964 0 0.0534441" rpy="0 0 0"/><geometry><box size="0.0210532 0.04 0.0402606"/></geometry><material name="display"/></visual>
     <collision><origin xyz="0.0486964 0 0.0534441" rpy="0 0 0"/><geometry><box size="0.0210532 0.04 0.0402606"/></geometry></collision>
-    <visual><origin xyz="0.0620342 0 0.102907" rpy="0 0 0"/><geometry><box size="0.0141415 0.027 0.0401626"/></geometry><material name="camera"/></visual>
-    <collision><origin xyz="0.0620342 0 0.102907" rpy="0 0 0"/><geometry><box size="0.0141415 0.027 0.0401626"/></geometry></collision>
+    <visual><origin xyz="0.0600807 0 0.103153" rpy="0 0 0"/><geometry><box size="0.0102344 0.021 0.040655"/></geometry><material name="camera"/></visual>
+    <collision><origin xyz="0.0600807 0 0.103153" rpy="0 0 0"/><geometry><box size="0.0102344 0.021 0.040655"/></geometry></collision>
     <visual><origin xyz="0.02375 0.057 -0.0215" rpy="0 0 0"/><geometry><box size="0.0395 0.0205 0.042"/></geometry><material name="servo"/></visual>
     <collision><origin xyz="0.02375 0.057 -0.0215" rpy="0 0 0"/><geometry><box size="0.0395 0.0205 0.042"/></geometry></collision>
     <visual><origin xyz="0.03225 0.057 -0.0215" rpy="0 0 0"/><geometry><box size="0.0025 0.0205 0.055"/></geometry><material name="servo"/></visual>

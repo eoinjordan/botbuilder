@@ -264,7 +264,11 @@ console.log(JSON.stringify({ rows, links: [
     out = json.loads(done.stdout)
     builds = [row for row in out["rows"] if row["kind"] == "build"]
     parts = [row for row in out["rows"] if row["kind"] == "part"]
-    assert [row["build"] for row in builds] == rv.known_builds(ROOT), "every build that is possible"
+    assert sorted(row["build"] for row in builds) == sorted(rv.known_builds(ROOT)), "every build that is possible, once"
+    finished = data["builds"]["list"]
+    assert [row["name"] for row in builds[:len(finished)]] == [item["name"] for item in finished], "the finished builds first, by name"
+    assert [row["link"] for row in builds[:len(finished)]] == [f"./?build={item['id']}" for item in finished]
+    assert all(row["tag"] == "Simulated" for row in builds[:len(finished)])
     assert [row["part"] for row in parts] == rv.known_parts(ROOT), "every printable part"
     assert all(row["tag"] not in ("Not possible", "Needs a part") for row in builds)
     marked = [row for row in builds if row["record"]]

@@ -6,6 +6,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#087f60">
   <meta name="description" content="Build the SSH commands that install and flash the Microduck Braccio App Lab app on an Arduino UNO Q.">
+  <!-- shared:head -->
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Botbuilder">
+  <meta property="og:title" content="Flash / Botbuilder">
+  <meta property="og:description" content="Build the SSH commands that install and flash the Microduck Braccio App Lab app on an Arduino UNO Q.">
+  <meta property="og:image" content="https://eoinjordan.github.io/botbuilder/assets/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /shared:head -->
   <link rel="stylesheet" href="./style.css">
   <title>Flash / Botbuilder</title>
   <style>
@@ -27,15 +38,18 @@
   </style>
 </head>
 <body>
+  <!-- shared:masthead -->
+  <a class="skip-link" href="#content">Skip to content</a>
   <header class="masthead">
-    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <a class="brand" href="./"><img class="brand-icon" src="./assets/logo-mark-light.svg" alt="" width="44" height="44"><span>Bot<b>builder</b></span></a>
     <nav id="site-nav" aria-label="Site">
       <a href="./">Build yours</a><a href="./biped.html">Biped</a><a href="./wheeled.html">Two-wheeled</a><a href="./walkers.html">Walkers</a><a href="./flash.html" aria-current="page">Flash</a><a href="./control.html">Control</a>
       <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
       <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
     </nav>
   </header>
-  <main>
+  <!-- /shared:masthead -->
+  <main id="content">
     <div class="title-row">
       <div><p class="eyebrow">ARDUINO UNO Q / APP LAB / SSH</p><h1>Flash the board</h1></div>
     </div>
@@ -99,7 +113,8 @@
         <thead><tr><th>Controller</th><th>Flash steps</th><th>Note</th></tr></thead>
         <tbody>
           <tr><td>Arduino UNO Q</td><td>written</td><td style="white-space:normal">App Lab app in <code>app_lab/microduck_agent</code>, commands above.</td></tr>
-          <tr><td>AI Thinker ESP32-CAM</td><td>not written</td><td style="white-space:normal">No firmware for it here. The sketchbot flashes its camera board by hand from the Arduino IDE over the serial port, not from its site and not over SSH.</td></tr>
+          <tr><td>Espressif ESP-EYE (the camera)</td><td>by hand</td><td style="white-space:normal">Arduino IDE with the <a href="https://github.com/eoinjordan/unoq-braccio-sketchbot/tree/main/firmware/esp_eye_camera" rel="noopener noreferrer">sketchbot's camera sketch</a> over the board's own Micro-USB connector: board ESP32 Wrover Module, partition Huge APP, Wi-Fi name and password in <code>secrets.h</code>, <code>VFLIP</code> and <code>HMIRROR</code> set to 1, Upload. The stream is at <code>http://esp-eye.local/stream</code>.</td></tr>
+          <tr><td>AI Thinker ESP32-CAM</td><td>not written</td><td style="white-space:normal">No firmware for it. The sketchbot's camera sketch is for the ESP-EYE.</td></tr>
           <tr><td>Raspberry Pi</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
           <tr><td>LEGO hubs</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
           <tr><td>M5Stack</td><td>not written</td><td style="white-space:normal">No port of the agent.</td></tr>
@@ -110,10 +125,23 @@
     </section>
   </main>
   <footer>
-    <p>Code under the MIT licence. Fonts: Space Grotesk, SIL Open Font License (<a href="./assets/licenses/space-grotesk.txt">text</a>).
-      No analytics, no cookies; the only request this page makes is for this site's own data file. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./admin.html">Admin</a>.</p>
+    <p class="foot-note">No analytics, no cookies; the only request this page makes is for this site's own data file.</p>
+    <!-- shared:footer -->
+    <nav class="foot-links" aria-label="About this site">
+      <a href="./?tour=1" data-tour>Take the tour</a>
+      <a href="./about.html">About</a>
+      <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>
+      <a href="./credits.html">Picture credits</a>
+      <a href="./admin.html">Admin</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+      <a href="https://github.com/eoinjordan/botbuilder/issues" rel="noopener noreferrer">Report a problem</a>
+    </nav>
+    <p class="foot-legal">Code and printable parts under the MIT licence; pictures as on the credits page. Fonts: Space Grotesk, SIL Open Font
+      License (<a href="./assets/licenses/space-grotesk.txt">text</a>). <span id="trademarks">LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. No affiliation with any of them.</span></p>
+    <!-- /shared:footer -->
   </footer>
   <script type="module" src="./nav.js"></script>
   <script type="module" src="./flash.js"></script>
+  <script type="module" src="./tour.js"></script>
 </body>
 </html>

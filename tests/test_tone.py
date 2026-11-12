@@ -74,15 +74,17 @@ def test_no_mark_without_a_record_and_a_mark_with_one(data, recipes):
     assert recipe.evaluate(marked, {})["validated"]["date"] == "2026-12-01"
     script = (SITE / "build.js").read_text(encoding="utf-8")
     # The words appear in the page only behind the record.
-    assert script.count("Printed and checked on") == 2
+    assert script.count("Printed and checked on") == 3
     assert "if (recipe.validated) {" in script and "if (item.validated)" in script
+    # A finished build's card carries the mark only with a record, and nothing without one.
+    assert 'if (recipe.validated) text.append(el("span", `Printed and checked on ${recipe.validated.date}`, "checked-mark"));' in script
     export = (SITE / "export.js").read_text(encoding="utf-8")
     assert "if (recipe.validated) {" in export and "item.validated ? `Printed and checked on" in export
 
 
-def test_safety_instructions_and_working_instructions_stay(recipes):
-    by_query = {rec["query"]: rec for rec in recipes}
-    biped = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=esp32cam&face=eyes_above&feet=comb&head=fixed&lego=on"]
+def test_safety_instructions_and_working_instructions_stay(data, recipes):
+    by_query = {rec["query"].replace(f"camera={data['compat']['defaults']['camera']}&", "camera=DEFAULT&"): rec for rec in recipes}
+    biped = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=DEFAULT&face=eyes_above&feet=comb&head=fixed&lego=on"]
     power = " ".join(biped["power"])
     assert "Disconnect servo power before the first flash" in power
     assert "size the supply and wiring for the stall figure, or fuse it" in power
@@ -94,7 +96,7 @@ def test_safety_instructions_and_working_instructions_stay(recipes):
     assert biped["print"]["files"][0]["fit"]
     # "measure" where a part will not fit otherwise, and "Not written" for software that does not exist.
     assert any("measure" in part["note"].lower() for part in biped["parts"])
-    pan = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=esp32cam&face=none&feet=comb&head=m5_360&lego=on"]
+    pan = by_query["controller=unoq&locomotion=biped&drive=braccio_shield&camera=DEFAULT&face=none&feet=comb&head=m5_360&lego=on"]
     assert any("Measure the bracket's hole pattern" in part["note"] for part in pan["parts"])
     assert any("Measure the adapter's hole pattern" in text for text in pan["wiring"])
     assert any(text.startswith("Head: not written") for text in pan["firmware"])

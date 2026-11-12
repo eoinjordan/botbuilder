@@ -1,0 +1,46 @@
+{
+ "generated_by": "python -m microduck.buildpics",
+ "view": "400 x 300 px, three-quarter view from the front left, 24 degrees above",
+ "pictures": {
+  "duck": {
+   "file": "docs/images/build-duck.png",
+   "drawn_from": "the assembly model at the stand pose (microduck/model.py)",
+   "kind": "biped",
+   "bytes": 11046,
+   "sha256": "9efaaca3c169f915bff981bced5f8a6f805ef27ba5bf40f7fefc51e9ce7da7a8",
+   "inputs_sha256": "dd9c53e119283381c1b69b86860219f44451c2aa968a5b3be3d92460971c4661"
+  },
+  "ev3-walker": {
+   "file": "docs/images/build-ev3-walker.png",
+   "drawn_from": "the walkers model of ev3-pixy2 (walkers/model.py)",
+   "kind": "walker",
+   "bytes": 7696,
+   "sha256": "a7bf00d9cba6570a880564db879350725f8823646ad86380b2f3b527a5284512",
+   "inputs_sha256": "e9e5566d68f0b4bd6c2f0f96a8b09d9d588ee137e4fdb7b008ffe9efc7a35dc9"
+  },
+  "hub-walker": {
+   "file": "docs/images/build-hub-walker.png",
+   "drawn_from": "the walkers model of hub-51515 (walkers/model.py)",
+   "kind": "walker",
+   "bytes": 10592,
+   "sha256": "09bdc9880d259fb698d798bb7b4f4c638df95ab6203a5d164484d7f785080d22",
+   "inputs_sha256": "c5cb55fc6296e2ca31aa4a7323356687424349654b9a471020a0fca25053d01f"
+  },
+  "pi-walker": {
+   "file": "docs/images/build-pi-walker.png",
+   "drawn_from": "the walkers model of pi-zero-2w-51515 (walkers/model.py)",
+   "kind": "walker",
+   "bytes": 10891,
+   "sha256": "b790403927c0588fe72ec4fcfe7e76fd19a573ecaf7a79259aa7728cd37cab3e",
+   "inputs_sha256": "8e2ecf2f360ec8c194739a44f867d0b4105626a911db7099ca35a203387efb13"
+  },
+  "pi-rover": {
+   "file": "docs/images/build-pi-rover.png",
+   "drawn_from": "robot/lego/wheeled/viewer.json, pi-tt-solidttd65-skid-back",
+   "kind": "wheeled",
+   "bytes": 12996,
+   "sha256": "15dc8b6ac59cceb2c21fbdd8046e7aa1c4817a6d677a382d3aae5a6926b27ddc",
+   "inputs_sha256": "c671c83d02f89ff573c7d46b09a20add9c5130efd372248debc900adbfe36bc9"
+  }
+ }
+}

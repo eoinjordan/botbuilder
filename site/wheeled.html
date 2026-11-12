@@ -6,21 +6,35 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#087f60">
   <meta name="description" content="Two-wheeled builds for every controller: LEGO motors, 360-degree servos or TT motors, a skid or ball, printed wheels with an O-ring or a TPU tyre, parts and programs.">
+  <!-- shared:head -->
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Botbuilder">
+  <meta property="og:title" content="Two-wheeled / Botbuilder">
+  <meta property="og:description" content="Two-wheeled builds for every controller: LEGO motors, 360-degree servos or TT motors, a skid or ball, printed wheels with an O-ring or a TPU tyre, parts and programs.">
+  <meta property="og:image" content="https://eoinjordan.github.io/botbuilder/assets/social-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- /shared:head -->
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./walkers.css">
   <title>Two-wheeled / Botbuilder</title>
   <script type="importmap">{"imports": {"three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js"}}</script>
 </head>
 <body>
+  <!-- shared:masthead -->
+  <a class="skip-link" href="#content">Skip to content</a>
   <header class="masthead">
-    <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">BB</span><span>Bot<b>builder</b></span></a>
+    <a class="brand" href="./"><img class="brand-icon" src="./assets/logo-mark-light.svg" alt="" width="44" height="44"><span>Bot<b>builder</b></span></a>
     <nav id="site-nav" aria-label="Site">
       <a href="./">Build yours</a><a href="./biped.html">Biped</a><a href="./wheeled.html" aria-current="page">Two-wheeled</a><a href="./walkers.html">Walkers</a><a href="./flash.html">Flash</a><a href="./control.html">Control</a>
       <a class="out" href="https://eoinjordan.github.io/unoq-braccio-sketchbot/" target="_blank" rel="noopener" aria-label="Arms: Sketchbot, opens in a new tab" title="Sketchbot, the robot arm project: opens in a new tab">Arms</a>
       <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
     </nav>
   </header>
-  <main>
+  <!-- /shared:masthead -->
+  <main id="content">
     <div class="title-row">
       <div><p class="eyebrow">EV3 / 51515 HUB / RASPBERRY PI / UNO Q / M5STACK</p><h1>Two wheels and a third support</h1></div>
     </div>
@@ -83,12 +97,23 @@
     </section>
   </main>
   <footer>
-    <p>Code and the parts under the MIT licence. LEGO, Mindstorms and Technic are trademarks of the LEGO Group,
-      which does not sponsor or endorse this. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino and UNO Q are
-      trademarks of Arduino; M5Stack is a trademark of M5Stack Technology. Fonts: Space Grotesk, SIL Open Font License
-      (<a href="./assets/licenses/space-grotesk.txt">text</a>). No analytics, no cookies. <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>. <a href="./admin.html">Admin</a>.</p>
+    <p class="foot-note">Arduino and UNO Q are trademarks of Arduino; M5Stack is a trademark of M5Stack Technology. No analytics, no cookies.</p>
+    <!-- shared:footer -->
+    <nav class="foot-links" aria-label="About this site">
+      <a href="./?tour=1" data-tour>Take the tour</a>
+      <a href="./about.html">About</a>
+      <a href="https://github.com/eoinjordan/botbuilder/blob/main/docs/status.md" rel="noopener noreferrer">Status and assumptions</a>
+      <a href="./credits.html">Picture credits</a>
+      <a href="./admin.html">Admin</a>
+      <a href="https://github.com/eoinjordan/botbuilder" rel="noopener noreferrer">Source</a>
+      <a href="https://github.com/eoinjordan/botbuilder/issues" rel="noopener noreferrer">Report a problem</a>
+    </nav>
+    <p class="foot-legal">Code and printable parts under the MIT licence; pictures as on the credits page. Fonts: Space Grotesk, SIL Open Font
+      License (<a href="./assets/licenses/space-grotesk.txt">text</a>). <span id="trademarks">LEGO, Mindstorms and Technic are trademarks of the LEGO Group, which does not sponsor, authorise or endorse this project. Raspberry Pi is a trademark of Raspberry Pi Ltd. Arduino, UNO Q, TinkerKit and Braccio are trademarks of Arduino. No affiliation with any of them.</span></p>
+    <!-- /shared:footer -->
   </footer>
   <script type="module" src="./nav.js"></script>
   <script type="module" src="./wheeled.js"></script>
+  <script type="module" src="./tour.js"></script>
 </body>
 </html>

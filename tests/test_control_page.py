@@ -37,7 +37,7 @@ def find_chrome():
 
 
 class Browser:
-    def __init__(self, chrome: str, profile: Path):
+    def __init__(self, chrome: str, profile: Path, tour: bool = False):
         from websockets.sync.client import connect
         self.process = subprocess.Popen(
             [chrome, "--headless=new", *(["--no-sandbox"] if sys.platform.startswith("linux") else []), "--remote-debugging-port=0", f"--user-data-dir={profile}", "--no-first-run",
@@ -63,6 +63,10 @@ class Browser:
         self.call("Page.enable")
         self.call("Runtime.enable")
         self.call("Emulation.setFocusEmulationEnabled", enabled=True)
+        if not tour:
+            # One switch keeps the guided tour (site/tour.js) out of the page tests.
+            self.call("Page.addScriptToEvaluateOnNewDocument", source=(
+                "try { window.localStorage.setItem('botbuilder-tour', 'off'); } catch (error) {}"))
         self.call("Page.addScriptToEvaluateOnNewDocument", source=(
             "window.__pad = null;"
             "Object.defineProperty(navigator, 'getGamepads', { configurable: true, value: () => [window.__pad] });"))
