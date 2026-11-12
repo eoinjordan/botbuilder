@@ -567,6 +567,17 @@ def credits_html(root: Path = ROOT) -> str:
         </table>
       </div>
     </section>
+    <section aria-labelledby="look-heading">
+      <div class="section-heading"><h2 id="look-heading">Microduck-look biped</h2></div>
+      <p>Source model: Microduck by Pollen Robotics,
+        <a href="https://github.com/pollen-robotics/microduck_rl" rel="noopener noreferrer">github.com/pollen-robotics/microduck_rl</a>.
+        The printable parts of the Microduck-look biped, its comb feet included, and every picture of them on this site
+        are adapted from that model and are licensed under
+        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>:
+        credit Pollen Robotics, no commercial use, share your version under the same licence. The changes made are
+        listed in <a href="./stl/microduck-look/LICENSE">the parts' licence file</a>. Everything else in the
+        repository is under the MIT licence. This project is not affiliated with or endorsed by Pollen Robotics.</p>
+    </section>
   </main>
 """
     return sitechrome.apply(head + body + foot, "credits.html")

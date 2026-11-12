@@ -75,7 +75,8 @@ def footer() -> str:
       <a href="{REPO_URL}" rel="noopener noreferrer">Source</a>
       <a href="{REPO_URL}/issues" rel="noopener noreferrer">Report a problem</a>
     </nav>
-    <p class="foot-legal">Code and printable parts under the MIT licence; pictures as on the credits page. Fonts: Space Grotesk, SIL Open Font
+    <p class="foot-legal">Code and printable parts under the MIT licence, except the Microduck-look parts: CC BY-NC-SA 4.0, adapted from the
+      Microduck by Pollen Robotics (<a href="./stl/microduck-look/LICENSE">text</a>). Pictures as on the credits page. Fonts: Space Grotesk, SIL Open Font
       License (<a href="./assets/licenses/space-grotesk.txt">text</a>). <span id="trademarks">{html.escape(TRADEMARKS)}</span></p>
 """
 

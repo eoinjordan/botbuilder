@@ -43,6 +43,8 @@ DATA = {
     "wheeled-sim.json": ROOT / "reports" / "wheeled" / "sim.json",
     "wheeled-viewer.json": ROOT / "robot" / "lego" / "wheeled" / "viewer.json",
     "programs-index.json": ROOT / "programs" / "index.json",
+    # biped.html: the Microduck-look biped
+    "look-summary.json": ROOT / "reports" / "microduck-look" / "summary.json",
     # tour.js, on every page
     "tour.json": ROOT / "config" / "tour.json",
 }
@@ -89,6 +91,15 @@ def main() -> int:
         shutil.copyfile(ROOT / "stl" / name, parts / name)
     if (ROOT / "stl" / "thumbs").is_dir():
         shutil.copytree(ROOT / "stl" / "thumbs", parts / "thumbs")
+    # The Microduck-look parts carry their own terms: their licence, credit and pictures go with them.
+    look = ROOT / "stl" / "microduck-look"
+    if (look / "LICENSE").is_file():
+        (parts / "microduck-look").mkdir(parents=True, exist_ok=True)
+        for name in ("LICENSE", "parameters.json", "comb_feet.json"):
+            if (look / name).is_file():
+                shutil.copyfile(look / name, parts / "microduck-look" / name)
+        if (look / "images").is_dir():
+            shutil.copytree(look / "images", parts / "microduck-look" / "images")
     # Pictures of the bought components: photographs and drawings, credited on credits.html.
     if (SITE / "components").exists():
         shutil.rmtree(SITE / "components")
